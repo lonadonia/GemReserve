@@ -1,0 +1,24 @@
+# dependencies and builds
+/node_modules/
+/.next/
+/out/
+*.tsbuildinfo
+
+# local configuration
+.env*
+!.env.example
+
+# test runners
+/playwright-report/
+/test-results/
+
+# source boards and working analysis (not production assets)
+/reference/
+/GemReserve Website Mockups.zip
+/GemReserve_Codex_Phase_1_Prompt.md
+/GemReserve_Website_Design_and_Implementation_Spec.md
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.log

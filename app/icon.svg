@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="gri-title gri-desc" focusable="false">
+  <title id="gri-title">GemReserve</title>
+  <desc id="gri-desc">The GemReserve gold shield with four colored gemstones and the GR monogram.</desc>
+  <defs>
+    <linearGradient id="gri-bg" x1="24" y1="16" x2="232" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101519"/><stop offset=".55" stop-color="#030607"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="gri-gold" x1="48" y1="24" x2="208" y2="234" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff0a8"/><stop offset=".22" stop-color="#bd7414"/><stop offset=".48" stop-color="#f5ce70"/><stop offset=".74" stop-color="#8e5007"/><stop offset="1" stop-color="#eeb844"/>
+    </linearGradient>
+    <linearGradient id="gri-red" x1="104" y1="44" x2="148" y2="101" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff3b60"/><stop offset=".48" stop-color="#c90030"/><stop offset="1" stop-color="#680012"/>
+    </linearGradient>
+    <linearGradient id="gri-green" x1="58" y1="98" x2="100" y2="151" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#32efaa"/><stop offset=".5" stop-color="#009f65"/><stop offset="1" stop-color="#003e2a"/>
+    </linearGradient>
+    <linearGradient id="gri-purple" x1="157" y1="98" x2="199" y2="151" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dc63ff"/><stop offset=".5" stop-color="#7b20b5"/><stop offset="1" stop-color="#2d064d"/>
+    </linearGradient>
+    <linearGradient id="gri-blue" x1="106" y1="157" x2="149" y2="216" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#429cff"/><stop offset=".5" stop-color="#0752c5"/><stop offset="1" stop-color="#061d60"/>
+    </linearGradient>
+    <filter id="gri-shadow" x="-25%" y="-25%" width="150%" height="165%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity=".78"/>
+    </filter>
+  </defs>
+
+  <rect width="256" height="256" rx="44" fill="url(#gri-bg)"/>
+  <g aria-hidden="true" filter="url(#gri-shadow)">
+    <path fill="url(#gri-gold)" d="M128 14c22 18 48 28 83 32l-6 92c-4 53-33 88-77 111-44-23-73-58-77-111l-6-92c35-4 61-14 83-32Z"/>
+    <path fill="#1d1104" d="M128 21c20 17 44 26 76 31l-6 85c-4 49-30 81-70 103-40-22-66-54-70-103l-6-85c32-5 56-14 76-31Z"/>
+    <path fill="url(#gri-bg)" stroke="#f0c45e" stroke-opacity=".72" stroke-width="1.2" d="M128 27c19 15 41 24 69 29l-5 80c-4 45-27 74-64 95-37-21-60-50-64-95l-5-80c28-5 50-14 69-29Z"/>
+    <path fill="none" stroke="#d69a2b" stroke-width="1.2" stroke-opacity=".7" d="m128 65-48 55 48 15 48-15-48-55Zm0 70v54M80 120l48 69 48-69"/>
+
+    <g stroke="#e5aa37" stroke-width="2.1">
+      <path fill="url(#gri-red)" d="m128 42 31 34-31 33-31-33 31-34Z"/>
+      <path fill="url(#gri-green)" d="m79 94 27 18-2 33-25 18-26-18-2-33 28-18Z"/>
+      <path fill="url(#gri-purple)" d="m177 94 27 18-2 33-25 18-26-18-2-33 28-18Z"/>
+      <path fill="url(#gri-blue)" d="m128 156 30 18-4 33-26 16-26-16-4-33 30-18Z"/>
+    </g>
+    <g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width=".8">
+      <path d="m128 46-25 30 25-6 25 6-25-30Zm-71 68 22 7 22-7m-22-16v23l-10 33m130-40-22 7-22-7m22-16v23l10 33m-59 7v24m-25-7 25 7 25-7"/>
+    </g>
+    <g fill="url(#gri-gold)" stroke="#563004" stroke-width=".6">
+      <circle cx="104" cy="110" r="4.4"/><circle cx="152" cy="110" r="4.4"/>
+      <circle cx="104" cy="151" r="4.4"/><circle cx="152" cy="151" r="4.4"/>
+    </g>
+    <path fill="#040607" stroke="url(#gri-gold)" stroke-width="2.8" d="m128 110 22 13v27l-22 13-22-13v-27l22-13Z"/>
+    <text x="128" y="145" fill="url(#gri-gold)" font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif" font-size="25" text-anchor="middle" letter-spacing="-1.8">GR</text>
+    <path fill="none" stroke="#d69a2b" stroke-width="1.1" d="M128 148v7m-3-3 3 3 3-3"/>
+  </g>
+</svg>

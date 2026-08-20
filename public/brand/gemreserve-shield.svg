@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 300" role="img" aria-labelledby="grs-title grs-desc" focusable="false">
+  <title id="grs-title">GemReserve shield</title>
+  <desc id="grs-desc">A gold heraldic shield set with red, green, purple, and blue gemstones around the GR monogram.</desc>
+  <defs>
+    <linearGradient id="grs-gold" x1="32" y1="22" x2="224" y2="282" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0a8"/>
+      <stop offset=".18" stop-color="#bf7717"/>
+      <stop offset=".43" stop-color="#f4ce72"/>
+      <stop offset=".7" stop-color="#9c5a09"/>
+      <stop offset="1" stop-color="#f2bd48"/>
+    </linearGradient>
+    <linearGradient id="grs-rim" x1="66" y1="24" x2="190" y2="278" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff7c8"/>
+      <stop offset=".34" stop-color="#d49222"/>
+      <stop offset=".72" stop-color="#6f3b05"/>
+      <stop offset="1" stop-color="#d9951f"/>
+    </linearGradient>
+    <radialGradient id="grs-field" cx="50%" cy="35%" r="75%">
+      <stop stop-color="#111418"/>
+      <stop offset=".62" stop-color="#050708"/>
+      <stop offset="1" stop-color="#010203"/>
+    </radialGradient>
+    <linearGradient id="grs-red" x1="102" y1="42" x2="151" y2="103" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff3159"/>
+      <stop offset=".45" stop-color="#c90030"/>
+      <stop offset="1" stop-color="#60000f"/>
+    </linearGradient>
+    <linearGradient id="grs-green" x1="49" y1="101" x2="94" y2="163" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2cffac"/>
+      <stop offset=".45" stop-color="#00a769"/>
+      <stop offset="1" stop-color="#00462f"/>
+    </linearGradient>
+    <linearGradient id="grs-purple" x1="162" y1="103" x2="202" y2="162" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#db63ff"/>
+      <stop offset=".46" stop-color="#7922b7"/>
+      <stop offset="1" stop-color="#2f075a"/>
+    </linearGradient>
+    <linearGradient id="grs-blue" x1="105" y1="180" x2="151" y2="237" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3d98ff"/>
+      <stop offset=".45" stop-color="#0754c9"/>
+      <stop offset="1" stop-color="#061d63"/>
+    </linearGradient>
+    <filter id="grs-shadow" x="-30%" y="-25%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#000" flood-opacity=".72"/>
+    </filter>
+    <filter id="grs-gem-glow" x="-35%" y="-35%" width="170%" height="170%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2.4" flood-color="#d99821" flood-opacity=".58"/>
+    </filter>
+    <clipPath id="grs-field-clip">
+      <path d="M128 21C150 39 178 49 209 52l-6 101c-4 56-33 94-75 121-42-27-71-65-75-121L47 52c31-3 59-13 81-31Z"/>
+    </clipPath>
+  </defs>
+
+  <g aria-hidden="true" filter="url(#grs-shadow)">
+    <path fill="url(#grs-gold)" d="M128 7c24 21 54 32 94 37l-7 111c-5 65-39 107-87 136-48-29-82-71-87-136L34 44c40-5 70-16 94-37Z"/>
+    <path fill="#241504" d="M128 14c23 20 52 31 87 36l-6 104c-5 61-36 100-81 128-45-28-76-67-81-128L41 50c35-5 64-16 87-36Z"/>
+    <path fill="url(#grs-rim)" d="M128 18c22 19 50 30 83 34l-6 102c-4 58-34 96-77 123-43-27-73-65-77-123L45 52c33-4 61-15 83-34Z"/>
+    <path fill="url(#grs-field)" d="M128 24c21 18 47 28 77 33l-6 96c-4 54-31 89-71 115-40-26-67-61-71-115l-6-96c30-5 56-15 77-33Z"/>
+    <path fill="none" stroke="#fff0aa" stroke-opacity=".68" stroke-width="1.25" d="M128 28c20 16 44 26 72 31l-6 93c-4 51-29 84-66 108-37-24-62-57-66-108l-6-93c28-5 52-15 72-31Z"/>
+  </g>
+
+  <g clip-path="url(#grs-field-clip)" aria-hidden="true">
+    <g fill="none" stroke="#c88a23" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="1.35" d="M128 65 74 127l54 16 54-16-54-62Zm0 78v68M74 127l54 84 54-84"/>
+      <path stroke-width=".9" stroke-opacity=".78" d="M57 72 73 82l-8 14 12 11-9 16m-17-35 12 7m-4 44-12 14 14 10-7 17 16 9m129-117-16 10 8 14-12 11 9 16m17-35-12 7m4 44 12 14-14 10 7 17-16 9"/>
+      <path stroke-width=".75" stroke-opacity=".55" d="M84 54 72 67 86 79 79 93m93-39 12 13-14 12 7 14M71 196l14 8-8 16 17 8m91-32-14 8 8 16-17 8"/>
+    </g>
+    <g fill="#f2bd48">
+      <circle cx="57" cy="72" r="2.2"/><circle cx="73" cy="82" r="1.9"/><circle cx="65" cy="96" r="1.6"/>
+      <circle cx="51" cy="88" r="1.5"/><circle cx="47" cy="153" r="1.8"/><circle cx="61" cy="163" r="2"/>
+      <circle cx="199" cy="72" r="2.2"/><circle cx="183" cy="82" r="1.9"/><circle cx="191" cy="96" r="1.6"/>
+      <circle cx="205" cy="88" r="1.5"/><circle cx="209" cy="153" r="1.8"/><circle cx="195" cy="163" r="2"/>
+      <circle cx="84" cy="54" r="1.6"/><circle cx="172" cy="54" r="1.6"/>
+      <circle cx="71" cy="196" r="1.6"/><circle cx="185" cy="196" r="1.6"/>
+    </g>
+
+    <g filter="url(#grs-gem-glow)">
+      <g>
+        <path fill="url(#grs-red)" stroke="#e4ac3d" stroke-width="2.2" d="m128 33 36 40-36 39-36-39 36-40Z"/>
+        <path fill="#ff4968" fill-opacity=".72" d="m128 36 32 36-32-7V36Z"/>
+        <path fill="#970020" d="m128 36-32 36 32-7V36Z"/>
+        <path fill="#dd0636" d="m96 72 32-7-12 38-20-31Z"/>
+        <path fill="#6c0014" d="m160 72-32-7 12 38 20-31Z"/>
+        <path fill="#b5002a" d="m128 65 12 38-24 0 12-38Z"/>
+        <path fill="none" stroke="#ff9aaf" stroke-opacity=".45" stroke-width=".8" d="m128 36v29L96 72m64 0-32-7m-12 38 12 6 12-6"/>
+      </g>
+
+      <g>
+        <path fill="url(#grs-green)" stroke="#e4ac3d" stroke-width="2.2" d="m72 93 31 20-2 38-29 21-30-21-2-38 32-20Z"/>
+        <path fill="#32e6a5" fill-opacity=".75" d="m72 97 27 18-27 8-28-8 28-18Z"/>
+        <path fill="#007b4f" d="m44 115 28 8-12 40-16-14v-34Z"/>
+        <path fill="#003e2a" d="m99 115-27 8 12 40 15-14v-34Z"/>
+        <path fill="#00a66a" d="m72 123 12 40-12 6-12-6 12-40Z"/>
+        <path fill="none" stroke="#a2ffda" stroke-opacity=".44" stroke-width=".8" d="m72 97v26m-28-8 28 8 27-8m-39 48 12 6 12-6"/>
+      </g>
+
+      <g>
+        <path fill="url(#grs-purple)" stroke="#e4ac3d" stroke-width="2.2" d="m184 93 31 20-2 38-29 21-30-21-2-38 32-20Z"/>
+        <path fill="#d65dff" fill-opacity=".7" d="m184 97 27 18-27 8-28-8 28-18Z"/>
+        <path fill="#5f168f" d="m156 115 28 8-12 40-16-14v-34Z"/>
+        <path fill="#2d074d" d="m211 115-27 8 12 40 15-14v-34Z"/>
+        <path fill="#8421bb" d="m184 123 12 40-12 6-12-6 12-40Z"/>
+        <path fill="none" stroke="#efb2ff" stroke-opacity=".42" stroke-width=".8" d="m184 97v26m-28-8 28 8 27-8m-39 48 12 6 12-6"/>
+      </g>
+
+      <g>
+        <path fill="url(#grs-blue)" stroke="#e4ac3d" stroke-width="2.2" d="m128 172 35 21-5 38-30 18-30-18-5-38 35-21Z"/>
+        <path fill="#449cff" fill-opacity=".72" d="m128 176 31 19-31 9-31-9 31-19Z"/>
+        <path fill="#073582" d="m97 195 31 9-13 38-14-13-4-34Z"/>
+        <path fill="#04194e" d="m159 195-31 9 13 38 13-13 5-34Z"/>
+        <path fill="#0750bd" d="m128 204 13 38-13 5-13-5 13-38Z"/>
+        <path fill="none" stroke="#9ac8ff" stroke-opacity=".44" stroke-width=".8" d="m128 176v28m-31-9 31 9 31-9m-44 47 13 5 13-5"/>
+      </g>
+    </g>
+
+    <g fill="url(#grs-gold)" stroke="#5d3304" stroke-width=".7">
+      <circle cx="101" cy="111" r="5"/><circle cx="155" cy="111" r="5"/>
+      <circle cx="101" cy="158" r="5"/><circle cx="155" cy="158" r="5"/>
+      <circle cx="128" cy="31" r="4.2"/><circle cx="128" cy="172" r="4.2"/>
+    </g>
+
+    <g>
+      <path fill="#050708" stroke="url(#grs-gold)" stroke-width="3" d="m128 112 25 14v31l-25 15-25-15v-31l25-14Z"/>
+      <path fill="none" stroke="#f4d579" stroke-opacity=".55" stroke-width="1" d="m128 118 20 11v25l-20 12-20-12v-25l20-11Z"/>
+      <text x="128" y="151" fill="url(#grs-gold)" font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif" font-size="28" text-anchor="middle" letter-spacing="-2">GR</text>
+      <path fill="none" stroke="#d69a2b" stroke-width="1.2" d="M128 155v8m-4-3 4 4 4-4"/>
+    </g>
+  </g>
+</svg>

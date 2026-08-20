@@ -1,0 +1,35 @@
+{
+  "name": "gemreserve-phase-one",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ./node_modules/next/dist/bin/next dev",
+    "build": "node ./node_modules/next/dist/bin/next build",
+    "start": "node ./node_modules/next/dist/bin/next start",
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit",
+    "format": "node ./node_modules/prettier/bin/prettier.cjs --write .",
+    "format:check": "node ./node_modules/prettier/bin/prettier.cjs --check .",
+    "assets": "node scripts/process-assets.mjs",
+    "qa": "node ./node_modules/@playwright/test/cli.js test"
+  },
+  "dependencies": {
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.1",
+    "prettier": "3.9.6",
+    "sharp": "0.35.3",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
