@@ -20,7 +20,8 @@ so that all meaningful copy remains accessible HTML.
   box they fill (1920×960; the taller Assets hero is 1920×1100) plus 900×1100
   mobile pairs;
 - section masters become purpose-sized WebP/AVIF pairs;
-- the 5×2 catalog source becomes ten 720×500 WebP/AVIF pairs;
+- the 5×2 catalog source becomes ten 480×480 transparent WebP/AVIF pairs, each
+  stone cut off its slate backdrop;
 - the two brand SVGs become transparent PNG exports.
 
 The route code currently points to the `.webp` files. The `.avif` siblings are
@@ -121,28 +122,33 @@ wrapper unless the image is moved into a context where it carries information.
 
 ## Catalog delivery assets
 
-All catalog files are opaque 720×500 images. Each output is extracted from one
-cell of `catalog-gemstones-master.png`, then contained on a uniform `#03080b`
-background. The dark side padding visible on some cuts is part of that uniform
-delivery canvas, not transparency.
+All catalog files are 480×480 images with a transparent background. Each output
+is extracted from one cell of `catalog-gemstones-master.png`, then cut off the
+slate backdrop: the backdrop is far darker than any stone, so a value threshold
+separates the two, the largest connected blob rejects the backdrop's specular
+speckle, unreachable interior pixels are filled back in so deep facets do not
+punch holes, and the rim is eroded by a pixel before feathering so no dark halo
+is smeared into the edge. The result is cropped tight to the stone and contained
+on a square canvas, so the card frame supplies the setting rather than the
+photograph. Alt text no longer describes a backdrop.
 
 The catalog artwork is illustrative. Alt text should name only visible color,
 cut, and presentation; do not use it to assert origin, weight, treatment,
 laboratory report, or grade. When a nearby heading already supplies the stone
 name and the visual adds no useful information, `alt=""` is also acceptable.
 
-| Gem/source cell                  | Final files                                                                            | Current mapping                                                    | Suggested informative alt                                  | Inspection outcome                           |
-| -------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------- |
-| Ruby, row 1 column 1             | `public/images/gems/ruby.webp`; `public/images/gems/ruby.avif`                         | Home Burmese Ruby preview and Assets Ruby card.                    | `Faceted red ruby on a dark surface`                       | **Pass.** Centered, uncut, and free of text. |
-| Blue sapphire, row 1 column 2    | `public/images/gems/blue-sapphire.webp`; `public/images/gems/blue-sapphire.avif`       | Home Sri Lankan Sapphire preview and Assets Blue Sapphire card.    | `Faceted deep-blue sapphire on a dark surface`             | **Pass.** Centered, uncut, and free of text. |
-| Emerald, row 1 column 3          | `public/images/gems/emerald.webp`; `public/images/gems/emerald.avif`                   | Home Colombian Emerald preview and Assets Emerald card.            | `Rectangular faceted green gemstone on a dark surface`     | **Pass.** Centered, uncut, and free of text. |
-| Diamond, row 1 column 4          | `public/images/gems/diamond.webp`; `public/images/gems/diamond.avif`                   | Home White Diamond preview and Assets Diamond card.                | `Round clear faceted gemstone on a dark surface`           | **Pass.** Centered, uncut, and free of text. |
-| Pink sapphire, row 1 column 5    | `public/images/gems/pink-sapphire.webp`; `public/images/gems/pink-sapphire.avif`       | Home Padparadscha Sapphire preview and Assets Pink Sapphire card.  | `Oval pink faceted gemstone on a dark surface`             | **Pass.** Centered, uncut, and free of text. |
-| Yellow sapphire, row 2 column 1  | `public/images/gems/yellow-sapphire.webp`; `public/images/gems/yellow-sapphire.avif`   | Home Fancy Yellow Diamond preview and Assets Yellow Sapphire card. | `Cushion-cut yellow faceted gemstone on a dark surface`    | **Pass.** Centered, uncut, and free of text. |
-| Amethyst, row 2 column 2         | `public/images/gems/amethyst.webp`; `public/images/gems/amethyst.avif`                 | Assets Amethyst card.                                              | `Oval purple faceted gemstone on a dark surface`           | **Pass.** Centered, uncut, and free of text. |
-| Aquamarine, row 2 column 3       | `public/images/gems/aquamarine.webp`; `public/images/gems/aquamarine.avif`             | Assets Aquamarine card.                                            | `Rectangular pale-blue faceted gemstone on a dark surface` | **Pass.** Centered, uncut, and free of text. |
-| Spinel, row 2 column 4           | `public/images/gems/spinel.webp`; `public/images/gems/spinel.avif`                     | Assets Spinel card.                                                | `Cushion-cut red faceted gemstone on a dark surface`       | **Pass.** Centered, uncut, and free of text. |
-| Tsavorite garnet, row 2 column 5 | `public/images/gems/tsavorite-garnet.webp`; `public/images/gems/tsavorite-garnet.avif` | Assets Tsavorite Garnet card.                                      | `Round vivid-green faceted gemstone on a dark surface`     | **Pass.** Centered, uncut, and free of text. |
+| Gem/source cell                  | Final files                                                                            | Current mapping                                                    | Suggested informative alt                | Inspection outcome                           |
+| -------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------- | -------------------------------------------- |
+| Ruby, row 1 column 1             | `public/images/gems/ruby.webp`; `public/images/gems/ruby.avif`                         | Home Burmese Ruby preview and Assets Ruby card.                    | `Faceted red ruby`                       | **Pass.** Centered, uncut, and free of text. |
+| Blue sapphire, row 1 column 2    | `public/images/gems/blue-sapphire.webp`; `public/images/gems/blue-sapphire.avif`       | Home Sri Lankan Sapphire preview and Assets Blue Sapphire card.    | `Faceted deep-blue sapphire`             | **Pass.** Centered, uncut, and free of text. |
+| Emerald, row 1 column 3          | `public/images/gems/emerald.webp`; `public/images/gems/emerald.avif`                   | Home Colombian Emerald preview and Assets Emerald card.            | `Rectangular faceted green gemstone`     | **Pass.** Centered, uncut, and free of text. |
+| Diamond, row 1 column 4          | `public/images/gems/diamond.webp`; `public/images/gems/diamond.avif`                   | Home White Diamond preview and Assets Diamond card.                | `Round clear faceted gemstone`           | **Pass.** Centered, uncut, and free of text. |
+| Pink sapphire, row 1 column 5    | `public/images/gems/pink-sapphire.webp`; `public/images/gems/pink-sapphire.avif`       | Home Padparadscha Sapphire preview and Assets Pink Sapphire card.  | `Oval pink faceted gemstone`             | **Pass.** Centered, uncut, and free of text. |
+| Yellow sapphire, row 2 column 1  | `public/images/gems/yellow-sapphire.webp`; `public/images/gems/yellow-sapphire.avif`   | Home Fancy Yellow Diamond preview and Assets Yellow Sapphire card. | `Cushion-cut yellow faceted gemstone`    | **Pass.** Centered, uncut, and free of text. |
+| Amethyst, row 2 column 2         | `public/images/gems/amethyst.webp`; `public/images/gems/amethyst.avif`                 | Assets Amethyst card.                                              | `Oval purple faceted gemstone`           | **Pass.** Centered, uncut, and free of text. |
+| Aquamarine, row 2 column 3       | `public/images/gems/aquamarine.webp`; `public/images/gems/aquamarine.avif`             | Assets Aquamarine card.                                            | `Rectangular pale-blue faceted gemstone` | **Pass.** Centered, uncut, and free of text. |
+| Spinel, row 2 column 4           | `public/images/gems/spinel.webp`; `public/images/gems/spinel.avif`                     | Assets Spinel card.                                                | `Cushion-cut red faceted gemstone`       | **Pass.** Centered, uncut, and free of text. |
+| Tsavorite garnet, row 2 column 5 | `public/images/gems/tsavorite-garnet.webp`; `public/images/gems/tsavorite-garnet.avif` | Assets Tsavorite Garnet card.                                      | `Round vivid-green faceted gemstone`     | **Pass.** Centered, uncut, and free of text. |
 
 ## Brand and application icons
 

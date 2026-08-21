@@ -237,7 +237,7 @@ export const gemstoneAssets = [
   {
     id: "ruby-mozambique",
     imageSrc: "/images/gems/ruby.webp",
-    imageAlt: "Cushion-cut red ruby on a black mineral surface",
+    imageAlt: "Cushion-cut red ruby",
     name: "Ruby",
     category: "Ruby",
     originOrGrade: { kind: "origin", value: "Mozambique" },
@@ -257,7 +257,7 @@ export const gemstoneAssets = [
   {
     id: "blue-sapphire-sri-lanka",
     imageSrc: "/images/gems/blue-sapphire.webp",
-    imageAlt: "Oval-cut deep blue sapphire on a black mineral surface",
+    imageAlt: "Oval-cut deep blue sapphire",
     name: "Blue Sapphire",
     category: "Sapphire",
     originOrGrade: { kind: "origin", value: "Sri Lanka" },
@@ -277,7 +277,7 @@ export const gemstoneAssets = [
   {
     id: "emerald-zambia",
     imageSrc: "/images/gems/emerald.webp",
-    imageAlt: "Emerald-cut green emerald on a black mineral surface",
+    imageAlt: "Emerald-cut green emerald",
     name: "Emerald",
     category: "Emerald",
     originOrGrade: { kind: "origin", value: "Zambia" },
@@ -297,7 +297,7 @@ export const gemstoneAssets = [
   {
     id: "diamond-d-color-vvs1",
     imageSrc: "/images/gems/diamond.webp",
-    imageAlt: "Round brilliant white diamond on a black mineral surface",
+    imageAlt: "Round brilliant white diamond",
     name: "Diamond",
     category: "Diamond",
     originOrGrade: { kind: "grade", value: "D Color, VVS1" },
@@ -317,7 +317,7 @@ export const gemstoneAssets = [
   {
     id: "pink-sapphire-madagascar",
     imageSrc: "/images/gems/pink-sapphire.webp",
-    imageAlt: "Oval-cut pink sapphire on a black mineral surface",
+    imageAlt: "Oval-cut pink sapphire",
     name: "Pink Sapphire",
     category: "Sapphire",
     originOrGrade: { kind: "origin", value: "Madagascar" },
@@ -337,7 +337,7 @@ export const gemstoneAssets = [
   {
     id: "yellow-sapphire-thailand",
     imageSrc: "/images/gems/yellow-sapphire.webp",
-    imageAlt: "Cushion-cut yellow sapphire on a black mineral surface",
+    imageAlt: "Cushion-cut yellow sapphire",
     name: "Yellow Sapphire",
     category: "Sapphire",
     originOrGrade: { kind: "origin", value: "Thailand" },
@@ -357,7 +357,7 @@ export const gemstoneAssets = [
   {
     id: "amethyst-uruguay",
     imageSrc: "/images/gems/amethyst.webp",
-    imageAlt: "Oval-cut purple amethyst on a black mineral surface",
+    imageAlt: "Oval-cut purple amethyst",
     name: "Amethyst",
     category: "Other Precious Stones",
     originOrGrade: { kind: "origin", value: "Uruguay" },
@@ -377,7 +377,7 @@ export const gemstoneAssets = [
   {
     id: "aquamarine-brazil",
     imageSrc: "/images/gems/aquamarine.webp",
-    imageAlt: "Emerald-cut aquamarine on a black mineral surface",
+    imageAlt: "Emerald-cut aquamarine",
     name: "Aquamarine",
     category: "Other Precious Stones",
     originOrGrade: { kind: "origin", value: "Brazil" },
@@ -397,7 +397,7 @@ export const gemstoneAssets = [
   {
     id: "spinel-tanzania",
     imageSrc: "/images/gems/spinel.webp",
-    imageAlt: "Cushion-cut red spinel on a black mineral surface",
+    imageAlt: "Cushion-cut red spinel",
     name: "Spinel",
     category: "Other Precious Stones",
     originOrGrade: { kind: "origin", value: "Tanzania" },
@@ -417,7 +417,7 @@ export const gemstoneAssets = [
   {
     id: "tsavorite-garnet-kenya",
     imageSrc: "/images/gems/tsavorite-garnet.webp",
-    imageAlt: "Round-cut green tsavorite garnet on a black mineral surface",
+    imageAlt: "Round-cut green tsavorite garnet",
     name: "Tsavorite Garnet",
     category: "Other Precious Stones",
     originOrGrade: { kind: "origin", value: "Kenya" },

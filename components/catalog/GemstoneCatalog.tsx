@@ -177,8 +177,8 @@ export function GemstoneCatalog() {
                     className="gemstone-card-image"
                     src={asset.imageSrc}
                     alt={asset.imageAlt}
-                    width={520}
-                    height={360}
+                    width={480}
+                    height={480}
                     sizes="(max-width: 479px) 92vw, (max-width: 767px) 44vw, (max-width: 1099px) 30vw, 19vw"
                   />
                 </div>
