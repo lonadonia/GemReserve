@@ -466,17 +466,11 @@ await sharp(crest)
   .png({ compressionLevel: 9 })
   .toFile(path.join(root, "app", "icon.png"));
 
-// Process-step artwork. Unlike the catalogue stones, these are dark metal and
-// glass photographed on a near-black card, so there is no luminance edge to cut
-// along - a threshold shreds the microscope and the safe into their highlights.
-// The plate is kept whole instead and its edges are faded out, which lets it sit
-// on the step card's own dark background without showing a rectangle.
-const processSource = path.join(masters, "process-steps-master.png");
-const processMetadata = await sharp(processSource).metadata();
-if (!processMetadata.width || !processMetadata.height) {
-  throw new Error("Process master dimensions are unavailable.");
-}
-
+// Process-step artwork. Each step has its own generated plate in
+// assets/masters/process/, already cut off its backdrop and shipped with an
+// alpha channel, so the pipeline only has to size it. The previous artwork was
+// sliced out of one 980px-wide sheet, which left each step about 100px of real
+// detail and forced a faded rectangle instead of a true cut-out.
 const processStepNames = [
   "source",
   "verify",
@@ -487,72 +481,49 @@ const processStepNames = [
   "trade",
   "redeem",
 ];
-const PROCESS_EXPORT_SIZE = 220;
+// The plates draw at up to about 116 CSS px, so 400 covers a 3x display.
+const PROCESS_EXPORT_SIZE = 400;
 
-function edgeFadeMask(width, height, fraction = 0.3) {
-  const fade = Math.max(1, Math.round(Math.min(width, height) * fraction));
-  const mask = Buffer.alloc(width * height);
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const distance = Math.min(x, y, width - 1 - x, height - 1 - y);
-      const t = distance >= fade ? 1 : distance / fade;
-      // Smoothstep keeps the ramp from banding against a flat dark card.
-      mask[y * width + x] = Math.round(255 * t * t * (3 - 2 * t));
-    }
-  }
-  return mask;
-}
-
-async function exportProcessPlate(input, crop, name) {
-  const { data, info } = await sharp(input)
-    .extract(crop)
-    .removeAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  const { width, height, channels } = info;
-  const faded = await sharp(data, { raw: { width, height, channels } })
-    .joinChannel(edgeFadeMask(width, height), {
-      raw: { width, height, channels: 1 },
+async function exportProcessPlate(input, name) {
+  const base = sharp(input)
+    .resize({
+      width: PROCESS_EXPORT_SIZE,
+      height: PROCESS_EXPORT_SIZE,
+      fit: "contain",
+      position: "center",
+      kernel: "lanczos3",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
     })
-    .png()
-    .toBuffer();
-  const base = sharp(faded).resize({
-    width: PROCESS_EXPORT_SIZE,
-    height: PROCESS_EXPORT_SIZE,
-    fit: "contain",
-    position: "center",
-    kernel: "lanczos3",
-    background: { r: 0, g: 0, b: 0, alpha: 0 },
-  });
+    .sharpen({ sigma: 0.6 });
   await Promise.all([
     base
       .clone()
-      .webp({ quality: 90, alphaQuality: 100, smartSubsample: true })
+      .webp({ quality: 92, alphaQuality: 100, smartSubsample: true })
       .toFile(path.join(processDir, `${name}.webp`)),
     base
       .clone()
-      .avif({ quality: 68, effort: 7 })
+      .avif({ quality: 70, effort: 7 })
       .toFile(path.join(processDir, `${name}.avif`)),
   ]);
 }
 
-const processCellWidth = processMetadata.width / processStepNames.length;
-for (const [index, name] of processStepNames.entries()) {
-  const left = Math.round(index * processCellWidth);
-  const right = Math.round((index + 1) * processCellWidth);
-  await exportProcessPlate(
-    processSource,
-    { left: left + 11, top: 18, width: right - left - 22, height: 94 },
-    name,
-  );
+for (const name of processStepNames) {
+  const plate = path.join(masters, "process", `${name}.png`);
+  const meta = await sharp(plate).metadata();
+  if (!meta.hasAlpha) {
+    throw new Error(
+      `${name}.png has no alpha channel; the step plates must ship cut out.`,
+    );
+  }
+  await exportProcessPlate(plate, name);
 }
 
 // How It Works runs nine steps to Home's eight. Its closing "transparency
-// always" step has no counterpart on the plate, so it takes the brand crest,
+// always" step has no counterpart among them, so it takes the brand crest,
 // which is the mark that stands behind the audit trail anyway.
 {
-  const crestPlate = await sharp(
-    path.join(brandDir, "gemreserve-shield-512.png"),
+  const crestPlate = sharp(
+    path.join(brandDir, "gemreserve-shield-1024.png"),
   ).resize({
     width: PROCESS_EXPORT_SIZE,
     height: PROCESS_EXPORT_SIZE,

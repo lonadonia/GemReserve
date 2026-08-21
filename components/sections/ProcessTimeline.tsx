@@ -92,9 +92,9 @@ export function ProcessTimeline({
             className="process-plate"
             src={`/images/process/${plateForStep(item.id).src}.webp`}
             alt={plateForStep(item.id).alt}
-            width={220}
-            height={220}
-            sizes="(max-width: 760px) 64px, (max-width: 1240px) 88px, 78px"
+            width={400}
+            height={400}
+            sizes="(max-width: 760px) 74px, (max-width: 1240px) 100px, 116px"
           />
           <h3>{item.title}</h3>
           <p>{item.description}</p>
