@@ -12,8 +12,6 @@ export interface HomeHeroContent extends VerificationAwareContent {
   readonly description: string;
   readonly primaryActionLabel: string;
   readonly secondaryActionLabel: string;
-  readonly brandName: string;
-  readonly brandTagline: string;
 }
 
 export type HomeTrustPillarId =
@@ -107,8 +105,6 @@ export const homeHero = {
     "GemReserve.io tokenizes the world's most exquisite gemstones, backed by independent verification, secure custody, and transparency you can prove.",
   primaryActionLabel: "Explore Gemstones",
   secondaryActionLabel: "How It Works",
-  brandName: "GemReserve.io",
-  brandTagline: "OWN. TRADE. REDEEM.",
   requiresClientVerification: true,
 } as const satisfies HomeHeroContent;
 

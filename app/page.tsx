@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { LineIcon } from "@/components/icons/LineIcon";
@@ -74,20 +73,6 @@ export default function HomePage() {
                   </span>
                 </Link>
               </div>
-            </MotionReveal>
-
-            <MotionReveal className="hero__brand" delay={120}>
-              <Image
-                className="hero__shield"
-                src="/brand/gemreserve-shield.svg"
-                alt=""
-                width={300}
-                height={352}
-                priority
-                sizes="(max-width: 720px) 46vw, 300px"
-              />
-              <p className="hero__brand-name">{homeHero.brandName}</p>
-              <p className="hero__brand-tagline">{homeHero.brandTagline}</p>
             </MotionReveal>
           </div>
         </section>

@@ -1,4 +1,4 @@
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -130,32 +130,121 @@ for (const [index, name] of gemNames.entries()) {
   ]);
 }
 
-const shieldSvg = await readFile(path.join(brandDir, "gemreserve-shield.svg"));
-const horizontalSvg = await readFile(
-  path.join(brandDir, "gemreserve-horizontal.svg"),
-);
+// Brand lockup exports are derived from the rendered master artwork. The master
+// packs the crest and the wordmark side by side separated by a band of fully
+// transparent columns, so the two marks are located by scanning the alpha
+// channel instead of hard-coding pixel offsets.
+const logoMaster = path.join(masters, "logo-master.png");
 
+async function alphaColumnProfile(input) {
+  const { data, info } = await sharp(input)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const columns = new Array(info.width).fill(0);
+  let top = info.height;
+  let bottom = -1;
+  for (let y = 0; y < info.height; y += 1) {
+    for (let x = 0; x < info.width; x += 1) {
+      if (data[(y * info.width + x) * info.channels + 3] > 8) {
+        columns[x] += 1;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+      }
+    }
+  }
+  return { columns, top, bottom, width: info.width, height: info.height };
+}
+
+function opaqueRuns(columns) {
+  const runs = [];
+  let start = -1;
+  for (let x = 0; x < columns.length; x += 1) {
+    if (columns[x] > 0) {
+      if (start < 0) start = x;
+    } else if (start >= 0) {
+      runs.push({ left: start, right: x - 1 });
+      start = -1;
+    }
+  }
+  if (start >= 0) runs.push({ left: start, right: columns.length - 1 });
+  return runs;
+}
+
+const logoProfile = await alphaColumnProfile(logoMaster);
+const logoRuns = opaqueRuns(logoProfile.columns);
+if (logoRuns.length < 2) {
+  throw new Error(
+    `Expected logo-master.png to hold a crest and a wordmark separated by transparent columns; found ${logoRuns.length} group(s).`,
+  );
+}
+
+const lockupBox = {
+  left: logoRuns[0].left,
+  top: logoProfile.top,
+  width: logoRuns.at(-1).right - logoRuns[0].left + 1,
+  height: logoProfile.bottom - logoProfile.top + 1,
+};
+
+// The crest is the leftmost group. Its vertical extent is measured on its own so
+// the square icon exports are not padded out by the taller wordmark box.
+const crestColumnSlice = await sharp(logoMaster)
+  .extract({
+    left: logoRuns[0].left,
+    top: 0,
+    width: logoRuns[0].right - logoRuns[0].left + 1,
+    height: logoProfile.height,
+  })
+  .png()
+  .toBuffer();
+const crestProfile = await alphaColumnProfile(crestColumnSlice);
+const crestBox = {
+  left: logoRuns[0].left,
+  top: crestProfile.top,
+  width: logoRuns[0].right - logoRuns[0].left + 1,
+  height: crestProfile.bottom - crestProfile.top + 1,
+};
+
+const lockup = await sharp(logoMaster).extract(lockupBox).png().toBuffer();
+const crest = await sharp(logoMaster).extract(crestBox).png().toBuffer();
+
+for (const width of [1200, 2400]) {
+  const resized = sharp(lockup).resize({ width, fit: "inside" });
+  await Promise.all([
+    resized
+      .clone()
+      .png({ compressionLevel: 9 })
+      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.png`)),
+    resized
+      .clone()
+      .webp({ quality: 92, smartSubsample: true })
+      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.webp`)),
+  ]);
+}
+
+// In-page crest exports keep the artwork's natural aspect ratio so the layout
+// boxes in the hero overlays and the lifecycle diagram are not letterboxed.
 for (const size of [512, 1024]) {
-  await sharp(shieldSvg, { density: 600 })
-    .resize({ width: size, height: size, fit: "contain" })
+  await sharp(crest)
+    .resize({ width: size })
     .png({ compressionLevel: 9 })
     .toFile(path.join(brandDir, `gemreserve-shield-${size}.png`));
 }
 
-for (const width of [1200, 2400]) {
-  await sharp(horizontalSvg, { density: 600 })
-    .resize({ width, fit: "inside" })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.png`));
-}
-
+// App/PWA icons stay square-contained; those surfaces require a square canvas.
 for (const size of [192, 512]) {
-  await sharp(shieldSvg, { density: 600 })
+  await sharp(crest)
     .resize({ width: size, height: size, fit: "contain" })
     .png({ compressionLevel: 9 })
     .toFile(path.join(brandDir, `app-icon-${size}.png`));
 }
 
+// Favicon source consumed by Next.js file-based metadata at app/icon.png.
+await sharp(crest)
+  .resize({ width: 256, height: 256, fit: "contain" })
+  .png({ compressionLevel: 9 })
+  .toFile(path.join(root, "app", "icon.png"));
+
 console.log(
-  "Generated responsive WebP/AVIF images and transparent brand PNGs.",
+  "Generated responsive WebP/AVIF images and transparent brand exports.",
 );

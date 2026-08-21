@@ -291,7 +291,7 @@ h3 {
 
 .site-nav-shell {
   display: grid;
-  min-height: 78px;
+  min-height: 88px;
   grid-template-columns: minmax(210px, 260px) 1fr auto;
   align-items: center;
   gap: clamp(18px, 2.2vw, 38px);
@@ -301,7 +301,7 @@ h3 {
 
 .brand-logo {
   display: block;
-  width: min(100%, 248px);
+  width: min(100%, 216px);
 }
 
 .brand-logo img {
@@ -310,7 +310,7 @@ h3 {
 }
 
 .brand-logo--compact {
-  width: 210px;
+  width: 196px;
 }
 
 .desktop-nav {
@@ -522,7 +522,7 @@ h3 {
 }
 
 .footer-brand .brand-logo {
-  width: 215px;
+  width: 208px;
   margin-bottom: 18px;
 }
 
@@ -638,7 +638,7 @@ h3 {
 .hero__image {
   object-fit: cover;
   object-position: center;
-  filter: saturate(0.92) contrast(1.04) brightness(0.79);
+  filter: saturate(0.98) contrast(1.03) brightness(0.9);
   transform: scale(1.015);
   animation: hero-breathe 14s ease-in-out both;
 }
@@ -652,17 +652,17 @@ h3 {
   background:
     linear-gradient(
       90deg,
-      rgb(1 5 8 / 98%) 0%,
-      rgb(1 5 8 / 83%) 28%,
-      rgb(1 5 8 / 20%) 56%,
-      rgb(1 5 8 / 4%) 100%
+      rgb(1 5 8 / 94%) 0%,
+      rgb(1 5 8 / 86%) 32%,
+      rgb(1 5 8 / 30%) 57%,
+      transparent 76%
     ),
     linear-gradient(
       0deg,
-      rgb(1 5 8 / 75%) 0%,
-      transparent 25%,
-      transparent 75%,
-      rgb(1 5 8 / 25%) 100%
+      rgb(1 5 8 / 62%) 0%,
+      transparent 26%,
+      transparent 78%,
+      rgb(1 5 8 / 18%) 100%
     );
 }
 
@@ -670,10 +670,7 @@ h3 {
   position: relative;
   display: grid;
   min-height: inherit;
-  grid-template-columns: minmax(300px, 0.9fr) minmax(240px, 0.65fr) minmax(
-      240px,
-      1fr
-    );
+  grid-template-columns: minmax(300px, 0.82fr) 1fr;
   align-items: center;
   gap: 28px;
   padding-block: clamp(62px, 7vw, 105px);
@@ -714,41 +711,6 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-}
-
-.hero__brand {
-  grid-column: 2;
-  align-self: center;
-  justify-self: center;
-  text-align: center;
-  filter: drop-shadow(0 18px 28px rgb(0 0 0 / 48%));
-}
-
-.hero__shield {
-  width: clamp(190px, 19vw, 305px);
-  height: auto;
-  margin-inline: auto;
-}
-
-.hero__brand-name {
-  margin: -2px 0 0;
-  color: var(--ivory);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2rem, 3vw, 3.15rem);
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.hero__brand-name::first-letter {
-  color: var(--gold-light);
-}
-
-.hero__brand-tagline {
-  margin: 11px 0 0;
-  color: var(--ivory);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(0.63rem, 0.8vw, 0.82rem);
-  letter-spacing: 0.24em;
 }
 
 .breadcrumbs {
@@ -1347,27 +1309,16 @@ h3 {
   background:
     linear-gradient(
       90deg,
-      rgb(1 5 8 / 99%) 0%,
-      rgb(1 5 8 / 90%) 31%,
-      rgb(1 5 8 / 21%) 57%,
-      transparent 100%
+      rgb(1 5 8 / 96%) 0%,
+      rgb(1 5 8 / 88%) 33%,
+      rgb(1 5 8 / 28%) 58%,
+      transparent 76%
     ),
-    linear-gradient(0deg, rgb(1 5 8 / 65%), transparent 30%);
+    linear-gradient(0deg, rgb(1 5 8 / 55%), transparent 30%);
 }
 
 .how-hero__inner {
-  grid-template-columns: minmax(310px, 0.82fr) minmax(180px, 0.48fr) 1fr;
-}
-
-.how-hero__crest-wrap {
-  grid-column: 2;
-  justify-self: center;
-  filter: drop-shadow(0 20px 36px #000);
-}
-
-.how-hero__crest {
-  width: clamp(180px, 18vw, 286px);
-  height: auto;
+  grid-template-columns: minmax(310px, 0.78fr) 1fr;
 }
 
 .how-hero__rule {
@@ -1598,12 +1549,12 @@ h3 {
   background:
     linear-gradient(
       90deg,
-      rgb(1 5 8 / 99%) 0%,
-      rgb(1 5 8 / 91%) 27%,
-      rgb(1 5 8 / 26%) 52%,
-      rgb(1 5 8 / 4%) 100%
+      rgb(1 5 8 / 96%) 0%,
+      rgb(1 5 8 / 88%) 30%,
+      rgb(1 5 8 / 32%) 55%,
+      transparent 78%
     ),
-    linear-gradient(0deg, rgb(1 5 8 / 84%) 0%, transparent 38%);
+    linear-gradient(0deg, rgb(1 5 8 / 74%) 0%, transparent 40%);
 }
 
 .assets-hero__inner {
@@ -2315,18 +2266,7 @@ h3 {
   }
 
   .hero__inner {
-    grid-template-columns: minmax(290px, 0.9fr) minmax(180px, 0.55fr) minmax(
-        100px,
-        0.5fr
-      );
-  }
-
-  .hero__brand-name {
-    display: none;
-  }
-
-  .hero__brand-tagline {
-    display: none;
+    grid-template-columns: minmax(290px, 0.9fr) 1fr;
   }
 
   .trust-pillars {
@@ -2407,14 +2347,14 @@ h3 {
   }
 
   .site-nav-shell {
-    min-height: 72px;
+    min-height: 78px;
     grid-template-columns: 1fr auto;
     gap: 12px;
     width: calc(100% - 28px);
   }
 
   .site-nav-shell > .brand-logo {
-    width: 186px;
+    width: 168px;
   }
 
   .header-actions {
@@ -2473,19 +2413,6 @@ h3 {
 
   .hero__actions .button {
     flex: 1 1 165px;
-  }
-
-  .hero__brand,
-  .how-hero__crest-wrap {
-    position: absolute;
-    bottom: 48px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .hero__shield,
-  .how-hero__crest {
-    width: min(43vw, 190px);
   }
 
   .home-trust {

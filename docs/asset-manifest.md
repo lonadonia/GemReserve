@@ -49,12 +49,11 @@ no invented logo, crest, lettering, watermark, or interface copy.
    seven gemstones: a red gemstone held in steel tweezers plus loose green,
    blue, pink, purple, yellow, and clear stones; a black-and-gold jeweler's
    loupe on the right; realistic facets, reflections, and tool geometry; broad
-   dark negative space across the left/center for HTML copy and the separately
-   overlaid exact vector crest.
+   dark negative space across the left for HTML copy.
 2. **How-it-works hero:** a blank, unbranded black-and-gold dot-map card with
    an abstract world map but no labels, numbers, or wording; six red, blue,
    green, purple, yellow, and clear gemstones; a gold-rimmed loupe; a black
-   luxury surface and open space for copy and the separate exact vector crest.
+   luxury surface and open space for copy.
 3. **Assets hero:** seven red, green, blue, purple, pink, yellow, and clear
    gemstones on a dark stone surface; metal tweezers presenting the clear
    stone; a large black macro lens at upper right; crisp jewelry photography,
@@ -104,7 +103,7 @@ wrapper unless the image is moved into a context where it carries information.
 | -------------------- | ---------------------------------------------------------------------------------------------- | -------------: | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Home desktop         | `public/images/heroes/home-hero.webp`; `public/images/heroes/home-hero.avif`                   | 1920×1080 each | `app/page.tsx` uses the WebP as the desktop hero background.              | **Pass.** The right-side seven-stone/tool composition and broad left copy area survive the crop.                                                         |
 | Home mobile          | `public/images/heroes/home-hero-mobile.webp`; `public/images/heroes/home-hero-mobile.avif`     |  900×1100 each | `app/page.tsx` uses the WebP at the mobile breakpoint.                    | **Pass with focal-crop note.** Ruby, tweezers, loupe, and central stones remain clear; the emerald and purple stone are partly clipped at the left edge. |
-| How It Works desktop | `public/images/heroes/how-hero.webp`; `public/images/heroes/how-hero.avif`                     | 1920×1080 each | `app/how-it-works/page.tsx` uses the WebP as the desktop hero background. | **Pass.** All six stones, map card, and loupe remain visible with dark space for HTML/crest overlays.                                                    |
+| How It Works desktop | `public/images/heroes/how-hero.webp`; `public/images/heroes/how-hero.avif`                     | 1920×1080 each | `app/how-it-works/page.tsx` uses the WebP as the desktop hero background. | **Pass.** All six stones, map card, and loupe remain visible with dark space for the HTML copy column.                                                   |
 | How It Works mobile  | `public/images/heroes/how-hero-mobile.webp`; `public/images/heroes/how-hero-mobile.avif`       |  900×1100 each | `app/how-it-works/page.tsx` uses the WebP at the mobile breakpoint.       | **Pass with focal-crop note.** Map card and four central stones remain; peripheral ruby, clear stone, and loupe fall outside the crop.                   |
 | Assets desktop       | `public/images/heroes/assets-hero.webp`; `public/images/heroes/assets-hero.avif`               | 1920×1080 each | `app/assets/page.tsx` uses the WebP as the desktop hero background.       | **Pass.** All seven stones, tweezers, and lens remain crisp and text-free.                                                                               |
 | Assets mobile        | `public/images/heroes/assets-hero-mobile.webp`; `public/images/heroes/assets-hero-mobile.avif` |  900×1100 each | `app/assets/page.tsx` uses the WebP at the mobile breakpoint.             | **Pass with focal-crop note.** Four central stones dominate; the red stone, lens, and tweezed clear stone are intentionally only partial at the edges.   |
@@ -145,24 +144,23 @@ name and the visual adds no useful information, `alt=""` is also acceptable.
 
 ## Brand and application icons
 
-The shield and horizontal lockup were manually reconstructed as native SVG,
-using the inspected mockup crest as a visual reference. This avoided retaining
-AI-generated lettering or a rasterized logo. The vector artwork supplies the
-gold shield, red/green/purple/blue gem arrangement, central `GR` monogram,
-`GemReserve.io` wordmark, and `OWN. TRADE. REDEEM.` line directly. The SVGs
-contain no raster image embeds.
+The brand marks are cut from one supplied master lockup,
+`assets/masters/logo-master.png`, which renders the gold shield, the
+red/green/purple/blue gem arrangement, the central `GR` monogram, the
+`GemReserve.io` wordmark, and the `OWN • TRADE • REDEEM.` strapline pill.
+`scripts/process-assets.mjs` locates the crest and the wordmark by scanning the
+master's alpha channel for the transparent gutter between them, then writes every
+export below from those two crops, so the marks cannot drift apart.
 
-| Asset                                         |      Dimensions | Alpha/background                             | Usage and inspection outcome                                                                                                                                                                                                                                                                              |
-| --------------------------------------------- | --------------: | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `public/brand/gemreserve-shield.svg`          | 256×300 viewBox | Transparent                                  | Live shield used in Home and How It Works hero overlays and the lifecycle diagram. **Pass:** XML-valid, scalable, named gradients, accessible title/description, and no raster embed. Use `alt=""` beside equivalent brand text, or `GemReserve shield` when it is the only informative mark.             |
-| `public/brand/gemreserve-shield-512.png`      |     512×512 PNG | Transparent                                  | Square-contained 2× export relative to the SVG's 256-unit width. **Pass:** full shield and alpha decode correctly.                                                                                                                                                                                        |
-| `public/brand/gemreserve-shield-1024.png`     |   1024×1024 PNG | Transparent                                  | Square-contained 4× export relative to the SVG's 256-unit width. **Pass:** representative high-resolution export was visually inspected; edges and alpha are clean.                                                                                                                                       |
-| `public/brand/gemreserve-horizontal.svg`      | 800×180 viewBox | Transparent                                  | Live header/footer logo through `components/layout/Logo.tsx`. **Pass:** XML-valid, scalable, accessible title/description, and no raster embed. Current linked-image alt is `GemReserve.io — Own. Trade. Redeem.` Use it on a dark, contrast-controlled surface because `.io` and the strapline are pale. |
-| `public/brand/gemreserve-horizontal-1200.png` |    1200×270 PNG | Transparent                                  | Standard transparent raster lockup for export contexts. **Pass:** alpha and full lockup decode correctly.                                                                                                                                                                                                 |
-| `public/brand/gemreserve-horizontal-2400.png` |    2400×540 PNG | Transparent                                  | 2× counterpart to the 1200-wide export. **Pass:** representative high-resolution export was visually inspected; crest, wordmark, strapline, and alpha are clean.                                                                                                                                          |
-| `public/brand/app-icon-192.png`               |     192×192 PNG | Transparent                                  | Shield-only app/PWA raster option; no current JSX reference. **Pass:** fully decoded.                                                                                                                                                                                                                     |
-| `public/brand/app-icon-512.png`               |     512×512 PNG | Transparent                                  | High-resolution shield-only app/PWA raster option; no current JSX reference. **Pass:** visually inspected; full crest and alpha are intact.                                                                                                                                                               |
-| `app/icon.svg`                                | 256×256 viewBox | Dark rounded square with transparent corners | App Router icon source discovered automatically by Next.js. It uses the simplified shield, four colored gems, and `GR` monogram. **Pass:** XML-valid, accessible title/description, and no raster embed. Icons do not receive HTML alt text.                                                              |
+| Asset                                         |    Dimensions | Alpha/background | Usage and inspection outcome                                                                                                                                                                                                                              |
+| --------------------------------------------- | ------------: | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `public/brand/gemreserve-shield-512.png`      |   512×624 PNG | Transparent      | Live crest, used only by the lifecycle diagram on How It Works. Kept at the artwork's natural 528:643 ratio so its layout box is not letterboxed. Use `alt=""` beside equivalent brand text, or `GemReserve shield` when it is the only informative mark. |
+| `public/brand/gemreserve-shield-1024.png`     | 1024×1247 PNG | Transparent      | 2× crest export for future large-format use; no current JSX reference. **Pass:** edges and alpha are clean.                                                                                                                                               |
+| `public/brand/gemreserve-horizontal-1200.png` |  1200×373 PNG | Transparent      | Live header/footer logo through `components/layout/Logo.tsx`. Linked-image alt is `GemReserve.io — Own. Trade. Redeem.` Use it on a dark surface: the wordmark and strapline are pale metallics. A matching `.webp` sits beside it.                       |
+| `public/brand/gemreserve-horizontal-2400.png` |  2400×745 PNG | Transparent      | 2× counterpart for export contexts, with a matching `.webp`. **Pass:** crest, wordmark, strapline, and alpha are clean.                                                                                                                                   |
+| `public/brand/app-icon-192.png`               |   192×192 PNG | Transparent      | Shield-only app/PWA raster option; no current JSX reference. **Pass:** fully decoded.                                                                                                                                                                     |
+| `public/brand/app-icon-512.png`               |   512×512 PNG | Transparent      | High-resolution shield-only app/PWA raster option; no current JSX reference. **Pass:** visually inspected; full crest and alpha are intact.                                                                                                               |
+| `app/icon.png`                                |   256×256 PNG | Transparent      | App Router icon source discovered automatically by Next.js, square-contained from the crest crop. Icons do not receive HTML alt text.                                                                                                                     |
 
 ## Alt-text decision checklist
 

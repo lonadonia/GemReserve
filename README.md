@@ -69,9 +69,10 @@ assets/masters/
   vault-tray-master.png
   swiss-matterhorn-master.png
   blockchain-network-master.png
+  logo-master.png
 
 public/
-  brand/                 SVG lockups plus shield, horizontal, and app-icon PNG exports
+  brand/                 Horizontal lockup, crest, and app-icon exports cut from the logo master
   images/heroes/         Desktop 1920×1080 and mobile 900×1100 WebP/AVIF pairs
   images/sections/       Responsive vault, Swiss, tray, and blockchain WebP/AVIF pairs
   images/gems/           Ten 720×500 gemstone WebP/AVIF pairs

@@ -56,10 +56,10 @@ export function LifecycleDiagram({
           />
         </svg>
         <Image
-          src="/brand/gemreserve-shield.svg"
+          src="/brand/gemreserve-shield-512.png"
           alt=""
-          width={178}
-          height={210}
+          width={512}
+          height={624}
           className="lifecycle-crest"
         />
       </div>

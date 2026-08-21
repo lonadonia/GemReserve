@@ -8,11 +8,12 @@ export function Logo({ compact = false }: { readonly compact?: boolean }) {
       href="/"
     >
       <Image
-        src="/brand/gemreserve-horizontal.svg"
+        src="/brand/gemreserve-horizontal-1200.png"
         alt="GemReserve.io — Own. Trade. Redeem."
-        width={392}
-        height={112}
+        width={2071}
+        height={643}
         priority
+        sizes="(max-width: 720px) 186px, 216px"
       />
     </Link>
   );

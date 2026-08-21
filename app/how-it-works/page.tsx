@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { LifecycleDiagram } from "@/components/diagrams/LifecycleDiagram";
@@ -82,18 +81,6 @@ export default function HowItWorksPage() {
               <p className="hero__description how-hero__description">
                 {howItWorksHero.description}
               </p>
-            </MotionReveal>
-
-            <MotionReveal className="how-hero__crest-wrap" delay={120}>
-              <Image
-                className="how-hero__crest"
-                src="/brand/gemreserve-shield.svg"
-                alt=""
-                width={286}
-                height={336}
-                priority
-                sizes="(max-width: 720px) 42vw, 286px"
-              />
             </MotionReveal>
           </div>
         </section>
