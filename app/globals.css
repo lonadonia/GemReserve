@@ -301,7 +301,7 @@ h3 {
 
 .brand-logo {
   display: block;
-  width: min(100%, 216px);
+  width: min(100%, 232px);
 }
 
 .brand-logo img {
@@ -310,7 +310,7 @@ h3 {
 }
 
 .brand-logo--compact {
-  width: 196px;
+  width: 210px;
 }
 
 .desktop-nav {
@@ -544,7 +544,7 @@ h3 {
 }
 
 .footer-brand .brand-logo {
-  width: 208px;
+  width: 224px;
   margin-bottom: 18px;
 }
 
@@ -2516,7 +2516,7 @@ h3 {
   }
 
   .site-nav-shell > .brand-logo {
-    width: 168px;
+    width: 180px;
   }
 
   .header-actions {

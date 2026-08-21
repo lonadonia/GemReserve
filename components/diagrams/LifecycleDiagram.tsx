@@ -59,7 +59,7 @@ export function LifecycleDiagram({
           src="/brand/gemreserve-shield-512.png"
           alt=""
           width={512}
-          height={624}
+          height={622}
           className="lifecycle-crest"
         />
       </div>

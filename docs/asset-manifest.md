@@ -168,16 +168,19 @@ The brand marks are cut from one supplied master lockup,
 `assets/masters/logo-master.png`, which renders the gold shield, the
 red/green/purple/blue gem arrangement, the central `GR` monogram, the
 `GemReserve.io` wordmark, and the `OWN • TRADE • REDEEM.` strapline pill.
-`scripts/process-assets.mjs` locates the crest and the wordmark by scanning the
-master's alpha channel for the transparent gutter between them, then writes every
-export below from those two crops, so the marks cannot drift apart.
+`scripts/process-assets.mjs` locates the marks by scanning the master's alpha
+channel for the transparent gutters between them. The crest is the leftmost
+group and the lockup spans the first group's left edge to the last group's right
+edge, so a plate that splits its `.io` suffix into a group of its own still
+crops correctly. Every export below is written from those two crops, so the
+marks cannot drift apart.
 
 | Asset                                         |    Dimensions | Alpha/background | Usage and inspection outcome                                                                                                                                                                                                                              |
 | --------------------------------------------- | ------------: | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `public/brand/gemreserve-shield-512.png`      |   512×624 PNG | Transparent      | Live crest, used only by the lifecycle diagram on How It Works. Kept at the artwork's natural 528:643 ratio so its layout box is not letterboxed. Use `alt=""` beside equivalent brand text, or `GemReserve shield` when it is the only informative mark. |
-| `public/brand/gemreserve-shield-1024.png`     | 1024×1247 PNG | Transparent      | 2× crest export for future large-format use; no current JSX reference. **Pass:** edges and alpha are clean.                                                                                                                                               |
-| `public/brand/gemreserve-horizontal-1200.png` |  1200×373 PNG | Transparent      | Live header/footer logo through `components/layout/Logo.tsx`. Linked-image alt is `GemReserve.io — Own. Trade. Redeem.` Use it on a dark surface: the wordmark and strapline are pale metallics. A matching `.webp` sits beside it.                       |
-| `public/brand/gemreserve-horizontal-2400.png` |  2400×745 PNG | Transparent      | 2× counterpart for export contexts, with a matching `.webp`. **Pass:** crest, wordmark, strapline, and alpha are clean.                                                                                                                                   |
+| `public/brand/gemreserve-shield-512.png`      |   512×622 PNG | Transparent      | Live crest, used only by the lifecycle diagram on How It Works. Kept at the artwork's natural 493:599 ratio so its layout box is not letterboxed. Use `alt=""` beside equivalent brand text, or `GemReserve shield` when it is the only informative mark. |
+| `public/brand/gemreserve-shield-1024.png`     | 1024×1244 PNG | Transparent      | 2× crest export for future large-format use; no current JSX reference. **Pass:** edges and alpha are clean.                                                                                                                                               |
+| `public/brand/gemreserve-horizontal-1200.png` |  1200×346 PNG | Transparent      | Live header/footer logo through `components/layout/Logo.tsx`. Linked-image alt is `GemReserve.io — Own. Trade. Redeem.` Use it on a dark surface: the wordmark and strapline are pale metallics. A matching `.webp` sits beside it.                       |
+| `public/brand/gemreserve-horizontal-2400.png` |  2400×692 PNG | Transparent      | 2× counterpart for export contexts, with a matching `.webp`. **Pass:** crest, wordmark, strapline, and alpha are clean.                                                                                                                                   |
 | `public/brand/app-icon-192.png`               |   192×192 PNG | Transparent      | Shield-only app/PWA raster option; no current JSX reference. **Pass:** fully decoded.                                                                                                                                                                     |
 | `public/brand/app-icon-512.png`               |   512×512 PNG | Transparent      | High-resolution shield-only app/PWA raster option; no current JSX reference. **Pass:** visually inspected; full crest and alpha are intact.                                                                                                               |
 | `app/icon.png`                                |   256×256 PNG | Transparent      | App Router icon source discovered automatically by Next.js, square-contained from the crest crop. Icons do not receive HTML alt text.                                                                                                                     |
