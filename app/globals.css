@@ -2390,6 +2390,1252 @@ h3 {
   letter-spacing: 0.02em;
 }
 
+/* ---------------------------------------------------------------------------
+   Technology page. Every rule here either extends a shared pattern (the pillar
+   grid, the metric strip, the Swiss CTA band) or adds the one layout the other
+   pages do not have: the five-layer architecture flow.
+   --------------------------------------------------------------------------- */
+
+.technology-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 84%) 30%,
+      rgb(1 5 8 / 22%) 56%,
+      transparent 72%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 55%), transparent 28%);
+}
+
+.technology-hero__inner {
+  grid-template-columns: minmax(300px, 0.62fr) 1fr;
+}
+
+.tech-pillars,
+.tech-architecture,
+.tech-highlights {
+  padding-top: var(--section-gap);
+}
+
+/* Six pillars on one row, the same count the home page carries. */
+.tech-pillars__grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.tech-architecture__panel {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+/* The layers read left to right as a pipeline. The arrow between them is drawn
+   on the list item rather than inserted into the markup, so it never reaches a
+   screen reader and disappears cleanly once the row wraps. */
+.tech-architecture__flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-layer {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-direction: column;
+  padding: 16px 14px 18px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background: rgb(3 10 14 / 72%);
+  text-align: center;
+  transition:
+    border-color 220ms ease,
+    transform 260ms var(--ease-premium);
+}
+
+.tech-layer:hover {
+  border-color: rgb(243 193 90 / 62%);
+  transform: translateY(-3px);
+}
+
+.tech-layer:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: -21px;
+  color: var(--gold);
+  content: "\2192";
+  font-size: 1.1rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.tech-layer h3 {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tech-layer > svg {
+  margin-bottom: 14px;
+  color: var(--gold-light);
+}
+
+.tech-layer ul {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.tech-layer ul li {
+  position: relative;
+  padding-left: 13px;
+  color: #b7bec0;
+  font-size: 0.74rem;
+  line-height: 1.75;
+}
+
+.tech-layer ul li::before {
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  content: "\2022";
+}
+
+.tech-integration {
+  margin-top: 22px;
+  padding: 14px 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: rgb(2 8 11 / 62%);
+  text-align: center;
+}
+
+.tech-integration h3 {
+  margin-bottom: 10px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.tech-integration ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-integration ul li {
+  position: relative;
+  color: #c2c8ca;
+  font-size: 0.78rem;
+}
+
+.tech-integration ul li:not(:last-child)::after {
+  position: absolute;
+  right: -14px;
+  color: var(--gold-dark);
+  content: "|";
+}
+
+.tech-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 0.94fr) minmax(0, 1.2fr);
+  gap: 16px;
+  padding-top: var(--section-gap);
+}
+
+.tech-detail__card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 92%));
+}
+
+.tech-detail__title {
+  margin-bottom: 18px;
+  color: var(--gold-light);
+  font-size: clamp(1rem, 1.5vw, 1.32rem);
+  letter-spacing: 0.02em;
+}
+
+.tech-detail__intro {
+  margin-bottom: 16px;
+  color: #b8bec1;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.tech-detail__list {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-detail__list > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 13px;
+}
+
+.tech-detail__list svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.tech-detail__list h3 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.tech-detail__list p {
+  margin: 0;
+  color: #b8bec1;
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.tech-onchain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.62fr);
+  align-items: start;
+  gap: 20px;
+}
+
+/* A small device-framed passport, echoing the phone in the reference without
+   pretending to be a real screenshot. */
+.passport-card {
+  margin: 0;
+  padding: 14px 13px 16px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 14px;
+  background: linear-gradient(170deg, #0b1820, #03080b);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 45%);
+  text-align: center;
+}
+
+.passport-card__head {
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.passport-card__brand {
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.82rem;
+}
+
+.passport-card__label {
+  margin: 11px 0 2px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.passport-card__reference {
+  margin: 0 0 12px;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.94rem;
+}
+
+.passport-card__rows {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 12px;
+  text-align: left;
+}
+
+.passport-card__rows > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.71rem;
+}
+
+.passport-card__rows dt {
+  color: var(--muted);
+}
+
+.passport-card__rows dd {
+  margin: 0;
+  color: var(--ivory);
+}
+
+.passport-card__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 5px;
+  padding: 7px 6px;
+  border: 1px solid rgb(107 203 112 / 42%);
+  border-radius: 5px;
+  background: rgb(107 203 112 / 9%);
+  color: #8fd894;
+  font-size: 0.69rem;
+}
+
+.passport-card__action {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.67rem;
+}
+
+.tech-highlights__strip {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.tech-highlights__strip .metric-item > div {
+  min-width: 0;
+}
+
+.tech-highlights__strip dt {
+  font-size: clamp(1.05rem, 1.4vw, 1.32rem);
+  white-space: normal;
+}
+
+.tech-highlights__strip dd {
+  overflow-wrap: anywhere;
+}
+
+.tech-cta {
+  margin-top: var(--section-gap);
+}
+
+/* The Swiss CTA carries a photograph in its visual slot; here the slot holds a
+   quiet gradient instead, so the band keeps its proportions without inventing
+   an image the reference does not supply. */
+.tech-cta__visual span {
+  display: block;
+  min-height: 190px;
+  height: 100%;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgb(216 154 39 / 22%), transparent 62%),
+    linear-gradient(150deg, #0d1c24, #03090c);
+  mask-image: linear-gradient(90deg, black 72%, transparent 100%);
+}
+
+/* ---------------------------------------------------------------------------
+   Enterprise page.
+   --------------------------------------------------------------------------- */
+
+.enterprise-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 86%) 32%,
+      rgb(1 5 8 / 24%) 58%,
+      transparent 74%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+.enterprise-hero {
+  min-height: min(clamp(560px, 45vw, 880px), 82vh);
+}
+
+.enterprise-hero__inner {
+  grid-template-columns: minmax(300px, 0.66fr) 1fr;
+}
+
+/* The reference sets ENTERPRISE in ivory and SERVICES in gold, one above the
+   other, with the tagline in teal beneath. */
+.enterprise-hero__title {
+  font-size: clamp(2.5rem, 4vw, 4.2rem);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.enterprise-hero__tagline {
+  margin: 6px 0 14px;
+  color: var(--teal);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 1.5vw, 1.42rem);
+}
+
+.enterprise-hero__callout {
+  display: grid;
+  max-width: 460px;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 15px 18px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background: rgb(3 10 13 / 82%);
+  backdrop-filter: blur(10px);
+}
+
+.enterprise-hero__callout svg {
+  color: var(--gold-light);
+}
+
+.enterprise-hero__callout h2 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.enterprise-hero__callout p {
+  margin: 0;
+  color: #bcc3c5;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.enterprise-solutions,
+.enterprise-process,
+.enterprise-close,
+.enterprise-trusted {
+  padding-top: var(--section-gap);
+}
+
+.enterprise-solutions__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enterprise-solutions__grid > li {
+  min-width: 0;
+}
+
+/* Solution cards are flex columns so the LEARN MORE control sits on one line
+   across the row however long the card copy runs. */
+.solution-card {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  padding: 22px 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: linear-gradient(155deg, rgb(11 24 31 / 92%), rgb(3 9 12 / 94%));
+  text-align: center;
+  transition:
+    border-color 220ms ease,
+    transform 250ms var(--ease-premium),
+    box-shadow 250ms ease;
+}
+
+.solution-card:hover {
+  border-color: rgb(243 193 90 / 62%);
+  box-shadow: 0 20px 48px rgb(0 0 0 / 34%);
+  transform: translateY(-4px);
+}
+
+.solution-card > svg {
+  margin-bottom: 14px;
+  color: var(--teal);
+}
+
+.solution-card h3 {
+  min-height: 2.5em;
+  margin-bottom: 10px;
+  color: var(--teal);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.solution-card > p {
+  margin-bottom: 12px;
+  color: #b7bec0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.solution-card ul {
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.solution-card ul li {
+  position: relative;
+  padding-left: 12px;
+  color: #c0c6c8;
+  font-size: 0.74rem;
+  line-height: 1.75;
+}
+
+.solution-card ul li::before {
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  content: "\2022";
+}
+
+.solution-card__action {
+  width: 100%;
+  margin-top: auto;
+  opacity: 0.72;
+}
+
+.enterprise-process__panel {
+  padding: 26px 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.enterprise-steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enterprise-steps > li {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* The connector is drawn between the circular badges, so it is anchored to the
+   badge row rather than the middle of the whole card. */
+.enterprise-steps > li:not(:last-child)::after {
+  position: absolute;
+  top: 33px;
+  right: -18px;
+  color: var(--gold);
+  content: "\2192";
+  font-size: 1.05rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.enterprise-steps__icon {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  margin-bottom: 12px;
+  place-items: center;
+  border: 1px solid var(--teal);
+  border-radius: 50%;
+  background: rgb(3 10 14 / 72%);
+  color: var(--teal);
+}
+
+.enterprise-steps__number {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 9px;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.78rem;
+}
+
+.enterprise-steps h3 {
+  margin-bottom: 7px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.enterprise-steps p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.enterprise-close {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.66fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.enterprise-benefits,
+.enterprise-invite {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.enterprise-benefits__title {
+  margin-bottom: 22px;
+  color: var(--gold-light);
+  font-size: clamp(1.1rem, 1.75vw, 1.5rem);
+}
+
+.enterprise-benefits ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enterprise-benefits ul > li {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+}
+
+.enterprise-benefits svg {
+  margin-top: 2px;
+  color: var(--teal);
+}
+
+.enterprise-benefits h3 {
+  margin-bottom: 5px;
+  color: var(--teal);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.enterprise-benefits p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.enterprise-invite {
+  border-color: var(--gold-dark);
+  text-align: left;
+}
+
+.enterprise-invite h2 {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: clamp(1.1rem, 1.75vw, 1.5rem);
+}
+
+.enterprise-invite h2 span {
+  display: block;
+}
+
+.enterprise-invite > p {
+  margin-bottom: 18px;
+  color: #b7bec0;
+  font-size: 0.79rem;
+  line-height: 1.65;
+}
+
+.enterprise-invite .button {
+  width: 100%;
+}
+
+.enterprise-invite__divider {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.enterprise-invite__secondary {
+  display: flex;
+  border-color: var(--teal);
+  color: var(--teal);
+  opacity: 0.82;
+}
+
+.enterprise-invite__assurances {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enterprise-invite__assurances li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #b7bec0;
+  font-size: 0.76rem;
+  line-height: 2;
+}
+
+.enterprise-invite__assurances svg {
+  flex: 0 0 auto;
+  color: var(--gold-light);
+}
+
+.enterprise-trusted {
+  padding-bottom: var(--section-gap);
+}
+
+.enterprise-trusted__title {
+  margin-bottom: 22px;
+  color: var(--teal);
+  font-size: clamp(1.05rem, 1.65vw, 1.42rem);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.enterprise-trusted__row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin: 0;
+  padding: 18px 8px;
+  border-block: 1px solid var(--border-soft);
+  list-style: none;
+}
+
+.enterprise-trusted__row li {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  padding-inline: 8px;
+  color: #c3c9cb;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.enterprise-trusted__row li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.enterprise-trusted__row svg {
+  color: var(--gold-light);
+  transition: transform 320ms var(--ease-premium);
+}
+
+.enterprise-trusted__row li:hover svg {
+  transform: scale(1.09);
+}
+
+/* ---------------------------------------------------------------------------
+   Investors page.
+   --------------------------------------------------------------------------- */
+
+.investors-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 86%) 32%,
+      rgb(1 5 8 / 24%) 58%,
+      transparent 74%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+.investors-hero {
+  min-height: min(clamp(560px, 45vw, 880px), 82vh);
+}
+
+.investors-hero__inner {
+  grid-template-columns: minmax(300px, 0.66fr) 1fr;
+}
+
+.investors-hero__title {
+  font-size: clamp(2.4rem, 3.8vw, 4rem);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.investors-hero__tagline {
+  margin: 6px 0 14px;
+  color: var(--teal);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.45vw, 1.36rem);
+}
+
+.investors-hero__callout {
+  display: grid;
+  max-width: 470px;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 15px 18px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background: rgb(3 10 13 / 82%);
+  backdrop-filter: blur(10px);
+}
+
+.investors-hero__callout svg {
+  color: var(--gold-light);
+}
+
+.investors-hero__callout h2 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.investors-hero__callout p {
+  margin: 0;
+  color: #bcc3c5;
+  font-size: 0.77rem;
+  line-height: 1.55;
+}
+
+.investors-executive,
+.investors-thesis,
+.investors-financials,
+.investors-roadmap-row,
+.investors-assurance {
+  padding-top: var(--section-gap);
+}
+
+.investors-executive__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
+  align-items: center;
+  gap: 26px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.investors-executive__summary {
+  margin: 0;
+  color: #bcc2c4;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.investors-executive__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.investors-executive__grid > li {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-direction: column;
+  padding: 4px 16px;
+  text-align: center;
+}
+
+.investors-executive__grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.investors-executive__grid svg {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+}
+
+.investors-executive__grid h3 {
+  margin-bottom: 8px;
+  color: var(--teal);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.investors-executive__grid p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.73rem;
+  line-height: 1.6;
+}
+
+.investors-thesis,
+.investors-financials,
+.investors-roadmap-row {
+  display: grid;
+  gap: 16px;
+}
+
+.investors-thesis {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.investors-financials {
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+}
+
+.investors-roadmap-row {
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.6fr);
+}
+
+.investors-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.investors-card__title {
+  margin-bottom: 14px;
+  color: var(--teal);
+  font-size: clamp(1rem, 1.5vw, 1.32rem);
+  letter-spacing: 0.02em;
+}
+
+.investors-card__intro {
+  margin-bottom: 18px;
+  color: #b8bec1;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.investors-card__list {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.investors-card__list > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+}
+
+.investors-card__list svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.investors-card__list--checks svg {
+  color: var(--teal);
+}
+
+.investors-card__list h3 {
+  margin-bottom: 4px;
+  color: var(--teal);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.79rem;
+  font-weight: 700;
+}
+
+.investors-card__list p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+/* The $84B figure is a headline number, not a chart: one value with no parts to
+   compare, so it is set as a hero figure rather than a one-slice ring. */
+.market-figure {
+  margin-bottom: 20px;
+  padding: 18px 16px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background:
+    radial-gradient(circle at 50% 30%, rgb(18 168 148 / 14%), transparent 70%),
+    rgb(2 8 11 / 70%);
+  text-align: center;
+}
+
+.market-figure__value {
+  margin: 0 0 4px;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+  line-height: 1;
+}
+
+.market-figure__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.financial-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+}
+
+.financial-grid > div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-direction: column;
+  padding: 6px 12px;
+  text-align: center;
+}
+
+.financial-grid > div + div {
+  border-left: 1px solid var(--border-soft);
+}
+
+.financial-grid svg {
+  margin-bottom: 10px;
+  color: var(--gold-light);
+}
+
+.financial-grid dt {
+  margin-bottom: 6px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  line-height: 1;
+}
+
+.financial-grid dd {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.financial-grid dd small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.proceeds {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 22px;
+  margin: 0;
+}
+
+.proceeds__ring {
+  flex: 0 0 auto;
+}
+
+.proceeds__legend {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.proceeds__legend li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.proceeds__swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+/* Legend text wears text tokens, never the slice colour; the swatch beside it
+   carries the identity. */
+.proceeds__label {
+  color: #b7bec0;
+  font-size: 0.75rem;
+}
+
+.proceeds__value {
+  color: var(--ivory);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.roadmap {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 14px 0 0;
+  list-style: none;
+}
+
+.roadmap > li {
+  position: relative;
+  min-width: 0;
+  padding-top: 50px;
+  text-align: center;
+}
+
+/* One rule threaded behind the markers, drawn on the list so it cannot drift
+   out of step with them. */
+.roadmap::before {
+  position: absolute;
+  top: 27px;
+  right: 8%;
+  left: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  content: "";
+}
+
+.roadmap__marker {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: #051016;
+  color: var(--gold-light);
+  transform: translateX(-50%);
+}
+
+.roadmap__year {
+  margin: 0 0 3px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.86rem;
+}
+
+.roadmap h3 {
+  margin-bottom: 7px;
+  color: var(--teal);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.roadmap__description {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.investors-partner {
+  border-color: var(--gold-dark);
+  text-align: center;
+}
+
+.investors-partner > p {
+  margin: 0 0 4px;
+  color: #b7bec0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.investors-partner__accent {
+  margin-bottom: 18px !important;
+  color: var(--gold-light) !important;
+}
+
+.investors-partner .button {
+  width: 100%;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.25;
+}
+
+.investors-partner__note {
+  margin: 12px 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 0.73rem !important;
+}
+
+.investors-assurance {
+  padding-bottom: var(--section-gap);
+}
+
+.investors-assurance__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 20px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 86%), rgb(2 8 11 / 92%));
+  list-style: none;
+}
+
+.investors-assurance__row li {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 13px;
+  padding-inline: 16px;
+}
+
+.investors-assurance__row li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.investors-assurance__row svg {
+  color: var(--gold-light);
+}
+
+.investors-assurance__row h2 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.investors-assurance__row p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
 @media (max-width: 1460px) {
   .desktop-nav-future {
     display: none;
@@ -2397,6 +3643,86 @@ h3 {
 }
 
 @media (max-width: 1330px) {
+  .investors-executive__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .investors-thesis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .investors-thesis > .investors-card:last-child {
+    grid-column: span 2;
+  }
+
+  .roadmap {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px 18px;
+  }
+
+  /* The connecting rule only reads across a single row. */
+  .roadmap::before {
+    display: none;
+  }
+
+  .enterprise-solutions__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .enterprise-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 22px;
+  }
+
+  .enterprise-steps > li:nth-child(3n)::after {
+    display: none;
+  }
+
+  .enterprise-benefits ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .enterprise-trusted__row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+
+  .enterprise-trusted__row li:nth-child(4n + 1) {
+    border-left: 0;
+  }
+
+  .tech-architecture__flow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .tech-layer::after {
+    display: none;
+  }
+
+  .tech-detail {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tech-detail__card:last-child {
+    grid-column: span 2;
+  }
+
+  .tech-pillars__grid,
+  .tech-highlights__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tech-pillars__grid li:nth-child(4),
+  .tech-highlights__strip .metric-item:nth-child(4) {
+    border-left: 0;
+  }
+
+  .tech-pillars__grid li:nth-child(n + 4),
+  .tech-highlights__strip .metric-item:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
+  }
+
   .site-nav-shell {
     grid-template-columns: minmax(200px, 1fr) auto auto;
   }
@@ -2600,6 +3926,79 @@ h3 {
 }
 
 @media (max-width: 980px) {
+  .investors-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .investors-hero__callout {
+    max-width: 100%;
+  }
+
+  .investors-financials,
+  .investors-roadmap-row {
+    grid-template-columns: 1fr;
+  }
+
+  .financial-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px 0;
+  }
+
+  .financial-grid > div:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .investors-assurance__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+
+  .investors-assurance__row li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .investors-executive__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 0;
+  }
+
+  .investors-executive__grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .enterprise-solutions__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .enterprise-close {
+    grid-template-columns: 1fr;
+  }
+
+  .enterprise-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .enterprise-hero__callout {
+    max-width: 100%;
+  }
+
+  .tech-architecture__flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tech-onchain {
+    grid-template-columns: 1fr;
+  }
+
+  .passport-card {
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .technology-hero__inner {
+    grid-template-columns: 1fr;
+  }
+
   .hero__inner {
     grid-template-columns: minmax(290px, 0.9fr) 1fr;
   }
@@ -2659,6 +4058,164 @@ h3 {
 }
 
 @media (max-width: 760px) {
+  .investors-thesis,
+  .roadmap,
+  .financial-grid,
+  .investors-assurance__row,
+  .investors-executive__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .investors-thesis > .investors-card:last-child {
+    grid-column: auto;
+  }
+
+  .financial-grid > div,
+  .investors-assurance__row li,
+  .investors-executive__grid > li {
+    border-left: 0 !important;
+  }
+
+  .financial-grid > div + div,
+  .investors-assurance__row li + li,
+  .investors-executive__grid > li + li {
+    padding-top: 16px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  /* Stacked, each milestone reads as a row rather than a column on a timeline. */
+  .roadmap > li {
+    padding-top: 0;
+    padding-left: 42px;
+    text-align: left;
+  }
+
+  .roadmap__marker {
+    top: 2px;
+    left: 0;
+    transform: none;
+  }
+
+  .investors-card,
+  .investors-executive__panel {
+    padding: 18px;
+  }
+
+  .proceeds {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .proceeds__legend {
+    width: 100%;
+  }
+
+  .enterprise-solutions__grid,
+  .enterprise-benefits ul {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stacked, the badge/arrow row makes no sense, so the steps become a plain
+     numbered list reading top to bottom. */
+  .enterprise-steps {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .enterprise-steps > li {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0 14px;
+    padding: 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 7px;
+    text-align: left;
+  }
+
+  .enterprise-steps > li::after {
+    display: none;
+  }
+
+  .enterprise-steps__icon {
+    width: 52px;
+    height: 52px;
+    grid-row: 1 / 3;
+    margin: 0;
+  }
+
+  .enterprise-steps__number {
+    grid-row: 1 / 3;
+    margin: 0;
+  }
+
+  .enterprise-steps h3 {
+    align-self: end;
+    margin-bottom: 3px;
+  }
+
+  .enterprise-steps p {
+    align-self: start;
+  }
+
+  .enterprise-trusted__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .enterprise-trusted__row li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .enterprise-process__panel,
+  .enterprise-benefits,
+  .enterprise-invite {
+    padding: 18px;
+  }
+
+  .tech-architecture__flow,
+  .tech-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-detail__card:last-child {
+    grid-column: auto;
+  }
+
+  .tech-architecture__panel {
+    padding: 16px;
+  }
+
+  .tech-pillars__grid,
+  .tech-highlights__strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tech-pillars__grid li:nth-child(3),
+  .tech-pillars__grid li:nth-child(5),
+  .tech-highlights__strip .metric-item:nth-child(3),
+  .tech-highlights__strip .metric-item:nth-child(5) {
+    border-left: 0;
+  }
+
+  .tech-pillars__grid li:nth-child(4),
+  .tech-highlights__strip .metric-item:nth-child(4) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .tech-pillars__grid li:nth-child(n + 3),
+  .tech-highlights__strip .metric-item:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .tech-cta__visual {
+    display: none;
+  }
+
+  .tech-integration ul li:not(:last-child)::after {
+    display: none;
+  }
+
   html {
     scroll-padding-top: 84px;
   }
@@ -3183,6 +4740,10 @@ h3 {
 
   .metric-item dt {
     font-size: 1.65rem;
+  }
+
+  .tech-highlights__strip dt {
+    font-size: 1.02rem;
   }
 
   .how-hero {

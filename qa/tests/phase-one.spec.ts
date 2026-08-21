@@ -5,6 +5,9 @@ const routes = [
   { name: "home", path: "/" },
   { name: "how-it-works", path: "/how-it-works" },
   { name: "assets", path: "/assets" },
+  { name: "technology", path: "/technology" },
+  { name: "enterprise", path: "/enterprise" },
+  { name: "investors", path: "/investors" },
 ] as const;
 
 const requiredViewports = [

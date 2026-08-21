@@ -65,7 +65,49 @@ const heroJobs = [
     height: 822,
     mobileWindow: [0.24, 1],
   },
+  {
+    source: "technology-hero-master.png",
+    name: "technology-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.5,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "enterprise-hero-master.png",
+    name: "enterprise-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.42,
+    mobileWindow: [0.2, 1],
+  },
+  {
+    source: "investors-hero-master.png",
+    name: "investors-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.36,
+    mobileWindow: [0.16, 1],
+  },
 ];
+
+// Extend a plate leftwards using the mean colour of its own left edge, so the
+// subject clears the copy column without cropping any of it away.
+async function padPlateLeft(input, fraction) {
+  const meta = await sharp(input).metadata();
+  const pad = Math.round(meta.width * fraction);
+  const strip = await sharp(input)
+    .extract({ left: 0, top: 0, width: 60, height: meta.height })
+    .stats();
+  const [r, g, b] = strip.channels.slice(0, 3).map((c) => Math.round(c.mean));
+  return sharp(input)
+    .extend({ left: pad, background: { r, g, b, alpha: 1 } })
+    .png()
+    .toBuffer();
+}
 
 // Cut the horizontal slice of a plate that holds its subject.
 async function plateWindow(input, [start, end]) {
@@ -85,9 +127,11 @@ for (const {
   width,
   height,
   mobileWindow,
+  padLeft,
 } of heroJobs) {
   const input = path.join(masters, source);
-  await exportPair(input, path.join(heroDir, name), {
+  const plate = padLeft ? await padPlateLeft(input, padLeft) : input;
+  await exportPair(plate, path.join(heroDir, name), {
     width,
     height,
     fit: "cover",
