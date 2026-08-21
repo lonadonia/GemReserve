@@ -149,6 +149,24 @@ export const homeTrustPillars = [
 
 export const homeProcessSectionTitle = "HOW GEMRESERVE WORKS";
 
+// The eight steps split cleanly in half: the first four secure the physical
+// stone, the last four represent it digitally. Naming that split is what turns
+// the row into the bridge the brand describes.
+export const homeProcessPhases = [
+  {
+    id: "physical",
+    label: "Physical custody",
+    caption: "The stone is sourced, proven and vaulted",
+    span: 4,
+  },
+  {
+    id: "digital",
+    label: "Digital ownership",
+    caption: "The stone is tokenized, held, traded and redeemed",
+    span: 4,
+  },
+] as const;
+
 export const homeProcessSteps = [
   {
     id: "source",

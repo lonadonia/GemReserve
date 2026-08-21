@@ -4,8 +4,8 @@ interface ResponsiveHeroImageProps {
   readonly className?: string;
   /**
    * Intrinsic size of the desktop export. Heroes are cut at the ratio of the box
-   * they sit in, so the Assets hero is taller than the other two and has to
-   * declare its own size to avoid a layout shift.
+   * they sit in, so a hero on a taller plate has to declare its own size to
+   * avoid a layout shift.
    */
   readonly width?: number;
   readonly height?: number;
@@ -16,7 +16,7 @@ export function ResponsiveHeroImage({
   mobileBase,
   className = "",
   width = 1920,
-  height = 960,
+  height = 822,
 }: ResponsiveHeroImageProps) {
   return (
     <picture className="hero__picture">

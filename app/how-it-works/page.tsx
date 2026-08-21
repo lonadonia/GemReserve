@@ -60,6 +60,7 @@ export default function HowItWorksPage() {
             <ResponsiveHeroImage
               desktopBase="/images/heroes/how-hero"
               mobileBase="/images/heroes/how-hero-mobile"
+              height={960}
               className="how-hero__image"
             />
             <span className="hero__scrim how-hero__scrim" />

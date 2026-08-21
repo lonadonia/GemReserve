@@ -32,16 +32,22 @@ async function exportPair(input, outputBase, resize, options = {}) {
   ]);
 }
 
-// Each hero is exported at roughly the aspect ratio of its own hero box, so
-// object-fit has almost nothing left to crop. Exporting every hero at one shared
-// ratio is what previously forced the taller Assets box to zoom into the stones.
+// Each hero is exported at the aspect ratio of the box it fills, so object-fit
+// has almost nothing left to crop and the whole plate stays on screen. The Home
+// and Assets plates are 2.33:1 panoramas with the stones grouped right of centre
+// and dark space on the left for the copy, so they ship at their native ratio.
+//
+// The portrait mobile crop cannot keep a 2.33:1 frame, so each plate names the
+// horizontal window holding its stones; that window is cut first and the crop is
+// taken from it, which keeps the stones rather than the empty left third.
 const heroJobs = [
   {
     source: "home-hero-master.png",
     name: "home-hero",
-    position: "right",
+    position: "center",
     width: 1920,
-    height: 960,
+    height: 822,
+    mobileWindow: [0.4, 1],
   },
   {
     source: "how-hero-master.png",
@@ -50,54 +56,53 @@ const heroJobs = [
     width: 1920,
     height: 960,
   },
-  // The Assets plate frames its stones hard against the left edge, which would
-  // bury the first two behind the copy column. Extending the plate leftwards in
-  // its own edge colour slides the cluster into the clear right of the frame,
-  // the way the mockup composes it. The seam lands under the densest part of the
-  // scrim, so it never shows.
   {
     source: "assets-hero-master.png",
     name: "assets-hero",
-    position: "left",
+    position: "center",
     width: 1920,
-    height: 1100,
-    padLeft: 0.16,
+    height: 822,
+    mobileWindow: [0.24, 1],
   },
 ];
 
-// Extend a plate leftwards using the mean colour of its own left edge.
-async function padPlateLeft(input, fraction) {
+// Cut the horizontal slice of a plate that holds its subject.
+async function plateWindow(input, [start, end]) {
   const meta = await sharp(input).metadata();
-  const pad = Math.round(meta.width * fraction);
-  const strip = await sharp(input)
-    .extract({ left: 0, top: 0, width: 60, height: meta.height })
-    .stats();
-  const [r, g, b] = strip.channels.slice(0, 3).map((c) => Math.round(c.mean));
+  const left = Math.round(meta.width * start);
+  const right = Math.round(meta.width * end);
   return sharp(input)
-    .extend({ left: pad, background: { r, g, b, alpha: 1 } })
+    .extract({ left, top: 0, width: right - left, height: meta.height })
     .png()
     .toBuffer();
 }
 
-// The masters are wide panoramas (1.63:1 to 1.96:1) with the stones grouped to
-// one side and dark space for the copy on the other. Exporting at 2:1 keeps that
-// full horizontal composition instead of cropping the sides, so the hero box
-// only has to trim a sliver vertically rather than zooming into the stones.
-for (const { source, name, position, width, height, padLeft } of heroJobs) {
+for (const {
+  source,
+  name,
+  position,
+  width,
+  height,
+  mobileWindow,
+} of heroJobs) {
   const input = path.join(masters, source);
-  const plate = padLeft ? await padPlateLeft(input, padLeft) : input;
-  await exportPair(plate, path.join(heroDir, name), {
+  await exportPair(input, path.join(heroDir, name), {
     width,
     height,
     fit: "cover",
     position,
     withoutEnlargement: false,
   });
-  await exportPair(input, path.join(heroDir, `${name}-mobile`), {
-    width: 900,
-    height: 1100,
-    fit: "cover",
-    position,
+  // A phone hero box is around 0.43:1. Cropping a 2.33:1 plate into that throws
+  // away most of the composition, so the mobile plate is not cropped at all: it
+  // keeps its own ratio and the stylesheet contains it against the plate's edge
+  // colour, which puts the whole group of stones on screen as a band.
+  const phonePlate = mobileWindow
+    ? await plateWindow(input, mobileWindow)
+    : input;
+  await exportPair(phonePlate, path.join(heroDir, `${name}-mobile`), {
+    width: 1000,
+    fit: "inside",
     withoutEnlargement: false,
   });
 }

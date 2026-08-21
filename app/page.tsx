@@ -19,6 +19,7 @@ import {
   homeHero,
   homeMetrics,
   homeProcessSectionTitle,
+  homeProcessPhases,
   homeProcessSteps,
   homeTrustPillars,
   homeWaitlistCta,
@@ -101,7 +102,11 @@ export default function HomePage() {
             />
           </MotionReveal>
           <MotionReveal className="home-process__timeline" delay={90}>
-            <ProcessTimeline steps={homeProcessSteps} dense />
+            <ProcessTimeline
+              steps={homeProcessSteps}
+              phases={homeProcessPhases}
+              dense
+            />
           </MotionReveal>
         </section>
 

@@ -73,7 +73,7 @@ assets/masters/
 
 public/
   brand/                 Horizontal lockup, crest, and app-icon exports cut from the logo master
-  images/heroes/         Desktop plates cut to each hero box (1920×960, Assets 1920×1100) and mobile 900×1100 WebP/AVIF pairs
+  images/heroes/         Desktop plates cut to each hero box (1920×822; How It Works 1920×960) plus uncropped mobile plates, WebP/AVIF pairs
   images/sections/       Responsive vault, Swiss, tray, and blockchain WebP/AVIF pairs
   images/gems/           Ten 720×500 gemstone WebP/AVIF pairs
 ```

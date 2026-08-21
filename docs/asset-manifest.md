@@ -17,8 +17,12 @@ so that all meaningful copy remains accessible HTML.
 `scripts/process-assets.mjs` derives the delivery files with Sharp:
 
 - hero masters become desktop WebP/AVIF pairs cut at the aspect ratio of the hero
-  box they fill (1920×960; the taller Assets hero is 1920×1100) plus 900×1100
-  mobile pairs;
+  box they fill (1920×822 for the 2.33:1 Home and Assets plates, 1920×960 for the
+  2:1 How It Works plate), plus mobile pairs that are **not** cropped: a phone
+  hero box is around 0.43:1, so covering a 2.33:1 plate into it would throw away
+  most of the composition. The mobile plate keeps its own ratio and the
+  stylesheet contains it against the plates' shared edge colour, which puts the
+  whole group of stones on screen with no visible seam;
 - section masters become purpose-sized WebP/AVIF pairs;
 - the 5×2 catalog source becomes ten 480×480 transparent WebP/AVIF pairs, each
   stone cut off its slate backdrop;
@@ -102,14 +106,14 @@ Hero imagery is decorative in the current routes because the adjacent HTML
 provides the page meaning. Keep `alt=""` and `aria-hidden="true"` on the media
 wrapper unless the image is moved into a context where it carries information.
 
-| Route                | Final files                                                                                    |     Dimensions | Current usage                                                             | Inspection outcome                                                                                                                                           |
-| -------------------- | ---------------------------------------------------------------------------------------------- | -------------: | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Home desktop         | `public/images/heroes/home-hero.webp`; `public/images/heroes/home-hero.avif`                   |  1920×960 each | `app/page.tsx` uses the WebP as the desktop hero background.              | **Pass.** The right-side seven-stone/tool composition and broad left copy area survive the crop.                                                             |
-| Home mobile          | `public/images/heroes/home-hero-mobile.webp`; `public/images/heroes/home-hero-mobile.avif`     |  900×1100 each | `app/page.tsx` uses the WebP at the mobile breakpoint.                    | **Pass with focal-crop note.** Ruby, tweezers, loupe, and central stones remain clear; the emerald and purple stone are partly clipped at the left edge.     |
-| How It Works desktop | `public/images/heroes/how-hero.webp`; `public/images/heroes/how-hero.avif`                     |  1920×960 each | `app/how-it-works/page.tsx` uses the WebP as the desktop hero background. | **Pass.** All six stones, map card, and loupe remain visible with dark space for the HTML copy column.                                                       |
-| How It Works mobile  | `public/images/heroes/how-hero-mobile.webp`; `public/images/heroes/how-hero-mobile.avif`       |  900×1100 each | `app/how-it-works/page.tsx` uses the WebP at the mobile breakpoint.       | **Pass with focal-crop note.** Map card and four central stones remain; peripheral ruby, clear stone, and loupe fall outside the crop.                       |
-| Assets desktop       | `public/images/heroes/assets-hero.webp`; `public/images/heroes/assets-hero.avif`               | 1920×1100 each | `app/assets/page.tsx` uses the WebP as the desktop hero background.       | **Pass.** Cut from a plate extended leftwards in its own edge colour so the stone cluster clears the copy column; all seven stones stay crisp and text-free. |
-| Assets mobile        | `public/images/heroes/assets-hero-mobile.webp`; `public/images/heroes/assets-hero-mobile.avif` |  900×1100 each | `app/assets/page.tsx` uses the WebP at the mobile breakpoint.             | **Pass with focal-crop note.** Four central stones dominate; the red stone, lens, and tweezed clear stone are intentionally only partial at the edges.       |
+| Route                | Final files                                                                                    |    Dimensions | Current usage                                                             | Inspection outcome                                                                                                                                          |
+| -------------------- | ---------------------------------------------------------------------------------------------- | ------------: | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Home desktop         | `public/images/heroes/home-hero.webp`; `public/images/heroes/home-hero.avif`                   | 1920×822 each | `app/page.tsx` uses the WebP as the desktop hero background.              | **Pass.** Exported at the plate's native 2.33:1, so the tweezed ruby, six loose stones and loupe are all on screen with the left third clear for copy.      |
+| Home mobile          | `public/images/heroes/home-hero-mobile.webp`; `public/images/heroes/home-hero-mobile.avif`     | 1000×714 each | `app/page.tsx` uses the WebP at the mobile breakpoint.                    | **Pass.** The stone-bearing window of the plate at its own ratio, contained rather than cropped, so every stone stays on screen.                            |
+| How It Works desktop | `public/images/heroes/how-hero.webp`; `public/images/heroes/how-hero.avif`                     | 1920×960 each | `app/how-it-works/page.tsx` uses the WebP as the desktop hero background. | **Pass.** All six stones, map card, and loupe remain visible with dark space for the HTML copy column.                                                      |
+| How It Works mobile  | `public/images/heroes/how-hero-mobile.webp`; `public/images/heroes/how-hero-mobile.avif`       | 900×1100 each | `app/how-it-works/page.tsx` uses the WebP at the mobile breakpoint.       | **Pass with focal-crop note.** Map card and four central stones remain; peripheral ruby, clear stone, and loupe fall outside the crop.                      |
+| Assets desktop       | `public/images/heroes/assets-hero.webp`; `public/images/heroes/assets-hero.avif`               | 1920×822 each | `app/assets/page.tsx` uses the WebP as the desktop hero background.       | **Pass.** Exported at the plate's native 2.33:1; all seven stones, the loupe and the tweezers stay crisp and text-free, with the left third clear for copy. |
+| Assets mobile        | `public/images/heroes/assets-hero-mobile.webp`; `public/images/heroes/assets-hero-mobile.avif` | 1000×564 each | `app/assets/page.tsx` uses the WebP at the mobile breakpoint.             | **Pass.** The stone-bearing window of the plate at its own ratio, contained rather than cropped, so every stone stays on screen.                            |
 
 ## Section delivery assets
 

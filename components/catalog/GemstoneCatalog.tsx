@@ -181,6 +181,7 @@ export function GemstoneCatalog() {
                     height={480}
                     sizes="(max-width: 479px) 92vw, (max-width: 767px) 44vw, (max-width: 1099px) 30vw, 19vw"
                   />
+                  <span className="image-glint" aria-hidden="true" />
                 </div>
 
                 <div className="gemstone-card-body">
