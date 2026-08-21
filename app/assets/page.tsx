@@ -59,6 +59,7 @@ export default function AssetsPage() {
               desktopBase="/images/heroes/assets-hero"
               mobileBase="/images/heroes/assets-hero-mobile"
               className="assets-hero__image"
+              height={1100}
             />
             <span className="hero__scrim assets-hero__scrim" />
           </div>

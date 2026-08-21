@@ -1,16 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 
-const displayFont = Cormorant_Garamond({
+// Playfair Display carries the higher stroke contrast and heavier stems the
+// mockups use for editorial headlines; Cormorant Garamond read too fine here.
+const displayFont = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const sansFont = Manrope({
+// Inter holds up far better than Manrope at the small label and spec-row sizes
+// this interface leans on.
+const sansFont = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "500", "600", "700"],
