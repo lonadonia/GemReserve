@@ -14,6 +14,8 @@
   --border-soft: rgb(216 154 39 / 18%);
   --shadow: 0 24px 80px rgb(0 0 0 / 48%);
   --container: 1480px;
+  --gutter: clamp(18px, 3.6vw, 64px);
+  --section-gap: clamp(70px, 7vw, 112px);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -121,7 +123,7 @@ h3 {
 }
 
 .container-wide {
-  width: min(calc(100% - 48px), var(--container));
+  width: min(calc(100% - var(--gutter) * 2), var(--container));
   margin-inline: auto;
 }
 
@@ -283,7 +285,7 @@ h3 {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
-  padding: 6px max(20px, calc((100vw - var(--container)) / 2));
+  padding: 6px max(var(--gutter), calc((100vw - var(--container)) / 2));
   border-bottom: 1px solid var(--border-soft);
   color: var(--gold-light);
   font-size: 0.72rem;
@@ -319,7 +321,7 @@ h3 {
   grid-template-columns: minmax(200px, 1fr) minmax(0, auto) minmax(200px, 1fr);
   align-items: center;
   gap: clamp(14px, 1.4vw, 30px);
-  width: min(calc(100% - 40px), var(--container));
+  width: min(calc(100% - var(--gutter) * 2), var(--container));
   margin-inline: auto;
 }
 
@@ -1256,9 +1258,8 @@ h3 {
 .how-power,
 .how-core,
 .assets-metrics,
-.assets-catalog,
-.assets-investment {
-  padding-top: clamp(70px, 7vw, 112px);
+.assets-catalog {
+  padding-top: var(--section-gap);
 }
 
 .home-process__timeline,
@@ -1365,12 +1366,12 @@ h3 {
 }
 
 .home-metrics {
-  padding-block: clamp(70px, 7vw, 110px) 0;
+  padding-block: var(--section-gap) 0;
 }
 
 .waitlist {
   position: relative;
-  margin-top: clamp(72px, 8vw, 120px);
+  margin-top: var(--section-gap);
   overflow: hidden;
   border-block: 1px solid var(--border);
   background:
@@ -1539,7 +1540,7 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  padding-bottom: clamp(70px, 7vw, 110px);
+  padding-bottom: var(--section-gap);
 }
 
 .technology-security,
@@ -1692,7 +1693,7 @@ h3 {
     );
   align-items: center;
   gap: 32px;
-  margin-bottom: clamp(70px, 7vw, 110px);
+  margin-bottom: var(--section-gap);
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -1891,7 +1892,7 @@ h3 {
 }
 
 .assets-metrics {
-  padding-top: 34px;
+  padding-top: var(--section-gap);
 }
 
 .assets-metrics__layout {
@@ -1942,7 +1943,7 @@ h3 {
 }
 
 .catalog-root {
-  padding-bottom: 6px;
+  padding-bottom: 0;
 }
 
 .catalog-heading-row {
@@ -2213,7 +2214,7 @@ h3 {
 }
 
 .assets-investment {
-  margin-top: clamp(70px, 7vw, 110px);
+  margin-top: calc(var(--section-gap) - 30px);
   padding: 30px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -2280,7 +2281,7 @@ h3 {
 
 .assets-waitlist {
   position: relative;
-  margin-top: clamp(68px, 7vw, 108px);
+  margin-top: var(--section-gap);
   background:
     radial-gradient(
       ellipse 46% 120% at 12% 50%,
@@ -2598,10 +2599,6 @@ h3 {
 }
 
 @media (max-width: 980px) {
-  .container-wide {
-    width: min(calc(100% - 36px), var(--container));
-  }
-
   .hero__inner {
     grid-template-columns: minmax(290px, 0.9fr) 1fr;
   }
@@ -2682,7 +2679,6 @@ h3 {
     min-height: 78px;
     grid-template-columns: 1fr auto;
     gap: 12px;
-    width: calc(100% - 28px);
   }
 
   .site-nav-shell > .brand-logo {
@@ -3107,10 +3103,6 @@ h3 {
 }
 
 @media (max-width: 520px) {
-  .container-wide {
-    width: calc(100% - 28px);
-  }
-
   .hero {
     min-height: 900px;
   }
