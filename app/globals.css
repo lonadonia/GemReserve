@@ -292,9 +292,9 @@ h3 {
 .site-nav-shell {
   display: grid;
   min-height: 88px;
-  grid-template-columns: minmax(210px, 260px) 1fr auto;
+  grid-template-columns: minmax(210px, 1fr) auto minmax(210px, 1fr);
   align-items: center;
-  gap: clamp(18px, 2.2vw, 38px);
+  gap: clamp(16px, 1.8vw, 32px);
   width: min(calc(100% - 40px), var(--container));
   margin-inline: auto;
 }
@@ -318,7 +318,7 @@ h3 {
   min-width: 0;
   align-items: stretch;
   justify-content: center;
-  gap: clamp(4px, 0.55vw, 11px);
+  gap: clamp(2px, 0.3vw, 6px);
   align-self: stretch;
 }
 
@@ -334,8 +334,8 @@ h3 {
   display: inline-flex;
   height: 100%;
   align-items: center;
-  gap: 5px;
-  padding: 0 5px;
+  gap: 6px;
+  padding: 0 9px;
   border: 0;
   background: transparent;
   color: #e5e5df;
@@ -344,6 +344,28 @@ h3 {
   letter-spacing: 0.015em;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+/* The caret used to be the U+2304 glyph, which is absent from the UI face and
+   fell back to whatever the system offered, so it landed at a different size and
+   baseline in every browser. An inline icon renders identically everywhere and
+   can be turned when the menu opens. */
+.desktop-nav-caret {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  opacity: 0.72;
+  transition:
+    transform 200ms var(--ease-premium),
+    opacity 180ms ease;
+}
+
+.desktop-nav-trigger[aria-expanded="true"] .desktop-nav-caret {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+
+.desktop-nav-trigger:hover .desktop-nav-caret {
+  opacity: 1;
 }
 
 .desktop-nav-trigger::after {
@@ -379,10 +401,6 @@ h3 {
   transition: transform 180ms ease;
 }
 
-.desktop-nav-trigger[aria-expanded="true"] span {
-  transform: rotate(180deg);
-}
-
 .desktop-nav-future {
   color: var(--muted);
 }
@@ -391,7 +409,7 @@ h3 {
   position: absolute;
   top: calc(100% - 8px);
   left: 50%;
-  width: 248px;
+  width: 286px;
   padding: 14px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -445,6 +463,7 @@ h3 {
   min-height: 38px;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 8px 9px;
   border-radius: 3px;
   color: var(--text);
@@ -465,15 +484,18 @@ h3 {
 
 .desktop-dropdown small,
 .mobile-navigation small {
+  flex: 0 0 auto;
   color: var(--gold-dark);
   font-size: 0.72rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 14px;
   white-space: nowrap;
 }
@@ -946,10 +968,6 @@ h3 {
   color: var(--teal);
 }
 
-.process-timeline li[data-phase="digital"] > svg {
-  color: var(--teal);
-}
-
 .process-timeline {
   display: grid;
   gap: 8px;
@@ -993,21 +1011,16 @@ h3 {
   transform: translateY(-4px);
 }
 
-.process-timeline li:not(:last-child)::after {
-  position: absolute;
-  top: 50%;
-  right: -10px;
-  z-index: 3;
-  color: var(--gold);
-  content: "➜";
-  font-size: 0.97rem;
-  opacity: 0;
-  transform: translateX(-8px);
+.process-plate {
+  width: clamp(74px, 6.4vw, 100px);
+  height: auto;
+  margin-bottom: 8px;
+  object-fit: contain;
+  transition: transform 320ms var(--ease-premium);
 }
 
-.motion-reveal.is-visible .process-timeline li::after {
-  animation: connector-on 420ms var(--ease-premium) forwards;
-  animation-delay: 260ms;
+.process-timeline li:hover .process-plate {
+  transform: scale(1.07);
 }
 
 .process-number {
@@ -1021,11 +1034,6 @@ h3 {
   color: var(--gold-light);
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.16rem;
-}
-
-.process-timeline svg {
-  margin-bottom: 13px;
-  color: var(--gold-light);
 }
 
 .process-timeline h3 {
@@ -1153,13 +1161,6 @@ h3 {
   }
   100% {
     transform: scale(1.002) translate3d(0, -0.4%, 0);
-  }
-}
-
-@keyframes connector-on {
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
@@ -1699,9 +1700,20 @@ h3 {
 
 .assets-hero__layout {
   display: grid;
-  grid-template-columns: minmax(300px, 0.78fr) 1.45fr minmax(240px, 0.6fr);
+  grid-template-columns: minmax(300px, 0.78fr) 1fr;
   align-items: end;
   gap: 26px;
+}
+
+/* The value cards and the technology callout share the foot of the hero, so the
+   callout sits level with them rather than floating halfway up the plate. */
+.assets-hero__base {
+  display: grid;
+  align-items: end;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.34fr);
+  gap: 26px;
+  margin-top: auto;
+  padding-top: 24px;
 }
 
 .assets-hero__copy {
@@ -1725,9 +1737,7 @@ h3 {
 }
 
 .assets-hero__callout {
-  grid-column: 3;
   align-self: end;
-  margin-bottom: 18px;
 }
 
 .hero-callout aside {
@@ -1764,12 +1774,11 @@ h3 {
 }
 
 .assets-hero__values {
-  margin-top: auto;
-  padding-top: 24px;
+  min-width: 0;
 }
 
 .assets-hero__value-grid {
-  width: min(880px, 74%);
+  width: 100%;
   padding: 10px 0;
   border: 0;
   background: transparent;
@@ -2384,10 +2393,6 @@ h3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .process-timeline li::after {
-    display: none;
-  }
-
   .catalog-preview__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2468,8 +2473,8 @@ h3 {
     grid-template-columns: minmax(280px, 0.8fr) 1fr minmax(220px, 0.65fr);
   }
 
-  .assets-hero__value-grid {
-    width: 80%;
+  .assets-hero__base {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.4fr);
   }
 
   .assets-metrics__layout {
@@ -2642,23 +2647,16 @@ h3 {
     text-align: left;
   }
 
-  .process-timeline li:not(:last-child)::after {
-    display: block;
-    top: auto;
-    right: auto;
-    bottom: -21px;
-    left: 33px;
-    content: "↓";
-    opacity: 1;
-    transform: none;
-  }
-
   .process-number {
     grid-row: 1 / 3;
     margin: 0;
   }
 
-  .process-timeline svg {
+  /* The step artwork is an image now, not the icon svg this used to target,
+     so without this the plate dropped out of its grid row and left a gap
+     between the title and the copy. */
+  .process-plate {
+    width: 62px;
     grid-row: 1 / 3;
     margin: 0;
   }
@@ -2862,12 +2860,9 @@ h3 {
     padding-top: 8px;
   }
 
-  .assets-hero__callout {
-    position: absolute;
-    right: 0;
-    bottom: 240px;
-    width: min(330px, 86vw);
-    margin: 0;
+  .assets-hero__base {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .assets-hero__value-grid {
@@ -3037,10 +3032,6 @@ h3 {
 
   .assets-hero__title {
     font-size: 2.76rem;
-  }
-
-  .assets-hero__callout {
-    bottom: 252px;
   }
 
   .assets-investment__reasons {

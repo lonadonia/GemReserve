@@ -26,6 +26,14 @@ so that all meaningful copy remains accessible HTML.
 - section masters become purpose-sized WebP/AVIF pairs;
 - the 5×2 catalog source becomes ten 480×480 transparent WebP/AVIF pairs, each
   stone cut off its slate backdrop;
+- the eight-cell process source becomes 220×220 WebP/AVIF step plates. These are
+  dark metal and glass shot on a near-black card, so there is no luminance edge
+  to cut along — a threshold shreds the microscope and the safe into their
+  highlights. Each plate keeps its backdrop and has its edges faded out instead,
+  which lets it sit on the step card's own dark background without showing a
+  rectangle. How It Works runs nine steps to Home's eight; its closing
+  transparency step takes the brand crest, which has no counterpart on the
+  plate;
 - the two brand SVGs become transparent PNG exports.
 
 The route code currently points to the `.webp` files. The `.avif` siblings are

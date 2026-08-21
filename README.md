@@ -75,7 +75,8 @@ public/
   brand/                 Horizontal lockup, crest, and app-icon exports cut from the logo master
   images/heroes/         Desktop plates cut to each hero box (1920×822; How It Works 1920×960) plus uncropped mobile plates, WebP/AVIF pairs
   images/sections/       Responsive vault, Swiss, tray, and blockchain WebP/AVIF pairs
-  images/gems/           Ten 720×500 gemstone WebP/AVIF pairs
+  images/gems/           Ten 480×480 transparent gemstone WebP/AVIF pairs
+  images/process/        Nine 220×220 process-step plates, WebP/AVIF pairs
 ```
 
 Run `npm run assets` after changing a source master or brand SVG. The script recreates the derived files in `public/`; review and commit the regenerated output. The current generated assets are already checked in, so asset generation is not required during a normal Vercel build.

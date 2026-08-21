@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 
+import { LineIcon } from "@/components/icons/LineIcon";
 import { homeAnnouncement } from "@/content/home";
 import { navigationGroups } from "@/content/navigation";
 
@@ -166,12 +167,20 @@ export function SiteHeader({ showAnnouncement = false }: SiteHeaderProps) {
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={`${navId}-${group.label.replaceAll(" ", "-")}`}
+                  /* Opening on focus meant a mouse click opened the menu on
+                     focus and then immediately toggled it shut again, so the
+                     menus could not be opened with the pointer at all. Keyboard
+                     users still open with ArrowDown, which is the menu-button
+                     pattern anyway. */
                   onClick={() => setOpenMenu(isOpen ? null : group.label)}
-                  onFocus={() => setOpenMenu(group.label)}
                   onKeyDown={(event) => handleMenuKeyDown(event, group.label)}
                 >
                   {group.label}
-                  <span aria-hidden="true">⌄</span>
+                  <LineIcon
+                    className="desktop-nav-caret"
+                    name="chevron-down"
+                    size={13}
+                  />
                 </button>
                 <div
                   className={`desktop-dropdown${isOpen ? " is-open" : ""}`}

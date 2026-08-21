@@ -86,6 +86,18 @@ export default function AssetsPage() {
                   {assetsHero.description}
                 </p>
               </MotionReveal>
+            </div>
+
+            <div className="assets-hero__base">
+              <MotionReveal
+                className="hero-value-row assets-hero__values"
+                delay={170}
+              >
+                <TrustPillars
+                  items={assetValuePropositions}
+                  className="hero-value-row__grid assets-hero__value-grid"
+                />
+              </MotionReveal>
 
               <MotionReveal
                 className="hero-callout assets-hero__callout"
@@ -108,16 +120,6 @@ export default function AssetsPage() {
                 </aside>
               </MotionReveal>
             </div>
-
-            <MotionReveal
-              className="hero-value-row assets-hero__values"
-              delay={170}
-            >
-              <TrustPillars
-                items={assetValuePropositions}
-                className="hero-value-row__grid assets-hero__value-grid"
-              />
-            </MotionReveal>
           </div>
         </section>
 

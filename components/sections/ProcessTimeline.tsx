@@ -1,6 +1,5 @@
+import Image from "next/image";
 import type { CSSProperties } from "react";
-
-import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 
 interface TimelineStep {
   readonly id: string;
@@ -24,19 +23,40 @@ export interface TimelinePhase {
   readonly span: number;
 }
 
-function iconForStep(id: string): IconName {
-  if (id.includes("source")) return "hand-gem";
-  if (id.includes("verify") || id.includes("gemological")) return "search";
-  if (id.includes("appraise")) return "certificate";
-  if (id.includes("custody") || id.includes("vault")) return "vault";
-  if (id.includes("passport")) return "passport";
-  if (id.includes("token")) return "cubes";
-  if (id.includes("own")) return "phone";
-  if (id.includes("trade") || id.includes("marketplace")) return "chart";
-  if (id.includes("growth")) return "trade";
-  if (id.includes("liquidity") || id.includes("redeem")) return "refresh";
-  if (id.includes("transparency")) return "shield-check";
-  return "diamond";
+/**
+ * Maps a step onto its plate. Both processes describe the same journey, so the
+ * nine How It Works steps reuse the eight Home plates; only the closing
+ * transparency step has no counterpart and takes the brand crest instead.
+ */
+function plateForStep(id: string): { src: string; alt: string } {
+  if (id.includes("source")) {
+    return { src: "source", alt: "A faceted blue gemstone" };
+  }
+  if (id.includes("verify") || id.includes("gemological")) {
+    return { src: "verify", alt: "A laboratory microscope" };
+  }
+  if (id.includes("appraise") || id.includes("passport")) {
+    return { src: "appraise", alt: "A sealed certificate of appraisal" };
+  }
+  if (id.includes("custody") || id.includes("vault")) {
+    return { src: "custody", alt: "A closed steel vault door" };
+  }
+  if (id.includes("token")) {
+    return { src: "tokenize", alt: "A gold GemReserve token" };
+  }
+  if (id.includes("own") || id.includes("marketplace")) {
+    return { src: "own", alt: "A phone showing the GemReserve crest" };
+  }
+  if (id.includes("trade") || id.includes("growth")) {
+    return { src: "trade", alt: "A rising gold bar chart" };
+  }
+  if (id.includes("redeem") || id.includes("liquidity")) {
+    return { src: "redeem", alt: "An open case of gemstones" };
+  }
+  if (id.includes("transparency")) {
+    return { src: "transparency", alt: "The GemReserve crest" };
+  }
+  return { src: "source", alt: "A faceted blue gemstone" };
 }
 
 /** Maps each step index onto the phase that covers it. */
@@ -68,7 +88,14 @@ export function ProcessTimeline({
           data-phase={phases ? phaseForIndex(phases, index)?.id : undefined}
         >
           <div className="process-number">{item.step ?? item.order}</div>
-          <LineIcon name={iconForStep(item.id)} size={dense ? 34 : 42} />
+          <Image
+            className="process-plate"
+            src={`/images/process/${plateForStep(item.id).src}.webp`}
+            alt={plateForStep(item.id).alt}
+            width={220}
+            height={220}
+            sizes="(max-width: 760px) 64px, (max-width: 1240px) 88px, 78px"
+          />
           <h3>{item.title}</h3>
           <p>{item.description}</p>
         </li>

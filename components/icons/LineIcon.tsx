@@ -22,7 +22,8 @@ export type IconName =
   | "trade"
   | "source"
   | "redeem"
-  | "mountain";
+  | "mountain"
+  | "chevron-down";
 
 export interface LineIconProps {
   name: IconName;
@@ -33,6 +34,8 @@ export interface LineIconProps {
 
 function IconGlyph({ name }: Pick<LineIconProps, "name">) {
   switch (name) {
+    case "chevron-down":
+      return <path d="m6 9.5 6 5.5 6-5.5" />;
     case "diamond":
       return (
         <>
