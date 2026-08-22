@@ -12,10 +12,11 @@ const sectionDir = path.join(publicDir, "images", "sections");
 const gemDir = path.join(publicDir, "images", "gems");
 const brandDir = path.join(publicDir, "brand");
 const processDir = path.join(publicDir, "images", "process");
+const architectureDir = path.join(publicDir, "images", "architecture");
 
 await Promise.all(
-  [heroDir, sectionDir, gemDir, brandDir, processDir].map((directory) =>
-    mkdir(directory, { recursive: true }),
+  [heroDir, sectionDir, gemDir, brandDir, processDir, architectureDir].map(
+    (directory) => mkdir(directory, { recursive: true }),
   ),
 );
 
@@ -174,6 +175,73 @@ await exportPair(
   path.join(masters, "blockchain-network-master.png"),
   path.join(sectionDir, "blockchain-network"),
   { width: 1600, height: 900, fit: "cover", position: "center" },
+);
+
+// Plates that ship with their own alpha are only ever sized, never cropped to a
+// box, so the transparent margin the generator leaves around them is trimmed
+// first — otherwise "contain" fits the empty canvas and the subject shrinks.
+async function alphaBox(input) {
+  const { data, info } = await sharp(input)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let left = info.width;
+  let right = -1;
+  let top = info.height;
+  let bottom = -1;
+  for (let y = 0; y < info.height; y += 1) {
+    for (let x = 0; x < info.width; x += 1) {
+      if (data[(y * info.width + x) * info.channels + 3] <= 10) continue;
+      if (x < left) left = x;
+      if (x > right) right = x;
+      if (y < top) top = y;
+      if (y > bottom) bottom = y;
+    }
+  }
+  if (right < 0) throw new Error(`${input} is fully transparent.`);
+  return { left, top, width: right - left + 1, height: bottom - top + 1 };
+}
+
+async function exportCutout(input, outputBase, width, { square = false } = {}) {
+  const trimmed = await sharp(input)
+    .extract(await alphaBox(input))
+    .png()
+    .toBuffer();
+  // A set of plates that sit side by side is squared off so every one of them
+  // reports the same intrinsic ratio; otherwise each card in the row would
+  // reserve a different height and the artwork would step up and down.
+  const base = sharp(trimmed)
+    .resize({
+      width,
+      height: square ? width : undefined,
+      fit: square ? "contain" : "inside",
+      position: "center",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+      kernel: "lanczos3",
+    })
+    .sharpen({ sigma: 0.6 });
+  await Promise.all([
+    base
+      .clone()
+      .webp({ quality: 92, alphaQuality: 100, smartSubsample: true })
+      .toFile(`${outputBase}.webp`),
+    base.clone().avif({ quality: 70, effort: 7 }).toFile(`${outputBase}.avif`),
+  ]);
+}
+
+// The safe stands beside the security list at up to about 250 CSS px.
+await exportCutout(
+  path.join(masters, "security-vault-master.png"),
+  path.join(sectionDir, "security-vault"),
+  760,
+);
+
+// The passport card is the client's own artwork from the asset pack; it draws at
+// up to about 210 CSS px beside the on-chain list.
+await exportCutout(
+  path.join(masters, "asset-passport-master.png"),
+  path.join(sectionDir, "asset-passport"),
+  660,
 );
 
 // Catalogue stones are cut off their slate backdrop so the cards can show the
@@ -587,6 +655,80 @@ for (const name of processStepNames) {
   ]);
 }
 
+// The Technology closing band carries a server-room photograph behind its copy,
+// the way the How It Works band carries the Matterhorn. The reference board
+// stands the crest in front of the racks, so it is composited in here rather
+// than layered in CSS: the band is masked to a soft right edge, and a DOM
+// overlay would be cut by that mask at a different point on every screen width.
+{
+  const bandWidth = 1200;
+  const bandHeight = 760;
+  const plate = await sharp(
+    path.join(masters, "technology-datacenter-master.png"),
+  )
+    .resize({
+      width: bandWidth,
+      height: bandHeight,
+      fit: "cover",
+      position: "center",
+    })
+    .png()
+    .toBuffer();
+  // The band draws at roughly 2.35:1 while the plate is 1.58:1, so object-fit
+  // crops about a third of the plate's height away. The crest is sized against
+  // what survives that crop, not against the whole plate.
+  const visibleHeight = bandHeight * (1.58 / 2.35);
+  const crestHeight = Math.round(visibleHeight * 0.66);
+  const emblem = await sharp(path.join(brandDir, "gemreserve-shield-1024.png"))
+    .resize({ height: crestHeight, fit: "inside" })
+    .png()
+    .toBuffer();
+  const emblemMeta = await sharp(emblem).metadata();
+  const composed = await sharp(plate)
+    .composite([
+      {
+        input: emblem,
+        // Centred at 55% of the band, which keeps the whole crest inside the
+        // solid part of the stylesheet's 72% fade at every width.
+        left: Math.round(bandWidth * 0.55 - emblemMeta.width / 2),
+        top: Math.round((bandHeight - emblemMeta.height) / 2),
+      },
+    ])
+    .png()
+    .toBuffer();
+  await exportPair(composed, path.join(sectionDir, "technology-datacenter"), {
+    width: bandWidth,
+    height: bandHeight,
+    fit: "cover",
+    position: "center",
+  });
+}
+
+// Platform-architecture plates. Each layer of the pipeline gets the same
+// polished-gold cut-out treatment as the process steps, in place of the line
+// icons that stood in for them; they draw at up to about 82 CSS px, so 320
+// covers a 3x display with room to spare.
+const architectureLayerNames = [
+  "user-interface",
+  "application-layer",
+  "business-logic-layer",
+  "data-storage-layer",
+  "blockchain-layer",
+];
+
+for (const name of architectureLayerNames) {
+  const plate = path.join(masters, "architecture", `${name}.png`);
+  const meta = await sharp(plate).metadata();
+  if (!meta.hasAlpha) {
+    throw new Error(
+      `${name}.png has no alpha channel; the architecture plates must ship cut out.`,
+    );
+  }
+  await exportCutout(plate, path.join(architectureDir, name), 320, {
+    square: true,
+  });
+}
+
 console.log(
-  "Generated responsive WebP/AVIF images, transparent brand exports and process plates.",
+  "Generated responsive WebP/AVIF images, transparent brand exports, process plates and architecture plates.",
 );

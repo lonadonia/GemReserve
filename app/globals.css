@@ -2483,9 +2483,17 @@ h3 {
   letter-spacing: 0.05em;
 }
 
-.tech-layer > svg {
-  margin-bottom: 14px;
-  color: var(--gold-light);
+.tech-layer__plate {
+  width: clamp(62px, 5.6vw, 84px);
+  height: auto;
+  margin-bottom: 13px;
+  object-fit: contain;
+  filter: drop-shadow(0 9px 15px rgb(0 0 0 / 55%));
+  transition: transform 320ms var(--ease-premium);
+}
+
+.tech-layer:hover .tech-layer__plate {
+  transform: scale(1.07);
 }
 
 .tech-layer ul {
@@ -2555,13 +2563,15 @@ h3 {
 
 .tech-detail {
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(0, 0.94fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.06fr) minmax(0, 1.18fr);
   gap: 16px;
   padding-top: var(--section-gap);
 }
 
 .tech-detail__card {
+  display: flex;
   min-width: 0;
+  flex-direction: column;
   padding: 24px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -2571,8 +2581,12 @@ h3 {
 .tech-detail__title {
   margin-bottom: 18px;
   color: var(--gold-light);
-  font-size: clamp(1rem, 1.5vw, 1.32rem);
-  letter-spacing: 0.02em;
+  font-size: clamp(0.98rem, 1.22vw, 1.18rem);
+  letter-spacing: 0.01em;
+}
+
+.tech-detail__title--center {
+  text-align: center;
 }
 
 .tech-detail__intro {
@@ -2617,93 +2631,37 @@ h3 {
   line-height: 1.6;
 }
 
+.tech-security {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.tech-security__vault {
+  width: 100%;
+  max-height: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 36px rgb(0 0 0 / 62%));
+}
+
+/* The passport runs the full height of the card beside the copy, so the intro
+   sits inside the left column rather than above both of them. */
 .tech-onchain {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.62fr);
-  align-items: start;
-  gap: 20px;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) clamp(140px, 12.5vw, 215px);
+  align-items: stretch;
+  gap: 18px;
 }
 
-/* A small device-framed passport, echoing the phone in the reference without
-   pretending to be a real screenshot. */
-.passport-card {
-  margin: 0;
-  padding: 14px 13px 16px;
-  border: 1px solid var(--gold-dark);
-  border-radius: 14px;
-  background: linear-gradient(170deg, #0b1820, #03080b);
-  box-shadow: 0 18px 40px rgb(0 0 0 / 45%);
-  text-align: center;
-}
-
-.passport-card__head {
-  padding-bottom: 9px;
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.passport-card__brand {
-  color: var(--gold-light);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 0.82rem;
-}
-
-.passport-card__label {
-  margin: 11px 0 2px;
-  color: var(--muted);
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.passport-card__reference {
-  margin: 0 0 12px;
-  color: var(--ivory);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 0.94rem;
-}
-
-.passport-card__rows {
-  display: grid;
-  gap: 6px;
-  margin: 0 0 12px;
-  text-align: left;
-}
-
-.passport-card__rows > div {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 0.71rem;
-}
-
-.passport-card__rows dt {
-  color: var(--muted);
-}
-
-.passport-card__rows dd {
-  margin: 0;
-  color: var(--ivory);
-}
-
-.passport-card__status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin: 0 0 5px;
-  padding: 7px 6px;
-  border: 1px solid rgb(107 203 112 / 42%);
-  border-radius: 5px;
-  background: rgb(107 203 112 / 9%);
-  color: #8fd894;
-  font-size: 0.69rem;
-}
-
-.passport-card__action {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.67rem;
+.tech-onchain__passport {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 38px rgb(0 0 0 / 55%));
 }
 
 .tech-highlights__strip {
@@ -2727,18 +2685,10 @@ h3 {
   margin-top: var(--section-gap);
 }
 
-/* The Swiss CTA carries a photograph in its visual slot; here the slot holds a
-   quiet gradient instead, so the band keeps its proportions without inventing
-   an image the reference does not supply. */
-.tech-cta__visual span {
-  display: block;
-  min-height: 190px;
-  height: 100%;
-  border-radius: 0;
-  background:
-    radial-gradient(circle at 30% 40%, rgb(216 154 39 / 22%), transparent 62%),
-    linear-gradient(150deg, #0d1c24, #03090c);
-  mask-image: linear-gradient(90deg, black 72%, transparent 100%);
+/* The server room sits deeper in the dark than the Matterhorn does, so it takes
+   a touch more contrast to hold its rack lights against the band. */
+.tech-cta__visual .swiss-cta__image img {
+  filter: brightness(1.06) saturate(1.05);
 }
 
 /* ---------------------------------------------------------------------------
@@ -3926,6 +3876,34 @@ h3 {
 }
 
 @media (max-width: 980px) {
+  .swiss-cta {
+    grid-template-columns: minmax(190px, 0.85fr) minmax(0, 1.6fr);
+    align-items: stretch;
+  }
+
+  .swiss-cta__visual {
+    grid-row: span 2;
+  }
+
+  .swiss-cta__copy {
+    align-self: end;
+    padding-top: 20px;
+  }
+
+  .swiss-cta__action {
+    display: flex;
+    align-items: center;
+    align-self: start;
+    gap: 18px;
+    padding-bottom: 20px;
+    text-align: left;
+  }
+
+  .swiss-cta__action .button {
+    width: auto;
+    margin-bottom: 0;
+  }
+
   .investors-hero__inner {
     grid-template-columns: 1fr;
   }
@@ -3986,12 +3964,21 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .tech-security {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .tech-security__vault {
+    max-width: 260px;
+  }
+
   .tech-onchain {
     grid-template-columns: 1fr;
   }
 
-  .passport-card {
-    max-width: 320px;
+  .tech-onchain__passport {
+    max-width: 280px;
     margin-inline: auto;
   }
 
@@ -4186,6 +4173,12 @@ h3 {
     padding: 16px;
   }
 
+  /* One layer per row down here, so the plate can take the size the viewport
+     scale would otherwise deny it. */
+  .tech-layer__plate {
+    width: 84px;
+  }
+
   .tech-pillars__grid,
   .tech-highlights__strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4206,10 +4199,6 @@ h3 {
   .tech-pillars__grid li:nth-child(n + 3),
   .tech-highlights__strip .metric-item:nth-child(n + 3) {
     border-top: 1px solid var(--border-soft);
-  }
-
-  .tech-cta__visual {
-    display: none;
   }
 
   .tech-integration ul li:not(:last-child)::after {
@@ -4548,6 +4537,10 @@ h3 {
     gap: 0;
   }
 
+  .swiss-cta__visual {
+    grid-row: auto;
+  }
+
   .swiss-cta__visual,
   .swiss-cta__image {
     min-height: 230px;
@@ -4559,11 +4552,23 @@ h3 {
 
   .swiss-cta__copy,
   .swiss-cta__action {
+    display: block;
     padding: 8px 22px 22px;
+  }
+
+  /* The tablet rule above turns the action into a left-aligned row; the phone
+     stack goes back to the centred column it has always been. */
+  .swiss-cta__action {
+    text-align: center;
   }
 
   .swiss-cta__action {
     padding-bottom: 28px;
+  }
+
+  .swiss-cta__action .button {
+    width: 100%;
+    margin-bottom: 8px;
   }
 
   .assets-hero {

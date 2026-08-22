@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -17,10 +19,12 @@ import {
   onChainIntro,
   onChainItems,
   onChainSectionTitle,
-  passportPreview,
+  passportImage,
   securityItems,
   securitySectionTitle,
+  securityVaultImage,
   technologyCta,
+  technologyCtaImage,
   technologyHero,
   technologyHighlights,
   technologyPillars,
@@ -55,12 +59,15 @@ const pillarIcons: Record<string, IconName> = {
   "future-ready": "chart",
 };
 
-const layerIcons: Record<string, IconName> = {
-  "user-interface": "phone",
-  "application-layer": "cubes",
-  "business-logic-layer": "contract",
-  "data-storage-layer": "box",
-  "blockchain-layer": "network",
+// Each layer of the pipeline carries a cut-out plate rather than a line icon, so
+// the row reads as the five things it describes the way the reference board
+// does. The alt text names the object, since nothing else on the card does.
+const layerPlates: Record<string, string> = {
+  "user-interface": "A gold desktop monitor beside a gold smartphone",
+  "application-layer": "A stack of gold cubes",
+  "business-logic-layer": "Two meshing gold gears",
+  "data-storage-layer": "A stack of gold database discs",
+  "blockchain-layer": "A lattice of gold network nodes",
 };
 
 const stackIcons: Record<string, IconName> = {
@@ -169,7 +176,14 @@ export default function TechnologyPage() {
               {architectureLayers.map((layer) => (
                 <li className="tech-layer" key={layer.id}>
                   <h3>{layer.title}</h3>
-                  <LineIcon name={layerIcons[layer.id]} size={34} />
+                  <Image
+                    className="tech-layer__plate"
+                    src={`/images/architecture/${layer.id}.webp`}
+                    alt={layerPlates[layer.id]}
+                    width={320}
+                    height={320}
+                    sizes="(max-width: 760px) 68px, (max-width: 1240px) 72px, 84px"
+                  />
                   <ul>
                     {layer.items.map((item) => (
                       <li key={item}>{item}</li>
@@ -212,28 +226,22 @@ export default function TechnologyPage() {
           </MotionReveal>
 
           <MotionReveal className="tech-detail__card" delay={70}>
-            <h2 className="tech-detail__title">{securitySectionTitle}</h2>
-            <ul className="tech-detail__list">
-              {securityItems.map((item) => (
-                <li key={item.id}>
-                  <LineIcon name={securityIcons[item.id]} size={26} />
-                  <div>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </MotionReveal>
-
-          <MotionReveal className="tech-detail__card" delay={140}>
-            <h2 className="tech-detail__title">{onChainSectionTitle}</h2>
-            <p className="tech-detail__intro">{onChainIntro}</p>
-            <div className="tech-onchain">
+            <h2 className="tech-detail__title tech-detail__title--center">
+              {securitySectionTitle}
+            </h2>
+            <div className="tech-security">
+              <Image
+                className="tech-security__vault"
+                src="/images/sections/security-vault.webp"
+                alt={securityVaultImage.alt}
+                width={760}
+                height={798}
+                sizes="(max-width: 760px) 62vw, (max-width: 1080px) 30vw, 200px"
+              />
               <ul className="tech-detail__list">
-                {onChainItems.map((item) => (
+                {securityItems.map((item) => (
                   <li key={item.id}>
-                    <LineIcon name={onChainIcons[item.id]} size={26} />
+                    <LineIcon name={securityIcons[item.id]} size={26} />
                     <div>
                       <h3>{item.title}</h3>
                       <p>{item.description}</p>
@@ -241,33 +249,35 @@ export default function TechnologyPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </MotionReveal>
 
-              <figure className="passport-card">
-                <figcaption className="passport-card__head">
-                  <span className="passport-card__brand">
-                    {passportPreview.brand}
-                  </span>
-                </figcaption>
-                <p className="passport-card__label">{passportPreview.label}</p>
-                <p className="passport-card__reference">
-                  {passportPreview.reference}
-                </p>
-                <dl className="passport-card__rows">
-                  {passportPreview.rows.map(([term, value]) => (
-                    <div key={term}>
-                      <dt>{term}</dt>
-                      <dd>{value}</dd>
-                    </div>
+          <MotionReveal className="tech-detail__card" delay={140}>
+            <h2 className="tech-detail__title">{onChainSectionTitle}</h2>
+            <div className="tech-onchain">
+              <div className="tech-onchain__copy">
+                <p className="tech-detail__intro">{onChainIntro}</p>
+                <ul className="tech-detail__list">
+                  {onChainItems.map((item) => (
+                    <li key={item.id}>
+                      <LineIcon name={onChainIcons[item.id]} size={26} />
+                      <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                      </div>
+                    </li>
                   ))}
-                </dl>
-                <p className="passport-card__status">
-                  <LineIcon name="check" size={15} />
-                  {passportPreview.status}
-                </p>
-                <p className="passport-card__action">
-                  {passportPreview.action}
-                </p>
-              </figure>
+                </ul>
+              </div>
+
+              <Image
+                className="tech-onchain__passport"
+                src="/images/sections/asset-passport.webp"
+                alt={passportImage.alt}
+                width={660}
+                height={1133}
+                sizes="(max-width: 760px) 58vw, (max-width: 1080px) 26vw, 190px"
+              />
             </div>
           </MotionReveal>
         </section>
@@ -302,7 +312,12 @@ export default function TechnologyPage() {
           aria-labelledby="tech-cta-title"
         >
           <MotionReveal className="swiss-cta__visual tech-cta__visual">
-            <span aria-hidden="true" />
+            <ImageWithGlow
+              className="swiss-cta__image"
+              src="/images/sections/technology-datacenter.webp"
+              alt={technologyCtaImage.alt}
+              sizes="(max-width: 760px) 100vw, 30vw"
+            />
           </MotionReveal>
 
           <MotionReveal className="swiss-cta__copy" delay={70}>

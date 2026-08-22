@@ -224,27 +224,25 @@ export const onChainItems: readonly TechnologyStackItem[] = [
   },
 ];
 
-export interface PassportPreview {
-  brand: string;
-  label: string;
-  reference: string;
-  rows: readonly (readonly [string, string])[];
-  status: string;
-  action: string;
+export interface SectionImage {
+  alt: string;
 }
 
-export const passportPreview: PassportPreview = {
-  brand: "GemReserve.io",
-  label: "Asset Passport",
-  reference: "GR-EMR-001245",
-  rows: [
-    ["Gemstone", "Emerald"],
-    ["Weight", "12.45 ct"],
-    ["Origin", "Zambia"],
-    ["Status", "Verified"],
-  ],
-  status: "On-Chain Verified",
-  action: "View on Explorer",
+/**
+ * The board pairs the security list with a photograph of a safe holding a single
+ * lit gemstone, and the on-chain list with a specimen asset passport. Both are
+ * artwork rather than interface, so only their alt text lives here.
+ */
+export const securityVaultImage: SectionImage = {
+  alt: "A black security safe standing open, a lit violet gemstone on a pedestal inside it",
+};
+
+export const passportImage: SectionImage = {
+  alt: "A specimen GemReserve digital asset passport card for an emerald, listing its passport ID, weight, origin and laboratory report alongside a verification QR code",
+};
+
+export const technologyCtaImage: SectionImage = {
+  alt: "An aisle of server racks lit by amber status lights",
 };
 
 export interface TechnologyHighlight {

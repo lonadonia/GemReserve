@@ -137,7 +137,13 @@ test.describe("phase-one interactions", () => {
     const trigger = page.getByRole("button", { name: /Platform/ });
     await trigger.focus();
     await page.keyboard.press("ArrowDown");
-    await expect(page.getByRole("link", { name: "Overview", exact: true })).toBeFocused();
+    // The footer repeats the same "Overview" link, so the locator has to name
+    // the navigation landmark or it resolves to two elements and never settles.
+    await expect(
+      page
+        .getByRole("navigation", { name: "Primary navigation" })
+        .getByRole("link", { name: "Overview", exact: true }),
+    ).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(trigger).toBeFocused();
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
