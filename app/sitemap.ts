@@ -11,6 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/governance",
     "/contact",
+    "/early-participation",
+    "/eligibility-kyc",
+    "/faq",
   ].map((path) => ({
     url: `https://gemreserve.io${path}`,
     lastModified: new Date("2026-08-22"),

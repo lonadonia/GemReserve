@@ -6,7 +6,10 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 
 import { LineIcon } from "@/components/icons/LineIcon";
 import { homeAnnouncement } from "@/content/home";
-import { navigationGroups } from "@/content/navigation";
+import {
+  earlyParticipationItems,
+  navigationGroups,
+} from "@/content/navigation";
 
 import { Logo } from "./Logo";
 
@@ -216,9 +219,9 @@ export function SiteHeader({ showAnnouncement = false }: SiteHeaderProps) {
               </div>
             );
           })}
-          <span className="desktop-nav-future" aria-disabled="true">
+          <Link className="desktop-nav-link" href="/early-participation">
             Early Participation
-          </span>
+          </Link>
         </nav>
 
         <div className="header-actions">
@@ -314,6 +317,31 @@ export function SiteHeader({ showAnnouncement = false }: SiteHeaderProps) {
                 </ul>
               </details>
             ))}
+
+            {/* The desktop bar drops this group below 1460px for want of room,
+                so the drawer is the only place a phone can reach it. */}
+            <details open={pathname.startsWith("/early-participation")}>
+              <summary>Early Participation</summary>
+              <ul>
+                {earlyParticipationItems.map((item) => (
+                  <li key={item.label}>
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span aria-disabled="true">
+                        {item.label}
+                        <small>Coming soon</small>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </details>
           </nav>
           <Link
             className="button button--gold mobile-navigation-cta"

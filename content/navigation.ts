@@ -39,6 +39,7 @@ export const navigationGroups = [
     href: "/how-it-works",
     items: [
       { label: "Our Process", href: "/how-it-works" },
+      { label: "Eligibility & KYC", href: "/eligibility-kyc" },
       { label: "Independent Verification", href: null },
       { label: "Custody & Vaults", href: null },
       { label: "Tokenization", href: null },
@@ -96,12 +97,18 @@ export const navigationGroups = [
   },
 ] as const satisfies readonly NavigationGroup[];
 
-export const earlyParticipationItems = [
-  { label: "Early Access", href: null },
-  { label: "Waitlist Benefits", href: null },
-  { label: "Eligibility & KYC", href: null },
-  { label: "How to Participate", href: null },
-  { label: "FAQ", href: null },
-] as const satisfies readonly NavigationItem[];
+/**
+ * Annotated rather than `as const satisfies`, because every item now carries a
+ * destination and the literal types would narrow the "no destination yet" branch
+ * in the header and footer to `never`. The guard has to keep compiling for the
+ * day an item is added without a page behind it.
+ */
+export const earlyParticipationItems: readonly NavigationItem[] = [
+  { label: "Early Access", href: "/early-participation" },
+  { label: "Waitlist Benefits", href: "/early-participation" },
+  { label: "Eligibility & KYC", href: "/eligibility-kyc" },
+  { label: "How to Participate", href: "/early-participation" },
+  { label: "FAQ", href: "/faq" },
+];
 
 export const socialLinks = ["X", "in", "Instagram", "Telegram", "YouTube"];

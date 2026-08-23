@@ -11,6 +11,9 @@ const routes = [
   { name: "about", path: "/about" },
   { name: "governance", path: "/governance" },
   { name: "contact", path: "/contact" },
+  { name: "early-participation", path: "/early-participation" },
+  { name: "eligibility-kyc", path: "/eligibility-kyc" },
+  { name: "faq", path: "/faq" },
 ] as const;
 
 const requiredViewports = [
@@ -190,6 +193,55 @@ test.describe("phase-one interactions", () => {
     await expect(success).toBeFocused();
     await success.getByRole("button", { name: "Write another message" }).click();
     await expect(page.locator(".contact-form")).toBeVisible();
+  });
+
+  test("faq search, filtering and accordion work", async ({ page }) => {
+    await page.goto("/faq", { waitUntil: "networkidle" });
+
+    // The rail counts have to come from the entries, not from prose.
+    const total = await page.locator(".faq-group li").count();
+    await expect(
+      page.getByRole("button", { name: /All Questions/ }),
+    ).toContainText(String(total));
+
+    const question = page
+      .getByRole("button", { name: "What is GemReserve.io?" })
+      .first();
+    await expect(question).toHaveAttribute("aria-expanded", "false");
+    await question.click();
+    await expect(question).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByText(/Swiss company at the forefront/)).toBeVisible();
+
+    await page.getByLabel("Search questions").fill("blockchain");
+    await expect(page.locator(".faq-group li")).not.toHaveCount(total);
+    await page.getByLabel("Search questions").fill("zzzznotathing");
+    await expect(page.getByText(/No questions match that search/)).toBeVisible();
+
+    await page.getByLabel("Search questions").fill("");
+    await page.getByRole("button", { name: /Security & Compliance/ }).click();
+    await expect(page.locator(".faq-group")).toHaveCount(1);
+  });
+
+  test("waitlist form validates and never claims to hold a place", async ({
+    page,
+  }) => {
+    await page.goto("/early-participation", { waitUntil: "networkidle" });
+    const form = page.locator(".contact-form");
+    await form.getByRole("button", { name: "Join the Waitlist" }).click();
+    await expect(page.getByText("Enter your first name.")).toBeVisible();
+    await expect(page.getByText("Confirm you agree to receive updates.")).toBeVisible();
+
+    await form.getByLabel(/First Name/).fill("Preview");
+    await form.getByLabel(/Last Name/).fill("Person");
+    await form.getByLabel(/Email Address/).fill("preview@example.com");
+    await form.getByLabel(/Country of Residence/).fill("Switzerland");
+    await form.getByLabel(/I am joining as/).selectOption("Individual investor");
+    await form.getByLabel(/I agree to receive/).check();
+    await form.getByRole("button", { name: "Join the Waitlist" }).click();
+
+    const success = page.getByRole("status");
+    await expect(success).toContainText("no place has been reserved");
+    await expect(success).toBeFocused();
   });
 
   test("asset filters and sorting work", async ({ page }) => {

@@ -250,6 +250,36 @@ const heroJobs = [
     padLeft: 0.3,
     mobileWindow: [0.24, 1],
   },
+  {
+    source: "waitlist-hero-plate.png",
+    name: "waitlist-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.3,
+    mobileWindow: [0.26, 1],
+    // The board stands a card behind the stones carrying the brand promise; the
+    // plate is generated with that card blank so the real crest can sit on it.
+    crestPlacement: { heightFraction: 0.3, centreX: 0.68, centreY: 0.36 },
+  },
+  {
+    source: "kyc-hero-master.png",
+    name: "kyc-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.28, 1],
+  },
+  {
+    source: "faq-hero-master.png",
+    name: "faq-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.3,
+    mobileWindow: [0.22, 1],
+  },
 ];
 
 // Drop the crest into a generated scene. A generated shield would be a

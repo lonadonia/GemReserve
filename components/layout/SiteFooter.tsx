@@ -61,7 +61,11 @@ export function SiteFooter() {
           <ul>
             {earlyParticipationItems.map((item) => (
               <li key={item.label}>
-                <span aria-disabled="true">{item.label}</span>
+                {item.href ? (
+                  <Link href={item.href}>{item.label}</Link>
+                ) : (
+                  <span aria-disabled="true">{item.label}</span>
+                )}
               </li>
             ))}
           </ul>
