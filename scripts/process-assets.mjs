@@ -308,6 +308,37 @@ const heroJobs = [
     padLeft: 0.32,
     mobileWindow: [0.3, 1],
   },
+  // Three more of the client's detail pages. The infrastructure plate is the
+  // client's own artwork with the shield dead centre, so it is padded hard left
+  // to slide the shield clear of the copy column; the other two were generated
+  // with their left third already dark and need only a little.
+  {
+    source: "infrastructure-hero-master.png",
+    name: "infrastructure-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.44,
+    mobileWindow: [0.22, 1],
+  },
+  {
+    source: "programs-hero-master.png",
+    name: "programs-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.18,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "registry-hero-master.png",
+    name: "registry-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.16,
+    mobileWindow: [0.28, 1],
+  },
   {
     source: "passports-hero-master.png",
     name: "passports-hero",
@@ -486,7 +517,20 @@ await exportPair(
 
 // Closing bands for the three Technology detail pages, cut at the same 1200x760
 // the Technology band already uses so they all crop identically in the strip.
-for (const band of ["tokenization-band", "redemption-band", "open-vault"]) {
+// The deployment map draws inside a card rather than as a band, so it keeps its
+// own 2:1 crop; the band loop below would cut its southern hemisphere off.
+await exportPair(
+  path.join(masters, "world-map-master.png"),
+  path.join(sectionDir, "world-map"),
+  { width: 1200, height: 620, fit: "cover", position: "center" },
+);
+
+for (const band of [
+  "tokenization-band",
+  "redemption-band",
+  "open-vault",
+  "gem-report",
+]) {
   await exportPair(
     path.join(masters, `${band}-master.png`),
     path.join(sectionDir, band),

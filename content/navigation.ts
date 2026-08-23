@@ -15,6 +15,7 @@ export const navigationGroups = [
     href: "/",
     items: [
       { label: "Overview", href: "/" },
+      { label: "Platform Infrastructure", href: "/platform-infrastructure" },
       { label: "Features", href: null },
       { label: "Security", href: null },
       { label: "Proof of Reserves", href: null },
@@ -28,8 +29,8 @@ export const navigationGroups = [
     items: [
       { label: "Explore Gemstone Assets", href: "/assets" },
       { label: "All Gemstones", href: "/assets" },
-      { label: "Gemstone Programs", href: null },
-      { label: "Asset Registry", href: null },
+      { label: "Gemstone Programs", href: "/gemstone-programs" },
+      { label: "Asset Registry", href: "/asset-registry" },
       { label: "Digital Asset Passports", href: "/digital-asset-passports" },
       { label: "Gemstone Gallery", href: null },
     ],
@@ -52,7 +53,7 @@ export const navigationGroups = [
     href: "/technology",
     items: [
       { label: "Technology Overview", href: "/technology" },
-      { label: "Platform Architecture", href: "/technology" },
+      { label: "Platform Architecture", href: "/platform-infrastructure" },
       { label: "Gemstone Tokenization", href: "/gemstone-tokenization" },
       {
         label: "Digital Asset Passports",

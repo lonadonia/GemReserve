@@ -7069,13 +7069,13 @@ li:hover > .section-plate {
   text-align: right;
 }
 
-.passport-verify form {
+.id-lookup form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 9px;
 }
 
-.passport-verify input {
+.id-lookup input {
   min-width: 0;
   padding: 12px 14px;
   border: 1px solid var(--border-soft);
@@ -7085,22 +7085,22 @@ li:hover > .section-plate {
   font-size: 0.82rem;
 }
 
-.passport-verify input::placeholder {
+.id-lookup input::placeholder {
   color: #6f797e;
 }
 
-.passport-verify input:focus-visible {
+.id-lookup input:focus-visible {
   border-color: var(--gold);
   outline: 2px solid var(--gold-light);
   outline-offset: 2px;
 }
 
-.passport-verify .button {
+.id-lookup .button {
   min-height: 46px;
   padding-inline: 1.1rem;
 }
 
-.passport-verify__status {
+.id-lookup__status {
   min-height: 1.4em;
   margin: 9px 0 0;
   color: var(--teal);
@@ -7108,11 +7108,11 @@ li:hover > .section-plate {
   line-height: 1.45;
 }
 
-.passport-verify__status--error {
+.id-lookup__status--error {
   color: #f0a68f;
 }
 
-.passport-verify__divider {
+.id-lookup__divider {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -7121,13 +7121,13 @@ li:hover > .section-plate {
   font-size: 0.72rem;
 }
 
-.passport-verify__divider span {
+.id-lookup__divider span {
   height: 1px;
   flex: 1;
   background: var(--border-soft);
 }
 
-.passport-verify > .button {
+.id-lookup > .button {
   width: 100%;
 }
 
@@ -7228,6 +7228,909 @@ li:hover > .section-plate {
   display: block;
 }
 
+/* ---------------------------------------------------------------------------
+   Platform Infrastructure.
+   --------------------------------------------------------------------------- */
+
+.infrastructure-hero {
+  min-height: min(clamp(540px, 42vw, 780px), 78vh);
+}
+
+.infrastructure-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 93%) 0%,
+      rgb(1 5 8 / 78%) 30%,
+      rgb(1 5 8 / 14%) 56%,
+      transparent 72%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 60%) 0%, transparent 32%);
+}
+
+.infrastructure-hero__inner {
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1fr);
+}
+
+/* The board rules the title off with a hairline broken by a lozenge, the same
+   mark the tokenization hero carries. */
+.infrastructure-hero__rule {
+  display: flex;
+  width: min(100%, 380px);
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.infrastructure-hero__rule span {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.infrastructure-hero__rule em {
+  color: var(--gold);
+  font-size: 0.62rem;
+  font-style: normal;
+  line-height: 1;
+}
+
+.infrastructure-badges {
+  padding-top: clamp(34px, 3.4vw, 52px);
+}
+
+.infrastructure-badges__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* The badge strips on these pages head their cells with an h2, because the
+   section around them has no visible heading of its own. */
+.infrastructure-badges__grid h2,
+.programs-badges__grid h2,
+.registry-badges__grid h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 1.2vw, 1.06rem);
+}
+
+.infrastructure-badges__grid p,
+.programs-badges__grid p,
+.registry-badges__grid p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.74rem, 0.75vw, 0.83rem);
+  line-height: 1.55;
+}
+
+.infrastructure-architecture {
+  padding-top: var(--section-gap);
+}
+
+/* The governance band runs beneath all five layers rather than beside them,
+   because it applies across every one of them. */
+.infrastructure-security-layer h3 em {
+  color: var(--muted);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.infrastructure-detail {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr) minmax(0, 1fr);
+}
+
+.infrastructure-map {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: #02070a;
+}
+
+.infrastructure-cta {
+  margin-top: var(--section-gap);
+  grid-template-columns: minmax(210px, 0.7fr) minmax(260px, 0.94fr) minmax(
+      340px,
+      1.16fr
+    );
+}
+
+.infrastructure-cta .trust-cta__copy h2 span {
+  display: block;
+}
+
+.infrastructure-cta__metrics dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 14px 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(3 10 13 / 62%);
+}
+
+.infrastructure-cta__metrics dl > div {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding-inline: clamp(6px, 0.9vw, 14px);
+  text-align: center;
+}
+
+.infrastructure-cta__metrics dl > div + div {
+  border-left: 1px solid var(--border-soft);
+}
+
+.infrastructure-cta__metrics svg {
+  color: var(--gold-light);
+}
+
+.infrastructure-cta__metrics dt {
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.4vw, 1.32rem);
+  line-height: 1;
+}
+
+.infrastructure-cta__metrics dd {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* A one-line pointer at the pages either side of this one in the story. */
+.infrastructure-next {
+  padding-top: 28px;
+}
+
+.infrastructure-next p {
+  margin: 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.infrastructure-next a {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   All Gemstone Programs.
+   --------------------------------------------------------------------------- */
+
+.programs-hero {
+  min-height: min(clamp(560px, 42vw, 800px), 80vh);
+}
+
+.programs-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 94%) 0%,
+      rgb(1 5 8 / 80%) 28%,
+      rgb(1 5 8 / 16%) 54%,
+      transparent 70%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%) 0%, transparent 30%);
+}
+
+.programs-hero__inner {
+  grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1fr);
+}
+
+/* The board sets only the middle word in gold, so the accent is inline rather
+   than one of the stacked lines the other heroes use. */
+.programs-hero__title .hero__title-accent {
+  display: inline;
+}
+
+.programs-hero__tagline {
+  margin-bottom: 20px;
+  color: var(--ivory);
+  font-size: clamp(0.86rem, 1.02vw, 1rem);
+  letter-spacing: 0.05em;
+}
+
+.programs-badges {
+  padding-top: clamp(34px, 3.4vw, 52px);
+}
+
+.programs-badges__grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.programs-grid-section {
+  padding-top: var(--section-gap);
+}
+
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.programs-grid > li {
+  display: flex;
+  min-width: 0;
+}
+
+.program-card {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 24% 12%, rgb(216 154 39 / 7%), transparent 42%),
+    linear-gradient(155deg, rgb(9 20 25 / 95%), rgb(2 8 11 / 95%));
+  transition:
+    border-color 220ms ease,
+    transform 220ms var(--ease-premium);
+}
+
+.program-card:hover {
+  border-color: rgb(243 193 90 / 66%);
+  transform: translateY(-4px);
+}
+
+.program-card__head {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.program-card__stone {
+  width: clamp(58px, 5.6vw, 82px);
+  height: auto;
+  filter: drop-shadow(0 12px 22px rgb(0 0 0 / 62%));
+  transition: transform 320ms var(--ease-premium);
+}
+
+.program-card:hover .program-card__stone {
+  transform: scale(1.06);
+}
+
+.program-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+  color: var(--ivory);
+  font-size: clamp(0.94rem, 1.1vw, 1.08rem);
+}
+
+.program-card__swatch {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentcolor;
+}
+
+.program-card__epithet {
+  margin-bottom: 8px;
+  color: var(--gold-light);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.program-card__description {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.73rem;
+  line-height: 1.55;
+}
+
+.program-card__specs {
+  display: grid;
+  gap: 6px;
+  margin: auto 0 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.program-card__specs > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.program-card__specs dt {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.program-card__specs dd {
+  margin: 0;
+  color: #d3d8d9;
+  font-size: 0.72rem;
+  text-align: right;
+}
+
+.program-card__action {
+  width: 100%;
+}
+
+.programs-detail {
+  padding-top: var(--section-gap);
+}
+
+.programs-detail__panel {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.24fr) minmax(0, 0.78fr);
+  gap: 26px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.programs-detail__visual {
+  min-width: 0;
+}
+
+.programs-detail__image {
+  /* The base .image-with-glow carries min-height: 250px. Against a fixed ratio
+     that is a contradiction below about 375px wide, and the box resolves it by
+     widening past its column, so the floor is lifted and the ratio governs. */
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  border-radius: 7px;
+}
+
+.programs-detail__copy h2 {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: clamp(1.16rem, 1.7vw, 1.5rem);
+}
+
+.programs-detail__copy > p {
+  margin-bottom: 18px;
+  color: #b8bec1;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.programs-detail__checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.programs-detail__checks li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  color: #c6ccce;
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.programs-detail__checks svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.programs-highlights {
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(4 12 16 / 62%);
+}
+
+.programs-highlights h3 {
+  margin-bottom: 14px;
+  color: var(--gold-light);
+  font-size: 1rem;
+}
+
+.programs-highlights dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.programs-highlights dl > div {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 4px 12px;
+}
+
+.programs-highlights svg {
+  color: var(--gold-light);
+}
+
+.programs-highlights dt {
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.06rem, 1.4vw, 1.3rem);
+  line-height: 1;
+}
+
+.programs-highlights dd {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.73rem;
+  line-height: 1.35;
+}
+
+.programs-cta {
+  margin-top: var(--section-gap);
+}
+
+.programs-cta .trust-cta__copy h2 span {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------
+   Asset Registry.
+   --------------------------------------------------------------------------- */
+
+.registry-hero {
+  min-height: min(clamp(560px, 42vw, 800px), 80vh);
+}
+
+.registry-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 94%) 0%,
+      rgb(1 5 8 / 80%) 30%,
+      rgb(1 5 8 / 18%) 56%,
+      transparent 74%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%) 0%, transparent 30%);
+}
+
+.registry-hero__inner {
+  grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1fr);
+}
+
+.registry-hero__tagline {
+  margin-bottom: 20px;
+  color: var(--ivory);
+  font-size: clamp(1.02rem, 1.4vw, 1.24rem);
+}
+
+.registry-badges {
+  padding-top: clamp(34px, 3.4vw, 52px);
+}
+
+.registry-badges__grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.registry-process {
+  padding-top: var(--section-gap);
+}
+
+.registry-process__panel {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.registry-steps {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.registry-steps > li {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 10px;
+  text-align: center;
+}
+
+/* The board separates the stages with a hairline and threads an arrow between
+   the numbered badges; the rule sits on the gap, the arrow on the badge row. */
+.registry-steps > li:not(:last-child)::before {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-soft);
+  content: "";
+}
+
+.registry-steps > li:not(:last-child)::after {
+  position: absolute;
+  top: 15px;
+  right: -14px;
+  padding-inline: 3px;
+  background: #061219;
+  color: var(--gold);
+  content: "\2192";
+  font-size: 0.95rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.registry-steps__number {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.95rem;
+}
+
+.registry-steps svg {
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 12px rgb(216 154 39 / 20%));
+  transition: transform 320ms var(--ease-premium);
+}
+
+.registry-steps > li:hover svg {
+  transform: scale(1.08);
+}
+
+.registry-steps h3 {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.registry-steps p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.71rem;
+  line-height: 1.55;
+}
+
+.registry-record {
+  padding-top: var(--section-gap);
+}
+
+.registry-record__panel {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.18fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.registry-record__visual {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.registry-record__visual img {
+  width: min(100%, 200px);
+  height: auto;
+  filter: drop-shadow(0 18px 34px rgb(0 0 0 / 62%));
+}
+
+.registry-record__fields .eyebrow {
+  margin-bottom: 10px;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+}
+
+.registry-record__fields dl {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.registry-record__fields dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.registry-record__fields dt {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.registry-record__fields dd {
+  margin: 0;
+  color: #d3d8d9;
+  font-size: 0.76rem;
+  text-align: right;
+}
+
+/* Status is the one row on the board drawn as a state rather than a value, so
+   it keeps its pill and its own colour. */
+.registry-record__status {
+  border-bottom: 0 !important;
+  padding-top: 12px !important;
+}
+
+.registry-record__status dd span {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid var(--teal);
+  border-radius: 999px;
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.registry-record__side {
+  display: grid;
+  gap: 16px;
+}
+
+.registry-chain,
+.registry-passport {
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(4 12 16 / 62%);
+}
+
+.registry-chain h3,
+.registry-passport h3 {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: 0.98rem;
+}
+
+.registry-chain dl {
+  display: grid;
+  gap: 0;
+  margin: 0 0 16px;
+}
+
+.registry-chain dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.registry-chain dl > div:last-child {
+  border-bottom: 0;
+}
+
+.registry-chain dt {
+  color: var(--muted);
+  font-size: 0.71rem;
+}
+
+.registry-chain dd {
+  margin: 0;
+  color: #d3d8d9;
+  font-size: 0.73rem;
+  text-align: right;
+  word-break: break-word;
+}
+
+.registry-passport {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+.registry-passport svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.registry-passport p {
+  margin: 0 0 12px;
+  color: #b8bec1;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.registry-passport__note {
+  margin: 8px 0 0 !important;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.registry-close {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.04fr);
+  gap: 16px;
+  padding-top: var(--section-gap);
+}
+
+.registry-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 92%));
+}
+
+.registry-card__title {
+  margin-bottom: 18px;
+  color: var(--gold-light);
+  font-size: clamp(0.98rem, 1.22vw, 1.18rem);
+}
+
+.registry-card__title--center {
+  text-align: center;
+}
+
+.registry-access {
+  display: grid;
+  align-content: start;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.registry-access li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  color: #c6ccce;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.registry-access svg {
+  margin-top: 2px;
+  color: var(--teal);
+}
+
+.registry-why {
+  display: grid;
+  align-content: start;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.registry-why li {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  color: #c6ccce;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.registry-why svg {
+  color: var(--gold-light);
+}
+
+.registry-search__intro {
+  margin-bottom: 18px;
+  color: #b8bec1;
+  font-size: 0.79rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.registry-search__explore {
+  margin: 16px 0 12px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-align: center;
+}
+
+.registry-search__chips {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.registry-search__chips a {
+  display: inline-block;
+  padding: 7px 15px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: rgb(2 7 10 / 72%);
+  color: #d3d8d9;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition:
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 200ms var(--ease-premium);
+}
+
+.registry-search__chips a:hover {
+  transform: translateY(-2px);
+}
+
+/* Each chip borrows its stone's colour the way the board tints them. */
+.registry-search__chips a[data-type="ruby"] {
+  border-color: rgb(201 32 47 / 62%);
+  color: #f19aa2;
+}
+
+.registry-search__chips a[data-type="sapphire"] {
+  border-color: rgb(31 79 196 / 62%);
+  color: #9db6f4;
+}
+
+.registry-search__chips a[data-type="emerald"] {
+  border-color: rgb(15 155 99 / 62%);
+  color: #86d9b6;
+}
+
+.registry-search__chips a[data-type="diamond"] {
+  border-color: rgb(207 214 220 / 52%);
+  color: #dfe4e8;
+}
+
+.registry-cta {
+  margin-top: var(--section-gap);
+  /* The second title line runs to nine words, so the copy column takes the
+     room the action column does not need. */
+  grid-template-columns: minmax(230px, 0.82fr) minmax(340px, 1.5fr) minmax(
+      190px,
+      0.5fr
+    );
+}
+
+.registry-cta .trust-cta__copy h2 span {
+  display: block;
+}
+
 @media (max-width: 1460px) {
   .desktop-nav-future,
   .desktop-nav-link {
@@ -7236,6 +8139,70 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 1330px) {
+  /* --- Infrastructure, programs and registry -------------------------- */
+
+  .infrastructure-detail {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .infrastructure-detail > .tech-detail__card:last-child {
+    grid-column: span 2;
+  }
+
+  .infrastructure-cta {
+    grid-template-columns: minmax(190px, 0.85fr) minmax(0, 1.6fr);
+  }
+
+  .infrastructure-cta__metrics {
+    grid-column: span 2;
+  }
+
+  .programs-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .programs-detail__panel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .programs-highlights {
+    grid-column: span 2;
+  }
+
+  .programs-highlights dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 22px;
+  }
+
+  .registry-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px 20px;
+  }
+
+  /* The rule and the arrow point along the row, so they only belong between
+     stages that sit side by side — not at the end of a wrapped line. */
+  .registry-steps > li:nth-child(4n)::before,
+  .registry-steps > li:nth-child(4n)::after {
+    display: none;
+  }
+
+  .registry-record__panel {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .registry-record__side {
+    grid-column: span 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .registry-close {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .registry-close > .registry-card:last-child {
+    grid-column: span 2;
+  }
+
   /* --- Technology detail pages ---------------------------------------- */
 
   .tokenization-process .process-timeline {
@@ -7614,6 +8581,75 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 980px) {
+  /* --- Infrastructure, programs and registry -------------------------- */
+
+  .infrastructure-hero,
+  .programs-hero,
+  .registry-hero {
+    min-height: auto;
+  }
+
+  .infrastructure-hero__inner,
+  .programs-hero__inner,
+  .registry-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .infrastructure-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .infrastructure-detail > .tech-detail__card:last-child {
+    grid-column: auto;
+  }
+
+  .infrastructure-map {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .programs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .programs-detail__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .programs-highlights {
+    grid-column: auto;
+  }
+
+  .registry-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .registry-steps > li:nth-child(4n)::before,
+  .registry-steps > li:nth-child(4n)::after {
+    display: block;
+  }
+
+  .registry-steps > li:nth-child(3n)::before,
+  .registry-steps > li:nth-child(3n)::after {
+    display: none;
+  }
+
+  .registry-record__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .registry-record__side {
+    grid-column: auto;
+  }
+
+  .registry-close {
+    grid-template-columns: 1fr;
+  }
+
+  .registry-close > .registry-card:last-child {
+    grid-column: auto;
+  }
+
   /* --- Technology detail pages ---------------------------------------- */
 
   /* The hero card carries as much copy as the column beside it, so below this
@@ -7940,6 +8976,62 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 760px) {
+  /* --- Infrastructure, programs and registry -------------------------- */
+
+  .infrastructure-hero__rule {
+    width: 100%;
+  }
+
+  .programs-grid,
+  .programs-detail__checks,
+  .registry-steps,
+  .registry-record__side,
+  .infrastructure-cta__metrics dl {
+    grid-template-columns: 1fr;
+  }
+
+  .programs-highlights dl {
+    grid-template-columns: 1fr;
+  }
+
+  .infrastructure-cta__metrics dl > div + div {
+    padding-top: 14px;
+    border-top: 1px solid var(--border-soft);
+    border-left: 0;
+  }
+
+  /* Stacked, the rule and the arrow point across nothing. Declared on the same
+     :not(:last-child) shape as the base rule, which otherwise outranks a bare
+     li::before and leaves the arrow hanging off the last card in each row. */
+  .registry-steps > li:not(:last-child)::before,
+  .registry-steps > li:not(:last-child)::after {
+    display: none;
+  }
+
+  .registry-steps {
+    gap: 26px;
+  }
+
+  .registry-process__panel,
+  .registry-record__panel,
+  .programs-detail__panel {
+    padding: 20px;
+  }
+
+  /* Under about 420px a label and its value cannot share a line, so the pairs
+     stack rather than the value wrapping to three words a line. */
+  .registry-record__fields dl > div,
+  .registry-chain dl > div,
+  .program-card__specs > div {
+    gap: 2px 14px;
+  }
+
+  .registry-record__fields dd,
+  .registry-chain dd,
+  .program-card__specs dd {
+    text-align: right;
+  }
+
   /* --- Technology detail pages ---------------------------------------- */
 
   .tokenization-hero__callout,
@@ -8043,7 +9135,7 @@ li:hover > .section-plate {
     text-align: left;
   }
 
-  .passport-verify form {
+  .id-lookup form {
     grid-template-columns: 1fr;
   }
 
@@ -8805,6 +9897,22 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 520px) {
+  .registry-record__fields dl > div,
+  .registry-chain dl > div,
+  .program-card__specs > div {
+    display: grid;
+  }
+
+  .registry-record__fields dd,
+  .registry-chain dd,
+  .program-card__specs dd {
+    text-align: left;
+  }
+
+  .registry-record__status {
+    justify-items: start;
+  }
+
   .hero {
     min-height: 900px;
   }

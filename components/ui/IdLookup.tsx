@@ -1,29 +1,34 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { LineIcon } from "@/components/icons/LineIcon";
 
 /** GR, a three-letter stone code, and a six-digit serial. */
-const PASSPORT_ID = /^GR-[A-Z]{3}-\d{6}$/;
+const GEM_ID = /^GR-[A-Z]{3}-\d{6}$/;
 
 /**
- * The lookup the board draws beside the sample record.
+ * The identifier lookup two boards draw: "Verify in seconds" beside the sample
+ * passport, and "Search the registry" beside the sample asset record. They are
+ * the same control over the same identifier, so they are the same component with
+ * a different noun.
  *
- * There is no registry to query yet, so this checks the shape of the ID and says
- * so plainly. It never reports a stone as found or not found, because either
- * answer would be invented — the same line the waitlist and contact forms hold.
+ * Neither registry exists yet, so this checks the shape of the ID and says so
+ * plainly. It never reports a stone as found or not found, because either answer
+ * would be invented — the same line the waitlist and contact forms hold.
  */
-export function PassportVerifier({
+export function IdLookup({
+  noun,
   placeholder,
   submitLabel,
-  dividerLabel,
-  cameraLabel,
+  children,
 }: {
+  /** What the identifier is called here: "Passport ID" or "Asset ID". */
+  readonly noun: string;
   readonly placeholder: string;
   readonly submitLabel: string;
-  readonly dividerLabel: string;
-  readonly cameraLabel: string;
+  /** The alternative route the board offers beneath the field, if any. */
+  readonly children?: ReactNode;
 }) {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,9 +39,9 @@ export function PassportVerifier({
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalized = value.trim().toUpperCase();
-    if (!PASSPORT_ID.test(normalized)) {
+    if (!GEM_ID.test(normalized)) {
       setChecked("");
-      setError("Passport IDs look like GR-RUB-000245.");
+      setError(`${noun}s look like GR-RUB-000245.`);
       inputRef.current?.focus();
       return;
     }
@@ -45,15 +50,15 @@ export function PassportVerifier({
   };
 
   return (
-    <div className="passport-verify">
+    <div className="id-lookup">
       <form onSubmit={submit} noValidate>
         <label className="sr-only" htmlFor={id}>
-          Passport ID
+          {noun}
         </label>
         <input
           ref={inputRef}
           id={id}
-          name="passport-id"
+          name={noun.toLowerCase().replace(/\s+/g, "-")}
           type="text"
           autoComplete="off"
           spellCheck={false}
@@ -74,8 +79,8 @@ export function PassportVerifier({
       </form>
 
       <p
-        className={`passport-verify__status${
-          error ? " passport-verify__status--error" : ""
+        className={`id-lookup__status${
+          error ? " id-lookup__status--error" : ""
         }`}
         id={`${id}-status`}
         role="status"
@@ -83,22 +88,11 @@ export function PassportVerifier({
       >
         {error ||
           (checked
-            ? `${checked} is a valid Passport ID format. Lookup opens with the platform.`
+            ? `${checked} is a valid ${noun} format. Lookup opens with the platform.`
             : "")}
       </p>
 
-      <p className="passport-verify__divider" aria-hidden="true">
-        <span />
-        {dividerLabel}
-        <span />
-      </p>
-
-      {/* Scanning needs the registry behind it, so the control is shown as a
-          label rather than a button that would open a camera and then have
-          nothing to check the code against. */}
-      <span className="button button--outline" aria-hidden="true">
-        {cameraLabel}
-      </span>
+      {children}
     </div>
   );
 }

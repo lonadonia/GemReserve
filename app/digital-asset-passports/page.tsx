@@ -9,7 +9,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { PassportExplorer } from "@/components/ui/PassportExplorer";
-import { PassportVerifier } from "@/components/ui/PassportVerifier";
+import { IdLookup } from "@/components/ui/IdLookup";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -245,12 +245,23 @@ export default function DigitalAssetPassportsPage() {
             <MotionReveal className="passports-card" delay={70}>
               <h2 className="passports-card__title">{verifyTitle}</h2>
               <p className="passports-card__intro">{verifyIntro}</p>
-              <PassportVerifier
+              <IdLookup
+                noun="Passport ID"
                 placeholder={verifyPlaceholder}
                 submitLabel={verifySubmitLabel}
-                dividerLabel={verifyDividerLabel}
-                cameraLabel={verifyCameraLabel}
-              />
+              >
+                <p className="id-lookup__divider" aria-hidden="true">
+                  <span />
+                  {verifyDividerLabel}
+                  <span />
+                </p>
+                {/* Scanning needs the registry behind it, so the control is a
+                    label rather than a button that would open a camera and then
+                    have nothing to check the code against. */}
+                <span className="button button--outline" aria-hidden="true">
+                  {verifyCameraLabel}
+                </span>
+              </IdLookup>
             </MotionReveal>
 
             <MotionReveal className="passports-card" delay={140}>

@@ -9,6 +9,9 @@ const routes = [
   { name: "gemstone-tokenization", path: "/gemstone-tokenization" },
   { name: "physical-redemption", path: "/physical-redemption" },
   { name: "digital-asset-passports", path: "/digital-asset-passports" },
+  { name: "platform-infrastructure", path: "/platform-infrastructure" },
+  { name: "gemstone-programs", path: "/gemstone-programs" },
+  { name: "asset-registry", path: "/asset-registry" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
   { name: "about", path: "/about" },
@@ -301,7 +304,7 @@ test.describe("technology detail pages", () => {
 
     await field.fill("gr-emr-000125");
     await submit.click();
-    const status = page.locator(".passport-verify__status");
+    const status = page.locator(".id-lookup__status");
     await expect(status).toContainText("valid Passport ID format");
     await expect(status).toContainText("Lookup opens with the platform");
     // It must never report a stone as found, because there is nothing to look in.
@@ -339,5 +342,81 @@ test.describe("technology detail pages", () => {
         document.documentElement.clientWidth,
     );
     expect(overflow).toBeLessThanOrEqual(1);
+  });
+});
+
+test.describe("assets and infrastructure pages", () => {
+  test("the registry lookup checks the Asset ID format and claims nothing more", async ({
+    page,
+  }) => {
+    await page.goto("/asset-registry", { waitUntil: "networkidle" });
+    const field = page.getByLabel("Asset ID");
+    const submit = page.getByRole("button", { name: "Search" });
+
+    await field.fill("nonsense");
+    await submit.click();
+    await expect(
+      page.getByText("Asset IDs look like GR-RUB-000245."),
+    ).toBeVisible();
+
+    await field.fill("gr-emr-000125");
+    await submit.click();
+    const status = page.locator(".id-lookup__status");
+    await expect(status).toContainText("valid Asset ID format");
+    await expect(status).toContainText("Lookup opens with the platform");
+    // It must never report a stone as found, because there is nothing to look in.
+    await expect(status).not.toContainText(/verified|authentic|found/i);
+  });
+
+  test("the programs page lists ten stones, and the fourth is the diamond", async ({
+    page,
+  }) => {
+    await page.goto("/gemstone-programs", { waitUntil: "networkidle" });
+    const cards = page.locator(".program-card");
+    await expect(cards).toHaveCount(10);
+    // The board mislabels this card "Emerald"; the site corrects it, and there
+    // must be exactly one emerald among the ten.
+    await expect(cards.nth(3).getByRole("heading")).toHaveText("Diamond");
+    await expect(
+      page.locator(".program-card h3", { hasText: /^Emerald$/ }),
+    ).toHaveCount(1);
+  });
+
+  test("the registry record and spec rows stay inside the page on a phone", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    for (const route of ["/asset-registry", "/gemstone-programs"]) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      const overflow = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      );
+      expect(overflow, `${route} overflows`).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("the three pages are reachable from the Platform and Assets menus", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    const nav = page.getByRole("navigation", { name: "Primary navigation" });
+
+    await nav.getByRole("button", { name: /Platform/ }).click();
+    await expect(
+      nav.getByRole("link", { name: "Platform Infrastructure", exact: true }),
+    ).toHaveAttribute("href", "/platform-infrastructure");
+
+    await nav.getByRole("button", { name: /Assets/ }).click();
+    for (const [label, href] of [
+      ["Gemstone Programs", "/gemstone-programs"],
+      ["Asset Registry", "/asset-registry"],
+    ] as const) {
+      await expect(
+        nav.getByRole("link", { name: label, exact: true }),
+      ).toHaveAttribute("href", href);
+    }
   });
 });
