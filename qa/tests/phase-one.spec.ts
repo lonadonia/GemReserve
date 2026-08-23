@@ -8,6 +8,9 @@ const routes = [
   { name: "technology", path: "/technology" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
+  { name: "about", path: "/about" },
+  { name: "governance", path: "/governance" },
+  { name: "contact", path: "/contact" },
 ] as const;
 
 const requiredViewports = [
@@ -161,6 +164,32 @@ test.describe("phase-one interactions", () => {
     await expect(success).toBeFocused();
     await success.getByRole("button", { name: "Add another email" }).click();
     await expect(form.getByLabel("Email address")).toBeFocused();
+  });
+
+  test("contact form validates and never claims to have sent anything", async ({
+    page,
+  }) => {
+    await page.goto("/contact", { waitUntil: "networkidle" });
+    const form = page.locator(".contact-form");
+    await form.getByRole("button", { name: "Send Message" }).click();
+    await expect(page.getByText("Enter your full name.")).toBeVisible();
+    await expect(page.getByText("Enter a valid email address.")).toBeVisible();
+    await expect(
+      page.getByText("Confirm you agree to the privacy policy."),
+    ).toBeVisible();
+
+    await form.getByLabel(/Full Name/).fill("Preview Person");
+    await form.getByLabel(/Email Address/).fill("preview@example.com");
+    await form.getByLabel(/Subject/).selectOption("General enquiry");
+    await form.getByLabel(/Your Message/).fill("Testing the preview form.");
+    await form.getByLabel(/I confirm/).check();
+    await form.getByRole("button", { name: "Send Message" }).click();
+
+    const success = page.getByRole("status");
+    await expect(success).toContainText("demonstration success state");
+    await expect(success).toBeFocused();
+    await success.getByRole("button", { name: "Write another message" }).click();
+    await expect(page.locator(".contact-form")).toBeVisible();
   });
 
   test("asset filters and sorting work", async ({ page }) => {

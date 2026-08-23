@@ -8,6 +8,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/technology",
     "/enterprise",
     "/investors",
+    "/about",
+    "/governance",
+    "/contact",
   ].map((path) => ({
     url: `https://gemreserve.io${path}`,
     lastModified: new Date("2026-08-22"),

@@ -3586,6 +3586,969 @@ h3 {
   line-height: 1.55;
 }
 
+/* ---------------------------------------------------------------------------
+   Company pages: About, Governance and Contact.
+   --------------------------------------------------------------------------- */
+
+.about-hero__scrim,
+.governance-hero__scrim,
+.contact-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 86%) 30%,
+      rgb(1 5 8 / 26%) 56%,
+      transparent 74%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 60%), transparent 32%);
+}
+
+/* The About board stacks copy, a four-cell value row and the mission panel down
+   the left of the plate, so the hero runs as a column the way Assets does
+   rather than as the two-column grid the other heroes use. */
+.about-hero {
+  min-height: min(clamp(660px, 46vw, 900px), 90vh);
+}
+
+.about-hero__inner {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 22px;
+  padding-block: 26px 28px;
+}
+
+.about-hero__copy {
+  max-width: 640px;
+}
+
+/* The title alternates plain and gold runs inside one line, so its spans stay
+   inline instead of taking the stacked treatment the other heroes use. */
+.about-hero__title span {
+  display: inline;
+}
+
+.about-hero__title {
+  margin-bottom: 18px;
+  font-size: clamp(2.3rem, 3.5vw, 3.7rem);
+}
+
+.about-hero__copy .eyebrow {
+  margin-bottom: 10px;
+}
+
+.about-hero__values {
+  min-width: 0;
+  max-width: 700px;
+}
+
+.about-hero__value-grid {
+  width: 100%;
+  padding: 15px 6px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background: rgb(3 10 13 / 84%);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(12px);
+}
+
+.about-hero__value-grid li {
+  display: grid;
+  min-height: 0;
+  align-content: start;
+  justify-items: center;
+  grid-template-rows: auto auto 1fr;
+  gap: 7px;
+  padding-block: 0;
+}
+
+.about-hero__value-grid svg,
+.about-hero__value-grid p {
+  margin: 0;
+}
+
+.about-hero__value-grid h3 {
+  display: flex;
+  min-height: 2.6em;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+/* The mission panel sits under the plate's stones on the board, clear of the
+   copy column, so it is aligned to the right of the hero rather than the left. */
+.about-hero__callout {
+  align-self: end;
+  width: min(100%, 460px);
+}
+
+.about-hero__callout h2 {
+  margin-bottom: 8px;
+  color: var(--gold-light);
+  font-size: 0.97rem;
+  letter-spacing: 0.04em;
+}
+
+.governance-hero__callout {
+  align-self: start;
+  width: min(100%, 500px);
+  /* Without this the panel auto-places into the hero's second column, which is
+     the photograph, and lands across the crest. */
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: -6px;
+}
+
+.governance-hero__callout aside {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+  text-align: left;
+}
+
+.governance-hero__callout svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.governance-hero__callout h2 {
+  margin-bottom: 6px;
+  color: var(--gold-light);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.governance-hero__inner,
+.contact-hero__inner {
+  grid-template-columns: minmax(300px, 0.66fr) 1fr;
+}
+
+.governance-hero__inner {
+  align-content: center;
+  grid-template-rows: auto auto;
+  row-gap: 18px;
+}
+
+.governance-hero__copy {
+  grid-row: 1;
+}
+
+.governance-hero__copy .hero__description {
+  margin-bottom: 22px;
+}
+
+.contact-hero__rule {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: 1px;
+  margin: 22px 0;
+  background: linear-gradient(
+    90deg,
+    var(--gold),
+    rgb(216 154 39 / 20%) 88%,
+    transparent
+  );
+}
+
+.contact-hero__eyebrow {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.02rem;
+  letter-spacing: 0.05em;
+}
+
+/* --- About: story and vision ------------------------------------------------ */
+
+.about-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+  padding-top: var(--section-gap);
+}
+
+.about-story__card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.about-card__title {
+  margin-bottom: 16px;
+  color: var(--gold-light);
+  font-size: clamp(1rem, 1.35vw, 1.24rem);
+  letter-spacing: 0.02em;
+}
+
+.about-card__title--spaced {
+  margin-top: 26px;
+}
+
+.about-story__body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.about-story__image {
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.about-story__body p {
+  margin: 0 0 14px;
+  color: #c1c7c9;
+  font-size: 0.83rem;
+  line-height: 1.75;
+}
+
+.about-story__body p:last-child {
+  margin-bottom: 0;
+}
+
+.about-story__card > .about-values {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.about-vision {
+  margin: 0;
+  color: #c1c7c9;
+  font-size: 0.87rem;
+  line-height: 1.75;
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-values li {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  grid-template-rows: auto auto 1fr;
+  gap: 8px;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.about-values li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.about-values svg {
+  color: var(--gold-light);
+}
+
+.about-values h3 {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.about-values p {
+  margin: 0;
+  color: #aeb5b8;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+/* --- About: capability row -------------------------------------------------- */
+
+.about-capabilities {
+  padding-top: var(--section-gap);
+}
+
+.about-capabilities__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 22px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+  list-style: none;
+}
+
+.about-capabilities__grid li {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  grid-template-rows: auto auto 1fr;
+  gap: 10px;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.about-capabilities__grid li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.about-capabilities__grid h3 {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.about-capabilities__grid p {
+  margin: 0;
+  color: #b4babd;
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+.about-capabilities__grid img {
+  width: 100%;
+  height: auto;
+  align-self: end;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  object-fit: cover;
+  transition: transform 340ms var(--ease-premium);
+}
+
+.about-capabilities__image--top {
+  object-position: center top;
+}
+
+.about-capabilities__grid li:hover img {
+  transform: scale(1.04);
+}
+
+.about-metrics {
+  padding-top: var(--section-gap);
+}
+
+.about-metrics__strip {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.about-metrics__strip .metric-item > div {
+  min-width: 0;
+}
+
+.about-metrics__strip dd small {
+  display: block;
+  margin-top: 3px;
+  color: #98a0a3;
+  font-size: 0.66rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.about-waitlist {
+  margin-top: var(--section-gap);
+}
+
+/* --- Governance ------------------------------------------------------------- */
+
+.governance-principles,
+.governance-accountability {
+  padding-top: var(--section-gap);
+}
+
+.governance-principles__grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.governance-accountability__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.governance-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 18px;
+  padding-top: var(--section-gap);
+}
+
+.governance-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.governance-card__title {
+  margin-bottom: 18px;
+  color: var(--gold-light);
+  font-size: clamp(1rem, 1.35vw, 1.24rem);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.governance-structure {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+.governance-pyramid {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 26px rgb(0 0 0 / 55%));
+}
+
+.governance-pyramid__label {
+  fill: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.governance-pyramid__label--on-gold {
+  fill: #17110a;
+}
+
+.governance-pyramid__members {
+  fill: #b7bec0;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 12px;
+}
+
+.governance-pyramid__members--on-gold {
+  fill: #2b2213;
+}
+
+.governance-structure__list,
+.governance-steps {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.governance-structure__list > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+}
+
+.governance-steps {
+  flex: 1;
+  align-content: space-between;
+}
+
+/* The board runs a dotted rail down the numbers; it is drawn on the item so it
+   never reaches a screen reader and disappears cleanly on the last step. */
+.governance-steps > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: start;
+  gap: 12px;
+}
+
+.governance-steps > li:not(:last-child)::after {
+  position: absolute;
+  top: 34px;
+  bottom: -20px;
+  left: 15px;
+  border-left: 1px dashed rgb(216 154 39 / 45%);
+  content: "";
+}
+
+.governance-steps__number {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+  background: rgb(3 10 14 / 92%);
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.92rem;
+}
+
+.governance-structure__list svg,
+.governance-steps svg {
+  margin-top: 3px;
+  color: var(--gold-light);
+}
+
+.governance-structure__list h3,
+.governance-steps h3 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.governance-structure__list p,
+.governance-steps p {
+  margin: 0;
+  color: #b6bcbf;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+/* The commitment band reuses the closing-band shape but ends in a mark strip
+   rather than a button, so its third column is a list. */
+.governance-commitment {
+  grid-template-columns:
+    minmax(230px, 0.8fr) minmax(280px, 1.05fr)
+    minmax(300px, 0.95fr);
+  margin-top: var(--section-gap);
+}
+
+.governance-commitment__marks ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0 22px 0 0;
+  list-style: none;
+}
+
+.governance-commitment__marks li {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.governance-commitment__marks li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+/* --- Contact ---------------------------------------------------------------- */
+
+.contact-body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  align-items: stretch;
+  gap: 18px;
+  padding-top: var(--section-gap);
+}
+
+.contact-column {
+  display: grid;
+  gap: 18px;
+}
+
+.contact-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.contact-panel__title {
+  margin-bottom: 14px;
+  color: var(--gold-light);
+  font-size: clamp(1rem, 1.35vw, 1.24rem);
+  letter-spacing: 0.02em;
+}
+
+.contact-panel__intro {
+  margin-bottom: 18px;
+  color: #b6bcbf;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.contact-channels {
+  display: grid;
+  gap: clamp(18px, 2.4vw, 26px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-channels > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+}
+
+.contact-channels__icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+  color: var(--gold-light);
+  transition:
+    border-color 220ms ease,
+    transform 260ms var(--ease-premium);
+}
+
+.contact-channels > li:hover .contact-channels__icon {
+  border-color: rgb(243 193 90 / 70%);
+  transform: translateY(-2px);
+}
+
+.contact-channels h3 {
+  margin-bottom: 3px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.contact-channels a {
+  display: block;
+  color: var(--ivory);
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.contact-channels a:hover {
+  color: var(--gold-light);
+}
+
+.contact-channels p {
+  margin: 3px 0 0;
+  color: #a7aeb1;
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
+.contact-privacy {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(2 8 11 / 60%);
+}
+
+.contact-privacy svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.contact-privacy h3 {
+  margin-bottom: 6px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.contact-privacy p {
+  margin: 0;
+  color: #a7aeb1;
+  font-size: 0.71rem;
+  line-height: 1.6;
+}
+
+/* --- Contact form ----------------------------------------------------------- */
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+}
+
+.contact-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-field {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.contact-field label {
+  color: #c2c8ca;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+}
+
+.contact-field label span {
+  color: var(--gold);
+}
+
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 6px;
+  background: rgb(2 8 11 / 72%);
+  color: var(--ivory);
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.contact-field textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+.contact-field select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #d89a27 50%),
+    linear-gradient(135deg, #d89a27 50%, transparent 50%);
+  background-position:
+    calc(100% - 19px) calc(50% + 1px),
+    calc(100% - 13px) calc(50% + 1px);
+  background-repeat: no-repeat;
+  background-size:
+    6px 6px,
+    6px 6px;
+  padding-right: 38px;
+}
+
+.contact-field input:focus-visible,
+.contact-field select:focus-visible,
+.contact-field textarea:focus-visible {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgb(216 154 39 / 24%);
+  outline: none;
+}
+
+.contact-field [aria-invalid="true"] {
+  border-color: #d4574a;
+}
+
+.contact-error {
+  margin: 0;
+  color: #f0a196;
+  font-size: 0.72rem;
+}
+
+.contact-consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+}
+
+.contact-consent input {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: #d89a27;
+}
+
+.contact-consent label {
+  color: #b6bcbf;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.contact-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 10px;
+}
+
+.contact-success {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px 14px;
+  padding: 18px 20px;
+  border: 1px solid rgb(107 203 112 / 42%);
+  border-radius: 7px;
+  background: rgb(107 203 112 / 8%);
+}
+
+.contact-success > span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(107 203 112 / 20%);
+  color: #8fd894;
+}
+
+.contact-success strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--ivory);
+  font-size: 0.9rem;
+}
+
+.contact-success p {
+  margin: 0;
+  color: #b6bcbf;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.contact-success a {
+  color: var(--gold-light);
+}
+
+.contact-success button {
+  grid-column: 2;
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold-light);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+
+/* --- Contact offices and closing band --------------------------------------- */
+
+.contact-offices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-offices > li {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  text-align: center;
+}
+
+.contact-offices > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.contact-offices svg {
+  color: var(--gold-light);
+}
+
+.contact-offices h3 {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.contact-offices address {
+  display: grid;
+  gap: 2px;
+  color: #b6bcbf;
+  font-size: 0.76rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.contact-offices a {
+  color: #c9cdcf;
+  font-size: 0.76rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-offices a:last-child {
+  color: var(--gold-light);
+}
+
+.contact-swiss {
+  margin-top: var(--section-gap);
+}
+
+.contact-swiss .swiss-cta__copy h2 span {
+  display: block;
+}
+
+.contact-swiss__marks ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 22px 14px 0;
+  list-style: none;
+}
+
+.contact-swiss__marks li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+  text-align: left;
+}
+
+.contact-swiss__marks svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.contact-swiss__marks h3 {
+  margin: 0 0 2px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.contact-swiss__marks p {
+  margin: 0;
+  color: #b0b7ba;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
 @media (max-width: 1460px) {
   .desktop-nav-future {
     display: none;
@@ -3593,6 +4556,28 @@ h3 {
 }
 
 @media (max-width: 1330px) {
+  .about-capabilities__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+
+  .about-capabilities__grid li:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .governance-detail,
+  .about-story {
+    grid-template-columns: 1fr;
+  }
+
+  .governance-structure {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  }
+
+  .contact-body {
+    grid-template-columns: 1fr;
+  }
+
   .investors-executive__panel {
     grid-template-columns: 1fr;
   }
@@ -3876,6 +4861,31 @@ h3 {
 }
 
 @media (max-width: 980px) {
+  .about-values,
+  .governance-commitment__marks ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 0;
+  }
+
+  .about-values li:nth-child(3n + 1),
+  .governance-commitment__marks li:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .governance-commitment__marks ul {
+    padding: 0 22px 18px;
+  }
+
+  .contact-swiss__marks ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 22px 20px;
+  }
+
+  .about-hero__callout,
+  .governance-hero__callout {
+    width: 100%;
+  }
+
   .swiss-cta {
     grid-template-columns: minmax(190px, 0.85fr) minmax(0, 1.6fr);
     align-items: stretch;
@@ -4045,6 +5055,72 @@ h3 {
 }
 
 @media (max-width: 760px) {
+  .about-capabilities__grid,
+  .about-values,
+  .governance-commitment__marks ul,
+  .contact-offices,
+  .contact-form__row,
+  .governance-structure,
+  .contact-swiss__marks ul {
+    grid-template-columns: 1fr;
+  }
+
+  .about-capabilities__grid {
+    padding: 18px;
+    gap: 22px 0;
+  }
+
+  .about-capabilities__grid li,
+  .about-values li,
+  .governance-commitment__marks li,
+  .contact-offices > li {
+    padding-inline: 0;
+  }
+
+  .about-capabilities__grid li + li,
+  .about-values li + li,
+  .governance-commitment__marks li + li,
+  .contact-offices > li + li {
+    border-left: 0;
+  }
+
+  .about-capabilities__grid li + li,
+  .about-values li + li,
+  .contact-offices > li + li {
+    padding-top: 20px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .about-capabilities__grid img {
+    max-width: 320px;
+    justify-self: center;
+  }
+
+  .about-story__body {
+    grid-template-columns: 1fr;
+  }
+
+  .about-story__image {
+    max-width: 300px;
+    aspect-ratio: 4 / 3;
+    margin-inline: auto;
+  }
+
+  .about-story__card,
+  .governance-card,
+  .contact-panel {
+    padding: 18px;
+  }
+
+  .governance-pyramid {
+    max-width: 340px;
+    margin-inline: auto;
+  }
+
+  .contact-swiss__marks li {
+    justify-items: start;
+  }
+
   .investors-thesis,
   .roadmap,
   .financial-grid,

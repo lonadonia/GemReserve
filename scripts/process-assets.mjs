@@ -21,7 +21,10 @@ await Promise.all(
 );
 
 async function exportPair(input, outputBase, resize, options = {}) {
-  const pipeline = sharp(input).resize(resize);
+  const base = sharp(input);
+  const pipeline = (
+    options.extract ? base.extract(options.extract) : base
+  ).resize(resize);
   await Promise.all([
     pipeline
       .clone()
@@ -33,6 +36,124 @@ async function exportPair(input, outputBase, resize, options = {}) {
       .toFile(`${outputBase}.avif`),
   ]);
 }
+
+// The brand exports run before the heroes because two of the Company heroes
+// composite the crest into their scene, and the crest is derived here. Leaving
+// this block below them would have fed those heroes the previous run's crest.
+// Brand lockup exports are derived from the rendered master artwork. The master
+// packs the crest and the wordmark side by side separated by a band of fully
+// transparent columns, so the two marks are located by scanning the alpha
+// channel instead of hard-coding pixel offsets.
+const logoMaster = path.join(masters, "logo-master.png");
+
+async function alphaColumnProfile(input) {
+  const { data, info } = await sharp(input)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const columns = new Array(info.width).fill(0);
+  let top = info.height;
+  let bottom = -1;
+  for (let y = 0; y < info.height; y += 1) {
+    for (let x = 0; x < info.width; x += 1) {
+      if (data[(y * info.width + x) * info.channels + 3] > 8) {
+        columns[x] += 1;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+      }
+    }
+  }
+  return { columns, top, bottom, width: info.width, height: info.height };
+}
+
+function opaqueRuns(columns) {
+  const runs = [];
+  let start = -1;
+  for (let x = 0; x < columns.length; x += 1) {
+    if (columns[x] > 0) {
+      if (start < 0) start = x;
+    } else if (start >= 0) {
+      runs.push({ left: start, right: x - 1 });
+      start = -1;
+    }
+  }
+  if (start >= 0) runs.push({ left: start, right: columns.length - 1 });
+  return runs;
+}
+
+const logoProfile = await alphaColumnProfile(logoMaster);
+const logoRuns = opaqueRuns(logoProfile.columns);
+if (logoRuns.length < 2) {
+  throw new Error(
+    `Expected logo-master.png to hold a crest and a wordmark separated by transparent columns; found ${logoRuns.length} group(s).`,
+  );
+}
+
+const lockupBox = {
+  left: logoRuns[0].left,
+  top: logoProfile.top,
+  width: logoRuns.at(-1).right - logoRuns[0].left + 1,
+  height: logoProfile.bottom - logoProfile.top + 1,
+};
+
+// The crest is the leftmost group. Its vertical extent is measured on its own so
+// the square icon exports are not padded out by the taller wordmark box.
+const crestColumnSlice = await sharp(logoMaster)
+  .extract({
+    left: logoRuns[0].left,
+    top: 0,
+    width: logoRuns[0].right - logoRuns[0].left + 1,
+    height: logoProfile.height,
+  })
+  .png()
+  .toBuffer();
+const crestProfile = await alphaColumnProfile(crestColumnSlice);
+const crestBox = {
+  left: logoRuns[0].left,
+  top: crestProfile.top,
+  width: logoRuns[0].right - logoRuns[0].left + 1,
+  height: crestProfile.bottom - crestProfile.top + 1,
+};
+
+const lockup = await sharp(logoMaster).extract(lockupBox).png().toBuffer();
+const crest = await sharp(logoMaster).extract(crestBox).png().toBuffer();
+
+for (const width of [1200, 2400]) {
+  const resized = sharp(lockup).resize({ width, fit: "inside" });
+  await Promise.all([
+    resized
+      .clone()
+      .png({ compressionLevel: 9 })
+      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.png`)),
+    resized
+      .clone()
+      .webp({ quality: 92, smartSubsample: true })
+      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.webp`)),
+  ]);
+}
+
+// In-page crest exports keep the artwork's natural aspect ratio so the layout
+// boxes in the hero overlays and the lifecycle diagram are not letterboxed.
+for (const size of [512, 1024]) {
+  await sharp(crest)
+    .resize({ width: size })
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(brandDir, `gemreserve-shield-${size}.png`));
+}
+
+// App/PWA icons stay square-contained; those surfaces require a square canvas.
+for (const size of [192, 512]) {
+  await sharp(crest)
+    .resize({ width: size, height: size, fit: "contain" })
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(brandDir, `app-icon-${size}.png`));
+}
+
+// Favicon source consumed by Next.js file-based metadata at app/icon.png.
+await sharp(crest)
+  .resize({ width: 256, height: 256, fit: "contain" })
+  .png({ compressionLevel: 9 })
+  .toFile(path.join(root, "app", "icon.png"));
 
 // Each hero is exported at the aspect ratio of the box it fills, so object-fit
 // has almost nothing left to crop and the whole plate stays on screen. The Home
@@ -93,19 +214,124 @@ const heroJobs = [
     padLeft: 0.36,
     mobileWindow: [0.16, 1],
   },
+  {
+    source: "about-hero-plate.png",
+    name: "about-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.32, 1],
+    // The board shows the crest through the loupe glass, so it is laid into the
+    // lens at partial opacity rather than stood on the slate.
+    crestPlacement: {
+      heightFraction: 0.17,
+      centreX: 0.518,
+      centreY: 0.3,
+      opacity: 0.72,
+    },
+  },
+  {
+    source: "governance-hero-plate.png",
+    name: "governance-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.3,
+    mobileWindow: [0.26, 1],
+    crestPlacement: { heightFraction: 0.47, centreX: 0.42, centreY: 0.47 },
+  },
+  {
+    source: "contact-hero-master.png",
+    name: "contact-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.3,
+    mobileWindow: [0.24, 1],
+  },
 ];
+
+// Drop the crest into a generated scene. A generated shield would be a
+// different mark every time and none of them would be GemReserve's, so the
+// boards' crest is composited from the brand artwork instead. It is grounded
+// with a shadow built from its own alpha: squashed, blurred and laid underneath,
+// which is what stops it reading as a sticker on top of a photograph.
+async function standCrest(
+  plate,
+  { heightFraction, centreX, centreY, opacity = 1 },
+) {
+  const scene = await sharp(plate).metadata();
+  const crestHeight = Math.round(scene.height * heightFraction);
+  const mark = await sharp(crest)
+    .resize({ height: crestHeight, fit: "inside" })
+    .ensureAlpha()
+    .composite(
+      opacity < 1
+        ? [
+            {
+              input: Buffer.from([255, 255, 255, Math.round(opacity * 255)]),
+              raw: { width: 1, height: 1, channels: 4 },
+              tile: true,
+              blend: "dest-in",
+            },
+          ]
+        : [],
+    )
+    .png()
+    .toBuffer();
+  const crestMeta = await sharp(mark).metadata();
+  const left = Math.round(scene.width * centreX - crestMeta.width / 2);
+  const top = Math.round(scene.height * centreY - crestMeta.height / 2);
+
+  const layers = [];
+  if (opacity === 1) {
+    const shadowHeight = Math.max(1, Math.round(crestMeta.height * 0.24));
+    const shadow = await sharp(mark)
+      .extractChannel("alpha")
+      .resize({ width: crestMeta.width, height: shadowHeight, fit: "fill" })
+      .blur(Math.max(1, crestMeta.width * 0.035))
+      .toColourspace("b-w")
+      .toBuffer();
+    layers.push({
+      input: await sharp({
+        create: {
+          width: crestMeta.width,
+          height: shadowHeight,
+          channels: 3,
+          background: { r: 0, g: 0, b: 0 },
+        },
+      })
+        .joinChannel(shadow)
+        .png()
+        .toBuffer(),
+      left,
+      top: top + crestMeta.height - Math.round(shadowHeight * 0.55),
+    });
+  }
+  layers.push({ input: mark, left, top });
+
+  return sharp(plate).composite(layers).png().toBuffer();
+}
 
 // Extend a plate leftwards using the mean colour of its own left edge, so the
 // subject clears the copy column without cropping any of it away.
 async function padPlateLeft(input, fraction) {
   const meta = await sharp(input).metadata();
   const pad = Math.round(meta.width * fraction);
+  // The plate's own leftmost strip is stretched across the pad rather than the
+  // pad being filled with that strip's average colour. Every one of these plates
+  // carries a vignette into its left edge, and a flat panel butted against a
+  // gradient shows a hard vertical seam exactly where the copy column sits.
+  // Stretching a 10px strip keeps the vertical falloff and joins invisibly.
   const strip = await sharp(input)
-    .extract({ left: 0, top: 0, width: 60, height: meta.height })
-    .stats();
-  const [r, g, b] = strip.channels.slice(0, 3).map((c) => Math.round(c.mean));
+    .extract({ left: 0, top: 0, width: 10, height: meta.height })
+    .resize({ width: pad, height: meta.height, fit: "fill" })
+    .png()
+    .toBuffer();
   return sharp(input)
-    .extend({ left: pad, background: { r, g, b, alpha: 1 } })
+    .extend({ left: pad, background: { r: 0, g: 0, b: 0, alpha: 1 } })
+    .composite([{ input: strip, left: 0, top: 0 }])
     .png()
     .toBuffer();
 }
@@ -129,8 +355,11 @@ for (const {
   height,
   mobileWindow,
   padLeft,
+  crestPlacement,
 } of heroJobs) {
-  const input = path.join(masters, source);
+  const input = crestPlacement
+    ? await standCrest(path.join(masters, source), crestPlacement)
+    : path.join(masters, source);
   const plate = padLeft ? await padPlateLeft(input, padLeft) : input;
   await exportPair(plate, path.join(heroDir, name), {
     width,
@@ -165,6 +394,15 @@ await exportPair(
   { width: 1800, height: 640, fit: "cover", position: "center" },
 );
 
+// The flag sits at the far left of the panorama and the summit near its
+// middle; this window is the narrowest one that still holds both.
+await exportPair(
+  path.join(masters, "swiss-matterhorn-master.png"),
+  path.join(sectionDir, "swiss-matterhorn-square"),
+  { width: 760, height: 760, fit: "cover", position: "left" },
+  { extract: { left: 60, top: 0, width: 809, height: 809 } },
+);
+
 await exportPair(
   path.join(masters, "vault-tray-master.png"),
   path.join(sectionDir, "vault-tray"),
@@ -175,6 +413,14 @@ await exportPair(
   path.join(masters, "blockchain-network-master.png"),
   path.join(sectionDir, "blockchain-network"),
   { width: 1600, height: 900, fit: "cover", position: "center" },
+);
+
+// The About board pairs its capability row with five photographs. Four already
+// exist in this library; only the gemological one had to be generated.
+await exportPair(
+  path.join(masters, "gemological-verification-master.png"),
+  path.join(sectionDir, "gemological-verification"),
+  { width: 1200, height: 900, fit: "cover", position: "center" },
 );
 
 // Plates that ship with their own alpha are only ever sized, never cropped to a
@@ -462,121 +708,6 @@ for (const [index, name] of gemNames.entries()) {
       .toFile(path.join(gemDir, `${name}.avif`)),
   ]);
 }
-
-// Brand lockup exports are derived from the rendered master artwork. The master
-// packs the crest and the wordmark side by side separated by a band of fully
-// transparent columns, so the two marks are located by scanning the alpha
-// channel instead of hard-coding pixel offsets.
-const logoMaster = path.join(masters, "logo-master.png");
-
-async function alphaColumnProfile(input) {
-  const { data, info } = await sharp(input)
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  const columns = new Array(info.width).fill(0);
-  let top = info.height;
-  let bottom = -1;
-  for (let y = 0; y < info.height; y += 1) {
-    for (let x = 0; x < info.width; x += 1) {
-      if (data[(y * info.width + x) * info.channels + 3] > 8) {
-        columns[x] += 1;
-        if (y < top) top = y;
-        if (y > bottom) bottom = y;
-      }
-    }
-  }
-  return { columns, top, bottom, width: info.width, height: info.height };
-}
-
-function opaqueRuns(columns) {
-  const runs = [];
-  let start = -1;
-  for (let x = 0; x < columns.length; x += 1) {
-    if (columns[x] > 0) {
-      if (start < 0) start = x;
-    } else if (start >= 0) {
-      runs.push({ left: start, right: x - 1 });
-      start = -1;
-    }
-  }
-  if (start >= 0) runs.push({ left: start, right: columns.length - 1 });
-  return runs;
-}
-
-const logoProfile = await alphaColumnProfile(logoMaster);
-const logoRuns = opaqueRuns(logoProfile.columns);
-if (logoRuns.length < 2) {
-  throw new Error(
-    `Expected logo-master.png to hold a crest and a wordmark separated by transparent columns; found ${logoRuns.length} group(s).`,
-  );
-}
-
-const lockupBox = {
-  left: logoRuns[0].left,
-  top: logoProfile.top,
-  width: logoRuns.at(-1).right - logoRuns[0].left + 1,
-  height: logoProfile.bottom - logoProfile.top + 1,
-};
-
-// The crest is the leftmost group. Its vertical extent is measured on its own so
-// the square icon exports are not padded out by the taller wordmark box.
-const crestColumnSlice = await sharp(logoMaster)
-  .extract({
-    left: logoRuns[0].left,
-    top: 0,
-    width: logoRuns[0].right - logoRuns[0].left + 1,
-    height: logoProfile.height,
-  })
-  .png()
-  .toBuffer();
-const crestProfile = await alphaColumnProfile(crestColumnSlice);
-const crestBox = {
-  left: logoRuns[0].left,
-  top: crestProfile.top,
-  width: logoRuns[0].right - logoRuns[0].left + 1,
-  height: crestProfile.bottom - crestProfile.top + 1,
-};
-
-const lockup = await sharp(logoMaster).extract(lockupBox).png().toBuffer();
-const crest = await sharp(logoMaster).extract(crestBox).png().toBuffer();
-
-for (const width of [1200, 2400]) {
-  const resized = sharp(lockup).resize({ width, fit: "inside" });
-  await Promise.all([
-    resized
-      .clone()
-      .png({ compressionLevel: 9 })
-      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.png`)),
-    resized
-      .clone()
-      .webp({ quality: 92, smartSubsample: true })
-      .toFile(path.join(brandDir, `gemreserve-horizontal-${width}.webp`)),
-  ]);
-}
-
-// In-page crest exports keep the artwork's natural aspect ratio so the layout
-// boxes in the hero overlays and the lifecycle diagram are not letterboxed.
-for (const size of [512, 1024]) {
-  await sharp(crest)
-    .resize({ width: size })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(brandDir, `gemreserve-shield-${size}.png`));
-}
-
-// App/PWA icons stay square-contained; those surfaces require a square canvas.
-for (const size of [192, 512]) {
-  await sharp(crest)
-    .resize({ width: size, height: size, fit: "contain" })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(brandDir, `app-icon-${size}.png`));
-}
-
-// Favicon source consumed by Next.js file-based metadata at app/icon.png.
-await sharp(crest)
-  .resize({ width: 256, height: 256, fit: "contain" })
-  .png({ compressionLevel: 9 })
-  .toFile(path.join(root, "app", "icon.png"));
 
 // Process-step artwork. Each step has its own generated plate in
 // assets/masters/process/, already cut off its backdrop and shipped with an

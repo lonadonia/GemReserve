@@ -84,14 +84,14 @@ export const navigationGroups = [
   },
   {
     label: "Company",
-    href: null,
+    href: "/about",
     items: [
-      { label: "About Us", href: null },
+      { label: "About Us", href: "/about" },
       { label: "Our Partners", href: null },
-      { label: "Governance", href: null },
+      { label: "Governance", href: "/governance" },
       { label: "Careers", href: null },
       { label: "News & Announcements", href: null },
-      { label: "Contact Us", href: null },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ] as const satisfies readonly NavigationGroup[];
