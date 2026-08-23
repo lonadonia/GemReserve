@@ -139,7 +139,7 @@ Between Real Gems and Digital Assets..PNG`.
 - **Brand shell:** A near-black or blue-black header anchors the gold shield,
   `GemReserve.io` wordmark, tracked `OWN. TRADE. REDEEM.` line, uppercase
   dropdown navigation, Login, and a gold waitlist action. Most informational
-  boards add a slim Swiss-company announcement strip; the asset catalog uses a
+  boards add a slim company announcement strip; the asset catalog uses a
   more compact header variant. A dense multi-column footer repeats throughout.
 - **Typography and palette:** High-contrast editorial serif headings pair with
   compact sans-serif body and UI copy. Warm metallic gold, ivory, muted gray,

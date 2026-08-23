@@ -20,7 +20,7 @@ import {
   powerPillarsSectionTitle,
   processSectionTitle,
   processSteps,
-  swissCta,
+  trustCta,
   technologySecurityBullets,
   technologySecuritySectionTitle,
 } from "@/content/how-it-works";
@@ -156,28 +156,28 @@ export default function HowItWorksPage() {
         </section>
 
         <section
-          className="swiss-cta container-wide"
-          aria-labelledby="swiss-cta-title"
+          className="trust-cta container-wide"
+          aria-labelledby="trust-cta-title"
         >
-          <MotionReveal className="swiss-cta__visual">
+          <MotionReveal className="trust-cta__visual">
             <ImageWithGlow
-              className="swiss-cta__image"
-              src="/images/sections/swiss-matterhorn.webp"
-              alt="The Swiss flag before a snow-covered Matterhorn"
+              className="trust-cta__image"
+              src="/images/sections/lithuania-wide.webp"
+              alt="The Lithuanian flag before Trakai Island Castle at sunset"
               sizes="(max-width: 760px) 92vw, 34vw"
             />
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__copy" delay={70}>
-            <h2 id="swiss-cta-title">{swissCta.heading}</h2>
-            <p>{swissCta.description}</p>
+          <MotionReveal className="trust-cta__copy" delay={70}>
+            <h2 id="trust-cta-title">{trustCta.heading}</h2>
+            <p>{trustCta.description}</p>
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__action" delay={130}>
+          <MotionReveal className="trust-cta__action" delay={130}>
             <Link className="button button--outline" href="/#waitlist">
-              {swissCta.actionLabel}
+              {trustCta.actionLabel}
             </Link>
-            <p>{swissCta.supportingText}</p>
+            <p>{trustCta.supportingText}</p>
           </MotionReveal>
         </section>
       </main>

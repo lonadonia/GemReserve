@@ -7,7 +7,7 @@ GemReserve.io Phase One is a responsive Next.js App Router preview for a premium
 | Route           | Purpose                                                                                                          |
 | --------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `/`             | Brand story, trust pillars, process overview, gemstone preview, platform metrics, and demo waitlist form         |
-| `/how-it-works` | Nine-step operating process, trust pillars, technology/security overview, asset lifecycle, and Swiss trust CTA   |
+| `/how-it-works` | Nine-step operating process, trust pillars, technology/security overview, asset lifecycle, and closing trust CTA |
 | `/assets`       | Gemstone value proposition, metrics, working category filter and sort controls, catalog, and investment overview |
 
 ## Prerequisites
@@ -67,7 +67,7 @@ assets/masters/
   catalog-gemstones-master.png
   vault-security-master.png
   vault-tray-master.png
-  swiss-matterhorn-master.png
+  lithuania-wide-master.png
   blockchain-network-master.png
   logo-master.png
   process/               Eight cut-out step plates, one per process step
@@ -75,7 +75,7 @@ assets/masters/
 public/
   brand/                 Horizontal lockup, crest, and app-icon exports cut from the logo master
   images/heroes/         Desktop plates cut to each hero box (1920×822; How It Works 1920×960) plus uncropped mobile plates, WebP/AVIF pairs
-  images/sections/       Responsive vault, Swiss, tray, and blockchain WebP/AVIF pairs
+  images/sections/       Responsive vault, jurisdiction, tray, and blockchain WebP/AVIF pairs
   images/gems/           Ten 480×480 transparent gemstone WebP/AVIF pairs
   images/process/        Nine 400×400 transparent process-step plates, WebP/AVIF pairs
 ```
@@ -100,7 +100,7 @@ The site faithfully reproduces supplied preview copy and example catalog data. C
 
 Before a public production launch, the client must verify at minimum:
 
-- Swiss company and location statements;
+- Company, jurisdiction and registered-address statements;
 - physical backing, ownership, tokenization, on-chain record, audit, and proof-of-reserve claims;
 - laboratory verification, gemstone reports, provenance, grading, and appraisal claims;
 - custody providers, vault locations, insurance, security, and compliance claims;

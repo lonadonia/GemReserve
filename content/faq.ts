@@ -1,3 +1,5 @@
+import { company } from "./company";
+
 export interface FaqHeroContent {
   breadcrumb: readonly [string, string];
   titleLead: string;
@@ -76,8 +78,7 @@ export const faqEntries: readonly FaqEntry[] = [
     id: "what-is",
     category: "general",
     question: "What is GemReserve.io?",
-    answer:
-      "GemReserve.io is a Swiss company at the forefront of real-world asset tokenization, transforming the gemstone industry through blockchain technology, institutional-grade custody and unparalleled transparency. Our mission is to become the global standard for gemstone ownership and investment by combining the timeless value of natural gems with the efficiency, liquidity and accessibility of digital assets.",
+    answer: `GemReserve.io is operated by ${company.legalName}, a ${company.countryAdjective} company at the forefront of real-world asset tokenization, transforming the gemstone industry through blockchain technology, institutional-grade custody and unparalleled transparency. Our mission is to become the global standard for gemstone ownership and investment by combining the timeless value of natural gems with the efficiency, liquidity and accessibility of digital assets.`,
   },
   {
     id: "what-is-token",
@@ -97,8 +98,7 @@ export const faqEntries: readonly FaqEntry[] = [
     id: "based",
     category: "general",
     question: "Where is GemReserve.io based?",
-    answer:
-      "GemReserve.io is incorporated in Zug, Switzerland, with offices serving Asia from Singapore and the Americas from New York. Full contact details for each are on the Contact page.",
+    answer: `GemReserve.io is operated by ${company.legalName}, ${company.companyCodeLabel} ${company.companyCode}, registered at ${company.addressInline}, with offices serving Asia from Singapore and the Americas from New York. Full contact details for each are on the Contact page.`,
   },
   {
     id: "types",

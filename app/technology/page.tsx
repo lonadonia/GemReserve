@@ -308,24 +308,24 @@ export default function TechnologyPage() {
         </section>
 
         <section
-          className="swiss-cta tech-cta container-wide"
+          className="trust-cta tech-cta container-wide"
           aria-labelledby="tech-cta-title"
         >
-          <MotionReveal className="swiss-cta__visual tech-cta__visual">
+          <MotionReveal className="trust-cta__visual tech-cta__visual">
             <ImageWithGlow
-              className="swiss-cta__image"
+              className="trust-cta__image"
               src="/images/sections/technology-datacenter.webp"
               alt={technologyCtaImage.alt}
               sizes="(max-width: 760px) 100vw, 30vw"
             />
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__copy" delay={70}>
+          <MotionReveal className="trust-cta__copy" delay={70}>
             <h2 id="tech-cta-title">{technologyCta.title}</h2>
             <p>{technologyCta.description}</p>
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__action" delay={130}>
+          <MotionReveal className="trust-cta__action" delay={130}>
             <Link className="button button--gold" href="/#waitlist">
               {technologyCta.buttonLabel}
             </Link>

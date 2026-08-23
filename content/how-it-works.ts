@@ -62,7 +62,7 @@ export interface LifecycleStage extends VerificationAwareContent {
   description: string;
 }
 
-export interface SwissCtaContent extends VerificationAwareContent {
+export interface TrustCtaContent extends VerificationAwareContent {
   heading: string;
   description: string;
   actionLabel: string;
@@ -278,11 +278,11 @@ export const assetLifecycleStages = [
   },
 ] as const satisfies readonly LifecycleStage[];
 
-export const swissCta = {
+export const trustCta = {
   heading: "REAL ASSETS. REAL VALUE. REAL TRUST.",
   description:
     "GemReserve.io is redefining ownership of the world’s most exquisite gemstones through blockchain technology, transparency and trust.",
   actionLabel: "Join the Future",
   supportingText: "Be part of the gemstone revolution.",
   requiresClientVerification: true,
-} as const satisfies SwissCtaContent;
+} as const satisfies TrustCtaContent;

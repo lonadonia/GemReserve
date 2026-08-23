@@ -16,7 +16,7 @@ export const aboutHero: AboutHeroContent = {
   titleJoin: "and",
   titleAccentTwo: "Digital Assets.",
   description:
-    "GemReserve.io is a Swiss company at the forefront of real-world asset tokenization, transforming the trillion-dollar gemstone industry through blockchain technology, institutional grade custody, and unparalleled transparency.",
+    "GemReserve.io is a Lithuanian company at the forefront of real-world asset tokenization, transforming the trillion-dollar gemstone industry through blockchain technology, institutional grade custody, and unparalleled transparency.",
 };
 
 export interface AboutPillar {
@@ -57,7 +57,7 @@ export const missionStatement =
 export const storyTitle = "OUR STORY";
 
 export const storyParagraphs: readonly string[] = [
-  "Founded in Switzerland, GemReserve.io was born from the vision of combining centuries-old gemstone heritage with cutting-edge blockchain innovation.",
+  "Founded in Lithuania, GemReserve.io was born from the vision of combining centuries-old gemstone heritage with cutting-edge blockchain innovation.",
   "We saw an industry full of incredible value, yet held back by opacity, limited access, and inefficiency. Our mission is to unlock this value and create a more transparent, inclusive, and liquid market for generations to come.",
 ];
 
@@ -220,6 +220,7 @@ export const aboutCta: AboutCta = {
 export const aboutHeroImageAlt =
   "Loose faceted gemstones on a jeweller's slate beside a loupe and tweezers";
 
-export const storyImage = "/images/sections/swiss-matterhorn-square.webp";
+export const storyImage = "/images/sections/lithuania-square.webp";
 
-export const storyImageAlt = "The Swiss flag before a snow-covered Matterhorn";
+export const storyImageAlt =
+  "The Lithuanian flag before Trakai Island Castle at sunset";

@@ -238,25 +238,25 @@ export default function EligibilityKycPage() {
         </section>
 
         <section
-          className="swiss-cta kyc-cta container-wide"
+          className="trust-cta kyc-cta container-wide"
           aria-labelledby="kyc-cta-title"
         >
-          <MotionReveal className="swiss-cta__visual">
+          <MotionReveal className="trust-cta__visual">
             <ImageWithGlow
-              className="swiss-cta__image"
+              className="trust-cta__image"
               src="/images/sections/vault-tray.webp"
               alt="An open vault case holding a tray of coloured gemstones"
               sizes="(max-width: 760px) 100vw, 30vw"
             />
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__copy" delay={70}>
+          <MotionReveal className="trust-cta__copy" delay={70}>
             <h2 id="kyc-cta-title">{kycCta.titleLead}</h2>
             <p className="kyc-cta__lead">{kycCta.titleAccent}</p>
             <p>{kycCta.description}</p>
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__action" delay={130}>
+          <MotionReveal className="trust-cta__action" delay={130}>
             <Link className="button button--gold" href="/early-participation">
               {kycCta.buttonLabel}
             </Link>

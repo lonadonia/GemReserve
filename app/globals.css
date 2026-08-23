@@ -672,6 +672,20 @@ h3 {
   margin: 0;
 }
 
+/* The bottom strip is a three-column grid, so the registered-entity line takes a
+   full-width row of its own beneath the other three rather than a quarter of a
+   row that has no room for it. `order` moves it past its DOM siblings. */
+.footer-legal {
+  order: 4;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-bottom: 14px;
+  color: #8b9295;
+  font-size: 0.68rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .footer-motto {
   color: var(--gold-light);
   font-family: var(--font-display), Georgia, serif;
@@ -1707,7 +1721,7 @@ h3 {
   line-height: 1.35;
 }
 
-.swiss-cta {
+.trust-cta {
   display: grid;
   min-height: 190px;
   grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.2fr) minmax(
@@ -1723,36 +1737,36 @@ h3 {
   background: #061018;
 }
 
-.swiss-cta__visual,
-.swiss-cta__image {
+.trust-cta__visual,
+.trust-cta__image {
   min-height: 190px;
   align-self: stretch;
   border-radius: 0;
 }
 
-.swiss-cta__image {
+.trust-cta__image {
   mask-image: linear-gradient(90deg, black 72%, transparent 100%);
 }
 
-.swiss-cta__copy h2 {
+.trust-cta__copy h2 {
   margin-bottom: 10px;
   color: var(--gold-light);
   font-size: clamp(1.31rem, 2.12vw, 1.7rem);
 }
 
-.swiss-cta__copy p,
-.swiss-cta__action p {
+.trust-cta__copy p,
+.trust-cta__action p {
   margin: 0;
   color: #b9c0c2;
   font-size: 0.83rem;
 }
 
-.swiss-cta__action {
+.trust-cta__action {
   padding-right: 26px;
   text-align: center;
 }
 
-.swiss-cta__action .button {
+.trust-cta__action .button {
   width: 100%;
   margin-bottom: 8px;
 }
@@ -2414,7 +2428,7 @@ h3 {
 
 /* ---------------------------------------------------------------------------
    Technology page. Every rule here either extends a shared pattern (the pillar
-   grid, the metric strip, the Swiss CTA band) or adds the one layout the other
+   grid, the metric strip, the closing trust band) or adds the one layout the other
    pages do not have: the five-layer architecture flow.
    --------------------------------------------------------------------------- */
 
@@ -2707,9 +2721,9 @@ h3 {
   margin-top: var(--section-gap);
 }
 
-/* The server room sits deeper in the dark than the Matterhorn does, so it takes
+/* The server room sits deeper in the dark than the castle scene does, so it takes
    a touch more contrast to hold its rack lights against the band. */
-.tech-cta__visual .swiss-cta__image img {
+.tech-cta__visual .trust-cta__image img {
   filter: brightness(1.06) saturate(1.05);
 }
 
@@ -4516,6 +4530,14 @@ h3 {
   line-height: 1.5;
 }
 
+.contact-offices__registration {
+  margin: 0;
+  color: #b6bcbf;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .contact-offices a {
   color: #c9cdcf;
   font-size: 0.76rem;
@@ -4526,15 +4548,15 @@ h3 {
   color: var(--gold-light);
 }
 
-.contact-swiss {
+.contact-jurisdiction {
   margin-top: var(--section-gap);
 }
 
-.contact-swiss .swiss-cta__copy h2 span {
+.contact-jurisdiction .trust-cta__copy h2 span {
   display: block;
 }
 
-.contact-swiss__marks ul {
+.contact-jurisdiction__marks ul {
   display: grid;
   gap: 12px;
   margin: 0;
@@ -4542,7 +4564,7 @@ h3 {
   list-style: none;
 }
 
-.contact-swiss__marks li {
+.contact-jurisdiction__marks li {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: start;
@@ -4550,12 +4572,12 @@ h3 {
   text-align: left;
 }
 
-.contact-swiss__marks svg {
+.contact-jurisdiction__marks svg {
   margin-top: 2px;
   color: var(--gold-light);
 }
 
-.contact-swiss__marks h3 {
+.contact-jurisdiction__marks h3 {
   margin: 0 0 2px;
   color: var(--gold-light);
   font-family: var(--font-sans), Arial, sans-serif;
@@ -4564,7 +4586,7 @@ h3 {
   letter-spacing: 0.03em;
 }
 
-.contact-swiss__marks p {
+.contact-jurisdiction__marks p {
   margin: 0;
   color: #b0b7ba;
   font-size: 0.72rem;
@@ -6002,7 +6024,7 @@ h3 {
     padding: 0 22px 18px;
   }
 
-  .contact-swiss__marks ul {
+  .contact-jurisdiction__marks ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 0 22px 20px;
   }
@@ -6012,21 +6034,21 @@ h3 {
     width: 100%;
   }
 
-  .swiss-cta {
+  .trust-cta {
     grid-template-columns: minmax(190px, 0.85fr) minmax(0, 1.6fr);
     align-items: stretch;
   }
 
-  .swiss-cta__visual {
+  .trust-cta__visual {
     grid-row: span 2;
   }
 
-  .swiss-cta__copy {
+  .trust-cta__copy {
     align-self: end;
     padding-top: 20px;
   }
 
-  .swiss-cta__action {
+  .trust-cta__action {
     display: flex;
     align-items: center;
     align-self: start;
@@ -6035,7 +6057,7 @@ h3 {
     text-align: left;
   }
 
-  .swiss-cta__action .button {
+  .trust-cta__action .button {
     width: auto;
     margin-bottom: 0;
   }
@@ -6244,7 +6266,7 @@ h3 {
   .contact-offices,
   .contact-form__row,
   .governance-structure,
-  .contact-swiss__marks ul {
+  .contact-jurisdiction__marks ul {
     grid-template-columns: 1fr;
   }
 
@@ -6300,7 +6322,7 @@ h3 {
     margin-inline: auto;
   }
 
-  .contact-swiss__marks li {
+  .contact-jurisdiction__marks li {
     justify-items: start;
   }
 
@@ -6791,41 +6813,41 @@ h3 {
     font-size: 0.76rem;
   }
 
-  .swiss-cta {
+  .trust-cta {
     grid-template-columns: 1fr;
     gap: 0;
   }
 
-  .swiss-cta__visual {
+  .trust-cta__visual {
     grid-row: auto;
   }
 
-  .swiss-cta__visual,
-  .swiss-cta__image {
+  .trust-cta__visual,
+  .trust-cta__image {
     min-height: 230px;
   }
 
-  .swiss-cta__image {
+  .trust-cta__image {
     mask-image: linear-gradient(180deg, black 75%, transparent 100%);
   }
 
-  .swiss-cta__copy,
-  .swiss-cta__action {
+  .trust-cta__copy,
+  .trust-cta__action {
     display: block;
     padding: 8px 22px 22px;
   }
 
   /* The tablet rule above turns the action into a left-aligned row; the phone
      stack goes back to the centred column it has always been. */
-  .swiss-cta__action {
+  .trust-cta__action {
     text-align: center;
   }
 
-  .swiss-cta__action {
+  .trust-cta__action {
     padding-bottom: 28px;
   }
 
-  .swiss-cta__action .button {
+  .trust-cta__action .button {
     width: 100%;
     margin-bottom: 8px;
   }

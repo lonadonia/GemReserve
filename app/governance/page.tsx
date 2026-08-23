@@ -224,19 +224,19 @@ export default function GovernancePage() {
         </section>
 
         <section
-          className="swiss-cta governance-commitment container-wide"
+          className="trust-cta governance-commitment container-wide"
           aria-labelledby="governance-commitment-title"
         >
-          <MotionReveal className="swiss-cta__visual">
+          <MotionReveal className="trust-cta__visual">
             <ImageWithGlow
-              className="swiss-cta__image"
-              src="/images/sections/swiss-matterhorn.webp"
-              alt="The Swiss flag before a snow-covered Matterhorn"
+              className="trust-cta__image"
+              src="/images/sections/lithuania-wide.webp"
+              alt="The Lithuanian flag before Trakai Island Castle at sunset"
               sizes="(max-width: 760px) 100vw, 30vw"
             />
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__copy" delay={70}>
+          <MotionReveal className="trust-cta__copy" delay={70}>
             <h2 id="governance-commitment-title">
               {governanceCommitment.title}
             </h2>

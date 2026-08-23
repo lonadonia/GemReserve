@@ -210,7 +210,9 @@ test.describe("phase-one interactions", () => {
     await expect(question).toHaveAttribute("aria-expanded", "false");
     await question.click();
     await expect(question).toHaveAttribute("aria-expanded", "true");
-    await expect(page.getByText(/Swiss company at the forefront/)).toBeVisible();
+    await expect(
+      page.getByText(/UAB GemVault Capital, a Lithuanian company/),
+    ).toBeVisible();
 
     await page.getByLabel("Search questions").fill("blockchain");
     await expect(page.locator(".faq-group li")).not.toHaveCount(total);
@@ -234,7 +236,7 @@ test.describe("phase-one interactions", () => {
     await form.getByLabel(/First Name/).fill("Preview");
     await form.getByLabel(/Last Name/).fill("Person");
     await form.getByLabel(/Email Address/).fill("preview@example.com");
-    await form.getByLabel(/Country of Residence/).fill("Switzerland");
+    await form.getByLabel(/Country of Residence/).fill("Lithuania");
     await form.getByLabel(/I am joining as/).selectOption("Individual investor");
     await form.getByLabel(/I agree to receive/).check();
     await form.getByRole("button", { name: "Join the Waitlist" }).click();

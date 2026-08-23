@@ -18,7 +18,7 @@ import {
   offices,
   officesTitle,
   privacyNote,
-  swissBand,
+  jurisdictionBand,
 } from "@/content/contact";
 
 export const metadata: Metadata = {
@@ -41,20 +41,19 @@ const breadcrumbItems = [
 
 const channelIcons: Record<string, IconName> = {
   email: "contract",
-  phone: "phone",
   secure: "lock",
   media: "globe",
   partnerships: "hand-gem",
 };
 
 const officeIcons: Record<string, IconName> = {
-  switzerland: "mountain",
+  lithuania: "mountain",
   asia: "box",
   americas: "globe",
 };
 
-const swissMarkIcons: Record<string, IconName> = {
-  swiss: "shield-check",
+const jurisdictionMarkIcons: Record<string, IconName> = {
+  registered: "shield-check",
   institutional: "certificate",
   global: "globe",
   compliant: "lock",
@@ -145,7 +144,14 @@ export default function ContactPage() {
                         <span key={line}>{line}</span>
                       ))}
                     </address>
-                    <a href={office.phoneHref}>{office.phone}</a>
+                    {office.registration ? (
+                      <p className="contact-offices__registration">
+                        {office.registration}
+                      </p>
+                    ) : null}
+                    {office.phone && office.phoneHref ? (
+                      <a href={office.phoneHref}>{office.phone}</a>
+                    ) : null}
                     <a href={`mailto:${office.email}`}>{office.email}</a>
                   </li>
                 ))}
@@ -155,31 +161,31 @@ export default function ContactPage() {
         </section>
 
         <section
-          className="swiss-cta contact-swiss container-wide"
-          aria-labelledby="contact-swiss-title"
+          className="trust-cta contact-jurisdiction container-wide"
+          aria-labelledby="contact-jurisdiction-title"
         >
-          <MotionReveal className="swiss-cta__visual">
+          <MotionReveal className="trust-cta__visual">
             <ImageWithGlow
-              className="swiss-cta__image"
-              src="/images/sections/swiss-matterhorn.webp"
-              alt="The Swiss flag before a snow-covered Matterhorn"
+              className="trust-cta__image"
+              src="/images/sections/lithuania-wide.webp"
+              alt="The Lithuanian flag before Trakai Island Castle at sunset"
               sizes="(max-width: 760px) 100vw, 30vw"
             />
           </MotionReveal>
 
-          <MotionReveal className="swiss-cta__copy" delay={70}>
-            <h2 id="contact-swiss-title">
-              <span>{swissBand.titleLines[0]}</span>{" "}
-              <span>{swissBand.titleLines[1]}</span>
+          <MotionReveal className="trust-cta__copy" delay={70}>
+            <h2 id="contact-jurisdiction-title">
+              <span>{jurisdictionBand.titleLines[0]}</span>{" "}
+              <span>{jurisdictionBand.titleLines[1]}</span>
             </h2>
-            <p>{swissBand.description}</p>
+            <p>{jurisdictionBand.description}</p>
           </MotionReveal>
 
-          <MotionReveal className="contact-swiss__marks" delay={130}>
+          <MotionReveal className="contact-jurisdiction__marks" delay={130}>
             <ul>
-              {swissBand.marks.map((mark) => (
+              {jurisdictionBand.marks.map((mark) => (
                 <li key={mark.id}>
-                  <LineIcon name={swissMarkIcons[mark.id]} size={26} />
+                  <LineIcon name={jurisdictionMarkIcons[mark.id]} size={26} />
                   <div>
                     <h3>{mark.title}</h3>
                     <p>{mark.caption}</p>

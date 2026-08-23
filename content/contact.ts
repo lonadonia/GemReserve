@@ -1,3 +1,5 @@
+import { company } from "./company";
+
 export interface ContactHeroContent {
   breadcrumb: readonly [string, string, string];
   titleLines: readonly [string, string];
@@ -35,13 +37,6 @@ export const contactChannels: readonly ContactChannel[] = [
     value: "info@gemreserve.io",
     href: "mailto:info@gemreserve.io",
     caption: "We aim to respond within 24 hours.",
-  },
-  {
-    id: "phone",
-    label: "PHONE",
-    value: "+41 41 511 02 20",
-    href: "tel:+41415110220",
-    caption: "Monday – Friday, 09:00 – 18:00 CET",
   },
   {
     id: "secure",
@@ -89,8 +84,11 @@ export interface Office {
   id: string;
   name: string;
   addressLines: readonly string[];
-  phone: string;
-  phoneHref: string;
+  /** Registered entity and company code, shown for the registered office only. */
+  registration?: string;
+  /** Regional offices publish a number; the registered office does not yet. */
+  phone?: string;
+  phoneHref?: string;
   email: string;
 }
 
@@ -98,11 +96,10 @@ export const officesTitle = "OUR GLOBAL OFFICES";
 
 export const offices: readonly Office[] = [
   {
-    id: "switzerland",
-    name: "SWITZERLAND HEADQUARTERS",
-    addressLines: ["Baarerstrasse 25", "6300 Zug", "Switzerland"],
-    phone: "+41 41 511 02 20",
-    phoneHref: "tel:+41415110220",
+    id: "lithuania",
+    name: "LITHUANIA HEADQUARTERS",
+    addressLines: [...company.addressLines],
+    registration: `${company.legalName} · ${company.companyCodeLabel} ${company.companyCode}`,
     email: "info@gemreserve.io",
   },
   {
@@ -131,21 +128,21 @@ export const offices: readonly Office[] = [
   },
 ];
 
-export interface SwissBand {
+export interface JurisdictionBand {
   titleLines: readonly [string, string];
   description: string;
   marks: readonly { id: string; title: string; caption: string }[];
 }
 
-export const swissBand: SwissBand = {
-  titleLines: ["BUILT IN SWITZERLAND.", "SERVING THE WORLD."],
+export const jurisdictionBand: JurisdictionBand = {
+  titleLines: ["BUILT IN LITHUANIA.", "SERVING THE WORLD."],
   description:
-    "GemReserve.io is a Swiss company dedicated to building a transparent, secure and efficient ecosystem for the ownership, trading and redemption of the world's most exquisite gemstones through blockchain technology and institutional grade infrastructure.",
+    "GemReserve.io is operated by a Lithuanian company dedicated to building a transparent, secure and efficient ecosystem for the ownership, trading and redemption of the world's most exquisite gemstones through blockchain technology and institutional grade infrastructure.",
   marks: [
     {
-      id: "swiss",
-      title: "100% SWISS COMPANY",
-      caption: "Incorporated in Zug, Switzerland",
+      id: "registered",
+      title: "REGISTERED IN LITHUANIA",
+      caption: `${company.legalName}, ${company.city}`,
     },
     {
       id: "institutional",
@@ -164,6 +161,9 @@ export const swissBand: SwissBand = {
     },
   ],
 };
+
+export const jurisdictionImageAlt =
+  "The Lithuanian flag before Trakai Island Castle at sunset";
 
 export const contactHeroImageAlt =
   "The GemReserve crest beside loose gemstones, a notebook and a pen on dark slate";

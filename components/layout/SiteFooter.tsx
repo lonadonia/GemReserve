@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { company, companyLegalLine } from "@/content/company";
 import {
   earlyParticipationItems,
   navigationGroups,
@@ -15,11 +16,12 @@ export function SiteFooter() {
         <div className="footer-brand">
           <Logo compact />
           <p>
-            GemReserve.io is a Swiss company building the bridge between the
-            world of precious gemstones and the future of digital assets.
+            GemReserve.io is a Lithuanian company building the bridge between
+            the world of precious gemstones and the future of digital assets.
           </p>
           <p className="footer-location">
-            <span aria-hidden="true">🇨🇭</span> Zurich, Switzerland
+            <span aria-hidden="true">{company.flagEmoji}</span>{" "}
+            {company.locationShort}
           </p>
           <div
             className="footer-socials"
@@ -73,6 +75,7 @@ export function SiteFooter() {
       </div>
       <div className="footer-bottom container-wide">
         <p>© 2026 GemReserve.io. All rights reserved.</p>
+        <p className="footer-legal">{companyLegalLine}</p>
         <p className="footer-motto">
           <span aria-hidden="true">◇</span> Built on Trust. Backed by Gems.
         </p>

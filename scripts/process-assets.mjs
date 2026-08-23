@@ -419,18 +419,18 @@ await exportPair(
 );
 
 await exportPair(
-  path.join(masters, "swiss-matterhorn-master.png"),
-  path.join(sectionDir, "swiss-matterhorn"),
+  path.join(masters, "lithuania-wide-master.png"),
+  path.join(sectionDir, "lithuania-wide"),
   { width: 1800, height: 640, fit: "cover", position: "center" },
 );
 
-// The flag sits at the far left of the panorama and the summit near its
-// middle; this window is the narrowest one that still holds both.
+// The About story card wants a square, and cropping one out of the wide plate
+// would cut either the flag or the castle, so the square is generated as its own
+// composition rather than carved from the panorama.
 await exportPair(
-  path.join(masters, "swiss-matterhorn-master.png"),
-  path.join(sectionDir, "swiss-matterhorn-square"),
-  { width: 760, height: 760, fit: "cover", position: "left" },
-  { extract: { left: 60, top: 0, width: 809, height: 809 } },
+  path.join(masters, "lithuania-square-master.png"),
+  path.join(sectionDir, "lithuania-square"),
+  { width: 760, height: 760, fit: "cover", position: "center" },
 );
 
 await exportPair(
@@ -817,7 +817,7 @@ for (const name of processStepNames) {
 }
 
 // The Technology closing band carries a server-room photograph behind its copy,
-// the way the How It Works band carries the Matterhorn. The reference board
+// the way the How It Works band carries the jurisdiction scene. The reference board
 // stands the crest in front of the racks, so it is composited in here rather
 // than layered in CSS: the band is masked to a soft right edge, and a DOM
 // overlay would be cut by that mask at a different point on every screen width.

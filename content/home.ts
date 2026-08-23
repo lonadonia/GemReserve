@@ -94,7 +94,7 @@ export interface HomeWaitlistCta extends VerificationAwareContent {
 
 export const homeAnnouncement = {
   message:
-    "GEMRESERVE.IO IS A SWISS COMPANY BUILDING THE BRIDGE BETWEEN THE WORLD OF PRECIOUS GEMSTONES AND THE FUTURE OF DIGITAL ASSETS.",
+    "GEMRESERVE.IO IS A LITHUANIAN COMPANY BUILDING THE BRIDGE BETWEEN THE WORLD OF PRECIOUS GEMSTONES AND THE FUTURE OF DIGITAL ASSETS.",
   requiresClientVerification: true,
 } as const satisfies HomeAnnouncement;
 
