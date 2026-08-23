@@ -6,6 +6,9 @@ const routes = [
   { name: "how-it-works", path: "/how-it-works" },
   { name: "assets", path: "/assets" },
   { name: "technology", path: "/technology" },
+  { name: "gemstone-tokenization", path: "/gemstone-tokenization" },
+  { name: "physical-redemption", path: "/physical-redemption" },
+  { name: "digital-asset-passports", path: "/digital-asset-passports" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
   { name: "about", path: "/about" },
@@ -255,5 +258,86 @@ test.describe("phase-one interactions", () => {
     await page.getByRole("button", { name: /All Gemstones/ }).click();
     await expect(page.locator(".gemstone-card")).toHaveCount(10);
     await expect(page.locator(".gemstone-card-title").first()).toHaveText("Diamond");
+  });
+});
+
+test.describe("technology detail pages", () => {
+  test("the passport explorer switches sections by click and by arrow key", async ({
+    page,
+  }) => {
+    await page.goto("/digital-asset-passports", { waitUntil: "networkidle" });
+    const rail = page.getByRole("tablist", {
+      name: "Sections of a Digital Asset Passport",
+    });
+    const overview = rail.getByRole("tab", { name: "Overview" });
+    await expect(overview).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByText("GRS-2024-EM0125")).toBeVisible();
+
+    const custody = rail.getByRole("tab", { name: "Custody & Vault" });
+    await custody.click();
+    await expect(custody).toHaveAttribute("aria-selected", "true");
+    await expect(overview).toHaveAttribute("aria-selected", "false");
+    await expect(page.getByText("Institutional-grade")).toBeVisible();
+
+    // The rail is a single tab stop; the arrow keys move between sections.
+    await custody.press("ArrowDown");
+    const ownership = rail.getByRole("tab", { name: "Ownership Record" });
+    await expect(ownership).toBeFocused();
+    await expect(ownership).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("the passport lookup checks the ID format and claims nothing more", async ({
+    page,
+  }) => {
+    await page.goto("/digital-asset-passports", { waitUntil: "networkidle" });
+    const field = page.getByLabel("Passport ID");
+    const submit = page.getByRole("button", { name: "Verify" });
+
+    await field.fill("not-an-id");
+    await submit.click();
+    await expect(
+      page.getByText("Passport IDs look like GR-RUB-000245."),
+    ).toBeVisible();
+
+    await field.fill("gr-emr-000125");
+    await submit.click();
+    const status = page.locator(".passport-verify__status");
+    await expect(status).toContainText("valid Passport ID format");
+    await expect(status).toContainText("Lookup opens with the platform");
+    // It must never report a stone as found, because there is nothing to look in.
+    await expect(status).not.toContainText(/verified|authentic|found/i);
+  });
+
+  test("the three detail pages are reachable from the Technology menu", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    const nav = page.getByRole("navigation", { name: "Primary navigation" });
+    await nav.getByRole("button", { name: /Technology/ }).click();
+    for (const [label, href] of [
+      ["Gemstone Tokenization", "/gemstone-tokenization"],
+      ["Digital Asset Passports", "/digital-asset-passports"],
+      ["Physical Redemption", "/physical-redemption"],
+    ] as const) {
+      await expect(
+        nav.getByRole("link", { name: label, exact: true }),
+      ).toHaveAttribute("href", href);
+    }
+  });
+
+  test("the redemption fee table scrolls rather than widening the page", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto("/physical-redemption", { waitUntil: "networkidle" });
+    const box = page.locator(".redemption-fees__scroll");
+    await expect(box).toHaveCSS("overflow-x", "auto");
+    const overflow = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(1);
   });
 });

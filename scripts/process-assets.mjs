@@ -287,6 +287,38 @@ const heroJobs = [
     padLeft: 0.3,
     mobileWindow: [0.22, 1],
   },
+  // The three Technology detail plates are the client's own hero artwork rather
+  // than generated scenes, so they are padded to clear the copy column the same
+  // way the rest of the library is, and nothing else is done to them.
+  {
+    source: "tokenization-hero-master.png",
+    name: "tokenization-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.26,
+    mobileWindow: [0.34, 1],
+  },
+  {
+    source: "redemption-hero-master.png",
+    name: "redemption-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.32,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "passports-hero-master.png",
+    name: "passports-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    // No left pad on this one: the stone already sits at about 62% of the frame
+    // with the left half dark and empty, and padding it any further would slide
+    // the stone underneath the passport card the hero stands on the right.
+    mobileWindow: [0.3, 1],
+  },
 ];
 
 // Drop the crest into a generated scene. A generated shield would be a
@@ -452,6 +484,16 @@ await exportPair(
   { width: 1600, height: 900, fit: "cover", position: "center" },
 );
 
+// Closing bands for the three Technology detail pages, cut at the same 1200x760
+// the Technology band already uses so they all crop identically in the strip.
+for (const band of ["tokenization-band", "redemption-band", "open-vault"]) {
+  await exportPair(
+    path.join(masters, `${band}-master.png`),
+    path.join(sectionDir, band),
+    { width: 1200, height: 760, fit: "cover", position: "center" },
+  );
+}
+
 // The About board pairs its capability row with five photographs. Four already
 // exist in this library; only the gemological one had to be generated.
 await exportPair(
@@ -525,6 +567,25 @@ await exportCutout(
   path.join(masters, "asset-passport-master.png"),
   path.join(sectionDir, "asset-passport"),
   660,
+);
+
+// Three more of the client's own cut-outs, carried by the Technology detail
+// pages: the presentation box the redemption board draws, and the two loose
+// stones the tokenization and passport records are written against.
+await exportCutout(
+  path.join(masters, "ruby-box-master.png"),
+  path.join(sectionDir, "ruby-box"),
+  620,
+);
+await exportCutout(
+  path.join(masters, "emerald-cut-master.png"),
+  path.join(sectionDir, "emerald-cut"),
+  560,
+);
+await exportCutout(
+  path.join(masters, "ruby-cushion-master.png"),
+  path.join(sectionDir, "ruby-cushion"),
+  460,
 );
 
 // Catalogue stones are cut off their slate backdrop so the cards can show the
@@ -924,6 +985,13 @@ const plateNames = [
   "gov-fairness",
   "gov-security",
   "gov-longterm",
+  "red-request",
+  "red-eligibility",
+  "red-lock",
+  "red-allocate",
+  "red-quality",
+  "red-package",
+  "red-ship",
 ];
 
 for (const name of plateNames) {

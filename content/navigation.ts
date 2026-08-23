@@ -30,7 +30,7 @@ export const navigationGroups = [
       { label: "All Gemstones", href: "/assets" },
       { label: "Gemstone Programs", href: null },
       { label: "Asset Registry", href: null },
-      { label: "Digital Asset Passports", href: null },
+      { label: "Digital Asset Passports", href: "/digital-asset-passports" },
       { label: "Gemstone Gallery", href: null },
     ],
   },
@@ -42,9 +42,9 @@ export const navigationGroups = [
       { label: "Eligibility & KYC", href: "/eligibility-kyc" },
       { label: "Independent Verification", href: null },
       { label: "Custody & Vaults", href: null },
-      { label: "Tokenization", href: null },
+      { label: "Tokenization", href: "/gemstone-tokenization" },
       { label: "Proof of Reserves", href: null },
-      { label: "Physical Redemption", href: null },
+      { label: "Physical Redemption", href: "/physical-redemption" },
     ],
   },
   {
@@ -53,6 +53,12 @@ export const navigationGroups = [
     items: [
       { label: "Technology Overview", href: "/technology" },
       { label: "Platform Architecture", href: "/technology" },
+      { label: "Gemstone Tokenization", href: "/gemstone-tokenization" },
+      {
+        label: "Digital Asset Passports",
+        href: "/digital-asset-passports",
+      },
+      { label: "Physical Redemption", href: "/physical-redemption" },
       { label: "Blockchain", href: null },
       { label: "Smart Contracts", href: null },
       { label: "Security", href: null },

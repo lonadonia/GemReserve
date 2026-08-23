@@ -6,6 +6,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/how-it-works",
     "/assets",
     "/technology",
+    "/gemstone-tokenization",
+    "/physical-redemption",
+    "/digital-asset-passports",
     "/enterprise",
     "/investors",
     "/about",
@@ -16,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/faq",
   ].map((path) => ({
     url: `https://gemreserve.io${path}`,
-    lastModified: new Date("2026-08-22"),
+    lastModified: new Date("2026-08-23"),
     changeFrequency: path ? "monthly" : "weekly",
     priority: path ? 0.8 : 1,
   }));
