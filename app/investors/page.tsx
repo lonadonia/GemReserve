@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
+import { MarketDonut } from "@/components/diagrams/MarketDonut";
 import { ProceedsDonut } from "@/components/diagrams/ProceedsDonut";
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -51,11 +54,11 @@ const breadcrumbItems = [
   { label: investorsHero.breadcrumb[2] },
 ] as const;
 
-const executiveIcons: Record<string, IconName> = {
-  market: "diamond",
-  demand: "users",
-  blockchain: "globe",
-  generations: "shield-check",
+const executivePlates: Record<string, string> = {
+  market: "A gold globe on a ring stand",
+  demand: "A gold arrow rising over ascending columns",
+  blockchain: "A lattice of gold network nodes",
+  generations: "A gold hourglass in an ornate frame",
 };
 
 const marketIcons: Record<string, IconName> = {
@@ -121,7 +124,14 @@ export default function InvestorsPage() {
               <p className="hero__description">{investorsHero.description}</p>
 
               <aside className="investors-hero__callout">
-                <LineIcon name="shield-check" size={34} />
+                <Image
+                  className="hero-callout__crest"
+                  src="/brand/gemreserve-shield-512.png"
+                  alt=""
+                  width={512}
+                  height={622}
+                  aria-hidden="true"
+                />
                 <div>
                   <h2>{investorsHero.callout.title}</h2>
                   <p>{investorsHero.callout.lines[0]}</p>
@@ -148,7 +158,10 @@ export default function InvestorsPage() {
             <ul className="investors-executive__grid">
               {executiveHighlights.map((item) => (
                 <li key={item.id}>
-                  <LineIcon name={executiveIcons[item.id]} size={34} />
+                  <SectionPlate
+                    name={`inv-${item.id}`}
+                    alt={executivePlates[item.id]}
+                  />
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                 </li>
@@ -167,22 +180,25 @@ export default function InvestorsPage() {
             </h2>
             <p className="investors-card__intro">{marketIntro}</p>
 
-            <div className="market-figure">
-              <p className="market-figure__value">{marketFigure.value}</p>
-              <p className="market-figure__label">{marketFigure.label}</p>
-            </div>
+            <div className="market-layout">
+              <MarketDonut
+                value={marketFigure.value}
+                label={marketFigure.label}
+                accentPercent={marketFigure.accentPercent}
+              />
 
-            <ul className="investors-card__list">
-              {marketPoints.map((point) => (
-                <li key={point.id}>
-                  <LineIcon name={marketIcons[point.id]} size={24} />
-                  <div>
-                    <h3>{point.title}</h3>
-                    <p>{point.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+              <ul className="investors-card__list market-layout__list">
+                {marketPoints.map((point) => (
+                  <li key={point.id}>
+                    <LineIcon name={marketIcons[point.id]} size={24} />
+                    <div>
+                      <h3>{point.title}</h3>
+                      <p>{point.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </MotionReveal>
 
           <MotionReveal className="investors-card" delay={70}>

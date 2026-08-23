@@ -168,6 +168,7 @@ export default function ContactPage() {
             <ImageWithGlow
               className="trust-cta__image"
               src="/images/sections/lithuania-wide.webp"
+              narrowSrc="/images/sections/lithuania-square.webp"
               alt="The Lithuanian flag before Trakai Island Castle at sunset"
               sizes="(max-width: 760px) 100vw, 30vw"
             />

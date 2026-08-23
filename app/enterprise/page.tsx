@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
@@ -6,6 +7,7 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -48,13 +50,16 @@ const solutionIcons: Record<string, IconName> = {
   "white-label-platform": "users",
 };
 
-const stepIcons: Record<string, IconName> = {
-  discover: "search",
-  design: "passport",
-  comply: "shield-check",
-  tokenize: "cubes",
-  launch: "globe",
-  manage: "trade",
+// Each step carries a cut-out plate rather than a line icon, so the row reads
+// as the six things it describes. The alt text names the object, because
+// nothing else in the card does.
+const stepPlates: Record<string, string> = {
+  discover: "A gold compass with an ornate rose face",
+  design: "A gold drafting compass over a blueprint",
+  comply: "A gold certificate bearing an embossed seal",
+  tokenize: "A gold coin set with a faceted gemstone",
+  launch: "A gold rocket lifting off",
+  manage: "A gold gauge dial with its needle sweeping up",
 };
 
 // The reference gives each audience its own mark rather than repeating one.
@@ -115,7 +120,14 @@ export default function EnterprisePage() {
               <p className="hero__description">{enterpriseHero.description}</p>
 
               <aside className="enterprise-hero__callout">
-                <LineIcon name="shield-check" size={34} />
+                <Image
+                  className="hero-callout__crest"
+                  src="/brand/gemreserve-shield-512.png"
+                  alt=""
+                  width={512}
+                  height={622}
+                  aria-hidden="true"
+                />
                 <div>
                   <h2>{enterpriseHero.callout.title}</h2>
                   <p>{enterpriseHero.callout.description}</p>
@@ -175,9 +187,11 @@ export default function EnterprisePage() {
             <ol className="enterprise-steps">
               {enterpriseProcess.map((step) => (
                 <li key={step.id}>
-                  <span className="enterprise-steps__icon">
-                    <LineIcon name={stepIcons[step.id]} size={30} />
-                  </span>
+                  <SectionPlate
+                    name={`ent-${step.id}`}
+                    alt={stepPlates[step.id]}
+                    className="enterprise-steps__plate"
+                  />
                   <span className="enterprise-steps__number">{step.step}</span>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>

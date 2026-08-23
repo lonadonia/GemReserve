@@ -13,11 +13,18 @@ const gemDir = path.join(publicDir, "images", "gems");
 const brandDir = path.join(publicDir, "brand");
 const processDir = path.join(publicDir, "images", "process");
 const architectureDir = path.join(publicDir, "images", "architecture");
+const plateDir = path.join(publicDir, "images", "plates");
 
 await Promise.all(
-  [heroDir, sectionDir, gemDir, brandDir, processDir, architectureDir].map(
-    (directory) => mkdir(directory, { recursive: true }),
-  ),
+  [
+    heroDir,
+    sectionDir,
+    gemDir,
+    brandDir,
+    processDir,
+    architectureDir,
+    plateDir,
+  ].map((directory) => mkdir(directory, { recursive: true })),
 );
 
 async function exportPair(input, outputBase, resize, options = {}) {
@@ -890,6 +897,46 @@ for (const name of architectureLayerNames) {
   });
 }
 
+// Step and principle plates for the KYC process, the enterprise process, the
+// investor executive overview and the governance principles. These replace the
+// line icons those four sections used to carry, in the same polished-gold
+// language as the process and architecture plates. They draw at up to about 76
+// CSS px, so 300 covers a 3x display, and they are squared off so a row of them
+// reserves one height rather than stepping up and down.
+const plateNames = [
+  "kyc-register",
+  "kyc-submit",
+  "kyc-verification",
+  "kyc-approval",
+  "ent-discover",
+  "ent-design",
+  "ent-comply",
+  "ent-tokenize",
+  "ent-launch",
+  "ent-manage",
+  "inv-market",
+  "inv-demand",
+  "inv-blockchain",
+  "inv-generations",
+  "gov-integrity",
+  "gov-transparency",
+  "gov-accountability",
+  "gov-fairness",
+  "gov-security",
+  "gov-longterm",
+];
+
+for (const name of plateNames) {
+  const plate = path.join(masters, "plates", `${name}.png`);
+  const meta = await sharp(plate).metadata();
+  if (!meta.hasAlpha) {
+    throw new Error(
+      `${name}.png has no alpha channel; the section plates must ship cut out.`,
+    );
+  }
+  await exportCutout(plate, path.join(plateDir, name), 300, { square: true });
+}
+
 console.log(
-  "Generated responsive WebP/AVIF images, transparent brand exports, process plates and architecture plates.",
+  "Generated responsive WebP/AVIF images, transparent brand exports, process plates, architecture plates and section plates.",
 );

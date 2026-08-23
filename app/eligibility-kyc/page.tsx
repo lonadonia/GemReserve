@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -62,11 +63,14 @@ const groupIcons: Record<string, IconName> = {
   "legal-entities": "box",
 };
 
-const stepIcons: Record<string, IconName> = {
-  register: "contract",
-  submit: "passport",
-  verification: "shield-check",
-  approval: "certificate",
+// Each step of the process carries a cut-out plate rather than a line icon, so
+// the row reads as the four things it describes. The alt text names the object,
+// because nothing else in the card does.
+const stepPlates: Record<string, string> = {
+  register: "A gold account card bearing a portrait silhouette",
+  submit: "A gold document folder with an upload arrow above it",
+  verification: "A gold magnifying glass over an identity card",
+  approval: "A gold award rosette bearing a check mark",
 };
 
 const documentIcons: Record<string, IconName> = {
@@ -158,7 +162,10 @@ export default function EligibilityKycPage() {
             <ol className="kyc-steps">
               {kycSteps.map((step) => (
                 <li key={step.id}>
-                  <LineIcon name={stepIcons[step.id]} size={30} />
+                  <SectionPlate
+                    name={`kyc-${step.id}`}
+                    alt={stepPlates[step.id]}
+                  />
                   <span className="kyc-steps__number" aria-hidden="true">
                     {step.step}
                   </span>

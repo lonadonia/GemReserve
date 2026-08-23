@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -141,7 +142,10 @@ export default function EarlyParticipationPage() {
             className="waitlist-panel waitlist-form-panel"
             delay={130}
           >
-            <h2 className="waitlist-panel__title waitlist-panel__title--center">
+            <h2
+              className="waitlist-panel__title waitlist-panel__title--center"
+              id="waitlist-form"
+            >
               {waitlistFormPanel.title}
             </h2>
             <p className="waitlist-form-panel__intro">
@@ -170,10 +174,12 @@ export default function EarlyParticipationPage() {
             <ol className="waitlist-steps">
               {nextSteps.map((step) => (
                 <li key={step.id}>
-                  <span className="waitlist-steps__number" aria-hidden="true">
-                    {step.step}
+                  <span className="waitlist-steps__head">
+                    <span className="waitlist-steps__number" aria-hidden="true">
+                      {step.step}
+                    </span>
+                    <LineIcon name={stepIcons[step.id]} size={22} />
                   </span>
-                  <LineIcon name={stepIcons[step.id]} size={26} />
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </li>
@@ -184,13 +190,14 @@ export default function EarlyParticipationPage() {
               className="waitlist-miss"
               aria-labelledby="waitlist-miss-title"
             >
-              <LineIcon name="certificate" size={38} />
+              <LineIcon name="certificate" size={34} />
               <div>
                 <h3 id="waitlist-miss-title">{dontMissOut.title}</h3>
-                {dontMissOut.lines.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
+                <p>{dontMissOut.lines.join(" ")}</p>
               </div>
+              <Link className="button button--outline" href="#waitlist-form">
+                Secure your place
+              </Link>
             </aside>
           </MotionReveal>
         </section>

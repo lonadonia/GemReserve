@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { missionStatement, missionTitle } from "@/content/about";
@@ -41,13 +42,28 @@ const breadcrumbItems = [
   { label: governanceHero.breadcrumb[2] },
 ] as const;
 
-const principleIcons: Record<string, IconName> = {
-  integrity: "certificate",
-  transparency: "eye",
-  accountability: "shield-check",
-  fairness: "users",
-  security: "lock",
-  "long-term-value": "chart",
+const principlePlates: Record<string, { plate: string; alt: string }> = {
+  integrity: {
+    plate: "gov-integrity",
+    alt: "A gold balance scale in equilibrium",
+  },
+  transparency: {
+    plate: "gov-transparency",
+    alt: "A gold eye with a gemstone iris",
+  },
+  accountability: {
+    plate: "gov-accountability",
+    alt: "A gold shield bearing a check mark",
+  },
+  fairness: {
+    plate: "gov-fairness",
+    alt: "Three gold figures of equal height",
+  },
+  security: { plate: "gov-security", alt: "A closed gold padlock" },
+  "long-term-value": {
+    plate: "gov-longterm",
+    alt: "A gold oak tree in full leaf",
+  },
 };
 
 const tierIcons: Record<string, IconName> = {
@@ -142,7 +158,10 @@ export default function GovernancePage() {
             <ul className="trust-pillars governance-principles__grid">
               {governancePrinciples.map((principle) => (
                 <li key={principle.id}>
-                  <LineIcon name={principleIcons[principle.id]} size={38} />
+                  <SectionPlate
+                    name={principlePlates[principle.id].plate}
+                    alt={principlePlates[principle.id].alt}
+                  />
                   <h3>{principle.title}</h3>
                   <p>{principle.description}</p>
                 </li>
@@ -231,6 +250,7 @@ export default function GovernancePage() {
             <ImageWithGlow
               className="trust-cta__image"
               src="/images/sections/lithuania-wide.webp"
+              narrowSrc="/images/sections/lithuania-square.webp"
               alt="The Lithuanian flag before Trakai Island Castle at sunset"
               sizes="(max-width: 760px) 100vw, 30vw"
             />
