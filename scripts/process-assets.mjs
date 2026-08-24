@@ -1068,6 +1068,33 @@ const plateNames = [
   "red-quality",
   "red-package",
   "red-ship",
+  // Asset Registry: HOW THE ASSET REGISTRY WORKS.
+  "reg-creation",
+  "reg-lab",
+  "reg-capture",
+  "reg-registration",
+  "reg-custody",
+  "reg-ownership",
+  "reg-public",
+  // Digital Asset Passports: WHAT IS A DIGITAL ASSET PASSPORT?
+  "pass-unique-id",
+  "pass-complete-record",
+  "pass-blockchain-secured",
+  "pass-lifecycle",
+  "pass-global-standard",
+  // The two stone pages render their plates in their own accent metal rather
+  // than gold, so each section keeps the colour it already had.
+  "glance-type",
+  "glance-colour",
+  "glance-origin",
+  "glance-hardness",
+  "glance-clarity",
+  "glance-certification",
+  "aq-backed",
+  "aq-verified",
+  "aq-borderless",
+  "aq-vaulted",
+  "aq-transparent",
 ];
 
 for (const name of plateNames) {

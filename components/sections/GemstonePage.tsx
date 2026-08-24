@@ -10,6 +10,7 @@ import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import type { GemstonePageContent } from "@/content/gemstone-page";
 
 /**
@@ -35,12 +36,16 @@ const highlightIcons: Record<string, IconName> = {
   liquidity: "globe",
 };
 
-const assuranceIcons: Record<string, IconName> = {
-  backed: "diamond",
-  verified: "shield-check",
-  borderless: "globe",
-  vaulted: "lock",
-  transparent: "contract",
+// The assurance strip and the at-a-glance row carry cut-out plates rendered in
+// the stone's own accent metal rather than gold, so each section keeps the
+// colour it already had. Only Aquamarine has an assurance strip, so these plate
+// names are its own.
+const assurancePlates: Record<string, string> = {
+  backed: "An open aquamarine-blue hand holding a faceted gemstone",
+  verified: "An aquamarine-blue shield bearing a check mark",
+  borderless: "An aquamarine-blue globe encircled by an orbiting ring",
+  vaulted: "A closed aquamarine-blue padlock",
+  transparent: "A lattice of aquamarine-blue cubes joined by rods",
 };
 
 const investmentIcons: Record<string, IconName> = {
@@ -79,13 +84,14 @@ const trustIcons: Record<string, IconName> = {
   support: "users",
 };
 
-const glanceIcons: Record<string, IconName> = {
-  type: "diamond",
-  colour: "source",
-  origin: "mountain",
-  hardness: "cubes",
-  clarity: "chart",
-  certification: "certificate",
+// Only Emerald has an at-a-glance row, so these are rendered in its green.
+const glancePlates: Record<string, string> = {
+  type: "An emerald-cut green gemstone",
+  colour: "A green artist's palette disc",
+  origin: "A cluster of green mountain peaks",
+  hardness: "A green crystal under a chisel tip",
+  clarity: "A green magnifying glass over a gemstone",
+  certification: "A green award rosette bearing a check mark",
 };
 
 export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
@@ -142,8 +148,19 @@ export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
             </MotionReveal>
 
             <MotionReveal className="gem-highlights" delay={120}>
-              <aside aria-labelledby="gem-highlights-title">
-                <h2 id="gem-highlights-title">{gem.highlightsTitle}</h2>
+              <aside
+                aria-labelledby={
+                  gem.highlightsTitle ? "gem-highlights-title" : undefined
+                }
+                aria-label={
+                  gem.highlightsTitle
+                    ? undefined
+                    : `${gem.breadcrumb[3]} at a glance`
+                }
+              >
+                {gem.highlightsTitle ? (
+                  <h2 id="gem-highlights-title">{gem.highlightsTitle}</h2>
+                ) : null}
                 <ul>
                   {gem.highlights.map((item) => (
                     <li key={item.id}>
@@ -169,7 +186,11 @@ export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
               <ul className="trust-pillars gem-assurances__grid">
                 {gem.assurances.map((item) => (
                   <li key={item.id}>
-                    <LineIcon name={assuranceIcons[item.id]} size={32} />
+                    <SectionPlate
+                      name={`aq-${item.id}`}
+                      alt={assurancePlates[item.id]}
+                      sizes="(max-width: 760px) 84px, (max-width: 1330px) 62px, 72px"
+                    />
                     <h2>{item.title}</h2>
                     <p>{item.description}</p>
                   </li>
@@ -191,7 +212,11 @@ export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
               <dl className="gem-glance__row">
                 {gem.glance.items.map((item) => (
                   <div key={item.id}>
-                    <LineIcon name={glanceIcons[item.id]} size={34} />
+                    <SectionPlate
+                      name={`glance-${item.id}`}
+                      alt={glancePlates[item.id]}
+                      sizes="(max-width: 760px) 84px, (max-width: 1330px) 62px, 72px"
+                    />
                     <dt>{item.label}</dt>
                     <dd>
                       {item.value}

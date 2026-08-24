@@ -25,7 +25,6 @@ export const emerald: GemstonePageContent = {
   heroBase: "/images/heroes/emerald-hero",
   heroImageAlt: "An emerald-cut vivid green emerald resting on dark rock",
 
-  highlightsTitle: "Emerald at a glance",
   highlights: [
     {
       id: "natural",

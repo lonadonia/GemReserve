@@ -11,6 +11,7 @@ import { IdLookup } from "@/components/ui/IdLookup";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import {
   accessItems,
   accessTitle,
@@ -62,16 +63,17 @@ const badgeIcons: Record<string, IconName> = {
   trust: "check",
 };
 
-// The board draws this row as line icons rather than as the photoreal plates
-// the process rows elsewhere carry, so it keeps line icons here too.
-const stepIcons: Record<string, IconName> = {
-  creation: "diamond",
-  lab: "search",
-  capture: "certificate",
-  registration: "cubes",
-  custody: "vault",
-  ownership: "contract",
-  public: "eye",
+// Each stage carries a cut-out plate, in the same polished-gold language as
+// every other process row on the site. The alt text names the object, because
+// nothing else in the cell does.
+const stepPlates: Record<string, string> = {
+  creation: "A gold gemstone on a round pedestal",
+  lab: "A gold laboratory microscope",
+  capture: "A gold camera lens standing upright",
+  registration: "A lattice of gold spheres joined by rods",
+  custody: "A closed gold vault door",
+  ownership: "A gold certificate bearing an embossed seal",
+  public: "A gold eye radiating engraved rays",
 };
 
 const whyIcons: Record<string, IconName> = {
@@ -151,7 +153,12 @@ export default function AssetRegistryPage() {
                   <span className="registry-steps__number" aria-hidden="true">
                     {step.step}
                   </span>
-                  <LineIcon name={stepIcons[step.id]} size={34} />
+                  <SectionPlate
+                    name={`reg-${step.id}`}
+                    alt={stepPlates[step.id]}
+                    className="registry-steps__plate"
+                    sizes="(max-width: 760px) 84px, (max-width: 1330px) 64px, 76px"
+                  />
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </li>

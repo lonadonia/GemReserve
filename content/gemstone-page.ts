@@ -63,8 +63,8 @@ export interface GemstonePageContent {
   readonly heroBase: string;
   readonly heroImageAlt: string;
 
-  /** The card the board floats over the hero. */
-  readonly highlightsTitle: string;
+  /** The card the board floats over the hero. Emerald's rail is untitled. */
+  readonly highlightsTitle?: string;
   readonly highlights: readonly GemHighlight[];
 
   /** The assurance strip beneath the hero. */

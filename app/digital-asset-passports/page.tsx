@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ImageWithGlow } from "@/components/ui/ImageWithGlow";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { PassportExplorer } from "@/components/ui/PassportExplorer";
+import { SectionPlate } from "@/components/ui/SectionPlate";
 import { IdLookup } from "@/components/ui/IdLookup";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -63,12 +64,12 @@ const badgeIcons: Record<string, IconName> = {
   accessible: "refresh",
 };
 
-const pillarIcons: Record<string, IconName> = {
-  "unique-id": "diamond",
-  "complete-record": "contract",
-  "blockchain-secured": "cubes",
-  lifecycle: "shield-check",
-  "global-standard": "globe",
+const pillarPlates: Record<string, string> = {
+  "unique-id": "A closed gold passport booklet",
+  "complete-record": "A gold folder holding loose sheets",
+  "blockchain-secured": "Three interlocking gold chain links",
+  lifecycle: "Two gold arrows chasing each other around a ring",
+  "global-standard": "A gold globe on a ring stand",
 };
 
 const benefitIcons: Record<string, IconName> = {
@@ -149,24 +150,32 @@ export default function DigitalAssetPassportsPage() {
                     sizes="(max-width: 980px) 40vw, 168px"
                   />
 
-                  <h2 id="passports-hero-card-title">
-                    {passportsHero.card.name}
-                  </h2>
-                  <p className="passport-card__species">
-                    {passportsHero.card.species}
-                  </p>
+                  {/* The name, the species and the fields are one column of
+                      the horizontal card, so they travel in one box rather than
+                      auto-placing into the grid one at a time. */}
+                  <div className="passport-card__body">
+                    <h2 id="passports-hero-card-title">
+                      {passportsHero.card.name}
+                    </h2>
+                    <p className="passport-card__species">
+                      {passportsHero.card.species}
+                    </p>
 
-                  <dl className="passport-card__fields">
-                    {passportsHero.card.fields.map((field) => (
-                      <div key={field.id}>
-                        <dt>
-                          <LineIcon name={cardFieldIcons[field.id]} size={15} />
-                          {field.label}
-                        </dt>
-                        <dd>{field.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
+                    <dl className="passport-card__fields">
+                      {passportsHero.card.fields.map((field) => (
+                        <div key={field.id}>
+                          <dt>
+                            <LineIcon
+                              name={cardFieldIcons[field.id]}
+                              size={15}
+                            />
+                            {field.label}
+                          </dt>
+                          <dd>{field.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
 
                   <footer>
                     <span className="passport-card__qr" aria-hidden="true">
@@ -212,7 +221,11 @@ export default function DigitalAssetPassportsPage() {
             <ul className="passports-what__grid">
               {passportPillars.map((pillar) => (
                 <li key={pillar.id}>
-                  <LineIcon name={pillarIcons[pillar.id]} size={36} />
+                  <SectionPlate
+                    name={`pass-${pillar.id}`}
+                    alt={pillarPlates[pillar.id]}
+                    sizes="(max-width: 760px) 84px, (max-width: 1330px) 64px, 72px"
+                  />
                   <h3>{pillar.title}</h3>
                   <p>{pillar.description}</p>
                 </li>
