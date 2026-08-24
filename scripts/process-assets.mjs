@@ -14,6 +14,7 @@ const brandDir = path.join(publicDir, "brand");
 const processDir = path.join(publicDir, "images", "process");
 const architectureDir = path.join(publicDir, "images", "architecture");
 const plateDir = path.join(publicDir, "images", "plates");
+const galleryDir = path.join(publicDir, "images", "gallery");
 
 await Promise.all(
   [
@@ -24,6 +25,7 @@ await Promise.all(
     processDir,
     architectureDir,
     plateDir,
+    galleryDir,
   ].map((directory) => mkdir(directory, { recursive: true })),
 );
 
@@ -339,6 +341,27 @@ const heroJobs = [
     padLeft: 0.16,
     mobileWindow: [0.28, 1],
   },
+  // The two single-stone pages. Both plates are the client's own, and both put
+  // their stone right of centre already, so they need only a modest pad to clear
+  // the copy column.
+  {
+    source: "aquamarine-hero-master.png",
+    name: "aquamarine-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.12,
+    mobileWindow: [0.34, 1],
+  },
+  {
+    source: "emerald-hero-master.png",
+    name: "emerald-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.2,
+    mobileWindow: [0.3, 1],
+  },
   {
     source: "passports-hero-master.png",
     name: "passports-hero",
@@ -525,11 +548,20 @@ await exportPair(
   { width: 1200, height: 620, fit: "cover", position: "center" },
 );
 
+await exportPair(
+  path.join(masters, "aqua-map-master.png"),
+  path.join(sectionDir, "aqua-map"),
+  { width: 1200, height: 620, fit: "cover", position: "center" },
+);
+
 for (const band of [
   "tokenization-band",
   "redemption-band",
   "open-vault",
   "gem-report",
+  "gem-inspection",
+  "emerald-vault",
+  "aqua-report",
 ]) {
   await exportPair(
     path.join(masters, `${band}-master.png`),
@@ -1047,6 +1079,30 @@ for (const name of plateNames) {
     );
   }
   await exportCutout(plate, path.join(plateDir, name), 300, { square: true });
+}
+
+// The gallery tiles. Two of the six are the client's own cut-outs and carry
+// their own alpha; the four generated cuts are photographs on slate and are
+// cropped square instead, so the row reads as one set either way.
+const galleryPhotos = ["aqua-oval", "aqua-cushion", "aqua-pear", "aqua-round"];
+for (const name of galleryPhotos) {
+  await exportPair(
+    path.join(masters, "gallery", `${name}.png`),
+    path.join(galleryDir, name),
+    { width: 620, height: 620, fit: "cover", position: "center" },
+  );
+}
+
+const galleryCutouts = ["aqua-crystal", "emerald-crystal"];
+for (const name of galleryCutouts) {
+  const plate = path.join(masters, "gallery", `${name}.png`);
+  const meta = await sharp(plate).metadata();
+  if (!meta.hasAlpha) {
+    throw new Error(
+      `${name}.png has no alpha channel; the gallery cut-outs must ship cut out.`,
+    );
+  }
+  await exportCutout(plate, path.join(galleryDir, name), 620, { square: true });
 }
 
 console.log(

@@ -32,6 +32,8 @@ export const navigationGroups = [
       { label: "Gemstone Programs", href: "/gemstone-programs" },
       { label: "Asset Registry", href: "/asset-registry" },
       { label: "Digital Asset Passports", href: "/digital-asset-passports" },
+      { label: "Aquamarine", href: "/aquamarine" },
+      { label: "Emerald", href: "/emerald" },
       { label: "Gemstone Gallery", href: null },
     ],
   },
@@ -46,6 +48,7 @@ export const navigationGroups = [
       { label: "Tokenization", href: "/gemstone-tokenization" },
       { label: "Proof of Reserves", href: null },
       { label: "Physical Redemption", href: "/physical-redemption" },
+      { label: "Redemption Portal", href: "/redemption-portal" },
     ],
   },
   {

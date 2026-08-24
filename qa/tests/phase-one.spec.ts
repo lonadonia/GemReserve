@@ -12,6 +12,9 @@ const routes = [
   { name: "platform-infrastructure", path: "/platform-infrastructure" },
   { name: "gemstone-programs", path: "/gemstone-programs" },
   { name: "asset-registry", path: "/asset-registry" },
+  { name: "aquamarine", path: "/aquamarine" },
+  { name: "emerald", path: "/emerald" },
+  { name: "redemption-portal", path: "/redemption-portal" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
   { name: "about", path: "/about" },
@@ -418,5 +421,95 @@ test.describe("assets and infrastructure pages", () => {
         nav.getByRole("link", { name: label, exact: true }),
       ).toHaveAttribute("href", href);
     }
+  });
+});
+
+test.describe("gemstone pages and the portal", () => {
+  test("both stone pages render from one shell with their own accent", async ({
+    page,
+  }) => {
+    for (const [route, accent, title] of [
+      ["/aquamarine", "aqua", "AQUAMARINE"],
+      ["/emerald", "emerald", "EMERALD"],
+    ] as const) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      await expect(page.locator("h1")).toHaveText(title);
+      await expect(page.locator(`.gem-page--${accent}`)).toHaveCount(1);
+    }
+
+    // The accent is a token, not a hard-coded colour, so the two pages must
+    // resolve it differently.
+    await page.goto("/aquamarine", { waitUntil: "networkidle" });
+    const aqua = await page.evaluate(() =>
+      getComputedStyle(document.querySelector(".gem-page")!).getPropertyValue(
+        "--gem",
+      ),
+    );
+    await page.goto("/emerald", { waitUntil: "networkidle" });
+    const green = await page.evaluate(() =>
+      getComputedStyle(document.querySelector(".gem-page")!).getPropertyValue(
+        "--gem",
+      ),
+    );
+    expect(aqua.trim()).not.toBe(green.trim());
+  });
+
+  test("the aquamarine gallery shows six cuts and the sample is labelled", async ({
+    page,
+  }) => {
+    await page.goto("/aquamarine", { waitUntil: "networkidle" });
+    await expect(page.locator(".gem-gallery__grid li")).toHaveCount(6);
+    await expect(page.getByText("GR-AQUA-000245")).toBeVisible();
+    await expect(page.locator(".gem-card__sample")).toHaveText("Sample record");
+  });
+
+  test("the emerald market figure is drawn and marked projected", async ({
+    page,
+  }) => {
+    await page.goto("/emerald", { waitUntil: "networkidle" });
+    const figure = page.locator(".market-trend");
+    await expect(figure).toBeVisible();
+    await expect(figure.locator("polyline")).toHaveCount(1);
+    await expect(figure.locator("circle")).toHaveCount(6);
+    await expect(figure.getByText("2025*")).toBeVisible();
+    // The board's axis unit is illegible, so the page must not assert one.
+    await expect(figure).not.toContainText(/\$|USD|billion/i);
+  });
+
+  test("the portal preview claims nothing and offers no fake controls", async ({
+    page,
+  }) => {
+    await page.goto("/redemption-portal", { waitUntil: "networkidle" });
+    const preview = page.locator(".portal-window");
+    await expect(preview).toBeVisible();
+    await expect(preview).toContainText("Interface preview. Sample data.");
+    // Nothing inside the preview may be focusable or clickable: it is a picture
+    // of an interface, not an interface.
+    await expect(
+      preview.locator("a, button, input, select, textarea"),
+    ).toHaveCount(0);
+  });
+
+  test("the three pages are reachable from the Assets and How It Works menus", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    const nav = page.getByRole("navigation", { name: "Primary navigation" });
+
+    await nav.getByRole("button", { name: /Assets/ }).click();
+    for (const [label, href] of [
+      ["Aquamarine", "/aquamarine"],
+      ["Emerald", "/emerald"],
+    ] as const) {
+      await expect(
+        nav.getByRole("link", { name: label, exact: true }),
+      ).toHaveAttribute("href", href);
+    }
+
+    await nav.getByRole("button", { name: /How It Works/ }).click();
+    await expect(
+      nav.getByRole("link", { name: "Redemption Portal", exact: true }),
+    ).toHaveAttribute("href", "/redemption-portal");
   });
 });

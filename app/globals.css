@@ -8131,6 +8131,1242 @@ li:hover > .section-plate {
   display: block;
 }
 
+/* ---------------------------------------------------------------------------
+   Single-gemstone pages. One layout, one accent token per stone.
+   --------------------------------------------------------------------------- */
+
+.gem-page {
+  /* Every rule below reads the accent from here, so a third stone is a content
+     file and three lines of CSS rather than another stylesheet. */
+  --gem: #7cc7e8;
+  --gem-soft: rgb(124 199 232 / 34%);
+  --gem-faint: rgb(124 199 232 / 14%);
+  --gem-glow: rgb(124 199 232 / 22%);
+}
+
+.gem-page--emerald {
+  --gem: #46c98d;
+  --gem-soft: rgb(70 201 141 / 34%);
+  --gem-faint: rgb(70 201 141 / 14%);
+  --gem-glow: rgb(70 201 141 / 22%);
+}
+
+.gem-hero {
+  min-height: min(clamp(600px, 46vw, 860px), 86vh);
+}
+
+.gem-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 94%) 0%,
+      rgb(1 5 8 / 80%) 28%,
+      rgb(1 5 8 / 18%) 52%,
+      rgb(1 5 8 / 34%) 76%,
+      rgb(1 5 8 / 72%) 100%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%) 0%, transparent 32%);
+}
+
+.gem-hero__inner {
+  grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1fr);
+}
+
+/* The stone's name is set in ivory at display size, the way the boards do, and
+   the accent carries the line beneath it rather than the name itself. */
+.gem-hero__title {
+  margin-bottom: 10px;
+  font-size: clamp(2.9rem, 5vw, 5.1rem);
+  letter-spacing: 0.02em;
+}
+
+.gem-hero__tagline {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 20px;
+  color: var(--gem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.16rem, 1.9vw, 1.66rem);
+  line-height: 1.25;
+  text-shadow: 0 2px 18px #000;
+}
+
+.gem-promise {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  max-width: 520px;
+  margin-top: 26px;
+  padding: 16px 20px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 7px;
+  background: rgb(3 10 13 / 84%);
+  backdrop-filter: blur(12px);
+}
+
+.gem-promise h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.gem-promise p {
+  margin: 0;
+  color: #c2c8ca;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.gem-highlights {
+  grid-column: 2;
+  justify-self: end;
+  width: min(100%, 320px);
+}
+
+.gem-highlights aside {
+  padding: 20px 22px;
+  border: 1px solid var(--gem-soft);
+  border-radius: 8px;
+  background: rgb(3 12 18 / 84%);
+  box-shadow: 0 22px 54px rgb(0 0 0 / 46%);
+  backdrop-filter: blur(12px);
+}
+
+.gem-highlights h2 {
+  margin-bottom: 16px;
+  color: var(--gem);
+  font-size: 1.02rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.gem-highlights ul {
+  display: grid;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-highlights li {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 13px;
+}
+
+.gem-highlights svg {
+  padding: 7px;
+  border: 1px solid var(--gem-soft);
+  border-radius: 50%;
+  color: var(--gem);
+  box-sizing: content-box;
+}
+
+.gem-highlights h3 {
+  margin-bottom: 1px;
+  color: var(--ivory);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.81rem;
+  font-weight: 700;
+}
+
+.gem-highlights p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.gem-assurances {
+  padding-top: clamp(30px, 3vw, 46px);
+}
+
+.gem-assurances__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-color: var(--gem-soft);
+}
+
+.gem-assurances__grid svg,
+.gem-features__grid svg,
+.gem-trust__grid svg {
+  color: var(--gem);
+  filter: drop-shadow(0 0 12px var(--gem-glow));
+}
+
+.gem-assurances__grid h2,
+.gem-features__grid h2,
+.gem-trust__grid h2 {
+  margin-bottom: 5px;
+  color: var(--gem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.88rem, 1.14vw, 1.02rem);
+}
+
+.gem-assurances__grid p,
+.gem-features__grid p,
+.gem-trust__grid p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.72rem, 0.74vw, 0.81rem);
+  line-height: 1.55;
+}
+
+.gem-glance {
+  padding-top: var(--section-gap);
+}
+
+.gem-glance .section-heading h2 {
+  color: var(--gem);
+}
+
+.gem-glance__row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 0;
+  padding: 22px 10px;
+  border: 1px solid var(--gem-soft);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(6 18 22 / 86%), rgb(2 8 11 / 92%));
+}
+
+.gem-glance__row > div {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  grid-template-rows: auto auto 1fr;
+  gap: 9px;
+  padding-inline: clamp(8px, 1.1vw, 18px);
+  text-align: center;
+}
+
+.gem-glance__row > div + div {
+  border-left: 1px solid var(--gem-faint);
+}
+
+.gem-glance__row svg {
+  color: var(--gem);
+  filter: drop-shadow(0 0 12px var(--gem-glow));
+}
+
+.gem-glance__row dt {
+  color: var(--gem);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gem-glance__row dd {
+  margin: 0;
+  color: #d3d8d9;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.gem-glance__row dd span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.gem-detail,
+.gem-story,
+.gem-close {
+  display: grid;
+  align-items: start;
+  gap: 16px;
+  padding-top: var(--section-gap);
+}
+
+.gem-detail {
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+}
+
+.gem-story {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* The about panel carries a crystal and runs much taller than the lists
+     beside it, so cards take their own height rather than every one of them
+     stretching to the tallest in the row. */
+  align-items: start;
+}
+
+.gem-close {
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr) minmax(0, 1.06fr);
+}
+
+.gem-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--gem-soft);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(6 18 22 / 88%), rgb(2 8 11 / 93%));
+}
+
+.gem-card__title {
+  margin-bottom: 16px;
+  color: var(--gem);
+  font-size: clamp(1rem, 1.28vw, 1.22rem);
+  letter-spacing: 0.02em;
+}
+
+.gem-card__intro {
+  margin-bottom: 16px;
+  color: #b8bec1;
+  font-size: 0.79rem;
+  line-height: 1.65;
+}
+
+.gem-card__sample {
+  margin-bottom: 10px;
+  color: var(--gem);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+}
+
+.gem-details {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 22px;
+}
+
+.gem-details dl,
+.gem-sample {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.gem-details dl > div,
+.gem-sample > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--gem-faint);
+}
+
+.gem-details dl > div:last-child,
+.gem-sample > div:last-child {
+  border-bottom: 0;
+}
+
+.gem-details dt,
+.gem-sample dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.gem-details dd,
+.gem-sample dd {
+  margin: 0;
+  color: #d6dbdc;
+  font-size: 0.77rem;
+  text-align: right;
+}
+
+.gem-details__visual {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.gem-details__visual img {
+  width: min(100%, 230px);
+  height: auto;
+  filter: drop-shadow(0 20px 38px rgb(0 0 0 / 62%));
+}
+
+.gem-origin__map {
+  width: 100%;
+  height: auto;
+  margin-bottom: 18px;
+  border: 1px solid var(--gem-faint);
+  border-radius: 7px;
+  background: #02070a;
+}
+
+.gem-origin__pins {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-origin__pins li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+}
+
+.gem-origin__pins svg {
+  margin-top: 2px;
+  color: var(--gem);
+}
+
+.gem-origin__pins strong {
+  display: block;
+  color: #d6dbdc;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.gem-origin__pins span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.gem-origin__note {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  margin: auto 0 0;
+  padding: 14px 16px;
+  border: 1px solid var(--gem-faint);
+  border-radius: 7px;
+  background: rgb(4 14 18 / 62%);
+  color: #c2c8ca;
+  font-size: 0.77rem;
+  line-height: 1.55;
+}
+
+.gem-origin__note svg {
+  color: var(--gem);
+}
+
+.gem-about p {
+  margin-bottom: 14px;
+  color: #b8bec1;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.gem-about__crystal {
+  width: min(100%, 210px);
+  height: auto;
+  margin: auto auto 0;
+  filter: drop-shadow(0 20px 38px rgb(0 0 0 / 66%));
+}
+
+.gem-list {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-list > li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+.gem-list svg {
+  margin-top: 2px;
+  color: var(--gem);
+}
+
+.gem-list h3 {
+  margin-bottom: 3px;
+  color: var(--gem);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.81rem;
+  font-weight: 700;
+}
+
+.gem-list p {
+  margin: 0;
+  color: #b8bec1;
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.gem-certificate {
+  align-items: center;
+  text-align: center;
+}
+
+.gem-certificate img {
+  width: min(100%, 150px);
+  height: auto;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 18px 34px rgb(0 0 0 / 62%));
+}
+
+.gem-gallery {
+  padding-top: var(--section-gap);
+}
+
+.gem-gallery .section-heading h2 {
+  color: var(--gem);
+}
+
+.gem-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-gallery__grid li {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border: 1px solid var(--gem-faint);
+  border-radius: 8px;
+  background: linear-gradient(160deg, rgb(6 18 22 / 84%), rgb(2 8 11 / 92%));
+  transition:
+    border-color 220ms ease,
+    transform 220ms var(--ease-premium);
+}
+
+.gem-gallery__grid li:hover {
+  border-color: var(--gem-soft);
+  transform: translateY(-4px);
+}
+
+.gem-gallery__grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+
+.gem-gallery__grid span {
+  color: #c2c8ca;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.gem-checks {
+  display: grid;
+  gap: 11px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-checks li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  color: #c6ccce;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.gem-checks svg {
+  margin-top: 2px;
+  color: var(--gem);
+}
+
+.gem-custody__image {
+  margin-top: auto;
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  border-radius: 7px;
+}
+
+.gem-ladder {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gem-ladder > li {
+  position: relative;
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+/* The rule threads the numbered badges the way the board draws it, and stops
+   at the last one rather than trailing off the bottom of the card. */
+.gem-ladder > li:not(:last-child)::before {
+  position: absolute;
+  top: 30px;
+  bottom: 4px;
+  left: 14px;
+  width: 1px;
+  background: var(--gem-faint);
+  content: "";
+}
+
+.gem-ladder > li:last-child {
+  padding-bottom: 0;
+}
+
+.gem-ladder > li > span {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 1px solid var(--gem-soft);
+  border-radius: 50%;
+  background: rgb(4 14 18 / 92%);
+  color: var(--gem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.88rem;
+}
+
+.gem-ladder h3 {
+  margin-bottom: 3px;
+  color: var(--gem);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.gem-ladder p {
+  margin: 0;
+  color: #b8bec1;
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.market-trend {
+  margin: auto 0 0;
+}
+
+.market-trend svg {
+  width: 100%;
+  height: auto;
+}
+
+.market-trend__grid {
+  stroke: var(--gem-faint);
+  stroke-width: 1;
+}
+
+.market-trend__tick,
+.market-trend__year {
+  fill: #93a0a4;
+  font-size: 11px;
+}
+
+.market-trend__line {
+  fill: none;
+  stroke: var(--gem);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.market-trend__dot {
+  fill: var(--gem);
+}
+
+.market-trend figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+.gem-features,
+.gem-trust {
+  padding-top: var(--section-gap);
+}
+
+.gem-features__grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-color: var(--gem-soft);
+}
+
+.gem-trust__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-color: var(--gem-soft);
+}
+
+.gem-cta {
+  margin-top: var(--section-gap);
+}
+
+.gem-cta .trust-cta__copy h2 {
+  color: var(--gem);
+}
+
+/* ---------------------------------------------------------------------------
+   Redemption Portal.
+   --------------------------------------------------------------------------- */
+
+/* This hero carries a rendered interface rather than a photograph, so it draws
+   its own ground instead of a plate. */
+.portal-hero {
+  min-height: auto;
+  background:
+    radial-gradient(circle at 78% 34%, rgb(216 154 39 / 9%), transparent 46%),
+    linear-gradient(160deg, rgb(6 16 22 / 96%), rgb(1 5 8 / 98%));
+}
+
+.portal-hero__scrim {
+  background: none;
+}
+
+.portal-hero__inner {
+  align-items: center;
+  grid-template-columns: minmax(280px, 0.6fr) minmax(0, 1.4fr);
+  gap: 34px;
+  padding-block: clamp(40px, 4.4vw, 74px);
+}
+
+.portal-hero__title {
+  font-size: clamp(2.4rem, 3.5vw, 3.7rem);
+}
+
+.portal-hero__tagline {
+  margin-bottom: 18px;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.1rem, 1.6vw, 1.42rem);
+}
+
+.portal-preview {
+  min-width: 0;
+}
+
+.portal-window {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: linear-gradient(155deg, rgb(8 20 27 / 97%), rgb(2 8 11 / 98%));
+  box-shadow: 0 30px 80px rgb(0 0 0 / 54%);
+}
+
+.portal-window__bar {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgb(3 11 15 / 92%);
+}
+
+.portal-window__mark {
+  width: 132px;
+  height: auto;
+}
+
+.portal-window__bar > span {
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.portal-window__bar em {
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.portal-window__body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.44fr) minmax(0, 1.9fr) minmax(0, 0.66fr);
+  gap: 1px;
+  background: var(--border-soft);
+}
+
+.portal-rail,
+.portal-panel,
+.portal-status {
+  min-width: 0;
+  padding: 16px 14px;
+  background: rgb(3 11 15 / 96%);
+}
+
+.portal-rail ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-rail li {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 5px;
+  color: #98a2a6;
+  font-size: 0.75rem;
+}
+
+.portal-rail svg {
+  color: #6d7a80;
+}
+
+.portal-rail__item--active {
+  background: rgb(216 154 39 / 12%);
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.portal-rail__item--active svg {
+  color: var(--gold-light);
+}
+
+.portal-panel h2,
+.portal-status h2 {
+  margin-bottom: 14px;
+  color: var(--ivory);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.portal-table {
+  display: grid;
+  gap: 0;
+}
+
+.portal-table__head,
+.portal-table__row {
+  display: grid;
+  align-items: center;
+  grid-template-columns:
+    minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 0.6fr) minmax(0, 0.8fr)
+    minmax(0, 0.7fr) minmax(0, 0.7fr);
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.portal-table__head {
+  color: var(--muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
+.portal-table__row {
+  color: #c2c8ca;
+  font-size: 0.72rem;
+}
+
+.portal-table__row:last-child {
+  border-bottom: 0;
+}
+
+.portal-table__row em {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-style: normal;
+}
+
+.portal-table__asset {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+.portal-table__asset img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.portal-table__asset strong {
+  display: block;
+  color: #d6dbdc;
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.portal-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border: 1px solid var(--teal);
+  border-radius: 999px;
+  color: var(--teal);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.portal-table__action b {
+  display: inline-block;
+  padding: 6px 11px;
+  border-radius: 5px;
+  background: linear-gradient(100deg, var(--gold), #b07d17);
+  color: #0a0d0f;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.portal-help {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.portal-help strong {
+  display: block;
+  color: #c2c8ca;
+  font-size: 0.73rem;
+}
+
+.portal-help > span {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.portal-help b {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  color: var(--gold-light);
+  font-size: 0.7rem;
+}
+
+.portal-status ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-status li {
+  position: relative;
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  padding-bottom: 14px;
+}
+
+.portal-status li:not(:last-child)::before {
+  position: absolute;
+  top: 18px;
+  bottom: 2px;
+  left: 8px;
+  width: 1px;
+  background: rgb(40 203 184 / 32%);
+  content: "";
+}
+
+.portal-status svg {
+  padding: 2px;
+  border: 1px solid var(--teal);
+  border-radius: 50%;
+  background: rgb(4 14 18 / 96%);
+  color: var(--teal);
+  box-sizing: content-box;
+}
+
+.portal-status strong {
+  display: block;
+  color: #d6dbdc;
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.portal-status em {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-style: normal;
+}
+
+.portal-assurances {
+  padding-top: clamp(30px, 3vw, 46px);
+}
+
+.portal-assurances__grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.portal-assurances__grid h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.92rem, 1.2vw, 1.08rem);
+}
+
+.portal-assurances__grid p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.74rem, 0.76vw, 0.84rem);
+  line-height: 1.55;
+}
+
+.portal-process {
+  padding-top: var(--section-gap);
+}
+
+.portal-process__panel {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.portal-steps {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-steps > li {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 11px;
+  text-align: center;
+}
+
+.portal-steps > li:not(:last-child)::before {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-soft);
+  content: "";
+}
+
+.portal-steps > li:not(:last-child)::after {
+  position: absolute;
+  top: 15px;
+  right: -14px;
+  padding-inline: 3px;
+  background: #061219;
+  color: var(--gold);
+  content: "\2192";
+  font-size: 0.95rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.portal-steps__number {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.95rem;
+}
+
+.portal-steps svg {
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 12px rgb(216 154 39 / 20%));
+  transition: transform 320ms var(--ease-premium);
+}
+
+.portal-steps > li:hover svg {
+  transform: scale(1.08);
+}
+
+.portal-steps h3 {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.portal-steps p {
+  margin: 0;
+  color: #b7bec0;
+  font-size: 0.71rem;
+  line-height: 1.55;
+}
+
+.portal-features {
+  padding-top: var(--section-gap);
+}
+
+.portal-features__card {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.portal-features__title {
+  margin-bottom: 20px;
+  color: var(--gold-light);
+  font-size: clamp(1.06rem, 1.4vw, 1.3rem);
+}
+
+.portal-features__card ul {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-features__card li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+.portal-features__card svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.portal-features__card h3 {
+  margin-bottom: 4px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.81rem;
+  font-weight: 700;
+}
+
+.portal-features__card p {
+  margin: 0;
+  color: #b8bec1;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.portal-trust {
+  padding-top: var(--section-gap);
+}
+
+.portal-trust__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.portal-guarantee {
+  padding-top: var(--section-gap);
+}
+
+.portal-guarantee__panel {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.94fr) minmax(0, 0.82fr);
+  gap: 26px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 89%), rgb(2 8 11 / 94%));
+}
+
+.portal-guarantee__copy h2 {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: clamp(1.16rem, 1.7vw, 1.5rem);
+}
+
+.portal-guarantee__copy p {
+  margin: 0;
+  color: #b8bec1;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.portal-guarantee__checks {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 16px;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(4 12 16 / 62%);
+}
+
+.portal-guarantee__checks > svg {
+  color: var(--gold-light);
+}
+
+.portal-guarantee__checks ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-guarantee__checks li {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  color: #c6ccce;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.portal-guarantee__checks li svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.portal-guarantee__checks > p {
+  grid-column: 2;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.portal-guarantee__image {
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  border-radius: 7px;
+}
+
+.portal-cta {
+  margin-top: var(--section-gap);
+}
+
 @media (max-width: 1460px) {
   .desktop-nav-future,
   .desktop-nav-link {
@@ -8139,6 +9375,86 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 1330px) {
+  /* --- Gemstone pages and the portal ---------------------------------- */
+
+  .gem-detail,
+  .gem-story {
+    grid-template-columns: 1fr;
+  }
+
+  .gem-close {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gem-close > .gem-card:last-child {
+    grid-column: span 2;
+  }
+
+  .gem-gallery__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gem-glance__row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px 0;
+  }
+
+  .gem-glance__row > div:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  /* The preview is a six-column table, and beside a copy column it is left
+     about 395px at this width — narrower than the columns can reflow into. It
+     takes the full width from here down, and the timeline drops beneath it. */
+  .portal-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+
+  .portal-window__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* With the rail column gone the bar has the mark, the title and the preview
+     note in three columns, which leaves the title 26px. The note drops to its
+     own line from here down. */
+  .portal-window__bar {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 12px;
+  }
+
+  .portal-window__bar em {
+    grid-column: span 2;
+  }
+
+  /* The rail is the first thing to go: its eight labels are the least of what
+     the preview is showing, and the table is the most. */
+  .portal-rail {
+    display: none;
+  }
+
+  .portal-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px 20px;
+  }
+
+  .portal-steps > li:nth-child(4n)::before,
+  .portal-steps > li:nth-child(4n)::after {
+    display: none;
+  }
+
+  .portal-features__card ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .portal-guarantee__panel {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+
+  .portal-guarantee__image {
+    grid-column: span 2;
+  }
+
   /* --- Infrastructure, programs and registry -------------------------- */
 
   .infrastructure-detail {
@@ -8581,6 +9897,114 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 980px) {
+  /* --- Gemstone pages and the portal ---------------------------------- */
+
+  .gem-hero,
+  .portal-hero {
+    min-height: auto;
+  }
+
+  .gem-hero__inner,
+  .portal-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gem-highlights {
+    grid-column: 1;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .gem-assurances__grid,
+  .gem-trust__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+
+  .gem-assurances__grid li:nth-child(3n + 1),
+  .gem-trust__grid li:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .gem-assurances__grid li:nth-child(n + 4),
+  .gem-trust__grid li:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .gem-close {
+    grid-template-columns: 1fr;
+  }
+
+  .gem-close > .gem-card:last-child {
+    grid-column: auto;
+  }
+
+  .gem-details {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+  }
+
+  .gem-origin__pins {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gem-features__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portal-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .portal-steps > li:nth-child(4n)::before,
+  .portal-steps > li:nth-child(4n)::after {
+    display: block;
+  }
+
+  .portal-steps > li:nth-child(3n)::before,
+  .portal-steps > li:nth-child(3n)::after {
+    display: none;
+  }
+
+  .portal-features__card ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portal-guarantee__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-guarantee__image {
+    grid-column: auto;
+  }
+
+  /* The order timeline drops below the table rather than being squeezed beside
+     it, which is where the board puts it on a narrow screen too. */
+  .portal-window__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The six columns of the token table cannot reflow, so each row becomes a
+     stacked record with its column name carried on the cell. */
+  .portal-table__head {
+    display: none;
+  }
+
+  .portal-table__row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    padding: 14px 0;
+  }
+
+  .portal-table__row > span:not(.portal-table__asset)::before {
+    display: block;
+    color: var(--muted);
+    content: attr(data-label);
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   /* --- Infrastructure, programs and registry -------------------------- */
 
   .infrastructure-hero,
@@ -8976,6 +10400,86 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 760px) {
+  /* --- Gemstone pages and the portal ---------------------------------- */
+
+  .gem-highlights,
+  .gem-promise {
+    width: 100%;
+    max-width: none;
+    margin-top: 26px;
+  }
+
+  .gem-promise {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .gem-details,
+  .gem-origin__pins,
+  .gem-features__grid,
+  .portal-steps,
+  .portal-features__card ul,
+  .portal-guarantee__checks {
+    grid-template-columns: 1fr;
+  }
+
+  .gem-glance__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gem-glance__row > div:nth-child(3n + 1) {
+    border-left: 1px solid var(--gem-faint);
+  }
+
+  .gem-glance__row > div:nth-child(2n + 1) {
+    border-left: 0;
+  }
+
+  .gem-gallery__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gem-details__visual {
+    order: -1;
+  }
+
+  .portal-steps {
+    gap: 26px;
+  }
+
+  /* Stacked, the rule and the arrow point across nothing. */
+  .portal-steps > li:not(:last-child)::before,
+  .portal-steps > li:not(:last-child)::after,
+  .portal-steps > li:nth-child(3n)::before,
+  .portal-steps > li:nth-child(3n)::after {
+    display: none;
+  }
+
+  .portal-guarantee__checks > svg {
+    display: none;
+  }
+
+  .portal-guarantee__checks > p {
+    grid-column: auto;
+  }
+
+  .portal-process__panel,
+  .portal-features__card,
+  .portal-guarantee__panel,
+  .gem-card {
+    padding: 20px;
+  }
+
+  .portal-window__bar {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+
+  .portal-window__bar em {
+    grid-column: span 2;
+  }
+
   /* --- Infrastructure, programs and registry -------------------------- */
 
   .infrastructure-hero__rule {
