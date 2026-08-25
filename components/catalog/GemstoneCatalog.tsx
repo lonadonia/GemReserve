@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 
 import {
@@ -220,15 +221,24 @@ export function GemstoneCatalog() {
                     </span>
                   </div>
 
-                  <button
-                    className="gemstone-card-details-button"
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    title="Gemstone details are coming soon"
-                  >
-                    {asset.ctaLabel}
-                  </button>
+                  {"href" in asset && asset.href ? (
+                    <Link
+                      className="gemstone-card-details-button gemstone-card-details-button--active"
+                      href={asset.href}
+                    >
+                      {asset.ctaLabel}
+                    </Link>
+                  ) : (
+                    <button
+                      className="gemstone-card-details-button"
+                      type="button"
+                      disabled
+                      aria-disabled="true"
+                      title="Gemstone details are coming soon"
+                    >
+                      {asset.ctaLabel}
+                    </button>
+                  )}
                 </div>
               </article>
             </li>

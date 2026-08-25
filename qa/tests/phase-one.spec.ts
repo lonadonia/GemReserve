@@ -14,6 +14,18 @@ const routes = [
   { name: "asset-registry", path: "/asset-registry" },
   { name: "aquamarine", path: "/aquamarine" },
   { name: "emerald", path: "/emerald" },
+  { name: "peridot", path: "/peridot" },
+  { name: "ruby", path: "/ruby" },
+  { name: "tourmaline", path: "/tourmaline" },
+  { name: "natural-raw-charoite", path: "/natural-raw-charoite" },
+  {
+    name: "natural-rough-alexandrite",
+    path: "/natural-rough-alexandrite",
+  },
+  {
+    name: "natural-rough-aquamarine",
+    path: "/natural-rough-aquamarine",
+  },
   { name: "redemption-portal", path: "/redemption-portal" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
@@ -30,6 +42,7 @@ const requiredViewports = [
   { name: "phone-390", width: 390, height: 844 },
   { name: "phone-430", width: 430, height: 932 },
   { name: "tablet-768", width: 768, height: 1024 },
+  { name: "tablet-900", width: 900, height: 1200 },
   { name: "tablet-1024", width: 1024, height: 1366 },
   { name: "desktop-1280", width: 1280, height: 800 },
   { name: "desktop-1440", width: 1440, height: 900 },
@@ -425,12 +438,30 @@ test.describe("assets and infrastructure pages", () => {
 });
 
 test.describe("gemstone pages and the portal", () => {
-  test("both stone pages render from one shell with their own accent", async ({
+  test("stone pages render from one shell with their own accent", async ({
     page,
   }) => {
     for (const [route, accent, title] of [
       ["/aquamarine", "aqua", "AQUAMARINE"],
       ["/emerald", "emerald", "EMERALD"],
+      ["/peridot", "peridot", "PERIDOT"],
+      ["/ruby", "ruby", "RUBY"],
+      ["/tourmaline", "tourmaline", "TOURMALINE"],
+      [
+        "/natural-raw-charoite",
+        "charoite",
+        "NATURAL RAW CHAROITE",
+      ],
+      [
+        "/natural-rough-alexandrite",
+        "alexandrite",
+        "NATURAL ROUGH ALEXANDRITE",
+      ],
+      [
+        "/natural-rough-aquamarine",
+        "rough-aquamarine",
+        "NATURAL ROUGH AQUAMARINE",
+      ],
     ] as const) {
       await page.goto(route, { waitUntil: "networkidle" });
       await expect(page.locator("h1")).toHaveText(title);
@@ -490,7 +521,7 @@ test.describe("gemstone pages and the portal", () => {
     ).toHaveCount(0);
   });
 
-  test("the three pages are reachable from the Assets and How It Works menus", async ({
+  test("the gemstone pages are reachable from the Assets menu", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -501,6 +532,12 @@ test.describe("gemstone pages and the portal", () => {
     for (const [label, href] of [
       ["Aquamarine", "/aquamarine"],
       ["Emerald", "/emerald"],
+      ["Peridot", "/peridot"],
+      ["Ruby", "/ruby"],
+      ["Tourmaline", "/tourmaline"],
+      ["Natural Raw Charoite", "/natural-raw-charoite"],
+      ["Natural Rough Alexandrite", "/natural-rough-alexandrite"],
+      ["Natural Rough Aquamarine", "/natural-rough-aquamarine"],
     ] as const) {
       await expect(
         nav.getByRole("link", { name: label, exact: true }),
@@ -511,5 +548,43 @@ test.describe("gemstone pages and the portal", () => {
     await expect(
       nav.getByRole("link", { name: "Redemption Portal", exact: true }),
     ).toHaveAttribute("href", "/redemption-portal");
+  });
+
+  test("rough programmes keep seven facts and Alexandrite shows both lighting states", async ({
+    page,
+  }) => {
+    for (const route of [
+      "/natural-raw-charoite",
+      "/natural-rough-alexandrite",
+      "/natural-rough-aquamarine",
+    ]) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      await expect(page.locator(".gem-glance__row > div")).toHaveCount(7);
+    }
+
+    await page.goto("/natural-rough-alexandrite", {
+      waitUntil: "networkidle",
+    });
+    await expect(page.locator(".gem-hero__comparisons figure")).toHaveCount(2);
+  });
+
+  test("catalogue and programme cards link to published gemstone pages", async ({
+    page,
+  }) => {
+    for (const route of ["/assets", "/gemstone-programs"]) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      const cardSelector =
+        route === "/assets" ? ".gemstone-card" : ".program-card";
+      for (const [label, href] of [
+        ["Ruby", "/ruby"],
+        ["Emerald", "/emerald"],
+        ["Aquamarine", "/aquamarine"],
+      ] as const) {
+        const card = page.locator(cardSelector, {
+          has: page.getByRole("heading", { name: label, exact: true }),
+        });
+        await expect(card.getByRole("link")).toHaveAttribute("href", href);
+      }
+    }
   });
 });

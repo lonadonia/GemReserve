@@ -363,6 +363,60 @@ const heroJobs = [
     mobileWindow: [0.3, 1],
   },
   {
+    source: "peridot-hero-master.png",
+    name: "peridot-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.2,
+    mobileWindow: [0.25, 1],
+  },
+  {
+    source: "ruby-hero-master.png",
+    name: "ruby-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.2,
+    mobileWindow: [0.25, 1],
+  },
+  {
+    source: "tourmaline-hero-master.png",
+    name: "tourmaline-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.2,
+    mobileWindow: [0.25, 1],
+  },
+  {
+    source: "charoite-rough-master.png",
+    name: "charoite-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.05, 1],
+  },
+  {
+    source: "alexandrite-rough-master.png",
+    name: "alexandrite-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.05, 1],
+  },
+  {
+    source: "rough-aquamarine-master.png",
+    name: "rough-aquamarine-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.05, 1],
+  },
+  {
     source: "passports-hero-master.png",
     name: "passports-hero",
     position: "right",
@@ -663,6 +717,60 @@ await exportCutout(
   path.join(sectionDir, "ruby-cushion"),
   460,
 );
+
+// Supplied rough-stone cut-outs used by the gemstone story cards. They retain
+// their alpha and are squared to one intrinsic box so every page can size them
+// through the same responsive rule.
+for (const name of [
+  "peridot-rough",
+  "tourmaline-rough",
+  "charoite-rough",
+  "alexandrite-rough",
+  "rough-aquamarine",
+]) {
+  await exportCutout(
+    path.join(masters, `${name}-master.png`),
+    path.join(gemDir, name),
+    620,
+    { square: true },
+  );
+}
+
+// Alexandrite's board pairs the supplied cluster with a daylight and an
+// incandescent study. Both are honest color-directed views of the same source
+// artwork, not separate stones or asset records.
+async function colorStudy(input, channels) {
+  const { data, info } = await sharp(input)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const maximum = Math.max(...channels);
+  for (let index = 0; index < data.length; index += info.channels) {
+    const luminance =
+      data[index] * 0.2126 +
+      data[index + 1] * 0.7152 +
+      data[index + 2] * 0.0722;
+    data[index] = (luminance * channels[0]) / maximum;
+    data[index + 1] = (luminance * channels[1]) / maximum;
+    data[index + 2] = (luminance * channels[2]) / maximum;
+  }
+  return sharp(data, {
+    raw: { width: info.width, height: info.height, channels: info.channels },
+  })
+    .png()
+    .toBuffer();
+}
+
+for (const [name, color] of [
+  ["alexandrite-daylight", [121, 164, 91]],
+  ["alexandrite-incandescent", [184, 95, 121]],
+]) {
+  const study = await colorStudy(
+    path.join(masters, "alexandrite-rough-master.png"),
+    color,
+  );
+  await exportCutout(study, path.join(gemDir, name), 620, { square: true });
+}
 
 // Catalogue stones are cut off their slate backdrop so the cards can show the
 // stone itself rather than a small gem floating on a dark plate. The backdrop is

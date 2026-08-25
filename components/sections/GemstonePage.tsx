@@ -59,6 +59,29 @@ const investmentIcons: Record<string, IconName> = {
   scarcity: "mountain",
   appreciation: "chart",
   fractional: "users",
+  // Peridot
+  abundance: "diamond",
+  attractive: "eye",
+  affordable: "hand-gem",
+  durable: "shield-check",
+  "global-demand": "chart",
+  // Ruby
+  extreme: "mountain",
+  "strong-demand": "chart",
+  "value-appreciation": "chart",
+  // Tourmaline
+  diverse: "diamond",
+  "rarity-uniqueness": "eye",
+  // Natural raw Charoite
+  "limited-supply": "mountain",
+  "unique-beauty": "eye",
+  versatile: "hand-gem",
+  "asset-appreciation": "chart",
+  // Natural rough Alexandrite
+  "natural-untreated": "diamond",
+  extraordinary: "mountain",
+  "color-change": "eye",
+  "global-appeal": "globe",
 };
 
 const qualityIcons: Record<string, IconName> = {
@@ -67,6 +90,9 @@ const qualityIcons: Record<string, IconName> = {
   cut: "hand-gem",
   carat: "chart",
   origin: "mountain",
+  transparency: "eye",
+  texture: "source",
+  "crystal-form": "diamond",
 };
 
 const featureIcons: Record<string, IconName> = {
@@ -84,14 +110,32 @@ const trustIcons: Record<string, IconName> = {
   support: "users",
 };
 
-// Only Emerald has an at-a-glance row, so these are rendered in its green.
-const glancePlates: Record<string, string> = {
-  type: "An emerald-cut green gemstone",
-  colour: "A green artist's palette disc",
-  origin: "A cluster of green mountain peaks",
-  hardness: "A green crystal under a chisel tip",
-  clarity: "A green magnifying glass over a gemstone",
-  certification: "A green award rosette bearing a check mark",
+// The sculpted at-a-glance vocabulary is shared; each page recolors the plates
+// through its gemstone accent tokens.
+const glancePlates: Record<string, { name: string; alt: string }> = {
+  type: { name: "glance-type", alt: "A sculpted faceted gemstone" },
+  colour: { name: "glance-colour", alt: "A sculpted artist's palette" },
+  origin: { name: "glance-origin", alt: "A sculpted mountain range" },
+  crystal: {
+    name: "glance-hardness",
+    alt: "A sculpted gemstone crystal",
+  },
+  hardness: {
+    name: "glance-hardness",
+    alt: "A sculpted crystal under a chisel tip",
+  },
+  clarity: {
+    name: "glance-clarity",
+    alt: "A sculpted magnifying glass over a gemstone",
+  },
+  certification: {
+    name: "glance-certification",
+    alt: "A sculpted award rosette bearing a check mark",
+  },
+  quality: {
+    name: "glance-certification",
+    alt: "A sculpted quality award rosette",
+  },
 };
 
 export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
@@ -146,6 +190,23 @@ export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
                 </aside>
               ) : null}
             </MotionReveal>
+
+            {gem.heroComparisons ? (
+              <MotionReveal className="gem-hero__comparisons" delay={80}>
+                {gem.heroComparisons.map((item) => (
+                  <figure key={item.label}>
+                    <figcaption>{item.label}</figcaption>
+                    <Image
+                      src={item.imageSrc}
+                      alt={item.imageAlt}
+                      width={620}
+                      height={620}
+                      sizes="(max-width: 760px) 42vw, 220px"
+                    />
+                  </figure>
+                ))}
+              </MotionReveal>
+            ) : null}
 
             <MotionReveal className="gem-highlights" delay={120}>
               <aside
@@ -209,21 +270,26 @@ export function GemstonePage({ gem }: { readonly gem: GemstonePageContent }) {
               <SectionHeading title={gem.glance.title} id="gem-glance-title" />
             </MotionReveal>
             <MotionReveal delay={80}>
-              <dl className="gem-glance__row">
-                {gem.glance.items.map((item) => (
-                  <div key={item.id}>
-                    <SectionPlate
-                      name={`glance-${item.id}`}
-                      alt={glancePlates[item.id]}
-                      sizes="(max-width: 760px) 84px, (max-width: 1330px) 62px, 72px"
-                    />
-                    <dt>{item.label}</dt>
-                    <dd>
-                      {item.value}
-                      {item.note ? <span>{item.note}</span> : null}
-                    </dd>
-                  </div>
-                ))}
+              <dl
+                className={`gem-glance__row gem-glance__row--${gem.glance.items.length}`}
+              >
+                {gem.glance.items.map((item) => {
+                  const plate = glancePlates[item.id];
+                  return (
+                    <div key={item.id}>
+                      <SectionPlate
+                        name={plate.name}
+                        alt={plate.alt}
+                        sizes="(max-width: 760px) 84px, (max-width: 1330px) 62px, 72px"
+                      />
+                      <dt>{item.label}</dt>
+                      <dd>
+                        {item.value}
+                        {item.note ? <span>{item.note}</span> : null}
+                      </dd>
+                    </div>
+                  );
+                })}
               </dl>
             </MotionReveal>
           </section>

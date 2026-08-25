@@ -1,9 +1,9 @@
 /**
  * The shape a single-gemstone page takes.
  *
- * Aquamarine and Emerald are the same page with different data and a different
- * accent colour, so the layout is written once against this type and each stone
- * is a content file. A third stone is a content file, not a page.
+ * The gemstone boards share a presentation system while retaining different
+ * optional sections, field counts and section ordering. The layout is written
+ * once against this type and each stone remains a focused content module.
  *
  * The two boards order their sections differently — Aquamarine leads with the
  * spec table and its origin map, Emerald leads with an at-a-glance strip and its
@@ -54,7 +54,15 @@ export interface GemProcessStep {
 export interface GemstonePageContent {
   /** Drives the accent tokens, the body class and nothing else. */
   readonly slug: string;
-  readonly accent: "aqua" | "emerald";
+  readonly accent:
+    | "aqua"
+    | "emerald"
+    | "peridot"
+    | "ruby"
+    | "tourmaline"
+    | "charoite"
+    | "alexandrite"
+    | "rough-aquamarine";
 
   readonly breadcrumb: readonly string[];
   readonly title: string;
@@ -62,6 +70,13 @@ export interface GemstonePageContent {
   readonly description: string;
   readonly heroBase: string;
   readonly heroImageAlt: string;
+
+  /** Alexandrite's daylight/incandescent comparison; other heroes omit it. */
+  readonly heroComparisons?: readonly {
+    readonly label: string;
+    readonly imageSrc: string;
+    readonly imageAlt: string;
+  }[];
 
   /** The card the board floats over the hero. Emerald's rail is untitled. */
   readonly highlightsTitle?: string;

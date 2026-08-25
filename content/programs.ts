@@ -77,6 +77,7 @@ export interface GemstoneProgram {
   hardness: string;
   typicalSize: string;
   tokenStandard: string;
+  href?: string;
 }
 
 export const programsSectionTitle = "OUR GEMSTONE PROGRAMS";
@@ -95,6 +96,7 @@ export const gemstonePrograms: readonly GemstoneProgram[] = [
     hardness: "9 Mohs",
     typicalSize: "0.50 – 10+ ct",
     tokenStandard: "ERC-20",
+    href: "/ruby",
   },
   {
     id: "blue-sapphire",
@@ -122,6 +124,7 @@ export const gemstonePrograms: readonly GemstoneProgram[] = [
     hardness: "7.5 – 8 Mohs",
     typicalSize: "0.50 – 8+ ct",
     tokenStandard: "ERC-20",
+    href: "/emerald",
   },
   {
     id: "diamond",
@@ -189,6 +192,7 @@ export const gemstonePrograms: readonly GemstoneProgram[] = [
     hardness: "7.5 – 8 Mohs",
     typicalSize: "1.00 – 20+ ct",
     tokenStandard: "ERC-20",
+    href: "/aquamarine",
   },
   {
     id: "spinel",

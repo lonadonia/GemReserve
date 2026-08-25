@@ -34,6 +34,18 @@ export const navigationGroups = [
       { label: "Digital Asset Passports", href: "/digital-asset-passports" },
       { label: "Aquamarine", href: "/aquamarine" },
       { label: "Emerald", href: "/emerald" },
+      { label: "Peridot", href: "/peridot" },
+      { label: "Ruby", href: "/ruby" },
+      { label: "Tourmaline", href: "/tourmaline" },
+      { label: "Natural Raw Charoite", href: "/natural-raw-charoite" },
+      {
+        label: "Natural Rough Alexandrite",
+        href: "/natural-rough-alexandrite",
+      },
+      {
+        label: "Natural Rough Aquamarine",
+        href: "/natural-rough-aquamarine",
+      },
       { label: "Gemstone Gallery", href: null },
     ],
   },

@@ -170,12 +170,9 @@ export default function GemstoneProgramsPage() {
                     </div>
                   </dl>
 
-                  {/* Each stone's own page opens with the marketplace, so the
-                      card points at the catalogue entry that already exists
-                      rather than at a route that does not. */}
                   <Link
                     className="button button--outline button--small program-card__action"
-                    href="/assets"
+                    href={program.href ?? "/assets"}
                   >
                     {programActionLabel}
                   </Link>

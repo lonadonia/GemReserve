@@ -93,6 +93,7 @@ interface GemstoneAssetBase extends VerificationFlag {
   readonly report: string;
   readonly price: GemstonePrice;
   readonly ctaLabel: "View Details";
+  readonly href?: string;
 }
 
 export type GemstoneAsset = GemstoneAssetBase &
@@ -252,6 +253,7 @@ export const gemstoneAssets = [
       requiresClientVerification: true,
     },
     ctaLabel: "View Details",
+    href: "/ruby",
     requiresClientVerification: true,
   },
   {
@@ -292,6 +294,7 @@ export const gemstoneAssets = [
       requiresClientVerification: true,
     },
     ctaLabel: "View Details",
+    href: "/emerald",
     requiresClientVerification: true,
   },
   {
@@ -392,6 +395,7 @@ export const gemstoneAssets = [
       requiresClientVerification: true,
     },
     ctaLabel: "View Details",
+    href: "/aquamarine",
     requiresClientVerification: true,
   },
   {

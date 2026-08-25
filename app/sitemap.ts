@@ -11,6 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/asset-registry",
     "/aquamarine",
     "/emerald",
+    "/peridot",
+    "/ruby",
+    "/tourmaline",
+    "/natural-raw-charoite",
+    "/natural-rough-alexandrite",
+    "/natural-rough-aquamarine",
     "/redemption-portal",
     "/gemstone-tokenization",
     "/physical-redemption",
@@ -25,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/faq",
   ].map((path) => ({
     url: `https://gemreserve.io${path}`,
-    lastModified: new Date("2026-08-24"),
+    lastModified: new Date("2026-08-25"),
     changeFrequency: path ? "monthly" : "weekly",
     priority: path ? 0.8 : 1,
   }));

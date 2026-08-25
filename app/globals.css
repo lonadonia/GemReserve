@@ -2252,6 +2252,9 @@ h3 {
 }
 
 .gemstone-card-details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   min-height: 38px;
   border: 1px solid var(--gold-dark);
@@ -2260,6 +2263,21 @@ h3 {
   color: var(--gold-light);
   font-size: 0.73rem;
   opacity: 0.68;
+  text-decoration: none;
+}
+
+.gemstone-card-details-button--active {
+  opacity: 1;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.gemstone-card-details-button--active:hover,
+.gemstone-card-details-button--active:focus-visible {
+  border-color: var(--gold-light);
+  background: rgb(190 143 60 / 10%);
 }
 
 .assets-investment {
@@ -8153,6 +8171,78 @@ li:hover > .section-plate {
   --gem-glow: rgb(70 201 141 / 22%);
 }
 
+.gem-page--peridot {
+  --gem: #8ed94f;
+  --gem-soft: rgb(142 217 79 / 34%);
+  --gem-faint: rgb(142 217 79 / 14%);
+  --gem-glow: rgb(142 217 79 / 22%);
+  --market-fill: #8ed94f;
+}
+
+.gem-page--ruby {
+  --gem: #ff3451;
+  --gem-soft: rgb(255 52 81 / 34%);
+  --gem-faint: rgb(255 52 81 / 14%);
+  --gem-glow: rgb(255 52 81 / 22%);
+  --market-fill: #ff3451;
+}
+
+/* Emerald's sculpted glance plates are the shared six-field set. Ruby keeps
+   their relief and changes only the metal, the same way the source boards keep
+   one icon vocabulary while changing each gemstone's accent. */
+.gem-page--ruby .gem-glance__row .section-plate {
+  filter: hue-rotate(225deg) saturate(1.42) brightness(1.08);
+}
+
+.gem-page--tourmaline {
+  --gem: #62cd52;
+  --gem-soft: rgb(98 205 82 / 34%);
+  --gem-faint: rgb(98 205 82 / 14%);
+  --gem-glow: rgb(98 205 82 / 22%);
+  --market-fill: #62cd52;
+}
+
+.gem-page--charoite {
+  --gem: #b77ae7;
+  --gem-soft: rgb(183 122 231 / 34%);
+  --gem-faint: rgb(183 122 231 / 14%);
+  --gem-glow: rgb(183 122 231 / 22%);
+  --market-fill: #b77ae7;
+}
+
+.gem-page--charoite .gem-glance__row .section-plate {
+  filter: hue-rotate(140deg) saturate(1.28) brightness(1.08);
+}
+
+.gem-page--alexandrite {
+  --gem: #61d2d8;
+  --gem-soft: rgb(97 210 216 / 34%);
+  --gem-faint: rgb(97 210 216 / 14%);
+  --gem-glow: rgb(97 210 216 / 22%);
+  --market-fill: #c177c3;
+}
+
+.gem-page--alexandrite .gem-hero__tagline,
+.gem-page--alexandrite .gem-cta .trust-cta__copy h2 {
+  color: #c78ad2;
+}
+
+.gem-page--alexandrite .gem-glance__row .section-plate {
+  filter: hue-rotate(48deg) saturate(1.2) brightness(1.12);
+}
+
+.gem-page--rough-aquamarine {
+  --gem: #5ed8ee;
+  --gem-soft: rgb(94 216 238 / 34%);
+  --gem-faint: rgb(94 216 238 / 14%);
+  --gem-glow: rgb(94 216 238 / 22%);
+  --market-fill: #5ed8ee;
+}
+
+.gem-page--rough-aquamarine .gem-glance__row .section-plate {
+  filter: hue-rotate(48deg) saturate(1.2) brightness(1.14);
+}
+
 .gem-hero {
   min-height: min(clamp(600px, 46vw, 860px), 86vh);
 }
@@ -8233,6 +8323,37 @@ li:hover > .section-plate {
 .gem-highlights {
   margin-top: auto;
   width: 100%;
+}
+
+.gem-hero__comparisons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 520px);
+  margin-left: auto;
+}
+
+.gem-hero__comparisons figure {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.gem-hero__comparisons figcaption {
+  color: #d7dcdd;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.gem-hero__comparisons img {
+  width: 100%;
+  height: 112px;
+  padding: 8px;
+  border: 1px solid var(--gem-soft);
+  border-radius: 7px;
+  background: rgb(2 8 11 / 82%);
+  object-fit: contain;
 }
 
 .gem-highlights aside {
@@ -8356,6 +8477,10 @@ li:hover > .section-plate {
   border: 1px solid var(--gem-soft);
   border-radius: 8px;
   background: linear-gradient(145deg, rgb(6 18 22 / 86%), rgb(2 8 11 / 92%));
+}
+
+.gem-glance__row--7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .gem-glance__row > div {
@@ -10435,6 +10560,15 @@ li:hover > .section-plate {
     width: 100%;
     max-width: none;
     margin-top: 26px;
+  }
+
+  .gem-hero__comparisons {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .gem-hero__comparisons img {
+    height: 104px;
   }
 
   /* Stacked, the column dividers become the wrong axis. */

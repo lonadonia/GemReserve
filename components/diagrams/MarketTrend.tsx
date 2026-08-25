@@ -49,8 +49,16 @@ export function MarketTrend({
       >
         <defs>
           <linearGradient id="market-trend-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#2fbd84" stopOpacity="0.34" />
-            <stop offset="100%" stopColor="#2fbd84" stopOpacity="0" />
+            <stop
+              offset="0%"
+              stopColor="var(--market-fill, #2fbd84)"
+              stopOpacity="0.34"
+            />
+            <stop
+              offset="100%"
+              stopColor="var(--market-fill, #2fbd84)"
+              stopOpacity="0"
+            />
           </linearGradient>
         </defs>
 
