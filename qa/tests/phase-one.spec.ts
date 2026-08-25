@@ -26,6 +26,46 @@ const routes = [
     name: "natural-rough-aquamarine",
     path: "/natural-rough-aquamarine",
   },
+  {
+    name: "natural-rough-chrysoprase",
+    path: "/natural-rough-chrysoprase",
+  },
+  {
+    name: "natural-rough-italian-jade",
+    path: "/natural-rough-italian-jade",
+  },
+  {
+    name: "natural-rough-jasper",
+    path: "/natural-rough-jasper",
+  },
+  {
+    name: "natural-rough-ruby-c-quality",
+    path: "/natural-rough-ruby-c-quality",
+  },
+  {
+    name: "natural-rough-ruby-trapiche",
+    path: "/natural-rough-ruby-trapiche",
+  },
+  {
+    name: "natural-rough-ruby-gem-quality",
+    path: "/natural-rough-ruby-gem-quality",
+  },
+  {
+    name: "natural-rough-rutilated-quartz",
+    path: "/natural-rough-rutilated-quartz",
+  },
+  {
+    name: "natural-rough-tourmaline",
+    path: "/natural-rough-tourmaline",
+  },
+  {
+    name: "natural-rough-peridot",
+    path: "/natural-rough-peridot",
+  },
+  {
+    name: "natural-rough-emerald",
+    path: "/natural-rough-emerald",
+  },
   { name: "redemption-portal", path: "/redemption-portal" },
   { name: "enterprise", path: "/enterprise" },
   { name: "investors", path: "/investors" },
@@ -396,6 +436,23 @@ test.describe("assets and infrastructure pages", () => {
     await expect(
       page.locator(".program-card h3", { hasText: /^Emerald$/ }),
     ).toHaveCount(1);
+
+    const roughCards = page.locator(".rough-program-card");
+    await expect(roughCards).toHaveCount(13);
+    for (const href of [
+      "/natural-rough-chrysoprase",
+      "/natural-rough-italian-jade",
+      "/natural-rough-jasper",
+      "/natural-rough-ruby-c-quality",
+      "/natural-rough-ruby-trapiche",
+      "/natural-rough-ruby-gem-quality",
+      "/natural-rough-rutilated-quartz",
+      "/natural-rough-tourmaline",
+      "/natural-rough-peridot",
+      "/natural-rough-emerald",
+    ] as const) {
+      await expect(roughCards.locator(`a[href="${href}"]`)).toHaveCount(1);
+    }
   });
 
   test("the registry record and spec rows stay inside the page on a phone", async ({
@@ -428,6 +485,10 @@ test.describe("assets and infrastructure pages", () => {
     await nav.getByRole("button", { name: /Assets/ }).click();
     for (const [label, href] of [
       ["Gemstone Programs", "/gemstone-programs"],
+      [
+        "Natural Rough Programs",
+        "/gemstone-programs#natural-rough-programs",
+      ],
       ["Asset Registry", "/asset-registry"],
     ] as const) {
       await expect(
@@ -461,6 +522,52 @@ test.describe("gemstone pages and the portal", () => {
         "/natural-rough-aquamarine",
         "rough-aquamarine",
         "NATURAL ROUGH AQUAMARINE",
+      ],
+      [
+        "/natural-rough-chrysoprase",
+        "chrysoprase",
+        "NATURAL ROUGH CHRYSOPRASE",
+      ],
+      [
+        "/natural-rough-italian-jade",
+        "italian-jade",
+        "NATURAL ROUGH ITALIAN JADE",
+      ],
+      ["/natural-rough-jasper", "jasper", "NATURAL ROUGH JASPER"],
+      [
+        "/natural-rough-ruby-c-quality",
+        "rough-ruby-c",
+        "NATURAL ROUGH RUBY (C QUALITY)",
+      ],
+      [
+        "/natural-rough-ruby-trapiche",
+        "rough-ruby-trapiche",
+        "NATURAL ROUGH RUBY, TRAPICHE",
+      ],
+      [
+        "/natural-rough-ruby-gem-quality",
+        "rough-ruby-gem",
+        "NATURAL ROUGH RUBY (GEM QUALITY)",
+      ],
+      [
+        "/natural-rough-rutilated-quartz",
+        "rutilated-quartz",
+        "NATURAL ROUGH RUTILATED QUARTZ",
+      ],
+      [
+        "/natural-rough-tourmaline",
+        "rough-tourmaline",
+        "NATURAL ROUGH TOURMALINE",
+      ],
+      [
+        "/natural-rough-peridot",
+        "rough-peridot",
+        "NATURAL ROUGH PERIDOT",
+      ],
+      [
+        "/natural-rough-emerald",
+        "rough-emerald",
+        "NATURAL, ROUGH EMERALD",
       ],
     ] as const) {
       await page.goto(route, { waitUntil: "networkidle" });

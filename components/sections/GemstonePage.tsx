@@ -82,6 +82,19 @@ const investmentIcons: Record<string, IconName> = {
   extraordinary: "mountain",
   "color-change": "eye",
   "global-appeal": "globe",
+  "growing-demand": "chart",
+  "unique-timeless": "eye",
+  "strong-durable": "shield-check",
+  "unique-diverse": "eye",
+  "wide-use": "hand-gem",
+  "long-term-value": "chart",
+  "extremely-rare": "mountain",
+  "high-demand": "chart",
+  "rare-valuable": "diamond",
+  uniqueness: "eye",
+  "vibrant-unique": "eye",
+  "strong-market-demand": "chart",
+  "appreciating-asset": "chart",
 };
 
 const qualityIcons: Record<string, IconName> = {
@@ -93,6 +106,7 @@ const qualityIcons: Record<string, IconName> = {
   transparency: "eye",
   texture: "source",
   "crystal-form": "diamond",
+  "cut-shape": "hand-gem",
 };
 
 const featureIcons: Record<string, IconName> = {

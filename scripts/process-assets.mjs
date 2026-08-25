@@ -414,6 +414,119 @@ const heroJobs = [
     height: 822,
     mobileWindow: [0.4, 1],
   },
+  // The next rough-stone pages are built directly from the client's supplied
+  // transparent clusters. A deterministic slate plate keeps the source stone
+  // accurate while matching the restrained right-third scale of the v2 heroes.
+  {
+    roughCutout: {
+      source: "chrysoprase-rough-master.png",
+      accent: "#7ed957",
+    },
+    name: "chrysoprase-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "italian-jade-rough-master.png",
+      accent: "#71c94b",
+    },
+    name: "italian-jade-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "jasper-rough-master.png",
+      accent: "#f1ad08",
+    },
+    name: "jasper-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "ruby-c-quality-rough-master.png",
+      accent: "#ff2947",
+    },
+    name: "ruby-c-quality-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "ruby-trapiche-rough-master.png",
+      accent: "#ef4778",
+    },
+    name: "ruby-trapiche-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "ruby-gem-quality-rough-master.png",
+      accent: "#ff3854",
+    },
+    name: "ruby-gem-quality-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "rutilated-quartz-rough-master.png",
+      accent: "#e7a916",
+    },
+    name: "rutilated-quartz-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "rough-tourmaline-master.png",
+      accent: "#df5c99",
+    },
+    name: "rough-tourmaline-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "rough-peridot-master.png",
+      accent: "#8bd52d",
+    },
+    name: "rough-peridot-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    roughCutout: {
+      source: "rough-emerald-master.png",
+      accent: "#49d274",
+    },
+    name: "rough-emerald-hero",
+    position: "center",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.4, 1],
+  },
   {
     source: "passports-hero-master.png",
     name: "passports-hero",
@@ -522,8 +635,85 @@ async function plateWindow(input, [start, end]) {
     .toBuffer();
 }
 
+async function composeRoughHero(input, accent) {
+  const width = 1920;
+  const height = 822;
+  const stoneSize = 680;
+  const stoneLeft = 1170;
+  const stoneTop = 64;
+  const trimmed = await sharp(input)
+    .extract(await alphaBox(input))
+    .resize({
+      width: stoneSize,
+      height: stoneSize,
+      fit: "contain",
+      position: "center",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+      kernel: "lanczos3",
+    })
+    .sharpen({ sigma: 0.45 })
+    .png()
+    .toBuffer();
+
+  const stoneMeta = await sharp(trimmed).metadata();
+  const glowMask = await sharp(trimmed)
+    .extractChannel("alpha")
+    .blur(46)
+    .linear(0.22)
+    .toBuffer();
+  const glow = await sharp({
+    create: {
+      width: stoneMeta.width,
+      height: stoneMeta.height,
+      channels: 3,
+      background: accent,
+    },
+  })
+    .joinChannel(glowMask)
+    .png()
+    .toBuffer();
+
+  const backdrop = Buffer.from(`
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="base" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#010507"/>
+          <stop offset="0.52" stop-color="#07110f"/>
+          <stop offset="1" stop-color="#020709"/>
+        </linearGradient>
+        <radialGradient id="halo" cx="77%" cy="48%" r="46%">
+          <stop offset="0" stop-color="${accent}" stop-opacity="0.18"/>
+          <stop offset="0.54" stop-color="${accent}" stop-opacity="0.045"/>
+          <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="grain" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="19"/>
+          <feColorMatrix values="0 0 0 0 0.17 0 0 0 0 0.19 0 0 0 0 0.18 0 0 0 0.12 0"/>
+        </filter>
+        <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#000000" stop-opacity="0.78"/>
+          <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#base)"/>
+      <rect width="100%" height="100%" fill="url(#halo)"/>
+      <rect width="100%" height="100%" filter="url(#grain)" opacity="0.22"/>
+      <ellipse cx="1510" cy="718" rx="390" ry="72" fill="url(#shadow)"/>
+    </svg>
+  `);
+
+  return sharp(backdrop)
+    .composite([
+      { input: glow, left: stoneLeft, top: stoneTop },
+      { input: trimmed, left: stoneLeft, top: stoneTop },
+    ])
+    .png()
+    .toBuffer();
+}
+
 for (const {
   source,
+  roughCutout,
   name,
   position,
   width,
@@ -532,9 +722,14 @@ for (const {
   padLeft,
   crestPlacement,
 } of heroJobs) {
-  const input = crestPlacement
-    ? await standCrest(path.join(masters, source), crestPlacement)
-    : path.join(masters, source);
+  const input = roughCutout
+    ? await composeRoughHero(
+        path.join(masters, roughCutout.source),
+        roughCutout.accent,
+      )
+    : crestPlacement
+      ? await standCrest(path.join(masters, source), crestPlacement)
+      : path.join(masters, source);
   const plate = padLeft ? await padPlateLeft(input, padLeft) : input;
   await exportPair(plate, path.join(heroDir, name), {
     width,
@@ -725,6 +920,16 @@ for (const name of [
   "charoite-rough",
   "alexandrite-rough",
   "rough-aquamarine",
+  "chrysoprase-rough",
+  "italian-jade-rough",
+  "jasper-rough",
+  "ruby-c-quality-rough",
+  "ruby-trapiche-rough",
+  "ruby-gem-quality-rough",
+  "rutilated-quartz-rough",
+  "rough-tourmaline",
+  "rough-peridot",
+  "rough-emerald",
 ]) {
   await exportCutout(
     path.join(masters, `${name}-master.png`),

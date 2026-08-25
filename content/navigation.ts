@@ -30,6 +30,10 @@ export const navigationGroups = [
       { label: "Explore Gemstone Assets", href: "/assets" },
       { label: "All Gemstones", href: "/assets" },
       { label: "Gemstone Programs", href: "/gemstone-programs" },
+      {
+        label: "Natural Rough Programs",
+        href: "/gemstone-programs#natural-rough-programs",
+      },
       { label: "Asset Registry", href: "/asset-registry" },
       { label: "Digital Asset Passports", href: "/digital-asset-passports" },
       { label: "Aquamarine", href: "/aquamarine" },

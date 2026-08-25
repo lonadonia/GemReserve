@@ -7,6 +7,7 @@
 # local configuration
 .env*
 !.env.example
+/.codex/
 
 # test runners
 /playwright-report/

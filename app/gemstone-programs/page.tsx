@@ -17,6 +17,8 @@ import {
   programBadges,
   programHighlights,
   programSpecLabels,
+  roughGemstonePrograms,
+  roughProgramsSectionTitle,
   programsCta,
   programsHero,
   programsSectionTitle,
@@ -175,6 +177,57 @@ export default function GemstoneProgramsPage() {
                     href={program.href ?? "/assets"}
                   >
                     {programActionLabel}
+                  </Link>
+                </MotionReveal>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section
+          className="rough-programs-section container-wide"
+          id="natural-rough-programs"
+          aria-labelledby="rough-programs-title"
+        >
+          <MotionReveal>
+            <SectionHeading
+              title={roughProgramsSectionTitle}
+              id="rough-programs-title"
+            />
+          </MotionReveal>
+
+          <ul className="rough-programs-grid">
+            {roughGemstonePrograms.map((program, index) => (
+              <li key={program.id}>
+                <MotionReveal
+                  className="rough-program-card"
+                  delay={(index % 4) * 55}
+                >
+                  <Link href={program.href}>
+                    <Image
+                      className="rough-program-card__stone"
+                      src={program.imageSrc}
+                      alt={program.imageAlt}
+                      width={620}
+                      height={620}
+                      sizes="(max-width: 760px) 38vw, (max-width: 1080px) 20vw, 160px"
+                    />
+                    <span className="rough-program-card__copy">
+                      <span className="rough-program-card__title">
+                        <span
+                          className="program-card__swatch"
+                          style={{ background: program.swatch }}
+                          aria-hidden="true"
+                        />
+                        {program.name}
+                      </span>
+                      <span className="rough-program-card__epithet">
+                        {program.epithet}
+                      </span>
+                      <span className="rough-program-card__action">
+                        Explore program
+                      </span>
+                    </span>
                   </Link>
                 </MotionReveal>
               </li>

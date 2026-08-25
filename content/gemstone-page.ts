@@ -62,7 +62,17 @@ export interface GemstonePageContent {
     | "tourmaline"
     | "charoite"
     | "alexandrite"
-    | "rough-aquamarine";
+    | "rough-aquamarine"
+    | "chrysoprase"
+    | "italian-jade"
+    | "jasper"
+    | "rough-ruby-c"
+    | "rough-ruby-trapiche"
+    | "rough-ruby-gem"
+    | "rutilated-quartz"
+    | "rough-tourmaline"
+    | "rough-peridot"
+    | "rough-emerald";
 
   readonly breadcrumb: readonly string[];
   readonly title: string;

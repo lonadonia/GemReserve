@@ -232,6 +232,143 @@ export const programSpecLabels = {
 
 export const programActionLabel = "View Program";
 
+export interface RoughGemstoneProgram {
+  id: string;
+  name: string;
+  epithet: string;
+  imageSrc: string;
+  imageAlt: string;
+  swatch: string;
+  href: string;
+}
+
+export const roughProgramsSectionTitle = "NATURAL ROUGH GEMSTONE PROGRAMS";
+
+/**
+ * The rough-program index uses only names, taglines and supplied cut-outs from
+ * the individual client boards. Detailed specifications remain on each page so
+ * this catalogue does not turn ambiguous board data into new claims.
+ */
+export const roughGemstonePrograms: readonly RoughGemstoneProgram[] = [
+  {
+    id: "charoite",
+    name: "Natural Raw Charoite",
+    epithet: "Nature’s Purple Wonder.",
+    imageSrc: "/images/gems/charoite-rough.webp",
+    imageAlt: "Natural raw purple charoite specimen",
+    swatch: "#b77ae7",
+    href: "/natural-raw-charoite",
+  },
+  {
+    id: "alexandrite",
+    name: "Natural Rough Alexandrite",
+    epithet: "Nature’s Color-Changing Miracle.",
+    imageSrc: "/images/gems/alexandrite-rough.webp",
+    imageAlt: "Natural rough alexandrite specimen",
+    swatch: "#61d2d8",
+    href: "/natural-rough-alexandrite",
+  },
+  {
+    id: "aquamarine",
+    name: "Natural Rough Aquamarine",
+    epithet: "The Tranquil Blue of the Sea.",
+    imageSrc: "/images/gems/rough-aquamarine.webp",
+    imageAlt: "Natural rough blue aquamarine crystal",
+    swatch: "#5ed8ee",
+    href: "/natural-rough-aquamarine",
+  },
+  {
+    id: "chrysoprase",
+    name: "Natural Rough Chrysoprase",
+    epithet: "Nature’s Emerald Green.",
+    imageSrc: "/images/gems/chrysoprase-rough.webp",
+    imageAlt: "Natural rough green chrysoprase specimen",
+    swatch: "#7ed957",
+    href: "/natural-rough-chrysoprase",
+  },
+  {
+    id: "italian-jade",
+    name: "Natural Rough Italian Jade",
+    epithet: "Timeless Beauty. Enduring Strength.",
+    imageSrc: "/images/gems/italian-jade-rough.webp",
+    imageAlt: "Natural rough Italian jade specimen",
+    swatch: "#71c94b",
+    href: "/natural-rough-italian-jade",
+  },
+  {
+    id: "jasper",
+    name: "Natural Rough Jasper",
+    epithet: "Earth’s Ancient Canvas.",
+    imageSrc: "/images/gems/jasper-rough.webp",
+    imageAlt: "Natural rough multicoloured jasper specimen",
+    swatch: "#f1ad08",
+    href: "/natural-rough-jasper",
+  },
+  {
+    id: "ruby-c-quality",
+    name: "Natural Rough Ruby — C Quality",
+    epithet: "The Foundation of Ruby Value.",
+    imageSrc: "/images/gems/ruby-c-quality-rough.webp",
+    imageAlt: "Natural rough C-quality ruby specimen",
+    swatch: "#ff2947",
+    href: "/natural-rough-ruby-c-quality",
+  },
+  {
+    id: "ruby-trapiche",
+    name: "Natural Rough Ruby — Trapiche",
+    epithet: "Nature’s Six-Rayed Star.",
+    imageSrc: "/images/gems/ruby-trapiche-rough.webp",
+    imageAlt: "Natural rough trapiche ruby specimen",
+    swatch: "#ef4778",
+    href: "/natural-rough-ruby-trapiche",
+  },
+  {
+    id: "ruby-gem-quality",
+    name: "Natural Rough Ruby — Gem Quality",
+    epithet: "The King of Gemstones.",
+    imageSrc: "/images/gems/ruby-gem-quality-rough.webp",
+    imageAlt: "Natural rough gem-quality ruby specimen",
+    swatch: "#ff3854",
+    href: "/natural-rough-ruby-gem-quality",
+  },
+  {
+    id: "rutilated-quartz",
+    name: "Natural Rough Rutilated Quartz",
+    epithet: "Golden Threads of Nature.",
+    imageSrc: "/images/gems/rutilated-quartz-rough.webp",
+    imageAlt: "Natural rough rutilated quartz crystal",
+    swatch: "#e7a916",
+    href: "/natural-rough-rutilated-quartz",
+  },
+  {
+    id: "tourmaline",
+    name: "Natural Rough Tourmaline",
+    epithet: "Nature’s Rainbow Gemstone.",
+    imageSrc: "/images/gems/rough-tourmaline.webp",
+    imageAlt: "Natural rough pink and green tourmaline crystal",
+    swatch: "#df5c99",
+    href: "/natural-rough-tourmaline",
+  },
+  {
+    id: "peridot",
+    name: "Natural Rough Peridot",
+    epithet: "The Gem of the Sun.",
+    imageSrc: "/images/gems/rough-peridot.webp",
+    imageAlt: "Natural rough vivid green peridot crystal",
+    swatch: "#8bd52d",
+    href: "/natural-rough-peridot",
+  },
+  {
+    id: "emerald",
+    name: "Natural Rough Emerald",
+    epithet: "The Green Heart of Nature.",
+    imageSrc: "/images/gems/rough-emerald.webp",
+    imageAlt: "Natural rough green emerald crystal",
+    swatch: "#49d274",
+    href: "/natural-rough-emerald",
+  },
+];
+
 export const everyGemstone = {
   title: "Every Gemstone. Every Detail. Every Time.",
   description:
