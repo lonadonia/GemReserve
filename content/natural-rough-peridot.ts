@@ -106,7 +106,7 @@ export const naturalRoughPeridot: GemstonePageContent = {
       "Formed deep within the Earth’s upper mantle and brought to the surface by volcanic activity, peridot has been treasured since ancient times as a symbol of protection, prosperity, and positive energy.",
       "Our Natural Rough Peridot (C Quality) is ideal for collectors, lapidary work, décor, and alternative investments.",
     ],
-    imageSrc: "/images/gems/rough-peridot.webp",
+    imageSrc: "/images/gems/peridot-rough.webp",
     imageAlt: "A row of natural rough green peridot stones",
   },
 
@@ -208,7 +208,7 @@ export const naturalRoughPeridot: GemstonePageContent = {
         step: 1,
         title: "Sourcing",
         description:
-          "We source natural rough peridot from trusted miners and suppliers.",
+          "We source natural rough peridot from trusted mines and suppliers.",
       },
       {
         id: "authentication",

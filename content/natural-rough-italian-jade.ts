@@ -21,7 +21,7 @@ export const naturalRoughItalianJade: GemstonePageContent = {
   title: "NATURAL ROUGH ITALIAN JADE",
   tagline: ["Italy’s Timeless Heritage.", "Raw. Rare. Remarkable."],
   description:
-    "Natural rough Italian jade is a treasured variety of jade (nephrite), celebrated for its exceptional toughness, fine texture, and elegant shades of green. Each piece is 100% natural, ethically sourced from historic quarries in Italy, and carefully selected for its quality, beauty, and long-term value.",
+    "Natural Italian Jade is a treasured variety of jade (nephrite), celebrated for its exceptional toughness, fine texture, and elegant shades of green. Each piece is 100% natural, ethically sourced from historic quarries in Italy, and carefully selected for its quality, beauty, and long-term value.",
   heroBase: "/images/heroes/italian-jade-hero",
   heroImageAlt: "A cluster of natural rough deep-green Italian nephrite jade",
 

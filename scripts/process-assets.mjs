@@ -496,7 +496,7 @@ const heroJobs = [
   },
   {
     roughCutout: {
-      source: "rough-tourmaline-master.png",
+      source: "tourmaline-rough-master.png",
       accent: "#df5c99",
     },
     name: "rough-tourmaline-hero",
@@ -507,7 +507,7 @@ const heroJobs = [
   },
   {
     roughCutout: {
-      source: "rough-peridot-master.png",
+      source: "peridot-rough-master.png",
       accent: "#8bd52d",
     },
     name: "rough-peridot-hero",
@@ -927,8 +927,6 @@ for (const name of [
   "ruby-trapiche-rough",
   "ruby-gem-quality-rough",
   "rutilated-quartz-rough",
-  "rough-tourmaline",
-  "rough-peridot",
   "rough-emerald",
 ]) {
   await exportCutout(

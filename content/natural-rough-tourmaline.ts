@@ -106,7 +106,7 @@ export const naturalRoughTourmaline: GemstonePageContent = {
       "From vibrant pinks and greens to deep blues, yellows, and even bi-color varieties, tourmaline is treasured for its natural beauty and versatility in jewelry, collectibles, and holistic uses.",
       "Our Natural Rough Tourmaline (C Quality) is ideal for collectors, lapidary work, designers, healers, and long-term investors.",
     ],
-    imageSrc: "/images/gems/rough-tourmaline.webp",
+    imageSrc: "/images/gems/tourmaline-rough.webp",
     imageAlt: "A row of natural rough multicolored tourmaline crystals",
   },
 

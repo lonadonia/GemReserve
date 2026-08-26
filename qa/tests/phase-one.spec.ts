@@ -502,6 +502,11 @@ test.describe("gemstone pages and the portal", () => {
   test("stone pages render from one shell with their own accent", async ({
     page,
   }) => {
+    // Eighteen routes, each loaded to networkidle, plus two more for the accent
+    // comparison below. That is well past what one default budget covers now
+    // that every stone is checked here, so this case gets the longer one.
+    test.slow();
+
     for (const [route, accent, title] of [
       ["/aquamarine", "aqua", "AQUAMARINE"],
       ["/emerald", "emerald", "EMERALD"],
