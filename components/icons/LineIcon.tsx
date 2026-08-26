@@ -23,7 +23,32 @@ export type IconName =
   | "source"
   | "redeem"
   | "mountain"
-  | "chevron-down";
+  | "chevron-down"
+  | "scales"
+  | "lightbulb"
+  | "award"
+  | "handshake"
+  | "user"
+  | "user-check"
+  | "fingerprint"
+  | "droplet"
+  | "pie"
+  | "globe-user"
+  | "tag"
+  | "calculator"
+  | "ticket-percent"
+  | "coins"
+  | "envelope"
+  | "wallet"
+  | "dollar-circle"
+  | "lock-clock"
+  | "rocket"
+  | "exchange"
+  | "bank"
+  | "compass"
+  | "ban"
+  | "question"
+  | "alert-triangle";
 
 export interface LineIconProps {
   name: IconName;
@@ -215,6 +240,200 @@ function IconGlyph({ name }: Pick<LineIconProps, "name">) {
           <path d="M2.5 20 9 9l3 4 3-6 6.5 13h-19Z" />
           <path d="m6.75 12.8 2.25 1.7 1.65-1M13.6 9.8 15 12l1.4-1 2.35 4M4 20h16" />
           <circle cx="5" cy="5" r="2" />
+        </>
+      );
+    case "scales":
+      return (
+        <>
+          <path d="M12 3.5v17M7 20.5h10M12 6.5l-6.5 1.6M12 6.5l6.5 1.6" />
+          <path d="M5.5 8.1 2.6 14a2.9 2.9 0 0 0 5.8 0L5.5 8.1Z" />
+          <path d="M18.5 8.1 15.6 14a2.9 2.9 0 0 0 5.8 0l-2.9-5.9Z" />
+        </>
+      );
+    case "lightbulb":
+      return (
+        <>
+          <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.45.95 1.1.95 1.8v.3h5.1v-.3c0-.7.35-1.35.95-1.8A6 6 0 0 0 12 3Z" />
+          <path d="M9.45 18.5h5.1M10.25 21h3.5" />
+        </>
+      );
+    case "award":
+      return (
+        <>
+          <circle cx="12" cy="9" r="5.5" />
+          <path d="m9.75 8.9 1.6 1.6 3-3.2" />
+          <path d="M8.6 13.6 7 21.5l5-2.4 5 2.4-1.6-7.9" />
+        </>
+      );
+    case "handshake":
+      return (
+        <>
+          <path d="M2.5 10.5h3.2v6H2.5zM18.3 10.5h3.2v6h-3.2z" />
+          <path d="M5.7 11.4h2.6l2-1.4h3.4l2 1.4h2.6" />
+          <path d="M8.3 15.5 11 17.9a1.5 1.5 0 0 0 2.1-.15l3.1-3.5" />
+          <path d="M16.2 14.25 13.6 12H10a1.5 1.5 0 0 0 0 3h1.6" />
+        </>
+      );
+    case "user":
+      return (
+        <>
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
+        </>
+      );
+    case "user-check":
+      return (
+        <>
+          <circle cx="10" cy="8" r="4" />
+          <path d="M2.5 20.5a7.5 7.5 0 0 1 13.2-4.85" />
+          <path d="m15.5 17.6 2 2 4-4.4" />
+        </>
+      );
+    case "fingerprint":
+      return (
+        <>
+          <path d="M6.2 8.4a7 7 0 0 1 11.6 0M4.6 12.4a9.5 9.5 0 0 1 1-4" />
+          <path d="M8.7 11.2a3.6 3.6 0 0 1 6.6 2c0 2.6-.5 5-1.4 7.1" />
+          <path d="M12 10.9c.75 0 1.35.6 1.35 1.35 0 3.3-.7 6.2-2 8.6" />
+          <path d="M8.5 20.5A15 15 0 0 0 10 13.7M19.4 12.4c0 1.8-.2 3.5-.6 5.2" />
+        </>
+      );
+    case "droplet":
+      return (
+        <path d="M12 2.8c3.4 4 6 7 6 10.2a6 6 0 0 1-12 0c0-3.2 2.6-6.2 6-10.2Z" />
+      );
+    case "pie":
+      return (
+        <>
+          <path d="M12 3a9 9 0 1 0 9 9h-9V3Z" />
+          <path d="M14.5 2.4A9 9 0 0 1 21.6 9.5h-7.1V2.4Z" />
+        </>
+      );
+    case "globe-user":
+      return (
+        <>
+          <circle cx="12" cy="10.5" r="7.5" />
+          <path d="M4.5 10.5h15M12 3c1.9 2.1 2.8 4.7 2.8 7.5S13.9 15.9 12 18M12 3c-1.9 2.1-2.8 4.7-2.8 7.5S10.1 15.9 12 18" />
+          <path d="M8.5 21.5a3.5 3.5 0 0 1 7 0" />
+        </>
+      );
+    case "tag":
+      return (
+        <>
+          <path d="M3.5 11.4V4.5a1 1 0 0 1 1-1h6.9a1 1 0 0 1 .7.3l8.1 8.1a1 1 0 0 1 0 1.4l-6.9 6.9a1 1 0 0 1-1.4 0L3.8 12.1a1 1 0 0 1-.3-.7Z" />
+          <circle cx="8" cy="8" r="1.6" />
+        </>
+      );
+    case "calculator":
+      return (
+        <>
+          <rect x="4" y="2.5" width="16" height="19" rx="2" />
+          <rect x="7" y="5.5" width="10" height="3.5" rx="0.7" />
+          <path d="M7.8 12.5h.01M12 12.5h.01M16.2 12.5h.01M7.8 15.8h.01M12 15.8h.01M16.2 15.8h.01M7.8 18.6h.01M12 18.6h.01M16.2 18.6h.01" />
+        </>
+      );
+    case "ticket-percent":
+      return (
+        <>
+          <path d="M2.5 9.1V6.6a1 1 0 0 1 1-1h17a1 1 0 0 1 1 1v2.5a2.9 2.9 0 0 0 0 5.8v2.5a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-2.5a2.9 2.9 0 0 0 0-5.8Z" />
+          <path d="m9.4 14.6 5.2-5.2" />
+          <circle cx="9.6" cy="9.7" r="1.05" />
+          <circle cx="14.4" cy="14.3" r="1.05" />
+        </>
+      );
+    case "coins":
+      return (
+        <>
+          <ellipse cx="8.5" cy="6.5" rx="5.5" ry="2.6" />
+          <path d="M3 6.5v4c0 1.45 2.46 2.6 5.5 2.6s5.5-1.15 5.5-2.6v-4" />
+          <path d="M14 11.2c3.04 0 5.5 1.15 5.5 2.6v4c0 1.45-2.46 2.6-5.5 2.6s-5.5-1.15-5.5-2.6v-4" />
+          <path d="M8.5 15.4c0 1.45 2.46 2.6 5.5 2.6" />
+        </>
+      );
+    case "envelope":
+      return (
+        <>
+          <rect x="2.5" y="5" width="19" height="14" rx="2" />
+          <path d="m2.9 6.4 8.35 6.1a1.3 1.3 0 0 0 1.5 0l8.35-6.1" />
+        </>
+      );
+    case "wallet":
+      return (
+        <>
+          <path d="M3 7.5a2 2 0 0 1 2-2h11.5a1 1 0 0 0 0-2H5.6" />
+          <rect x="3" y="5.5" width="18" height="14" rx="2" />
+          <path d="M21 10.5h-4.2a2.5 2.5 0 0 0 0 5H21" />
+          <path d="M16.9 13h.01" />
+        </>
+      );
+    case "dollar-circle":
+      return (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M14.8 8.9a2.9 2.9 0 0 0-2.8-1.6c-1.6 0-2.8.9-2.8 2.2 0 3 5.8 1.5 5.8 4.5 0 1.4-1.3 2.3-3 2.3a3.1 3.1 0 0 1-3-1.8" />
+          <path d="M12 5.8v12.4" />
+        </>
+      );
+    case "lock-clock":
+      return (
+        <>
+          <rect x="3" y="10" width="12" height="11" rx="2" />
+          <path d="M5.6 10V7a3.4 3.4 0 0 1 6.8 0v3" />
+          <circle cx="18.5" cy="6.5" r="3.5" />
+          <path d="M18.5 4.8v1.9l1.3.9" />
+        </>
+      );
+    case "rocket":
+      return (
+        <>
+          <path d="M12 2.5c3.1 2.4 4.8 5.7 4.8 9.4l-1.9 3.6H9.1l-1.9-3.6C7.2 8.2 8.9 4.9 12 2.5Z" />
+          <circle cx="12" cy="9.5" r="2" />
+          <path d="M9.1 15.5 6.4 18l1.5.6.6 1.9 2.3-2.6M14.9 15.5 17.6 18l-1.5.6-.6 1.9-2.3-2.6" />
+        </>
+      );
+    case "exchange":
+      return (
+        <>
+          <path d="M3.5 8.5h15L15 5" />
+          <path d="M20.5 15.5h-15L9 19" />
+        </>
+      );
+    case "bank":
+      return (
+        <>
+          <path d="m2.8 9 9.2-5.5L21.2 9v1.3H2.8V9Z" />
+          <path d="M5.5 10.3v7.4M10 10.3v7.4M14 10.3v7.4M18.5 10.3v7.4" />
+          <path d="M3.2 17.7h17.6M2.5 20.5h19" />
+        </>
+      );
+    case "compass":
+      return (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="m15.3 8.7-1.9 4.6-4.7 1.9 1.9-4.6 4.7-1.9Z" />
+        </>
+      );
+    case "ban":
+      return (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="m5.6 5.6 12.8 12.8" />
+        </>
+      );
+    case "question":
+      return (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9.4 9.3a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.2-2.6 4" />
+          <path d="M12 17.2h.01" />
+        </>
+      );
+    case "alert-triangle":
+      return (
+        <>
+          <path d="M10.7 3.6 2.4 18a1.5 1.5 0 0 0 1.3 2.25h16.6A1.5 1.5 0 0 0 21.6 18L13.3 3.6a1.5 1.5 0 0 0-2.6 0Z" />
+          <path d="M12 9v4.6" />
+          <path d="M12 17.1h.01" />
         </>
       );
   }

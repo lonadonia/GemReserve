@@ -4899,11 +4899,15 @@ h3 {
 }
 
 /* The chevron between cards sits in the gutter, drawn on the item so it never
-   reaches a screen reader and disappears with the row once it wraps. */
-.waitlist-steps > li:not(:last-child)::after {
+   reaches a screen reader and disappears with the row once it wraps. It hangs
+   off the left of the following card rather than the right of the preceding
+   one: a decoration placed past an element's right edge grows that element's
+   scrollWidth and registers as content overflow in any audit, while the same
+   mark past its left edge does not. Same gutter, same glyph, no false flag. */
+.waitlist-steps > li + li::before {
   position: absolute;
   top: 50%;
-  right: -11px;
+  left: -11px;
   z-index: 1;
   color: var(--gold);
   content: "\203A";
@@ -9725,6 +9729,1360 @@ li:hover > .section-plate {
   border-radius: 7px;
 }
 
+/* --- Program Overview ------------------------------------------------ */
+
+.overview-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 87%) 32%,
+      rgb(1 5 8 / 28%) 58%,
+      transparent 76%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+.overview-hero__tagline {
+  max-width: 34ch;
+  margin-bottom: 22px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.16rem, 1.62vw, 1.52rem);
+  line-height: 1.42;
+}
+
+.overview-hero__tagline span {
+  display: block;
+}
+
+.overview-hero__tagline span:first-child {
+  color: #eef1f2;
+}
+
+.overview-hero__tagline span:last-child {
+  color: var(--gold-light);
+}
+
+/* The board's crest card sits against the right edge of the plate. It is drawn
+   from the brand shield and the wordmark rather than being part of the
+   photograph, so it stays legible at every width and can drop below the copy on
+   a phone instead of being cropped away with the plate. */
+.overview-hero__crest {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 2;
+}
+
+.overview-hero__crest aside {
+  display: grid;
+  width: min(320px, 100%);
+  justify-items: center;
+  padding: 26px 24px 22px;
+  border: 1px solid rgb(197 141 46 / 42%);
+  border-radius: 12px;
+  background: linear-gradient(155deg, rgb(9 16 22 / 92%), rgb(2 6 9 / 94%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 4%),
+    0 26px 70px rgb(0 0 0 / 46%);
+  text-align: center;
+}
+
+.overview-hero__crest-mark {
+  width: auto;
+  height: clamp(64px, 6vw, 86px);
+  margin-bottom: 14px;
+}
+
+.overview-hero__crest-wordmark {
+  margin-bottom: 14px;
+  color: #f2f4f5;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.24rem, 1.7vw, 1.52rem);
+}
+
+.overview-hero__crest-lines {
+  margin-bottom: 14px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.38vw, 1.24rem);
+  line-height: 1.5;
+}
+
+.overview-hero__crest-lines span {
+  display: block;
+}
+
+.overview-hero__crest-motto {
+  margin: 0;
+  color: #d8ba7c;
+  font-size: clamp(0.72rem, 0.86vw, 0.82rem);
+  letter-spacing: 0.22em;
+}
+
+.overview-marks {
+  margin-top: calc(var(--section-gap) * -0.42);
+  margin-bottom: var(--section-gap);
+}
+
+.overview-marks__row {
+  position: relative;
+  z-index: 2;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.overview-marks__row h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.97rem, 1.33vw, 1.2rem);
+}
+
+.overview-detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(18px, 1.8vw, 28px);
+  margin-bottom: var(--section-gap);
+}
+
+.overview-card {
+  height: 100%;
+  padding: clamp(22px, 2.2vw, 32px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.overview-card__title {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: clamp(1.24rem, 1.86vw, 1.6rem);
+}
+
+.overview-card__statement {
+  margin-bottom: 22px;
+  color: #c4cacc;
+  font-size: clamp(0.86rem, 0.92vw, 0.94rem);
+  line-height: 1.75;
+}
+
+.overview-values {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-values li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+}
+
+.overview-values svg {
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 12px rgb(216 154 39 / 18%));
+}
+
+.overview-values h3 {
+  margin-bottom: 3px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.92rem, 1.06vw, 1.02rem);
+  letter-spacing: 0.04em;
+}
+
+.overview-values p {
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.8rem, 0.84vw, 0.88rem);
+  line-height: 1.65;
+}
+
+/* The board runs SOURCE / CUSTODY / TOKENIZE / DISTRIBUTE as a numbered arrow
+   chain. The arrow is a pseudo-element in the gap before each cell, so it only
+   draws while the row is still a row; once the grid stacks, the rules below
+   remove it rather than leaving arrows pointing sideways down a column. */
+.overview-model {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-model li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.overview-model li + li::before {
+  position: absolute;
+  top: 26px;
+  left: -6px;
+  content: "\2192";
+  color: rgb(197 141 46 / 62%);
+  font-size: 0.9rem;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+.overview-model__mark {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 1px solid rgb(197 141 46 / 40%);
+  border-radius: 50%;
+  color: var(--gold-light);
+}
+
+.overview-model__number {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 1px solid rgb(197 141 46 / 40%);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-size: 0.72rem;
+}
+
+.overview-model h3 {
+  margin-bottom: 2px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  letter-spacing: 0.05em;
+}
+
+.overview-model p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.76rem, 0.8vw, 0.84rem);
+  line-height: 1.6;
+}
+
+.overview-unique {
+  margin-bottom: var(--section-gap);
+}
+
+.overview-unique__grid {
+  margin-top: 26px;
+}
+
+.overview-cta .trust-cta__copy h2 span {
+  display: block;
+}
+
+.overview-cta .overview-cta__motto {
+  margin-top: 10px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 1.28vw, 1.16rem);
+  letter-spacing: 0.16em;
+}
+
+.overview-cta__invitation {
+  margin-bottom: 12px;
+}
+
+/* --- 20% Discount Methodology ---------------------------------------- */
+
+.discount-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 95%) 0%,
+      rgb(1 5 8 / 88%) 34%,
+      rgb(1 5 8 / 30%) 60%,
+      transparent 78%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+.discount-hero__tagline {
+  max-width: 40ch;
+  margin-bottom: 22px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.06rem, 1.44vw, 1.34rem);
+  line-height: 1.45;
+}
+
+.discount-hero .hero__description {
+  margin-bottom: 14px;
+}
+
+/* The board stamps a gold disc beside the stone. It is a ring of type rather
+   than an image so the figure stays sharp at every width. */
+.discount-hero__badge {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 2;
+}
+
+.discount-hero__badge p {
+  display: grid;
+  width: clamp(150px, 15vw, 208px);
+  height: clamp(150px, 15vw, 208px);
+  place-content: center;
+  justify-items: center;
+  margin: 0;
+  border: 1px solid rgb(197 141 46 / 55%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgb(10 20 27 / 88%),
+    rgb(2 6 9 / 72%) 72%
+  );
+  text-align: center;
+}
+
+.discount-hero__badge span:first-child {
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.1rem, 3.4vw, 3.1rem);
+  line-height: 1;
+}
+
+.discount-hero__badge span:last-child {
+  margin-top: 6px;
+  color: #d8ba7c;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.82rem, 1.06vw, 1rem);
+  letter-spacing: 0.2em;
+}
+
+.discount-marks {
+  margin-top: calc(var(--section-gap) * -0.42);
+  margin-bottom: var(--section-gap);
+}
+
+.discount-marks__row {
+  position: relative;
+  z-index: 2;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.discount-marks__row h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 1.16vw, 1.04rem);
+}
+
+.discount-calc,
+.discount-example,
+.discount-principles {
+  margin-bottom: var(--section-gap);
+}
+
+.discount-calc__intro {
+  max-width: 82ch;
+  margin: 18px auto 0;
+  color: #c4cacc;
+  font-size: clamp(0.86rem, 0.92vw, 0.95rem);
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* Six numbered steps in a chain. The connector is a pseudo-element on the gap
+   before each step, so it disappears with the row rather than pointing sideways
+   once the grid stacks. */
+.discount-steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin: 30px 0 0;
+  padding: clamp(22px, 2.2vw, 32px) clamp(14px, 1.6vw, 24px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+  list-style: none;
+}
+
+.discount-steps li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.discount-steps li + li::before {
+  position: absolute;
+  top: 62px;
+  left: -7px;
+  content: "\2192";
+  color: rgb(127 216 196 / 60%);
+  font-size: 0.9rem;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+.discount-steps__number {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgb(127 216 196 / 48%);
+  border-radius: 50%;
+  color: #7fd8c4;
+  font-size: 0.86rem;
+}
+
+.discount-steps__mark {
+  color: var(--gold-light);
+}
+
+.discount-steps h3 {
+  margin-bottom: 2px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.82rem, 0.94vw, 0.94rem);
+  letter-spacing: 0.04em;
+}
+
+.discount-steps p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.74rem, 0.78vw, 0.82rem);
+  line-height: 1.6;
+}
+
+.discount-example__panel {
+  margin-top: 30px;
+  padding: clamp(20px, 2.2vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+/* The board sets the two prices side by side with the discount disc straddling
+   the divide. The disc is its own grid cell rather than an overlay, so nothing
+   is positioned on top of a column and the three parts reflow together. */
+.discount-example__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(12px, 1.4vw, 22px);
+}
+
+.discount-example__column {
+  min-width: 0;
+}
+
+.discount-example__heading {
+  padding: 11px 16px;
+  border-radius: 6px 6px 0 0;
+  color: #061018;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 1.1vw, 1.04rem);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.discount-example__heading--standard {
+  background: linear-gradient(120deg, #2f7f8c, #59aab4);
+}
+
+.discount-example__heading--early {
+  background: linear-gradient(120deg, #a9761c, #d9a63e);
+}
+
+.discount-example__asset {
+  margin: 0;
+  padding: 14px 16px 8px;
+  color: #c4cacc;
+  font-size: clamp(0.8rem, 0.86vw, 0.88rem);
+}
+
+.discount-example__column dl {
+  margin: 0;
+  padding: 0 16px 6px;
+}
+
+.discount-example__column dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.discount-example__column dt {
+  color: #bec4c6;
+  font-size: clamp(0.79rem, 0.85vw, 0.87rem);
+}
+
+.discount-example__column dd {
+  margin: 0;
+  color: #eef1f2;
+  font-size: clamp(0.82rem, 0.9vw, 0.92rem);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.discount-example__row--total dt,
+.discount-example__row--total dd {
+  color: #7fd8c4;
+  font-size: clamp(0.88rem, 1vw, 1.02rem);
+}
+
+.discount-example__column--early .discount-example__row--total dt,
+.discount-example__column--early .discount-example__row--total dd {
+  color: var(--gold-light);
+}
+
+.discount-example__badge {
+  display: grid;
+  width: clamp(88px, 8vw, 116px);
+  height: clamp(88px, 8vw, 116px);
+  align-self: center;
+  place-content: center;
+  justify-items: center;
+  margin: 0;
+  border: 1px solid rgb(197 141 46 / 46%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #0b1720, #030a0e 74%);
+  text-align: center;
+}
+
+.discount-example__badge span:first-child {
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.3rem, 1.9vw, 1.75rem);
+  line-height: 1;
+}
+
+.discount-example__badge span:last-child {
+  margin-top: 3px;
+  color: #d8ba7c;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.6rem, 0.7vw, 0.68rem);
+  letter-spacing: 0.16em;
+}
+
+.discount-example__footnote {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+  color: #c4cacc;
+  font-size: clamp(0.8rem, 0.88vw, 0.9rem);
+  line-height: 1.7;
+}
+
+.discount-example__footnote svg {
+  margin-top: 2px;
+  color: #7fd8c4;
+}
+
+.discount-principles__row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 26px;
+}
+
+/* --- How Token Acquisition Will Work --------------------------------- */
+
+.acquisition-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 96%) 0%,
+      rgb(1 5 8 / 88%) 34%,
+      rgb(1 5 8 / 30%) 60%,
+      transparent 78%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+.acquisition-hero__tagline {
+  margin-bottom: 22px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.02em;
+}
+
+.acquisition-hero .hero__description {
+  margin-bottom: 14px;
+}
+
+.acquisition-marks {
+  margin-top: calc(var(--section-gap) * -0.42);
+  margin-bottom: var(--section-gap);
+}
+
+.acquisition-marks__row {
+  position: relative;
+  z-index: 2;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.acquisition-marks__row h2 {
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 1.16vw, 1.04rem);
+}
+
+.acquisition-process,
+.acquisition-options,
+.acquisition-detail {
+  margin-bottom: var(--section-gap);
+}
+
+/* The platform is pre-launch, so the process diagram carries a standing notice
+   rather than reading as a working checkout. */
+.acquisition-notice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+  max-width: 88ch;
+  margin: 24px auto 0;
+  padding: 14px 20px;
+  border: 1px solid rgb(127 216 196 / 34%);
+  border-radius: 8px;
+  background: rgb(9 26 30 / 62%);
+  color: #cbd3d4;
+  font-size: clamp(0.8rem, 0.86vw, 0.88rem);
+  line-height: 1.7;
+}
+
+.acquisition-notice svg {
+  margin-top: 3px;
+  color: #7fd8c4;
+}
+
+.acquisition-steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin: 26px 0 0;
+  padding: clamp(22px, 2.2vw, 32px) clamp(14px, 1.6vw, 24px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+  list-style: none;
+}
+
+.acquisition-steps li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.acquisition-steps li + li::before {
+  position: absolute;
+  top: 34px;
+  left: -7px;
+  content: "\2192";
+  color: rgb(127 216 196 / 60%);
+  font-size: 0.9rem;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+.acquisition-steps__mark {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  border: 1px solid rgb(127 216 196 / 40%);
+  border-radius: 50%;
+  color: #7fd8c4;
+}
+
+.acquisition-steps__number {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  margin-top: -21px;
+  border: 1px solid rgb(197 141 46 / 52%);
+  border-radius: 50%;
+  background: #061018;
+  color: var(--gold-light);
+  font-size: 0.76rem;
+}
+
+.acquisition-steps h3 {
+  margin-bottom: 2px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.82rem, 0.94vw, 0.94rem);
+  letter-spacing: 0.04em;
+}
+
+.acquisition-steps p {
+  max-width: 24ch;
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.74rem, 0.78vw, 0.82rem);
+  line-height: 1.6;
+}
+
+.acquisition-options__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 1.7vw, 26px);
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acquisition-option {
+  display: grid;
+  align-content: start;
+  grid-template-columns: auto 1fr;
+  gap: 14px 16px;
+  padding: clamp(20px, 2vw, 28px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.acquisition-option__mark {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  border: 1px solid rgb(127 216 196 / 36%);
+  border-radius: 50%;
+  color: #7fd8c4;
+}
+
+.acquisition-option h3 {
+  margin-bottom: 6px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.96rem, 1.2vw, 1.1rem);
+  letter-spacing: 0.03em;
+}
+
+.acquisition-option > div p {
+  margin: 0;
+  color: #c4cacc;
+  font-size: clamp(0.8rem, 0.86vw, 0.88rem);
+  line-height: 1.7;
+}
+
+.acquisition-option__points {
+  display: grid;
+  gap: 9px;
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--border-soft);
+  list-style: none;
+}
+
+.acquisition-option__points li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  color: #c4cacc;
+  font-size: clamp(0.79rem, 0.85vw, 0.87rem);
+  line-height: 1.55;
+}
+
+.acquisition-option__points svg {
+  margin-top: 3px;
+  color: #7fd8c4;
+}
+
+.acquisition-detail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(16px, 1.7vw, 26px);
+}
+
+.acquisition-card {
+  height: 100%;
+  padding: clamp(20px, 2.1vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.acquisition-card__title {
+  margin-bottom: 16px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.36vw, 1.24rem);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.acquisition-card__intro {
+  margin-bottom: 18px;
+  color: #c4cacc;
+  font-size: clamp(0.8rem, 0.86vw, 0.88rem);
+  text-align: center;
+}
+
+.acquisition-card__footnote {
+  margin: 16px 0 0;
+  color: #98a0a2;
+  font-size: clamp(0.74rem, 0.8vw, 0.81rem);
+  text-align: center;
+}
+
+.acquisition-card__image {
+  max-height: 172px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+}
+
+.acquisition-card__image img {
+  height: 172px;
+  object-fit: cover;
+}
+
+.acquisition-reasons {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acquisition-reasons li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+}
+
+.acquisition-reasons svg {
+  color: #7fd8c4;
+}
+
+.acquisition-reasons h3 {
+  margin-bottom: 3px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.9rem, 1.02vw, 1rem);
+  letter-spacing: 0.03em;
+}
+
+.acquisition-reasons p {
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.79rem, 0.83vw, 0.87rem);
+  line-height: 1.65;
+}
+
+/* The board draws each accepted asset as a coloured disc carrying its mark.
+   The discs are typographic rather than logo files: the site does not licence
+   those marks, and an initial on the network's own colour identifies the rail
+   without reproducing a third party's trademark. */
+.acquisition-tokens {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acquisition-tokens li {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.acquisition-tokens__disc {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.16rem;
+}
+
+.acquisition-tokens__symbol {
+  color: #eef1f2;
+  font-size: clamp(0.82rem, 0.88vw, 0.9rem);
+}
+
+.acquisition-tokens__networks {
+  color: #98a0a2;
+  font-size: clamp(0.68rem, 0.74vw, 0.75rem);
+}
+
+.acquisition-rails {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--border-soft);
+  list-style: none;
+}
+
+.acquisition-rails li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.acquisition-rails svg {
+  color: var(--gold-light);
+}
+
+.acquisition-rails h3 {
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.84rem, 0.94vw, 0.92rem);
+  letter-spacing: 0.04em;
+}
+
+.acquisition-rails p {
+  margin: 0;
+  color: #98a0a2;
+  font-size: clamp(0.72rem, 0.78vw, 0.79rem);
+}
+
+.acquisition-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acquisition-checks li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 11px;
+  color: #c4cacc;
+  font-size: clamp(0.8rem, 0.86vw, 0.88rem);
+}
+
+.acquisition-checks svg {
+  margin-top: 3px;
+  color: #7fd8c4;
+}
+
+.acquisition-cta .trust-cta__copy h2 span {
+  display: block;
+}
+
+.acquisition-cta .acquisition-cta__tagline {
+  margin-top: 10px;
+  color: #7fd8c4;
+  font-size: clamp(0.86rem, 0.96vw, 0.96rem);
+}
+
+/* --- Restricted Jurisdictions ---------------------------------------- */
+
+.restricted-hero__scrim {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(1 5 8 / 96%) 0%,
+      rgb(1 5 8 / 88%) 32%,
+      rgb(1 5 8 / 28%) 58%,
+      transparent 76%
+    ),
+    linear-gradient(0deg, rgb(1 5 8 / 58%), transparent 30%);
+}
+
+/* The board sets this title's second line in the compliance teal rather than
+   the site's gold, which marks the page as legal copy at a glance. */
+.restricted-hero__title-accent {
+  color: #7fd8c4;
+}
+
+.restricted-hero__tagline {
+  margin-bottom: 22px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+}
+
+.restricted-hero .hero__description {
+  margin-bottom: 14px;
+}
+
+.restricted-hero__card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 2;
+}
+
+.restricted-hero__card aside {
+  display: grid;
+  width: min(300px, 100%);
+  justify-items: center;
+  padding: 28px 24px;
+  border: 1px solid rgb(197 141 46 / 42%);
+  border-radius: 12px;
+  background: linear-gradient(155deg, rgb(9 16 22 / 92%), rgb(2 6 9 / 94%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 4%),
+    0 26px 70px rgb(0 0 0 / 46%);
+  text-align: center;
+}
+
+.restricted-hero__card-wordmark {
+  margin-bottom: 16px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.16rem, 1.6vw, 1.42rem);
+  letter-spacing: 0.05em;
+}
+
+.restricted-hero__card-lines {
+  margin: 0;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.38vw, 1.24rem);
+  line-height: 1.6;
+}
+
+.restricted-hero__card-lines span {
+  display: block;
+}
+
+.restricted-list,
+.restricted-detail,
+.restricted-commitment {
+  margin-bottom: var(--section-gap);
+}
+
+.restricted-list {
+  margin-top: var(--section-gap);
+}
+
+.restricted-list__panel {
+  padding: clamp(22px, 2.4vw, 36px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.restricted-list__title {
+  margin-bottom: 12px;
+  color: #7fd8c4;
+  font-size: clamp(1.24rem, 1.9vw, 1.66rem);
+  text-align: center;
+}
+
+.restricted-list__intro {
+  max-width: 88ch;
+  margin: 0 auto 30px;
+  color: #c4cacc;
+  font-size: clamp(0.84rem, 0.9vw, 0.93rem);
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* Five columns of compliance copy. The last group is a prose clause rather than
+   a list, so it lays out on the same grid without a bullet rail. */
+.restricted-groups {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(14px, 1.5vw, 24px);
+}
+
+.restricted-group {
+  min-width: 0;
+  padding-inline: clamp(10px, 1.1vw, 18px);
+}
+
+.restricted-group + .restricted-group {
+  border-left: 1px solid var(--border-soft);
+}
+
+.restricted-group h3 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 11px;
+  margin-bottom: 16px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+}
+
+.restricted-group h3 svg {
+  margin-top: 1px;
+  color: var(--gold-light);
+}
+
+.restricted-group ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.restricted-group li {
+  position: relative;
+  padding-left: 16px;
+  color: #cbd1d3;
+  font-size: clamp(0.79rem, 0.86vw, 0.88rem);
+  line-height: 1.5;
+}
+
+.restricted-group li::before {
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  content: "";
+}
+
+.restricted-group p {
+  margin: 0;
+  color: #cbd1d3;
+  font-size: clamp(0.79rem, 0.86vw, 0.88rem);
+  line-height: 1.65;
+}
+
+.restricted-notice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+  margin: 30px 0 0;
+  padding: 16px 22px;
+  border: 1px solid rgb(197 141 46 / 46%);
+  border-radius: 8px;
+  background: rgb(24 16 6 / 42%);
+  color: #cbd1d3;
+  font-size: clamp(0.8rem, 0.88vw, 0.9rem);
+  line-height: 1.7;
+}
+
+.restricted-notice svg {
+  margin-top: 2px;
+  color: var(--gold-light);
+}
+
+.restricted-notice strong {
+  color: var(--gold-light);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.restricted-detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(18px, 1.8vw, 28px);
+}
+
+.restricted-card {
+  height: 100%;
+  padding: clamp(22px, 2.2vw, 32px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.restricted-card__title {
+  margin-bottom: 22px;
+  color: #7fd8c4;
+  font-size: clamp(1.14rem, 1.62vw, 1.4rem);
+  text-align: center;
+}
+
+.restricted-reasons,
+.restricted-meaning {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.restricted-reasons li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.restricted-reasons li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.restricted-reasons svg {
+  color: #7fd8c4;
+}
+
+.restricted-reasons h3 {
+  margin-bottom: 4px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.92rem, 1.06vw, 1.02rem);
+  letter-spacing: 0.04em;
+}
+
+.restricted-reasons p,
+.restricted-meaning p {
+  margin: 0;
+  color: #bec4c6;
+  font-size: clamp(0.8rem, 0.86vw, 0.89rem);
+  line-height: 1.7;
+}
+
+.restricted-meaning li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px;
+}
+
+.restricted-meaning__mark {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid rgb(127 216 196 / 34%);
+  border-radius: 50%;
+  color: var(--gold-light);
+}
+
+.restricted-questions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 20px 22px;
+  border: 1px solid rgb(197 141 46 / 42%);
+  border-radius: 8px;
+  background: rgb(24 16 6 / 34%);
+}
+
+.restricted-questions__mark {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid rgb(197 141 46 / 46%);
+  border-radius: 50%;
+  color: var(--gold-light);
+}
+
+.restricted-questions h3 {
+  margin-bottom: 6px;
+  color: #7fd8c4;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.96rem, 1.1vw, 1.06rem);
+  letter-spacing: 0.04em;
+}
+
+.restricted-questions p {
+  margin: 0 0 6px;
+  color: #bec4c6;
+  font-size: clamp(0.8rem, 0.86vw, 0.89rem);
+  line-height: 1.7;
+}
+
+.restricted-questions p:last-child {
+  margin-bottom: 0;
+}
+
+.restricted-questions a {
+  color: var(--gold-light);
+}
+
+.restricted-commitment {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.8fr) minmax(0, 1.5fr) minmax(
+      190px,
+      0.6fr
+    );
+  align-items: center;
+  gap: clamp(18px, 2vw, 32px);
+  padding: clamp(20px, 2vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.restricted-commitment__image {
+  border-radius: 8px;
+}
+
+.restricted-commitment__copy .section-heading {
+  margin-bottom: 14px;
+}
+
+.restricted-commitment__copy p {
+  margin: 0 0 10px;
+  color: #c4cacc;
+  font-size: clamp(0.82rem, 0.88vw, 0.91rem);
+  line-height: 1.75;
+}
+
+.restricted-commitment__copy p:last-child {
+  margin-bottom: 0;
+}
+
+.restricted-commitment__marks ul {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.restricted-commitment__marks li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 13px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(0.92rem, 1.06vw, 1.04rem);
+  letter-spacing: 0.06em;
+}
+
 .portal-cta {
   margin-top: var(--section-gap);
 }
@@ -9738,6 +11096,50 @@ li:hover > .section-plate {
 
 @media (max-width: 1330px) {
   /* --- Gemstone pages and the portal ---------------------------------- */
+
+  .restricted-groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px 16px;
+  }
+
+  .restricted-group:nth-child(4) {
+    border-left: 0;
+  }
+
+  .restricted-group:nth-child(n + 4) {
+    padding-top: 22px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .acquisition-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px 14px;
+  }
+
+  .acquisition-steps li:nth-child(4)::before {
+    content: none;
+  }
+
+  .acquisition-detail {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .acquisition-detail .acquisition-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .discount-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px 14px;
+  }
+
+  .discount-steps li:nth-child(4)::before {
+    content: none;
+  }
+
+  .overview-hero__crest aside {
+    width: min(280px, 100%);
+  }
 
   .gem-detail,
   .gem-story {
@@ -10265,6 +11667,89 @@ li:hover > .section-plate {
 @media (max-width: 980px) {
   /* --- Gemstone pages and the portal ---------------------------------- */
 
+  .restricted-hero__card {
+    justify-content: flex-start;
+    grid-column: 1;
+  }
+
+  .restricted-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .restricted-commitment {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .acquisition-marks__row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .acquisition-marks__row li:nth-child(4) {
+    border-left: 0;
+  }
+
+  .acquisition-marks__row li:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .acquisition-options__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .discount-hero__badge {
+    justify-content: flex-start;
+    grid-column: 1;
+  }
+
+  .discount-marks__row,
+  .discount-principles__row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .discount-marks__row li:nth-child(4),
+  .discount-principles__row li:nth-child(4) {
+    border-left: 0;
+  }
+
+  .discount-marks__row li:nth-child(n + 4),
+  .discount-principles__row li:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  /* The two price columns stack, so the discount disc moves out from between
+     them and sits above the pair as its own row. */
+  .discount-example__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .discount-example__badge {
+    order: -1;
+    justify-self: center;
+  }
+
+  /* The crest card leaves the hero grid and sits under the copy, so the plate
+     behind it keeps its own subject instead of the card covering it. */
+  .overview-hero__crest {
+    justify-content: flex-start;
+    grid-column: 1;
+  }
+
+  .overview-marks__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .overview-marks__row li:nth-child(3) {
+    border-left: 0;
+  }
+
+  .overview-marks__row li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .overview-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .gem-hero,
   .portal-hero {
     min-height: auto;
@@ -10778,6 +12263,113 @@ li:hover > .section-plate {
 
 @media (max-width: 760px) {
   /* --- Gemstone pages and the portal ---------------------------------- */
+
+  .restricted-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .restricted-group:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .restricted-group:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .restricted-group:nth-child(n + 3) {
+    padding-top: 22px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .restricted-commitment__marks ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acquisition-marks {
+    margin-top: 0;
+  }
+
+  .acquisition-marks__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acquisition-marks__row li:nth-child(3),
+  .acquisition-marks__row li:nth-child(5) {
+    border-left: 0;
+  }
+
+  .acquisition-marks__row li:nth-child(4) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .acquisition-marks__row li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .acquisition-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acquisition-steps li:nth-child(3)::before,
+  .acquisition-steps li:nth-child(5)::before {
+    content: none;
+  }
+
+  .acquisition-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .acquisition-checks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .discount-marks {
+    margin-top: 0;
+  }
+
+  .discount-marks__row,
+  .discount-principles__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .discount-marks__row li:nth-child(3),
+  .discount-marks__row li:nth-child(5),
+  .discount-principles__row li:nth-child(3),
+  .discount-principles__row li:nth-child(5) {
+    border-left: 0;
+  }
+
+  .discount-marks__row li:nth-child(4),
+  .discount-principles__row li:nth-child(4) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .discount-marks__row li:nth-child(n + 3),
+  .discount-principles__row li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .discount-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .discount-steps li:nth-child(3)::before,
+  .discount-steps li:nth-child(5)::before {
+    content: none;
+  }
+
+  .overview-marks {
+    margin-top: 0;
+  }
+
+  .overview-model {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 12px;
+  }
+
+  .overview-model li:nth-child(3)::before {
+    content: none;
+  }
 
   .gem-promise {
     width: 100%;
@@ -11843,6 +13435,70 @@ li:hover > .section-plate {
 }
 
 @media (max-width: 520px) {
+  .restricted-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .restricted-group + .restricted-group {
+    border-left: 0;
+  }
+
+  .restricted-group:nth-child(even) {
+    border-left: 0;
+  }
+
+  .restricted-group:nth-child(n + 2) {
+    padding-top: 22px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .restricted-commitment__marks ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .acquisition-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .acquisition-steps li + li::before {
+    content: none;
+  }
+
+  .acquisition-tokens {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acquisition-option {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .acquisition-option__points li {
+    text-align: left;
+  }
+  .discount-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .discount-steps li + li::before {
+    content: none;
+  }
+
+  .discount-example__column dl > div {
+    display: grid;
+    gap: 2px;
+  }
+
+  .discount-example__column dd {
+    text-align: left;
+  }
+  .overview-model {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .overview-model li + li::before {
+    content: none;
+  }
   .registry-record__fields dl > div,
   .registry-chain dl > div,
   .program-card__specs > div {

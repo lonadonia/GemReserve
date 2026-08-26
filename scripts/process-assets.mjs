@@ -538,6 +538,154 @@ const heroJobs = [
     // the stone underneath the passport card the hero stands on the right.
     mobileWindow: [0.3, 1],
   },
+
+  // Phase 2. Six of these nine boards open on one of the client's own hero
+  // photographs, which ship here unchanged; the other three arrange the client's
+  // faceted cut-outs on the standard backdrop, because those boards show loose
+  // stones rather than a photographed scene.
+  {
+    facetedScene: {
+      accent: "#d8a13c",
+      // The board opens on loose faceted stones on dark ground with the crest
+      // card standing to their right. The card is drawn by the page rather than
+      // photographed, so the stones stop short of where it lands and the two do
+      // not overlap at any width.
+      stones: [
+        { file: "ruby_cushion_deep_red.png", size: 176, left: 940, top: 300 },
+        { file: "emerald_emerald_cut.png", size: 168, left: 1120, top: 262 },
+        { file: "yellow_sapphire_oval.png", size: 150, left: 902, top: 470 },
+        { file: "blue_sapphire_oval.png", size: 162, left: 1074, top: 452 },
+        { file: "amethyst_oval_purple.png", size: 138, left: 1252, top: 424 },
+        {
+          file: "diamond_round_brilliant.png",
+          size: 126,
+          left: 1246,
+          top: 578,
+        },
+      ],
+    },
+    name: "overview-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    // A narrow window makes a tall contained plate on a phone, which then runs
+    // up behind the crest card. This wider band keeps the whole stone group and
+    // lands it below the card instead.
+    mobileWindow: [0.3, 0.92],
+  },
+  {
+    facetedScene: {
+      accent: "#5ed8ee",
+      // The board gives this page one large aquamarine emerald cut standing
+      // alone on the right, so the scene places exactly that and nothing else.
+      stones: [
+        {
+          file: "aquamarine_emerald_cut_pale_blue.png",
+          size: 430,
+          left: 1130,
+          top: 196,
+        },
+      ],
+    },
+    name: "discount-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.55, 1],
+  },
+  {
+    source: "acquisition-hero-master.png",
+    name: "acquisition-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "restricted-hero-master.png",
+    name: "restricted-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.34, 1],
+  },
+  {
+    source: "ent-services-hero-master.png",
+    name: "ent-services-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.28, 1],
+  },
+  {
+    facetedScene: {
+      accent: "#f1b23c",
+      // Owners and originators: the board sets a spread of cut stones on dark
+      // ground. The two audience pages get different arrangements so they do not
+      // read as the same picture twice.
+      stones: [
+        { file: "blue_sapphire_oval.png", size: 300, left: 1140, top: 330 },
+        { file: "ruby_cushion_deep_red.png", size: 320, left: 1330, top: 210 },
+        { file: "emerald_emerald_cut.png", size: 300, left: 1560, top: 260 },
+        { file: "yellow_sapphire_oval.png", size: 250, left: 1420, top: 460 },
+        {
+          file: "diamond_round_brilliant.png",
+          size: 230,
+          left: 1650,
+          top: 490,
+        },
+      ],
+    },
+    name: "owners-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.55, 1],
+  },
+  {
+    facetedScene: {
+      accent: "#7fd8c4",
+      stones: [
+        { file: "emerald_emerald_cut.png", size: 310, left: 1150, top: 250 },
+        { file: "spinel_cushion_red.png", size: 290, left: 1370, top: 200 },
+        { file: "blue_sapphire_oval.png", size: 300, left: 1240, top: 440 },
+        { file: "pink_sapphire_oval.png", size: 240, left: 1470, top: 420 },
+        {
+          file: "diamond_round_brilliant.png",
+          size: 250,
+          left: 1600,
+          top: 300,
+        },
+        {
+          file: "tsavorite_garnet_round_vivid_green.png",
+          size: 210,
+          left: 1670,
+          top: 520,
+        },
+      ],
+    },
+    name: "buyers-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.55, 1],
+  },
+  {
+    source: "licensing-hero-master.png",
+    name: "licensing-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "future-hero-master.png",
+    name: "future-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    mobileWindow: [0.32, 1],
+  },
 ];
 
 // Drop the crest into a generated scene. A generated shield would be a
@@ -711,9 +859,175 @@ async function composeRoughHero(input, accent) {
     .toBuffer();
 }
 
+// Four of the Phase 2 boards open on faceted stones arranged on dark ground
+// rather than on one of the supplied hero photographs. The client ships each of
+// those stones as its own cut-out, so the scene is composited from them on the
+// same backdrop the rough heroes already use: one accent halo, one grain pass,
+// and per-stone glow and contact shadow. Nothing is generated — every stone in
+// these heroes is the client's own artwork, just arranged.
+async function composeFacetedHero(stones, accent) {
+  const width = 1920;
+  const height = 822;
+
+  // Each stone is measured first so the backdrop can carry its ground shadow.
+  // The shadows are drawn as SVG ellipses rather than derived from each alpha:
+  // a faceted cut-out fills nearly all of its own box, so a squashed-alpha
+  // shadow would be a rectangle, and an ellipse is what the stone actually
+  // casts on a flat surface anyway.
+  const placed = [];
+  for (const { file, size, left, top, glow: glowTint } of stones) {
+    const source = path.join(masters, "faceted", file);
+    const stone = await sharp(source)
+      .extract(await alphaBox(source))
+      .resize({
+        width: size,
+        height: size,
+        fit: "inside",
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+        kernel: "lanczos3",
+      })
+      .sharpen({ sigma: 0.45 })
+      .png()
+      .toBuffer();
+    const meta = await sharp(stone).metadata();
+    // Each stone bleeds a little of its own colour onto the ground rather than
+    // the page accent. One accent tint behind six stones merges into a single
+    // wash; the stone's own dominant colour keeps each one reading separately
+    // and stays as restrained as the rest of the site's lighting.
+    const { dominant } = await sharp(stone).stats();
+    placed.push({ stone, meta, left, top, glowTint: glowTint ?? dominant });
+  }
+
+  const shadows = placed
+    .map(({ meta, left, top }) => {
+      const cx = left + meta.width / 2;
+      const cy = top + meta.height - meta.height * 0.06;
+      const rx = meta.width * 0.52;
+      const ry = Math.max(6, meta.height * 0.14);
+      return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="url(#drop)"/>`;
+    })
+    .join("\n      ");
+
+  const backdrop = Buffer.from(`
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="base" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#010507"/>
+          <stop offset="0.52" stop-color="#07110f"/>
+          <stop offset="1" stop-color="#020709"/>
+        </linearGradient>
+        <radialGradient id="halo" cx="62%" cy="52%" r="42%">
+          <stop offset="0" stop-color="${accent}" stop-opacity="0.15"/>
+          <stop offset="0.54" stop-color="${accent}" stop-opacity="0.04"/>
+          <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="drop" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#000000" stop-opacity="0.72"/>
+          <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="grain" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="23"/>
+          <feColorMatrix values="0 0 0 0 0.17 0 0 0 0 0.19 0 0 0 0 0.18 0 0 0 0.12 0"/>
+        </filter>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#base)"/>
+      <rect width="100%" height="100%" fill="url(#halo)"/>
+      <rect width="100%" height="100%" filter="url(#grain)" opacity="0.22"/>
+      ${shadows}
+    </svg>
+  `);
+
+  const layers = [];
+  for (const { stone, meta, left, top, glowTint } of placed) {
+    // The glow is built on a padded canvas so the blur has transparent margin
+    // to fall off into; blurring the alpha in place would stop at the edge of
+    // the box and read as a rectangle. The mask is handed over raw so it joins
+    // as exactly one channel.
+    const pad = Math.round(Math.max(meta.width, meta.height) * 0.5);
+    const glowWidth = meta.width + pad * 2;
+    const glowHeight = meta.height + pad * 2;
+    const glowMask = await sharp(stone)
+      .extend({
+        top: pad,
+        bottom: pad,
+        left: pad,
+        right: pad,
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+      })
+      .extractChannel("alpha")
+      .blur(Math.max(4, meta.width * 0.4))
+      .linear(0.16)
+      .raw()
+      .toBuffer();
+
+    const glowPlate = await sharp({
+      create: {
+        width: glowWidth,
+        height: glowHeight,
+        channels: 3,
+        background: glowTint,
+      },
+    })
+      .joinChannel(glowMask, {
+        raw: { width: glowWidth, height: glowHeight, channels: 1 },
+      })
+      .png()
+      .toBuffer();
+
+    // A stone near an edge produces a glow plate that runs off the backdrop,
+    // which sharp refuses to composite. Trim the plate to the part that lands
+    // on the canvas rather than moving the stone to suit the halo.
+    const glowLeft = left - pad;
+    const glowTop = top - pad;
+    const cropLeft = Math.max(0, -glowLeft);
+    const cropTop = Math.max(0, -glowTop);
+    const cropWidth = Math.min(
+      glowWidth - cropLeft,
+      width - (glowLeft + cropLeft),
+    );
+    const cropHeight = Math.min(
+      glowHeight - cropTop,
+      height - (glowTop + cropTop),
+    );
+
+    if (cropWidth > 0 && cropHeight > 0) {
+      layers.push({
+        input:
+          cropLeft ||
+          cropTop ||
+          cropWidth !== glowWidth ||
+          cropHeight !== glowHeight
+            ? await sharp(glowPlate)
+                .extract({
+                  left: cropLeft,
+                  top: cropTop,
+                  width: cropWidth,
+                  height: cropHeight,
+                })
+                .png()
+                .toBuffer()
+            : glowPlate,
+        left: glowLeft + cropLeft,
+        top: glowTop + cropTop,
+      });
+    }
+
+    layers.push({ input: stone, left, top });
+  }
+
+  return sharp(backdrop).composite(layers).png().toBuffer();
+}
+
+// A full run rebuilds every derivative in the project, which is minutes of work
+// when only one hero has moved. Naming heroes on the command line rebuilds just
+// those; with no names the loop runs in full, so CI and a clean checkout are
+// unaffected.
+const heroFilter = new Set(process.argv.slice(2));
+
 for (const {
   source,
   roughCutout,
+  facetedScene,
   name,
   position,
   width,
@@ -722,14 +1036,18 @@ for (const {
   padLeft,
   crestPlacement,
 } of heroJobs) {
+  if (heroFilter.size > 0 && !heroFilter.has(name)) continue;
+
   const input = roughCutout
     ? await composeRoughHero(
         path.join(masters, roughCutout.source),
         roughCutout.accent,
       )
-    : crestPlacement
-      ? await standCrest(path.join(masters, source), crestPlacement)
-      : path.join(masters, source);
+    : facetedScene
+      ? await composeFacetedHero(facetedScene.stones, facetedScene.accent)
+      : crestPlacement
+        ? await standCrest(path.join(masters, source), crestPlacement)
+        : path.join(masters, source);
   const plate = padLeft ? await padPlateLeft(input, padLeft) : input;
   await exportPair(plate, path.join(heroDir, name), {
     width,

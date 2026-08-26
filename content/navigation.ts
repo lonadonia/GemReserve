@@ -104,6 +104,7 @@ export const navigationGroups = [
       { label: "Investor Overview", href: "/investors" },
       { label: "Investor Presentation", href: "/investors" },
       { label: "Roadmap", href: "/investors" },
+      { label: "20% Discount Methodology", href: "/discount-methodology" },
       { label: "Benefits", href: null },
       { label: "Token Utility", href: null },
       { label: "Documents", href: null },
@@ -116,6 +117,7 @@ export const navigationGroups = [
       { label: "About Us", href: "/about" },
       { label: "Our Partners", href: null },
       { label: "Governance", href: "/governance" },
+      { label: "Restricted Jurisdictions", href: "/restricted-jurisdictions" },
       { label: "Careers", href: null },
       { label: "News & Announcements", href: null },
       { label: "Contact Us", href: "/contact" },
@@ -130,10 +132,12 @@ export const navigationGroups = [
  * day an item is added without a page behind it.
  */
 export const earlyParticipationItems: readonly NavigationItem[] = [
-  { label: "Early Access", href: "/early-participation" },
-  { label: "Waitlist Benefits", href: "/early-participation" },
+  { label: "Program Overview", href: "/program-overview" },
+  { label: "20% Discount Methodology", href: "/discount-methodology" },
+  { label: "How Token Acquisition Works", href: "/token-acquisition" },
   { label: "Eligibility & KYC", href: "/eligibility-kyc" },
-  { label: "How to Participate", href: "/early-participation" },
+  { label: "Restricted Jurisdictions", href: "/restricted-jurisdictions" },
+  { label: "Join the Waitlist", href: "/early-participation" },
   { label: "FAQ", href: "/faq" },
 ];
 
