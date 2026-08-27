@@ -48,7 +48,16 @@ export type IconName =
   | "compass"
   | "ban"
   | "question"
-  | "alert-triangle";
+  | "alert-triangle"
+  | "bars"
+  | "watch"
+  | "frame"
+  | "building"
+  | "turbine"
+  | "code-shield"
+  | "file-check"
+  | "clipboard-check"
+  | "layers";
 
 export interface LineIconProps {
   name: IconName;
@@ -268,10 +277,9 @@ function IconGlyph({ name }: Pick<LineIconProps, "name">) {
     case "handshake":
       return (
         <>
-          <path d="M2.5 10.5h3.2v6H2.5zM18.3 10.5h3.2v6h-3.2z" />
-          <path d="M5.7 11.4h2.6l2-1.4h3.4l2 1.4h2.6" />
-          <path d="M8.3 15.5 11 17.9a1.5 1.5 0 0 0 2.1-.15l3.1-3.5" />
-          <path d="M16.2 14.25 13.6 12H10a1.5 1.5 0 0 0 0 3h1.6" />
+          <path d="M12 8.6 9.6 6.2a2 2 0 0 0-2.85 0L2.9 10.1a2 2 0 0 0 0 2.85l3.7 3.7a2 2 0 0 0 2.85 0L12 13.9" />
+          <path d="m12 8.6 2.4-2.4a2 2 0 0 1 2.85 0l3.85 3.9a2 2 0 0 1 0 2.85l-3.7 3.7a2 2 0 0 1-2.85 0L12 13.9" />
+          <path d="M9.9 11.6 12 13.7l2.1-2.1" />
         </>
       );
     case "user":
@@ -434,6 +442,78 @@ function IconGlyph({ name }: Pick<LineIconProps, "name">) {
           <path d="M10.7 3.6 2.4 18a1.5 1.5 0 0 0 1.3 2.25h16.6A1.5 1.5 0 0 0 21.6 18L13.3 3.6a1.5 1.5 0 0 0-2.6 0Z" />
           <path d="M12 9v4.6" />
           <path d="M12 17.1h.01" />
+        </>
+      );
+    case "bars":
+      return (
+        <>
+          <path d="M4.6 13.4h8.1l1.5 4.1H3.1l1.5-4.1Z" />
+          <path d="M11.3 13.4h8.1l1.5 4.1h-11l1.4-4.1Z" />
+          <path d="M8 6.5h8.1l1.5 4.1h-11L8 6.5Z" />
+        </>
+      );
+    case "watch":
+      return (
+        <>
+          <circle cx="12" cy="12" r="5.4" />
+          <path d="M12 9.3V12l1.9 1.2" />
+          <path d="M8.9 6.9 9.4 3h5.2l.5 3.9M8.9 17.1l.5 3.9h5.2l.5-3.9" />
+        </>
+      );
+    case "frame":
+      return (
+        <>
+          <rect x="3" y="3.5" width="18" height="17" rx="1.4" />
+          <rect x="5.8" y="6.3" width="12.4" height="11.4" rx="0.8" />
+          <path d="m7.6 15.4 2.9-3.6 2 2.3 1.9-2.9 2 4.2" />
+        </>
+      );
+    case "building":
+      return (
+        <>
+          <path d="M4 20.6V5.4a1 1 0 0 1 1-1h8.6a1 1 0 0 1 1 1v15.2" />
+          <path d="M14.6 9.6H19a1 1 0 0 1 1 1v10M2.6 20.6h18.8" />
+          <path d="M7 8h1.4M11 8h1.4M7 11.6h1.4M11 11.6h1.4M7 15.2h1.4M11 15.2h1.4M17 13h.6M17 16.4h.6" />
+        </>
+      );
+    case "turbine":
+      return (
+        <>
+          <path d="M11.2 20.8h3.2l-.7-9h-1.8l-.7 9Z" />
+          <circle cx="12.5" cy="10.6" r="1.1" />
+          <path d="M12.5 9.5 11.9 3M13.4 11.3 20 9.7M11.6 11.3 5.4 14.6" />
+        </>
+      );
+    case "code-shield":
+      return (
+        <>
+          <path d="M12 2.8 19 5.6v5.1c0 4.5-2.8 7.9-7 10.4-4.2-2.5-7-5.9-7-10.4V5.6L12 2.8Z" />
+          <path d="m10 9.4-2.1 2.4L10 14.2M14 9.4l2.1 2.4-2.1 2.4" />
+        </>
+      );
+    case "file-check":
+      return (
+        <>
+          <path d="M13.6 2.9H6.6a1.4 1.4 0 0 0-1.4 1.4v15.4a1.4 1.4 0 0 0 1.4 1.4h6.2" />
+          <path d="M13.6 2.9 18.4 7.7v3.4M13.6 2.9v4.8h4.8" />
+          <path d="M8.2 10.4h4.4M8.2 13.4h3" />
+          <circle cx="17" cy="16.6" r="3.9" />
+          <path d="m15.3 16.7 1.2 1.2 2.4-2.5" />
+        </>
+      );
+    case "clipboard-check":
+      return (
+        <>
+          <path d="M9.2 4.2H7a1.4 1.4 0 0 0-1.4 1.4v14.1A1.4 1.4 0 0 0 7 21.1h10a1.4 1.4 0 0 0 1.4-1.4V5.6A1.4 1.4 0 0 0 17 4.2h-2.2" />
+          <rect x="9.2" y="2.6" width="5.6" height="3.2" rx="1" />
+          <path d="m9.4 13.6 1.9 1.9 3.9-4.2" />
+        </>
+      );
+    case "layers":
+      return (
+        <>
+          <path d="m12 3.2 8.6 4.3-8.6 4.3-8.6-4.3L12 3.2Z" />
+          <path d="m3.4 12 8.6 4.3 8.6-4.3M3.4 16.5l8.6 4.3 8.6-4.3" />
         </>
       );
   }

@@ -82,7 +82,7 @@ export const navigationGroups = [
       { label: "Blockchain", href: null },
       { label: "Smart Contracts", href: null },
       { label: "Security", href: null },
-      { label: "White-Label Platform", href: null },
+      { label: "White-Label Platform", href: "/licensing-white-label" },
     ],
   },
   {
@@ -91,9 +91,17 @@ export const navigationGroups = [
     items: [
       { label: "Enterprise Solutions", href: "/enterprise" },
       { label: "Enterprise Process", href: "/enterprise" },
-      { label: "Tokenization Services", href: null },
-      { label: "Owners & Originators", href: null },
-      { label: "Buyers & Collectors", href: null },
+      { label: "Tokenization Services", href: "/enterprise-tokenization" },
+      { label: "Owners & Originators", href: "/gemstone-owners" },
+      { label: "Buyers & Collectors", href: "/gemstone-buyers" },
+      {
+        label: "Technology, Licensing & White Label",
+        href: "/licensing-white-label",
+      },
+      {
+        label: "The Future of Gemstone Assets",
+        href: "/future-infrastructure",
+      },
       { label: "API Integration", href: null },
     ],
   },

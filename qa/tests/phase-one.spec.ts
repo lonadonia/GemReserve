@@ -75,6 +75,15 @@ const routes = [
   { name: "early-participation", path: "/early-participation" },
   { name: "eligibility-kyc", path: "/eligibility-kyc" },
   { name: "faq", path: "/faq" },
+  { name: "program-overview", path: "/program-overview" },
+  { name: "discount-methodology", path: "/discount-methodology" },
+  { name: "token-acquisition", path: "/token-acquisition" },
+  { name: "restricted-jurisdictions", path: "/restricted-jurisdictions" },
+  { name: "enterprise-tokenization", path: "/enterprise-tokenization" },
+  { name: "gemstone-owners", path: "/gemstone-owners" },
+  { name: "gemstone-buyers", path: "/gemstone-buyers" },
+  { name: "licensing-white-label", path: "/licensing-white-label" },
+  { name: "future-infrastructure", path: "/future-infrastructure" },
 ] as const;
 
 const requiredViewports = [
@@ -697,6 +706,91 @@ test.describe("gemstone pages and the portal", () => {
         });
         await expect(card.getByRole("link")).toHaveAttribute("href", href);
       }
+    }
+  });
+});
+
+test.describe("phase two pages state capability, not deployment", () => {
+  test("token acquisition is a description, never a live checkout", async ({
+    page,
+  }) => {
+    await page.goto("/token-acquisition", { waitUntil: "networkidle" });
+
+    // The board draws a six-step purchase flow. Nothing on the page may be an
+    // actual control: no wallet button, no amount field, no order form.
+    await expect(page.locator("form")).toHaveCount(0);
+    await expect(page.locator("input, select, textarea")).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: /connect|buy|purchase|pay/i }),
+    ).toHaveCount(0);
+
+    await expect(page.getByRole("note")).toContainText("not yet open");
+  });
+
+  test("the discount example is labelled as an example", async ({ page }) => {
+    await page.goto("/discount-methodology", { waitUntil: "networkidle" });
+
+    // Every figure on this page belongs to the board's worked example, so the
+    // heading above them has to say so.
+    const heading = page.getByRole("heading", { name: /EXAMPLE:/ });
+    await expect(heading).toBeVisible();
+
+    const example = page.locator(".discount-example");
+    await expect(example).toContainText("$10.00");
+    await expect(example).toContainText("$8.00");
+  });
+
+  test("the roadmap distinguishes delivered phases from planned ones", async ({
+    page,
+  }) => {
+    await page.goto("/future-infrastructure", { waitUntil: "networkidle" });
+
+    // The board draws a completed check over all five phases. Only the phase it
+    // names completed may read as done.
+    await expect(page.locator(".future-phases__item--complete")).toHaveCount(1);
+    await expect(page.locator(".future-phases__item--in-progress")).toHaveCount(
+      1,
+    );
+    await expect(page.locator(".future-phases__item--planned")).toHaveCount(3);
+  });
+
+  test("the white-label preview carries no invented platform figures", async ({
+    page,
+  }) => {
+    await page.goto("/licensing-white-label", { waitUntil: "networkidle" });
+
+    const preview = page.locator(".licensing-preview");
+    await expect(preview).toBeVisible();
+    await expect(preview).toContainText("ILLUSTRATION");
+
+    // The board's mockup carries totals; this one must carry none.
+    await expect(preview).not.toContainText("$");
+    await expect(await preview.innerText()).not.toMatch(/\d{3,}/);
+  });
+
+  test("the buyers passport record is a sample, not a listing", async ({
+    page,
+  }) => {
+    await page.goto("/gemstone-buyers", { waitUntil: "networkidle" });
+
+    const passport = page.locator(".audience-passport");
+    await expect(passport).toContainText("EXAMPLE RECORD");
+    await expect(passport).toContainText("GR-SAPP-0001245");
+    await expect(passport).not.toContainText("$");
+  });
+
+  test("the new pages carry the Lithuanian operating entity", async ({
+    page,
+  }) => {
+    for (const route of [
+      "/program-overview",
+      "/restricted-jurisdictions",
+      "/enterprise-tokenization",
+      "/future-infrastructure",
+    ]) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      await expect(page.locator(".footer-legal")).toContainText("LT307501935");
+      await expect(page.locator("body")).not.toContainText(/Zurich|Switzerland/);
     }
   });
 });
