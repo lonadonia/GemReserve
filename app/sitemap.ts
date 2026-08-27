@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+import { siteUrl } from "@/lib/config";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     "",
@@ -49,7 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/eligibility-kyc",
     "/faq",
   ].map((path) => ({
-    url: `https://gemreserve.io${path}`,
+    url: `${siteUrl}${path}`,
     lastModified: new Date("2026-08-25"),
     changeFrequency: path ? "monthly" : "weekly",
     priority: path ? 0.8 : 1,

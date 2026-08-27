@@ -2331,6 +2331,11 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  /* "INTERGENERATIONAL" is 7px wider than its column in the four-across row at
+     around 768px, which clipped it. Hyphenation only engages when a word cannot
+     otherwise fit, so every width where the label already fitted renders exactly
+     as before. The document sets lang="en", so the break points are correct. */
+  hyphens: auto;
 }
 
 .investment-reason p {
@@ -13012,6 +13017,90 @@ li:hover > .section-plate {
 
 .future-banner p span {
   display: block;
+}
+
+/* --- 404 and route error ---------------------------------------------- */
+
+/* Both pages are assembled from tokens the rest of the site already defines —
+   the same gutters, gold ramp, display face and button styles — so they read as
+   part of the site rather than as a separate error surface. */
+.notfound {
+  display: grid;
+  min-height: min(58vh, 620px);
+  align-content: center;
+  padding-block: var(--section-gap);
+}
+
+.notfound__inner {
+  max-width: 62ch;
+}
+
+.notfound__title {
+  margin-bottom: 20px;
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  letter-spacing: -0.02em;
+}
+
+.notfound__title span {
+  display: block;
+}
+
+.notfound__lead {
+  margin-bottom: 26px;
+  color: #c4cacc;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  line-height: 1.8;
+}
+
+.notfound__links {
+  margin-bottom: 30px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(8 20 27 / 88%), rgb(2 8 11 / 93%));
+}
+
+.notfound__links ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notfound__links a {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  color: #c4cacc;
+  font-size: clamp(0.84rem, 0.9vw, 0.92rem);
+  transition: color 240ms ease;
+}
+
+.notfound__links a:hover {
+  color: var(--gold-light);
+}
+
+/* The chevron glyph points down; rotated it becomes the same forward caret the
+   breadcrumbs already use, without adding a second icon to the set. */
+.notfound__links svg {
+  color: var(--gold);
+  transform: rotate(-90deg);
+}
+
+.notfound__digest {
+  margin-bottom: 22px;
+  color: #98a0a2;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: clamp(0.74rem, 0.8vw, 0.81rem);
+  letter-spacing: 0.04em;
+}
+
+.notfound__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .portal-cta {

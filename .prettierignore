@@ -4,3 +4,4 @@ reference
 qa
 assets/masters
 package-lock.json
+.env.example

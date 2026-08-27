@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 
+import { siteUrl } from "@/lib/config";
+
 import "./globals.css";
 
 // Playfair Display carries the higher stroke contrast and heavier stems the
@@ -22,7 +24,7 @@ const sansFont = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gemreserve.io"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "GemReserve.io | Real Gems. Real Value. Real Trust.",
     template: "%s | GemReserve.io",

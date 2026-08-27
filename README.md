@@ -2,13 +2,38 @@
 
 GemReserve.io Phase One is a responsive Next.js App Router preview for a premium gemstone-asset platform. It uses strict TypeScript, reusable React components, typed content modules, custom responsive CSS, accessible navigation and controls, and locally generated brand and photographic assets.
 
+## Documentation
+
+| Document                                                                   | Covers                                                                             |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [`docs/PRODUCTION_READINESS_AUDIT.md`](docs/PRODUCTION_READINESS_AUDIT.md) | Architecture, what was found and fixed for production, outstanding owner decisions |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)                                 | Server setup, build, systemd, Nginx, rollback, health checks                       |
+| [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md)                               | Every environment variable and feature flag                                        |
+| [`docs/CONTINUATION_NOTES.md`](docs/CONTINUATION_NOTES.md)                 | How to keep building without disturbing the deployed site                          |
+
 ## Routes
 
-| Route           | Purpose                                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `/`             | Brand story, trust pillars, process overview, gemstone preview, platform metrics, and demo waitlist form         |
-| `/how-it-works` | Nine-step operating process, trust pillars, technology/security overview, asset lifecycle, and closing trust CTA |
-| `/assets`       | Gemstone value proposition, metrics, working category filter and sort controls, catalog, and investment overview |
+46 routes, all statically prerendered. `app/sitemap.ts` is the authoritative
+list; each directory under `app/` maps to one URL.
+
+Broadly: the marketing pages (`/`, `/how-it-works`, `/assets`, `/technology`),
+sixteen gemstone programme pages, the Early Participation group
+(`/program-overview`, `/discount-methodology`, `/token-acquisition`,
+`/restricted-jurisdictions`, `/early-participation`), the Enterprise group
+(`/enterprise-tokenization`, `/gemstone-owners`, `/gemstone-buyers`,
+`/licensing-white-label`, `/future-infrastructure`) and the company pages.
+
+One dynamic route, `/api/forms`, receives lead-form submissions. It is dormant
+until configured — see `docs/ENVIRONMENT.md`.
+
+## Pre-launch status
+
+This is a **public pre-launch information site**. Token sale, wallet
+connection, payments, minting, trading, live Proof of Reserves, redemption
+submission and participant authentication are **not implemented**, and each is
+declared as an off-by-default flag in `lib/config.ts`. The lead forms report a
+demonstration state and transmit nothing until a delivery provider is
+configured.
 
 ## Prerequisites
 
@@ -24,6 +49,9 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+Copy `.env.example` to `.env.local` if you need to override the defaults;
+the site runs without it.
 
 For a production-mode local check:
 

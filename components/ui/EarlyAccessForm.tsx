@@ -2,6 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { CONSENT_VERSION, submitForm, validateSubmission } from "@/lib/forms";
+
 import { LineIcon } from "@/components/icons/LineIcon";
 
 interface Errors {
@@ -38,38 +40,87 @@ export function EarlyAccessForm({
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [outcome, setOutcome] = useState<"preview" | "sent" | null>(null);
 
   useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
+    if (outcome) successRef.current?.focus();
+  }, [outcome]);
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const next: Errors = {};
-    const value = (name: string) => String(data.get(name) ?? "").trim();
+    if (pending) return;
 
+    const data = new FormData(event.currentTarget);
+    const value = (name: string) => String(data.get(name) ?? "").trim();
+    const next: Errors = {};
+
+    // Fields specific to this form are checked here; the shared rules in
+    // lib/forms cover the ones the server also enforces.
     if (!value("firstName")) next.firstName = "Enter your first name.";
     if (!value("lastName")) next.lastName = "Enter your last name.";
-    if (!/^\S+@\S+\.\S+$/.test(value("email")))
-      next.email = "Enter a valid email address.";
     if (!value("country")) next.country = "Enter your country of residence.";
     if (!value("role")) next.role = "Choose how you are joining.";
     if (!data.get("consent"))
       next.consent = "Confirm you agree to receive updates.";
 
-    setErrors(next);
+    // Merge this form's own checks with the shared rules so an empty submit
+    // reports everything at once, as it did before validation moved out.
+    Object.assign(
+      next,
+      validateSubmission({
+        kind: "early-access",
+        fields: {
+          firstName: value("firstName"),
+          lastName: value("lastName"),
+          email: value("email"),
+          country: value("country"),
+          role: value("role"),
+        },
+        consentVersion: CONSENT_VERSION,
+      }),
+    );
+
     if (Object.keys(next).length > 0) {
+      setErrors(next);
       formRef.current
         ?.querySelector<HTMLElement>("[aria-invalid='true']")
         ?.focus();
       return;
     }
-    setSubmitted(true);
+
+    setPending(true);
+    const result = await submitForm({
+      kind: "early-access",
+      fields: {
+        firstName: value("firstName"),
+        lastName: value("lastName"),
+        email: value("email"),
+        country: value("country"),
+        role: value("role"),
+      },
+      consentVersion: CONSENT_VERSION,
+    });
+    setPending(false);
+
+    if (result.status === "invalid") {
+      setErrors(result.errors as Errors);
+      formRef.current
+        ?.querySelector<HTMLElement>("[aria-invalid='true']")
+        ?.focus();
+      return;
+    }
+
+    if (result.status === "error") {
+      setErrors({ email: result.message });
+      return;
+    }
+
+    setErrors({});
+    setOutcome(result.status);
   };
 
-  if (submitted) {
+  if (outcome) {
     return (
       <div
         ref={successRef}
@@ -80,15 +131,28 @@ export function EarlyAccessForm({
       >
         <span aria-hidden="true">✓</span>
         <div>
-          <strong>Your details are ready to submit.</strong>
-          <p>
-            No data left this page and no place has been reserved; this is a
-            demonstration success state. Email{" "}
-            <a href="mailto:info@gemreserve.io">info@gemreserve.io</a> to reach
-            the team today.
-          </p>
+          {outcome === "sent" ? (
+            <>
+              <strong>Your details have been submitted.</strong>
+              <p>
+                We will contact you at the address you gave. Email{" "}
+                <a href="mailto:info@gemreserve.io">info@gemreserve.io</a> if
+                you need to reach the team sooner.
+              </p>
+            </>
+          ) : (
+            <>
+              <strong>Your details are ready to submit.</strong>
+              <p>
+                No data left this page and no place has been reserved; this is a
+                demonstration success state. Email{" "}
+                <a href="mailto:info@gemreserve.io">info@gemreserve.io</a> to
+                reach the team today.
+              </p>
+            </>
+          )}
         </div>
-        <button type="button" onClick={() => setSubmitted(false)}>
+        <button type="button" onClick={() => setOutcome(null)}>
           Enter different details
         </button>
       </div>
@@ -240,6 +304,7 @@ export function EarlyAccessForm({
       <button
         className="button button--gold waitlist-form__submit"
         type="submit"
+        disabled={pending}
       >
         {buttonLabel}
       </button>

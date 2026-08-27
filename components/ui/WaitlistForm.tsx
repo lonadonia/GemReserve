@@ -2,6 +2,17 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { CONSENT_VERSION, submitForm } from "@/lib/forms";
+
+/**
+ * Validation and transport now live in `lib/forms`, shared with the API route,
+ * so this component only renders states.
+ *
+ * With form submission switched off — the default, and how the public
+ * pre-launch site ships — `submitForm` performs no network call and returns
+ * `preview`, which renders exactly the demonstration state this form has always
+ * shown. The wording is unchanged and still says plainly that nothing was sent.
+ */
 export function WaitlistForm({
   placeholder = "Enter your email address",
   buttonLabel = "Join Waitlist",
@@ -16,26 +27,44 @@ export function WaitlistForm({
   const successRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [outcome, setOutcome] = useState<"preview" | "sent" | null>(null);
 
   useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
+    if (outcome) successRef.current?.focus();
+  }, [outcome]);
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const normalized = email.trim();
-    if (!/^\S+@\S+\.\S+$/.test(normalized)) {
-      setError("Enter a valid email address.");
-      setSubmitted(false);
+    if (pending) return;
+
+    setPending(true);
+    const result = await submitForm({
+      kind: "waitlist",
+      fields: { email: email.trim() },
+      consentVersion: CONSENT_VERSION,
+    });
+    setPending(false);
+
+    if (result.status === "invalid") {
+      setError(result.errors.email ?? "Enter a valid email address.");
+      setOutcome(null);
       inputRef.current?.focus();
       return;
     }
+
+    if (result.status === "error") {
+      setError(result.message);
+      setOutcome(null);
+      inputRef.current?.focus();
+      return;
+    }
+
     setError("");
-    setSubmitted(true);
+    setOutcome(result.status);
   };
 
-  if (submitted) {
+  if (outcome) {
     return (
       <div
         ref={successRef}
@@ -46,13 +75,22 @@ export function WaitlistForm({
       >
         <span aria-hidden="true">✓</span>
         <div>
-          <strong>You’re on the preview list.</strong>
-          <p>No data was sent; this is a demonstration success state.</p>
+          {outcome === "sent" ? (
+            <>
+              <strong>You’re on the list.</strong>
+              <p>We’ll be in touch as the programme opens.</p>
+            </>
+          ) : (
+            <>
+              <strong>You’re on the preview list.</strong>
+              <p>No data was sent; this is a demonstration success state.</p>
+            </>
+          )}
         </div>
         <button
           type="button"
           onClick={() => {
-            setSubmitted(false);
+            setOutcome(null);
             setEmail("");
             requestAnimationFrame(() => inputRef.current?.focus());
           }}
@@ -88,7 +126,7 @@ export function WaitlistForm({
           if (error) setError("");
         }}
       />
-      <button className="button button--gold" type="submit">
+      <button className="button button--gold" type="submit" disabled={pending}>
         {buttonLabel}
       </button>
       <p className="waitlist-error" id={`${id}-error`} role="alert">

@@ -2,6 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { CONSENT_VERSION, submitForm, validateSubmission } from "@/lib/forms";
+
 interface Errors {
   name?: string;
   email?: string;
@@ -11,10 +13,12 @@ interface Errors {
 }
 
 /**
- * The board draws this form but there is no endpoint behind the preview build,
- * so it validates in the browser and reports a demonstration success state, the
- * same contract the waitlist form already keeps. It must never imply that a
- * message reached anyone.
+ * Field validation and transport are shared with the API route through
+ * `lib/forms`, so the browser and the server apply identical rules.
+ *
+ * With submission switched off — the default for the public pre-launch site —
+ * nothing is transmitted and the demonstration state below is shown, with its
+ * original wording intact. It must never imply that a message reached anyone.
  */
 export function ContactForm({
   subjects,
@@ -25,41 +29,74 @@ export function ContactForm({
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [outcome, setOutcome] = useState<"preview" | "sent" | null>(null);
 
   useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
+    if (outcome) successRef.current?.focus();
+  }, [outcome]);
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (pending) return;
+
     const data = new FormData(event.currentTarget);
-    const next: Errors = {};
-    const name = String(data.get("name") ?? "").trim();
-    const email = String(data.get("email") ?? "").trim();
-    const subject = String(data.get("subject") ?? "");
-    const message = String(data.get("message") ?? "").trim();
+    const fields = {
+      name: String(data.get("name") ?? ""),
+      company: String(data.get("company") ?? ""),
+      email: String(data.get("email") ?? ""),
+      subject: String(data.get("subject") ?? ""),
+      message: String(data.get("message") ?? ""),
+    };
 
-    if (!name) next.name = "Enter your full name.";
-    if (!/^\S+@\S+\.\S+$/.test(email))
-      next.email = "Enter a valid email address.";
-    if (!subject) next.subject = "Choose a subject.";
-    if (!message) next.message = "Enter a message.";
-    if (!data.get("consent"))
-      next.consent = "Confirm you agree to the privacy policy.";
+    // The shared rules and this form's own consent check are collected
+    // together, so an empty submit reports every problem at once rather than
+    // one at a time. Consent belongs to the form, not to the payload, so it is
+    // never sent as a field.
+    const merged: Errors = validateSubmission({
+      kind: "contact",
+      fields,
+      consentVersion: CONSENT_VERSION,
+    });
+    if (!data.get("consent")) {
+      merged.consent = "Confirm you agree to the privacy policy.";
+    }
 
-    setErrors(next);
-    if (Object.keys(next).length > 0) {
+    if (Object.keys(merged).length > 0) {
+      setErrors(merged);
+      formRef.current
+        ?.querySelector<HTMLElement>("[aria-invalid='true']")
+        ?.focus();
+      return;
+    }
+
+    setPending(true);
+    const result = await submitForm({
+      kind: "contact",
+      fields,
+      consentVersion: CONSENT_VERSION,
+    });
+    setPending(false);
+
+    if (result.status === "invalid") {
+      setErrors(result.errors as Errors);
       const first = formRef.current?.querySelector<HTMLElement>(
         "[aria-invalid='true']",
       );
       first?.focus();
       return;
     }
-    setSubmitted(true);
+
+    if (result.status === "error") {
+      setErrors({ message: result.message });
+      return;
+    }
+
+    setErrors({});
+    setOutcome(result.status);
   };
 
-  if (submitted) {
+  if (outcome) {
     return (
       <div
         ref={successRef}
@@ -70,14 +107,27 @@ export function ContactForm({
       >
         <span aria-hidden="true">✓</span>
         <div>
-          <strong>Your message is ready to send.</strong>
-          <p>
-            No data left this page; this is a demonstration success state. Email{" "}
-            <a href="mailto:info@gemreserve.io">info@gemreserve.io</a> to reach
-            the team today.
-          </p>
+          {outcome === "sent" ? (
+            <>
+              <strong>Your message has been sent.</strong>
+              <p>
+                We will reply to the address you gave. Email{" "}
+                <a href="mailto:info@gemreserve.io">info@gemreserve.io</a> if
+                you need to reach the team sooner.
+              </p>
+            </>
+          ) : (
+            <>
+              <strong>Your message is ready to send.</strong>
+              <p>
+                No data left this page; this is a demonstration success state.
+                Email <a href="mailto:info@gemreserve.io">info@gemreserve.io</a>{" "}
+                to reach the team today.
+              </p>
+            </>
+          )}
         </div>
-        <button type="button" onClick={() => setSubmitted(false)}>
+        <button type="button" onClick={() => setOutcome(null)}>
           Write another message
         </button>
       </div>
@@ -224,6 +274,7 @@ export function ContactForm({
       <button
         className="button button--gold contact-form__submit"
         type="submit"
+        disabled={pending}
       >
         Send Message
         <span aria-hidden="true">→</span>
