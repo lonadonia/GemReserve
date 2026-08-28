@@ -128,9 +128,9 @@ export function SiteHeader({ showAnnouncement = false }: SiteHeaderProps) {
           </span>
           <p>{homeAnnouncement.message}</p>
           <div className="announcement-actions">
-            <span aria-disabled="true" title="Participant login is coming soon">
+            <Link className="announcement-login" href="/participant-portal">
               Login
-            </span>
+            </Link>
             <Link href="/#waitlist">Join Waitlist</Link>
           </div>
         </div>
@@ -226,13 +226,9 @@ export function SiteHeader({ showAnnouncement = false }: SiteHeaderProps) {
 
         <div className="header-actions">
           {!showAnnouncement ? (
-            <span
-              className="login-link"
-              aria-disabled="true"
-              title="Coming soon"
-            >
+            <Link className="login-link" href="/participant-portal">
               Login
-            </span>
+            </Link>
           ) : null}
           <Link
             className="button button--small button--outline"

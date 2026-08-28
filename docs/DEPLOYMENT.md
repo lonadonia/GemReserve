@@ -2,7 +2,7 @@
 
 Deploying GemReserve.io to a Linux production server.
 
-**Stack:** Next.js 16.3.1 App Router, React 19, TypeScript. All 46 pages are statically prerendered.
+**Stack:** Next.js 16.3.1 App Router, React 19, TypeScript. All 58 pages are statically prerendered.
 
 ---
 

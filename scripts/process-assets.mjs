@@ -686,6 +686,121 @@ const heroJobs = [
     height: 822,
     mobileWindow: [0.32, 1],
   },
+  // The twelve closing pages. Their plates arrived as native 16:9 compositions
+  // with the subject group already sitting centre-right over copy-safe darkness,
+  // so none of them is cropped vertically to reach the 2.33:1 hero box: padding
+  // the left by 0.31 widens 16:9 to exactly that ratio, and anything above that
+  // pushes the subject further right for a page whose title runs long. Cropping
+  // instead would take 12% off the top and bottom, which clips the microscope,
+  // the vault crown and the book spines.
+  {
+    source: "verification-hero-master.png",
+    name: "verification-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.34,
+    mobileWindow: [0.4, 1],
+  },
+  {
+    source: "custody-hero-master.png",
+    name: "custody-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.32,
+    mobileWindow: [0.42, 1],
+  },
+  {
+    source: "reserves-hero-master.png",
+    name: "reserves-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.36,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "corporate-hero-master.png",
+    name: "corporate-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.44, 1],
+  },
+  {
+    source: "news-hero-master.png",
+    name: "news-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.33,
+    mobileWindow: [0.22, 1],
+  },
+  {
+    source: "resources-hero-master.png",
+    name: "resources-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.34, 1],
+  },
+  {
+    source: "documents-hero-master.png",
+    name: "documents-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "whitepaper-hero-master.png",
+    name: "whitepaper-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.36, 1],
+  },
+  {
+    source: "risk-hero-master.png",
+    name: "risk-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.24, 1],
+  },
+  {
+    source: "fraud-hero-master.png",
+    name: "fraud-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.3, 1],
+  },
+  {
+    source: "portal-hero-master.png",
+    name: "portal-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.28, 1],
+  },
+  {
+    source: "program-hero-master.png",
+    name: "program-hero",
+    position: "right",
+    width: 1920,
+    height: 822,
+    padLeft: 0.31,
+    mobileWindow: [0.26, 1],
+  },
 ];
 
 // Drop the crest into a generated scene. A generated shield would be a
@@ -1757,6 +1872,73 @@ for (const name of galleryCutouts) {
     );
   }
   await exportCutout(plate, path.join(galleryDir, name), 620, { square: true });
+}
+
+// --- Section art for the twelve closing pages ---------------------------
+// Bands cut at the same 1200x760 the rest of the closing strips use, so a page
+// added later crops identically to the ones already shipped.
+for (const band of [
+  "gem-cluster",
+  "passport-device",
+  "support-desk",
+  "program-vault",
+  "custody-record",
+]) {
+  await exportPair(
+    path.join(masters, `${band}-master.png`),
+    path.join(sectionDir, band),
+    { width: 1200, height: 760, fit: "cover", position: "center" },
+  );
+}
+
+// The whitepaper's network map draws inside a card rather than as a band, so it
+// keeps the 2:1 crop the other two maps in this library use.
+await exportPair(
+  path.join(masters, "network-map-master.png"),
+  path.join(sectionDir, "network-map"),
+  { width: 1200, height: 620, fit: "cover", position: "center" },
+);
+
+// Two square plates that sit beside copy rather than behind it.
+for (const square of ["channel-shield", "portal-security"]) {
+  await exportPair(
+    path.join(masters, `${square}-master.png`),
+    path.join(sectionDir, square),
+    { width: 760, height: 760, fit: "cover", position: "center" },
+  );
+}
+
+// The Resources library tiles and the Documents covers. The library reads as a
+// row of square thumbnails; the document covers are portrait because they stand
+// in for the front of a bound document, which is the shape the board draws.
+for (const tile of [
+  "library-whitepaper",
+  "library-industry",
+  "library-tokenization",
+  "library-webinar",
+  "library-compliance",
+  "library-factsheet",
+]) {
+  await exportPair(
+    path.join(masters, `${tile}-master.png`),
+    path.join(sectionDir, tile),
+    { width: 640, height: 460, fit: "cover", position: "center" },
+  );
+}
+
+for (const cover of [
+  "doc-whitepaper",
+  "doc-investor",
+  "doc-tokenization",
+  "doc-kyc",
+  "doc-privacy",
+  "doc-terms",
+]) {
+  await exportPair(
+    path.join(masters, `${cover}-master.png`),
+    path.join(sectionDir, cover),
+    { width: 560, height: 700, fit: "cover", position: "center" },
+  );
 }
 
 console.log(

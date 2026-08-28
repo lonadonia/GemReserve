@@ -13,15 +13,21 @@ GemReserve.io Phase One is a responsive Next.js App Router preview for a premium
 
 ## Routes
 
-46 routes, all statically prerendered. `app/sitemap.ts` is the authoritative
-list; each directory under `app/` maps to one URL.
+58 routes, all statically prerendered — one for every board in the client
+archive. `app/sitemap.ts` is the authoritative list; each directory under `app/`
+maps to one URL.
 
 Broadly: the marketing pages (`/`, `/how-it-works`, `/assets`, `/technology`),
-sixteen gemstone programme pages, the Early Participation group
-(`/program-overview`, `/discount-methodology`, `/token-acquisition`,
+eighteen gemstone programme pages, the platform assurance group
+(`/independent-verification`, `/custody-vault-structure`, `/proof-of-reserves`),
+the Early Participation group (`/early-participation-program`,
+`/program-overview`, `/discount-methodology`, `/token-acquisition`,
 `/restricted-jurisdictions`, `/early-participation`), the Enterprise group
 (`/enterprise-tokenization`, `/gemstone-owners`, `/gemstone-buyers`,
-`/licensing-white-label`, `/future-infrastructure`) and the company pages.
+`/licensing-white-label`, `/future-infrastructure`), the resource and legal
+group (`/resources`, `/documents`, `/whitepaper`, `/risk-disclosure`,
+`/anti-fraud-notice`, `/participant-portal`, `/faq`) and the company pages
+(`/about`, `/corporate-development`, `/governance`, `/news`, `/contact`).
 
 One dynamic route, `/api/forms`, receives lead-form submissions. It is dormant
 until configured — see `docs/ENVIRONMENT.md`.

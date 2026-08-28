@@ -187,6 +187,59 @@ marks cannot drift apart.
 | `public/brand/app-icon-512.png`               |   512×512 PNG | Transparent      | High-resolution shield-only app/PWA raster option; no current JSX reference. **Pass:** visually inspected; full crest and alpha are intact.                                                                                                               |
 | `app/icon.png`                                |   256×256 PNG | Transparent      | App Router icon source discovered automatically by Next.js, square-contained from the crest crop. Icons do not receive HTML alt text.                                                                                                                     |
 
+## The twelve closing pages
+
+The masters for the last twelve pages did not come from a new generation run.
+The client supplied a per-page asset kit alongside the mockup archive, holding a
+native composition for every board at four device ratios plus supporting
+imagery, each generated from the board's subject and palette and deliberately
+free of text, logos and readable marks. Those compositions were already in the
+site's idiom — dark ground, controlled gold, photographic gemstone and vault
+subjects, copy-safe negative space on the left — so nothing was generated for
+these pages. No image generation service was used.
+
+The supplied files are 3840x2160 (heroes and bands) and 2048x2048 (square
+plates). They were resampled to the scale the rest of `assets/masters` uses —
+2048 wide for heroes, 1600 for bands, 1024 for squares, all comfortably above
+the 1920-wide delivery crop — and then processed by `scripts/process-assets.mjs`
+with the rest of the library.
+
+| Master                         | Delivery                   | Page                           |
+| ------------------------------ | -------------------------- | ------------------------------ |
+| `verification-hero-master.png` | `heroes/verification-hero` | Independent Verification       |
+| `custody-hero-master.png`      | `heroes/custody-hero`      | Custody & Vault Structure      |
+| `reserves-hero-master.png`     | `heroes/reserves-hero`     | Proof of Gemstone Reserves     |
+| `corporate-hero-master.png`    | `heroes/corporate-hero`    | Corporate Development          |
+| `news-hero-master.png`         | `heroes/news-hero`         | News & Announcements           |
+| `resources-hero-master.png`    | `heroes/resources-hero`    | Resources                      |
+| `documents-hero-master.png`    | `heroes/documents-hero`    | Documents                      |
+| `whitepaper-hero-master.png`   | `heroes/whitepaper-hero`   | Whitepaper                     |
+| `risk-hero-master.png`         | `heroes/risk-hero`         | Risk Disclosure                |
+| `fraud-hero-master.png`        | `heroes/fraud-hero`        | Anti-Fraud Notice              |
+| `portal-hero-master.png`       | `heroes/portal-hero`       | Participant Portal             |
+| `program-hero-master.png`      | `heroes/program-hero`      | Early Participation Program    |
+| `custody-record-master.png`    | `sections/custody-record`  | Custody — proof of custody     |
+| `gem-cluster-master.png`       | `sections/gem-cluster`     | Custody — closing band         |
+| `passport-device-master.png`   | `sections/passport-device` | Reserves — passport panel      |
+| `network-map-master.png`       | `sections/network-map`     | Whitepaper, Custody            |
+| `support-desk-master.png`      | `sections/support-desk`    | Documents — closing band       |
+| `program-vault-master.png`     | `sections/program-vault`   | Early Participation Program    |
+| `channel-shield-master.png`    | `sections/channel-shield`  | Anti-Fraud — official channels |
+| `portal-security-master.png`   | `sections/portal-security` | Participant Portal — security  |
+| `library-*-master.png` (6)     | `sections/library-*`       | Resources — library tiles      |
+| `doc-*-master.png` (6)         | `sections/doc-*`           | Documents — covers             |
+
+Two choices here are editorial rather than technical.
+
+The custody page's "where things are held" panel uses `network-map` rather than
+`world-map`, which is the map the rest of the library carries. `world-map` has
+three gold location pins on it. That panel says no vault city is claimed yet,
+and three pins say the opposite more loudly than the sentence does.
+
+The participant portal's dashboard is built in HTML, not placed as the supplied
+`portal-preview-dashboard` raster. Building it means every value in it can be
+left blank; a rendered dashboard would have had to carry numbers.
+
 ## Alt-text decision checklist
 
 1. Use empty alt for the three hero backgrounds because they duplicate adjacent

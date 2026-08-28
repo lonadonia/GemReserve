@@ -15,7 +15,7 @@ The task instructions describe a **Vite + React SPA** with `App.tsx`, React-stat
 | Brief assumes                              | This repository actually is                                                                                                                                       |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Vite SPA                                   | **Next.js 16.3.1 App Router** — no `vite.config`, no `App.tsx`, no `index.html`                                                                                   |
-| React-state navigation                     | **File-based routing**; 46 routes, all statically prerendered                                                                                                     |
+| React-state navigation                     | **File-based routing**; 58 routes, all statically prerendered                                                                                                     |
 | Refresh returns 404                        | Refresh, deep links and Back/Forward already work — verified                                                                                                      |
 | Inventory schedule present                 | **Not present.** No `507,205,814`, no "carved" rows anywhere                                                                                                      |
 | ReserveChain / copper / nickel metadata    | **Not present.** The only `copper`/`nickel` hits are legitimate gemmology: chrysoprase forms from nickel-rich solutions; rutilated quartz has copper-hued needles |
@@ -33,7 +33,7 @@ Everything below covers what genuinely applies to _this_ repository.
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Framework  | Next.js 16.3.1, App Router, React 19.2.8                                                                                                            |
 | Language   | TypeScript 6.0.3, strict; `tsc --noEmit` clean                                                                                                      |
-| Routing    | File-based. 46 page routes + `sitemap.xml`, `robots.txt`, `opengraph-image`, `icon.png`                                                             |
+| Routing    | File-based. 58 page routes + `sitemap.xml`, `robots.txt`, `opengraph-image`, `icon.png`                                                             |
 | Rendering  | **All pages statically prerendered.** No SSR, no ISR, no middleware                                                                                 |
 | State      | Local component state only. No Redux/Zustand/Context store                                                                                          |
 | Data       | Typed content modules under `content/`. No database, no CMS, no fetch at runtime                                                                    |
@@ -126,7 +126,7 @@ Token sale, wallet connection, payments, minting, trading, live Proof of Reserve
 
 ## 5. Key decisions
 
-**CSP allows `'unsafe-inline'` for scripts.** Next's hydration bootstrap is an inline script. The strict alternative — per-request nonces — requires middleware that opts every route into dynamic rendering. All 46 routes are statically prerendered, which is what lets the site be served as plain files behind Nginx. Taking nonces would trade that away for a directive that still permits inline execution via the nonce. The exposure is bounded: no page renders user-supplied content, no query parameter reaches the DOM, and no third-party origin may contribute script. The directives that stop the common attacks are strict — `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'none'`, `form-action 'self'`. **Revisit if any route ever renders visitor input.**
+**CSP allows `'unsafe-inline'` for scripts.** Next's hydration bootstrap is an inline script. The strict alternative — per-request nonces — requires middleware that opts every route into dynamic rendering. All 58 routes are statically prerendered, which is what lets the site be served as plain files behind Nginx. Taking nonces would trade that away for a directive that still permits inline execution via the nonce. The exposure is bounded: no page renders user-supplied content, no query parameter reaches the DOM, and no third-party origin may contribute script. The directives that stop the common attacks are strict — `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'none'`, `form-action 'self'`. **Revisit if any route ever renders visitor input.**
 
 **Forms default to OFF and fail loudly.** With the flag off, no network call is made and the demonstration copy is shown. With the flag on but no destination configured, the API returns 503 and the client falls back to the same honest state. There is no configuration in which a visitor is shown success over a discarded message.
 

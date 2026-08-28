@@ -6,7 +6,7 @@ How to keep building GemReserve.io from this production baseline without disturb
 
 ## What this baseline is
 
-A **public pre-launch information website**: 46 statically prerendered pages, no backend beyond one dormant form endpoint, no blockchain, no authentication. Every future capability is declared as an off-by-default flag in `lib/config.ts` and read by nothing.
+A **public pre-launch information website**: 58 statically prerendered pages, no backend beyond one dormant form endpoint, no blockchain, no authentication. Every future capability is declared as an off-by-default flag in `lib/config.ts` and read by nothing.
 
 The visual design is **approved and frozen**. It was not changed by the production-readiness work and should not be changed without a specific instruction.
 
@@ -19,7 +19,7 @@ app/                    Routes. One directory per URL.
   api/forms/route.ts    The only dynamic route. Everything else is static.
   layout.tsx            Root metadata, fonts, <html>.
   not-found.tsx         404. error.tsx  Route error boundary.
-  globals.css           All styling. ~16k lines, hand-authored.
+  globals.css           All styling. ~20k lines, hand-authored.
 components/
   layout/               Header, footer, breadcrumbs, logo.
   sections/             Composed page sections (GemstonePage is the big one).
@@ -32,7 +32,7 @@ lib/
 scripts/
   process-assets.mjs    Sharp pipeline: masters -> WebP/AVIF derivatives.
 assets/masters/         Source artwork. Never delete; derivatives regenerate from here.
-qa/tests/               Playwright, 536 tests.
+qa/tests/               Playwright. Every route x six widths.
 reference/              Client boards and supplied assets. Gitignored from the build.
 ```
 
@@ -47,7 +47,8 @@ reference/              Client boards and supplied assets. Gitignored from the b
 3. **No secret behind `NEXT_PUBLIC_`.** That prefix publishes to every visitor.
 4. **Never show success over a discarded action.** The forms model this: unconfigured → the visitor is told plainly that nothing was sent.
 5. **Keep pages static.** Adding `cookies()`, `headers()` or `no-store` to a page opts it into dynamic rendering and removes the static-hosting option. Put per-request work in a route handler.
-6. **Do not fabricate figures.** Several pages carry deliberate omissions where a client board asserted more than the project can support — see the header comments in `content/licensing-white-label.ts` and `content/future-infrastructure.ts`. Those comments are the reasoning; read before editing.
+6. **Do not fabricate figures, partners or dates.** Many pages carry deliberate omissions where a client board asserted more than the project can support. The reasoning is in each content module's header comment, and the ones worth reading before editing anything in this area are `content/licensing-white-label.ts`, `content/future-infrastructure.ts`, `content/custody.ts` (named vault companies, insurers and a Zurich vault), `content/reserves.ts` (an invented reserve balance), `content/verification.ts` (five firms named as partners), `content/news.ts` (five dated announcements that were never made) and `content/corporate-development.ts` (completion percentages and headcount).
+7. **Never name a third party as a partner.** A laboratory may appear on a stone's record as the issuer of its report, because that is what a report is. No laboratory, auditor, insurer, custodian or law firm is described as a partner of GemReserve.io anywhere on this site, and none may be added without a signed engagement to point at.
 
 ---
 
@@ -110,9 +111,23 @@ node scripts/process-assets.mjs overview-hero   # rebuild one hero
 npm run typecheck && npm run lint && npm run format:check && npm run build && npm run qa
 ```
 
-Playwright needs the production build running. The suite takes ~35 minutes; it catches horizontal overflow, console errors and failed requests on every route at six widths, so let it finish.
+Playwright needs the production build running. It catches horizontal overflow, console errors and failed requests on every route at six widths, so let it finish.
 
-Two audit findings recur and are **benign** — absolutely-positioned nav dropdowns and the footer brand block reporting a scrollWidth delta at 1440. They are not defects.
+**On a host that is already serving a release on port 3000** — which the systemd
+deployment is — set `QA_PORT` or the suite reuses the deployed server and every
+assertion silently tests the release instead of the working tree:
+
+```bash
+QA_PORT=3100 npm run qa
+```
+
+`QA_CHANNEL=chromium` runs against Playwright's own browser build where Google
+Chrome is not installed (`playwright install chrome` needs root).
+
+Two audit findings recur and are **benign** — the absolutely-positioned nav
+dropdowns report a scrollWidth wider than their trigger, and the hero image
+carries a 1.002 scale that puts a pixel outside the viewport. Neither produces
+document overflow; `body` has `overflow-x: clip`.
 
 ---
 

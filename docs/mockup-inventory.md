@@ -110,6 +110,21 @@ in the master specification.
 | `ANTI-FRAUD NOTICE.PNG`          |         1024 × 1536 |
 | `PARTICIPANT PORTAL.PNG`         |         1024 × 1536 |
 
+## Board-to-route map
+
+All 58 boards are implemented. Two pairs are easy to confuse and are recorded
+here because getting them the wrong way round would produce a duplicate route:
+
+- `EARLY PARTICIPATION PROGRAM.PNG` is the programme prospectus and is built at
+  `/early-participation-program`. `JOIN THE EARLY PARTICIPATION WAITLIST.PNG` is
+  the conversion page with the form on it, and is what `/early-participation`
+  has always been — its hero, benefits, "why join", form panel, "what happens
+  next" and assurance row are that board's, not the programme board's.
+- `PROGRAM OVERVIEW.PNG` (`/program-overview`) is a third, separate board.
+- `PARTICIPANT PORTAL.PNG` (`/participant-portal`) and `Redemption Portal.PNG`
+  (`/redemption-portal`) are different boards with different subjects: an
+  account dashboard and a redemption flow.
+
 ## Phase-one source-of-truth boards
 
 These three 1024 × 1536 boards are the visual and copy source of truth for the

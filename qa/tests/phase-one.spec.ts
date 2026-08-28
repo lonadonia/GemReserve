@@ -84,6 +84,21 @@ const routes = [
   { name: "gemstone-buyers", path: "/gemstone-buyers" },
   { name: "licensing-white-label", path: "/licensing-white-label" },
   { name: "future-infrastructure", path: "/future-infrastructure" },
+  { name: "independent-verification", path: "/independent-verification" },
+  { name: "custody-vault-structure", path: "/custody-vault-structure" },
+  { name: "proof-of-reserves", path: "/proof-of-reserves" },
+  { name: "corporate-development", path: "/corporate-development" },
+  { name: "news", path: "/news" },
+  { name: "resources", path: "/resources" },
+  { name: "documents", path: "/documents" },
+  { name: "whitepaper", path: "/whitepaper" },
+  { name: "risk-disclosure", path: "/risk-disclosure" },
+  { name: "anti-fraud-notice", path: "/anti-fraud-notice" },
+  { name: "participant-portal", path: "/participant-portal" },
+  {
+    name: "early-participation-program",
+    path: "/early-participation-program",
+  },
 ] as const;
 
 const requiredViewports = [
@@ -187,9 +202,12 @@ test.describe("phase-one interactions", () => {
     const context = await browser.newContext({
       javaScriptEnabled: false,
       viewport: { width: 390, height: 844 },
+      // A hand-built context does not inherit `use.baseURL`, and the origin is
+      // configurable now (see playwright.config.ts), so it is passed through.
+      baseURL: `http://127.0.0.1:${process.env.QA_PORT ?? 3000}`,
     });
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3000/", { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "networkidle" });
     await expect(page.locator(".motion-reveal").first()).toHaveCSS("opacity", "1");
     await expect(page.locator("h1")).toBeVisible();
     await context.close();
@@ -787,10 +805,155 @@ test.describe("phase two pages state capability, not deployment", () => {
       "/restricted-jurisdictions",
       "/enterprise-tokenization",
       "/future-infrastructure",
+      "/custody-vault-structure",
+      "/corporate-development",
+      "/documents",
+      "/participant-portal",
     ]) {
       await page.goto(route, { waitUntil: "networkidle" });
       await expect(page.locator(".footer-legal")).toContainText("LT307501935");
       await expect(page.locator("body")).not.toContainText(/Zurich|Switzerland/);
     }
+  });
+});
+
+test.describe("the closing pages keep the boards' claims off the site", () => {
+  test("proof of reserves shows no reserve figure and says why", async ({
+    page,
+  }) => {
+    await page.goto("/proof-of-reserves", { waitUntil: "networkidle" });
+
+    // The board fills this dashboard with a reserve value, an asset count and a
+    // composition chart. None of it has been attested, so the panel has to be
+    // empty and has to say so rather than showing a projection.
+    const board = page.locator(".reserves-board");
+    await expect(board).toBeVisible();
+    await expect(board).toContainText("No attestation published");
+    await expect(board).not.toContainText("$");
+    expect(await board.innerText()).not.toMatch(/\d{3,}/);
+    await expect(board.locator(".reserves-board__meta")).toContainText(
+      "Pending first attestation",
+    );
+  });
+
+  test("the portal preview carries no holding, balance or value", async ({
+    page,
+  }) => {
+    await page.goto("/participant-portal", { waitUntil: "networkidle" });
+
+    // The board's dashboard reads $2,458,750.00 across four holdings. There is
+    // no account system, so every value in the preview must be blank.
+    const preview = page.locator(".portal-preview");
+    await expect(preview).toBeVisible();
+    await expect(preview).not.toContainText("$");
+    expect(await preview.innerText()).not.toMatch(/\d{3,}/);
+    await expect(preview).toContainText("No holdings");
+
+    // And nothing on the page may look like a way in.
+    await expect(page.locator("form")).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: /sign in|log in|login/i }),
+    ).toHaveCount(0);
+    await expect(page.locator(".participant-notice__panel")).toContainText(
+      "not open",
+      { ignoreCase: true },
+    );
+  });
+
+  test("the newsroom publishes no article it never issued", async ({
+    page,
+  }) => {
+    await page.goto("/news", { waitUntil: "networkidle" });
+
+    // The board carries five articles dated July 2026 for announcements that
+    // were never made. The newsroom has to be empty and say so.
+    await expect(page.locator("article")).toHaveCount(0);
+    await expect(page.locator(".news-state")).toContainText(
+      "Nothing published yet",
+      { ignoreCase: true },
+    );
+    await expect(page.getByRole("link", { name: /read more/i })).toHaveCount(0);
+  });
+
+  test("the document library offers no file it does not have", async ({
+    page,
+  }) => {
+    await page.goto("/documents", { waitUntil: "networkidle" });
+
+    const library = page.locator(".documents-library__grid");
+    await expect(library).toBeVisible();
+    // No download control, and no file size or page count implying one exists.
+    await expect(library.getByRole("link", { name: /download/i })).toHaveCount(
+      0,
+    );
+    expect(await library.innerText()).not.toMatch(/\bMB\b|\bPDF\b/);
+    await expect(library.locator(".document-card__status").first()).toHaveText(
+      "In preparation",
+    );
+
+    await page.goto("/whitepaper", { waitUntil: "networkidle" });
+    await expect(
+      page.locator(".whitepaper-download__panel").getByRole("link", {
+        name: /download/i,
+      }),
+    ).toHaveCount(0);
+    await expect(page.locator(".whitepaper-download__status")).toContainText(
+      "In preparation",
+    );
+  });
+
+  test("no third party is named as a partner", async ({ page }) => {
+    // The boards name a gemological laboratory, an insurance market, an audit
+    // firm, a law firm, a smart-contract auditor and four vaulting companies as
+    // GemReserve partners. None of those relationships exists.
+    const forbidden =
+      /Lloyd|\bBDO\b|Froriep|Certik|Loomis|Brinks|Malca|Via Mat|Chubb|Chainlink/i;
+    for (const route of [
+      "/independent-verification",
+      "/custody-vault-structure",
+      "/proof-of-reserves",
+      "/corporate-development",
+    ]) {
+      await page.goto(route, { waitUntil: "networkidle" });
+      expect(await page.locator("body").innerText()).not.toMatch(forbidden);
+    }
+  });
+
+  test("the anti-fraud page lists only channels the project controls", async ({
+    page,
+  }) => {
+    await page.goto("/anti-fraud-notice", { waitUntil: "networkidle" });
+
+    // The board lists a help centre and three social networks. None exists, and
+    // listing one would tell a reader an impersonator might be genuine.
+    const channels = page.locator(".fraud-channel-list");
+    await expect(channels.locator("li")).toHaveCount(5);
+    expect(await channels.innerText()).not.toMatch(
+      /telegram|twitter|linkedin|discord|whatsapp|help[- ]centre|help[- ]center/i,
+    );
+    await expect(page.locator(".fraud-channels__warnings")).toContainText(
+      "does not operate an account on any social network",
+    );
+  });
+
+  test("the early participation programme forecasts no return", async ({
+    page,
+  }) => {
+    await page.goto("/early-participation-program", {
+      waitUntil: "networkidle",
+    });
+
+    // The board's fourth reason to join is "STRONGER RETURNS". Nothing on this
+    // site states or implies an expected return, and this is the page closest
+    // to an offer.
+    const body = await page.locator("main").innerText();
+    expect(body).not.toMatch(/stronger returns|expected return|profit/i);
+    await expect(page.locator(".program-notice__panel")).toContainText(
+      "not open",
+    );
+
+    // No live control, and no allocation or date invented for the sequence.
+    await expect(page.locator("form")).toHaveCount(0);
+    expect(body).not.toMatch(/limited allocation|spots are limited/i);
   });
 });
