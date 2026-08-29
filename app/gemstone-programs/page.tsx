@@ -12,6 +12,7 @@ import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   everyGemstone,
+  programIndex,
   gemstonePrograms,
   programActionLabel,
   programBadges,
@@ -273,6 +274,37 @@ export default function GemstoneProgramsPage() {
                   </div>
                 ))}
               </dl>
+            </div>
+          </MotionReveal>
+
+          {/* The board's grid above carries ten stones and links the three that
+              have a page. Peridot and Tourmaline declare this page as their
+              parent in their own breadcrumbs, so the index below makes the
+              relationship complete without adding cards the board never drew. */}
+          <MotionReveal className="programs-index" delay={90}>
+            <h2 id="programs-index-title">{programIndex.title}</h2>
+            <p>{programIndex.intro}</p>
+            <div className="programs-index__groups">
+              <div>
+                <h3>{programIndex.polishedLabel}</h3>
+                <ul>
+                  {programIndex.polished.map((entry) => (
+                    <li key={entry.href}>
+                      <Link href={entry.href}>{entry.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3>{programIndex.roughLabel}</h3>
+                <ul>
+                  {programIndex.rough.map((entry) => (
+                    <li key={entry.href}>
+                      <Link href={entry.href}>{entry.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </MotionReveal>
         </section>

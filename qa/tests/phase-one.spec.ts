@@ -964,3 +964,77 @@ test.describe("the closing pages keep the boards' claims off the site", () => {
     expect(body).not.toMatch(/limited allocation|spots are limited/i);
   });
 });
+
+test.describe("every page the site declares a parent for is reachable from it", () => {
+  test("the programmes hub links all eighteen published gemstone pages", async ({
+    page,
+  }) => {
+    // Each polished and rough gemstone board sets its breadcrumb to
+    // "Home > Assets > All Gemstone Programs", so this page is their declared
+    // parent. The board's own grid draws ten stones and links the three that
+    // have a page; the index below it has to carry the rest.
+    await page.goto("/gemstone-programs", { waitUntil: "networkidle" });
+    const hrefs = await page.evaluate(() =>
+      [...document.querySelectorAll("main a[href]")].map(
+        (a) => (a.getAttribute("href") || "").split("#")[0],
+      ),
+    );
+    const linked = new Set(hrefs);
+    const gemstonePages = [
+      "/aquamarine",
+      "/emerald",
+      "/peridot",
+      "/ruby",
+      "/tourmaline",
+      "/natural-raw-charoite",
+      "/natural-rough-alexandrite",
+      "/natural-rough-aquamarine",
+      "/natural-rough-chrysoprase",
+      "/natural-rough-italian-jade",
+      "/natural-rough-jasper",
+      "/natural-rough-ruby-c-quality",
+      "/natural-rough-ruby-trapiche",
+      "/natural-rough-ruby-gem-quality",
+      "/natural-rough-rutilated-quartz",
+      "/natural-rough-tourmaline",
+      "/natural-rough-peridot",
+      "/natural-rough-emerald",
+    ];
+    expect(gemstonePages.filter((p) => !linked.has(p))).toEqual([]);
+  });
+
+  test("the assets registry panel opens the registry it names", async ({
+    page,
+  }) => {
+    // It shipped as a disabled button marked "coming soon" while the page it
+    // names was already published.
+    await page.goto("/assets", { waitUntil: "networkidle" });
+    const control = page.locator(".assets-registry-control");
+    await expect(control).toHaveAttribute("href", "/asset-registry");
+    await expect(control).not.toContainText("Coming soon");
+    await control.click();
+    await expect(page).toHaveURL(/\/asset-registry$/);
+    await expect(page.locator("h1")).toHaveCount(1);
+  });
+
+  test("no route is orphaned from the whole site", async ({ page }) => {
+    // Every route in the sitemap must be linked from somewhere other than
+    // itself — navigation, footer, or a parent page.
+    await page.goto("/sitemap.xml", { waitUntil: "domcontentloaded" });
+    const xml = await page.content();
+    const routes = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+      (m) => new URL(m[1]).pathname,
+    );
+    const linked = new Set<string>();
+    for (const route of routes) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      const hrefs = await page.evaluate(() =>
+        [...document.querySelectorAll("a[href]")].map(
+          (a) => (a.getAttribute("href") || "").split("#")[0],
+        ),
+      );
+      for (const href of hrefs) if (href && href !== route) linked.add(href);
+    }
+    expect(routes.filter((r) => !linked.has(r))).toEqual([]);
+  });
+});

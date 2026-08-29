@@ -1983,7 +1983,27 @@ h3 {
   background: linear-gradient(145deg, rgb(11 24 30 / 85%), rgb(3 9 12 / 90%));
   color: var(--gold-light);
   text-align: left;
-  opacity: 0.74;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    transform 300ms var(--ease-premium);
+}
+
+/* It shipped dimmed because it was a disabled control; it is a link to the
+   published Asset Registry now, so it carries the same hover the other
+   navigational panels do. */
+.assets-registry-control:hover {
+  border-color: var(--gold-light);
+  background: linear-gradient(145deg, rgb(216 154 39 / 12%), rgb(3 9 12 / 90%));
+  transform: translateY(-2px);
+}
+
+.assets-registry-control__arrow {
+  transition: transform 220ms var(--ease-premium);
+}
+
+.assets-registry-control:hover .assets-registry-control__arrow {
+  transform: translateX(4px);
 }
 
 .assets-registry-control__copy {
@@ -2000,12 +2020,6 @@ h3 {
   color: #acb3b5;
   font-size: 0.72rem;
   line-height: 1.45;
-}
-
-.assets-registry-control__copy small {
-  color: var(--muted);
-  font-size: 0.72rem;
-  text-transform: uppercase;
 }
 
 .catalog-root {
@@ -21235,5 +21249,89 @@ a.fraud-channel__value {
     aspect-ratio: 4 / 5;
     border-right: 0;
     border-bottom: 1px solid var(--border-soft);
+  }
+}
+
+/* --- The gemstone programme index ---------------------------------------- */
+/* Closes the parent/detail gap on /gemstone-programs: the board's grid draws
+   ten stones and links three, while eighteen pages declare this page as their
+   parent. A plain list rather than more cards, because the board draws no more
+   cards and two of the stones have no faceted artwork to put in one. */
+
+.programs-index {
+  margin-top: 18px;
+  padding: clamp(20px, 2.2vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.programs-index h2 {
+  margin-bottom: 8px;
+  color: var(--gold-light);
+  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.programs-index > p {
+  max-width: 74ch;
+  margin-bottom: 20px;
+  color: #b6bdc0;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.programs-index__groups {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: 22px;
+}
+
+.programs-index h3 {
+  margin-bottom: 11px;
+  color: var(--gold-light);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.programs-index ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 7px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.programs-index a {
+  display: block;
+  padding: 7px 11px;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  background: rgb(4 12 17 / 62%);
+  color: #c2c8cb;
+  font-size: 0.79rem;
+  transition:
+    border-color 200ms ease,
+    background 200ms ease,
+    color 200ms ease;
+}
+
+.programs-index a:hover {
+  border-color: var(--border);
+  background: rgb(216 154 39 / 8%);
+  color: var(--gold-light);
+}
+
+@media (max-width: 980px) {
+  .programs-index__groups {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

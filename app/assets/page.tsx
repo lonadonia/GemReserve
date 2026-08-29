@@ -133,12 +133,9 @@ export default function AssetsPage() {
               className="assets-metrics__strip"
             />
 
-            <button
+            <Link
               className="assets-registry-control"
-              type="button"
-              disabled
-              aria-disabled="true"
-              title="The Asset Registry is coming in a future phase"
+              href={assetRegistryCta.href}
             >
               <LineIcon
                 name="certificate"
@@ -148,7 +145,6 @@ export default function AssetsPage() {
               <span className="assets-registry-control__copy">
                 <strong>{assetRegistryCta.title}</strong>
                 <span>{assetRegistryCta.description}</span>
-                <small>Coming soon</small>
               </span>
               <span
                 className="assets-registry-control__arrow"
@@ -156,7 +152,7 @@ export default function AssetsPage() {
               >
                 →
               </span>
-            </button>
+            </Link>
           </MotionReveal>
         </section>
 

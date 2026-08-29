@@ -390,6 +390,46 @@ export const everyGemstone = {
   highlightsTitle: "Program Highlights",
 } as const;
 
+/**
+ * The complete index of published gemstone programme pages.
+ *
+ * The board's "OUR GEMSTONE PROGRAMS" grid above is transcribed exactly as
+ * drawn: ten stones, of which only three have a detail page. But the Peridot
+ * and Tourmaline boards both set their breadcrumb to "Home > Assets > All
+ * Gemstone Programs", so this page is their declared parent and was not linking
+ * back to them — the two of eighteen that no route reached from here.
+ *
+ * Rather than add cards the board does not draw (and for which no faceted
+ * artwork exists), the index closes the gap as a plain list. It is generated
+ * from the two programme collections above plus the polished pages the board's
+ * grid omits, so a stone added later cannot fall out of it.
+ */
+export interface ProgramIndexEntry {
+  readonly label: string;
+  readonly href: string;
+}
+
+const polishedProgramPages: readonly ProgramIndexEntry[] = [
+  { label: "Aquamarine", href: "/aquamarine" },
+  { label: "Emerald", href: "/emerald" },
+  { label: "Peridot", href: "/peridot" },
+  { label: "Ruby", href: "/ruby" },
+  { label: "Tourmaline", href: "/tourmaline" },
+];
+
+export const programIndex = {
+  title: "Every published program",
+  intro:
+    "All eighteen gemstone programs with a page of their own, polished and natural rough.",
+  polishedLabel: "Polished",
+  roughLabel: "Natural rough",
+  polished: polishedProgramPages,
+  rough: roughGemstonePrograms.map((program) => ({
+    label: program.name,
+    href: program.href,
+  })) as readonly ProgramIndexEntry[],
+};
+
 export interface ProgramHighlight {
   id: string;
   value: string;

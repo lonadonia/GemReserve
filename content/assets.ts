@@ -38,9 +38,10 @@ export interface AssetMetric extends VerificationFlag {
   readonly detail: string;
 }
 
-export interface AssetRegistryCta extends VerificationFlag {
+export interface AssetRegistryCta {
   readonly title: string;
   readonly description: string;
+  readonly href: string;
 }
 
 export interface AssetFilterOption {
@@ -207,10 +208,20 @@ export const assetMetrics = [
   },
 ] as const satisfies readonly AssetMetric[];
 
+/**
+ * The board's registry call to action.
+ *
+ * It was written before /asset-registry existed and shipped disabled, marked
+ * "coming soon", while the page it names has been published since. The control
+ * is a link now. The board's own line promised the assets "on the blockchain";
+ * the registry page carries a sample record and is explicit that lookup opens
+ * with the platform, so the description says what the page actually holds.
+ */
 export const assetRegistryCta = {
   title: "View Asset Registry",
-  description: "See all verified gemstone assets on the blockchain",
-  requiresClientVerification: true,
+  description:
+    "How every verified gemstone is recorded, and what a record holds",
+  href: "/asset-registry",
 } as const satisfies AssetRegistryCta;
 
 export const assetCatalogHeading = "OUR GEMSTONE ASSETS";
