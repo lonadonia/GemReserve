@@ -177,7 +177,8 @@ export interface PreviewColumn {
 
 export const previewPanel = {
   title: "PORTAL PREVIEW",
-  note: "Illustration. Every value is blank because there is nothing to show: no account exists, no token has been issued and no holding is held. Figures appear here only when they are a participant's own.",
+  note: "Illustration. The programmes listed are published gemstone programmes; every supply, balance and value is blank because no token has been issued and no holding is held. Figures appear here only when they are a participant's own.",
+  brand: "GemReserve.io",
   nav: [
     "Dashboard",
     "Portfolio",
@@ -189,30 +190,50 @@ export const previewPanel = {
     "Settings",
     "Support",
   ] as readonly string[],
-  summary: [
-    {
-      id: "value",
-      label: "Portfolio value",
-      detail: "Sum of holdings at last valuation",
-    },
-    {
-      id: "assets",
-      label: "Assets held",
-      detail: "Distinct gemstone programs",
-    },
-    { id: "tokens", label: "Tokens", detail: "Balance across all programs" },
-    { id: "activity", label: "Recent activity", detail: "Last 30 days" },
-  ] as const satisfies readonly PreviewPanel[],
-  chartLabel: "Portfolio performance",
-  chartNote: "No history — nothing has been held",
+  activeNav: "Assets",
   tableTitle: "Assets",
   columns: [
     { id: "asset", label: "Asset" },
     { id: "type", label: "Type" },
+    { id: "supply", label: "Total supply" },
     { id: "balance", label: "Your balance" },
-    { id: "value", label: "Value" },
+    { id: "value", label: "Value (USD)" },
   ] as const satisfies readonly PreviewColumn[],
-  emptyRow: "No holdings",
+  // The board's rows are GMR-COPPER, GMR-NICKEL, GMR-EMERALD and GMR-SAPPHIRE.
+  // The first two are industrial metals and are not part of anything this
+  // platform describes, so they are not carried. The four here are published
+  // gemstone programmes with pages on this site — which is a fact — and every
+  // numeric cell is blank, which is also a fact.
+  rows: [
+    {
+      id: "emerald",
+      ticker: "GMR-EMERALD",
+      name: "Emerald",
+      colour: "#1f9c62",
+    },
+    { id: "ruby", ticker: "GMR-RUBY", name: "Ruby", colour: "#b32338" },
+    {
+      id: "aquamarine",
+      ticker: "GMR-AQUAMARINE",
+      name: "Aquamarine",
+      colour: "#2f9fc4",
+    },
+    {
+      id: "tourmaline",
+      ticker: "GMR-TOURMALINE",
+      name: "Tourmaline",
+      colour: "#8d5bb5",
+    },
+  ] as const satisfies readonly {
+    readonly id: string;
+    readonly ticker: string;
+    readonly name: string;
+    readonly colour: string;
+  }[],
+  rowType: "Precious gem",
+  blank: "—",
+  blankLabel: "No value — nothing has been issued",
+  buttonLabel: "View all assets",
 };
 
 export interface AccessStep {

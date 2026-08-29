@@ -229,6 +229,9 @@ export default function CustodyVaultStructurePage() {
               {insurancePanel.title}
             </h2>
             <p className="custody-card__intro">{insurancePanel.intro}</p>
+            <span className="custody-shield" aria-hidden="true">
+              <LineIcon name="shield-check" size={52} />
+            </span>
             <ul className="custody-perils">
               {insurancePanel.perils.map((peril) => (
                 <li key={peril}>
@@ -262,10 +265,17 @@ export default function CustodyVaultStructurePage() {
                   ))}
                 </ul>
                 <Link
-                  className="button button--outline button--small"
+                  className="custody-proof__scan"
                   href={proofPanel.link.href}
                 >
-                  {proofPanel.link.label}
+                  {/* Decorative: a code-block motif standing in for the
+                      board's QR. It encodes nothing — there is no record
+                      behind it — so it links to the sample passport instead. */}
+                  <span
+                    className="verification-plate__code"
+                    aria-hidden="true"
+                  />
+                  <span>{proofPanel.scanLabel}</span>
                 </Link>
               </div>
             </div>

@@ -52,11 +52,37 @@ reference/              Client boards and supplied assets. Gitignored from the b
 
 ---
 
+## Two conventions the boards impose
+
+**The divided panel.** A wide feature row — six or seven items across — is one
+bordered panel split by hairline rules, not that many separate cards. It is the
+archive's most repeated device, and it is what makes rows of different lengths
+read as one system. `.resources-topic-grid`, `.documents-category-grid`,
+`.whitepaper-chapter-grid`, `.risk-factor-grid`, `.fraud-scam-grid`,
+`.participant-capability-grid`, `.verification-layers`, `.custody-steps` and
+`.trust-pillars` are all built this way. Each restates its column count and
+moves the seam at 1330, 980, 760 and 520 — the seam is the `nth-child` that
+loses its left border and gains a top one, and getting it wrong shows as a
+stray rule rather than a broken layout, so check it visually.
+
+**The teal register.** Risk Disclosure and Anti-Fraud Notice run in teal —
+headings, card titles and iconography — where every other board runs in gold.
+It was verified by sampling the boards rather than by eye; the check is in the
+session that added it and the result was unambiguous. It is doing a job: those
+are the two pages that warn rather than sell. Keep it scoped to `.risk-page`
+and `.fraud-page`, and do not spread it.
+
+---
+
 ## Adding a page
 
 1. `content/<name>.ts` — typed data, with a header comment naming its source board.
 2. `app/<route>/page.tsx` — render it. Copy the closest existing page for the section rhythm.
-3. Styles at the end of `globals.css`, in a commented block.
+3. Styles at the end of `globals.css`, in a commented block. **Order matters
+   there**: the file's shared grid rules come before the per-page blocks, and
+   the responsive blocks come last, so a modifier declared above a rule that
+   also names it will lose. If a column count is not taking effect, check the
+   order before adding specificity.
 4. Add the route to `app/sitemap.ts` and, if it belongs in navigation, `content/navigation.ts`.
 5. Add it to the `routes` array in `qa/tests/phase-one.spec.ts` — that alone gives it overflow, console-error and failed-request coverage at six widths.
 

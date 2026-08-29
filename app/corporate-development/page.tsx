@@ -55,6 +55,27 @@ const achievementIcons: Record<string, IconName> = {
   governance: "users",
 };
 
+const initiativeIcons: Record<string, IconName> = {
+  legal: "scales",
+  supply: "diamond",
+  custody: "vault",
+  platform: "cubes",
+  tokenization: "token",
+  marketplace: "exchange",
+  mobile: "phone",
+  expansion: "globe",
+  redemption: "box",
+};
+
+const milestoneIcons: Record<string, IconName> = {
+  beta: "bars",
+  tokenization: "cubes",
+  marketplace: "exchange",
+  mobile: "phone",
+  expansion: "globe",
+  redemption: "box",
+};
+
 const checkIcons: Record<string, IconName> = {
   governance: "users",
   registry: "passport",
@@ -173,7 +194,13 @@ export default function CorporateDevelopmentPage() {
                 <tbody>
                   {statusTable.initiatives.map((initiative) => (
                     <tr key={initiative.id}>
-                      <th scope="row">{initiative.initiative}</th>
+                      <th scope="row">
+                        <LineIcon
+                          name={initiativeIcons[initiative.id]}
+                          size={18}
+                        />
+                        <span>{initiative.initiative}</span>
+                      </th>
                       <td>{initiative.description}</td>
                       <td>
                         <span
@@ -208,15 +235,20 @@ export default function CorporateDevelopmentPage() {
               {milestonePanel.intro}
             </p>
           </MotionReveal>
+          {/* The board draws this as a connected rail: circles on a single
+              horizontal line with a marker between each pair. The line is one
+              pseudo-element behind the row so it cannot drift out of step with
+              the circles, and it is dropped when the row wraps. */}
           <MotionReveal delay={80}>
             <ol className="corporate-timeline">
               {milestonePanel.milestones.map((milestone, index) => (
                 <li key={milestone.id}>
-                  <span className="corporate-timeline__dot" aria-hidden="true">
-                    {index + 1}
+                  <span className="corporate-timeline__dot">
+                    <LineIcon name={milestoneIcons[milestone.id]} size={20} />
                   </span>
                   <h3>{milestone.title}</h3>
                   <p>{milestone.description}</p>
+                  <span className="sr-only">{`Step ${index + 1}`}</span>
                 </li>
               ))}
             </ol>

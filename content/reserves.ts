@@ -207,7 +207,7 @@ export interface DashboardField {
 
 export const dashboardPanel = {
   title: "ON-CHAIN RESERVE TRANSPARENCY",
-  intro: "What the public reserve report will carry, and how to read it.",
+  intro: "All reserves will be verifiable on-chain.",
   statusLabel: "No attestation published",
   statusDetail:
     "GemReserve.io has not yet published a reserve attestation. Nothing is shown here in place of one — not a projection, not a target, and not a previous figure. Every number below appears with the date it was taken and the name of the party that signed it, or it does not appear at all.",
@@ -218,12 +218,30 @@ export const dashboardPanel = {
     { id: "tokens", label: "Tokens in circulation" },
   ] as const satisfies readonly DashboardField[],
   compositionLabel: "Composition by gemstone type",
+  // The board's donut is labelled Emerald 28.4%, Ruby 22.1%, Sapphire 20.3%,
+  // Diamond 15.7%, Others 13.5%. Those are invented shares of an invented
+  // balance, so the ring keeps the board's five segments and its legend keeps
+  // the five stone names — which are the platform's own catalogue — with no
+  // share against any of them and equal, obviously-placeholder arcs.
+  composition: [
+    { id: "emerald", label: "Emerald", colour: "#1f9c62" },
+    { id: "ruby", label: "Ruby", colour: "#b32338" },
+    { id: "sapphire", label: "Sapphire", colour: "#1f6fb8" },
+    { id: "diamond", label: "Diamond", colour: "#9aa3a7" },
+    { id: "others", label: "Others", colour: "#c9922c" },
+  ] as const satisfies readonly {
+    readonly id: string;
+    readonly label: string;
+    readonly colour: string;
+  }[],
   metaFields: [
     { id: "as-of", label: "As of" },
     { id: "attested-by", label: "Attested by" },
     { id: "method", label: "Method" },
   ] as const satisfies readonly DashboardField[],
   pending: "Pending first attestation",
+  buttonLabel: "View on blockchain",
+  buttonNote: "Opens with the platform",
 };
 
 export interface Guarantee {

@@ -48,6 +48,8 @@ export interface NewsCategory {
 
 export const categoriesSectionTitle = "WHAT WILL BE PUBLISHED HERE";
 
+export const allUpdatesLabel = "All Updates";
+
 export const newsCategories: readonly NewsCategory[] = [
   {
     id: "corporate",
@@ -86,11 +88,41 @@ export const newsCategories: readonly NewsCategory[] = [
   },
 ];
 
+/**
+ * The board's article column, kept as a composition with nothing in it.
+ *
+ * The layout is the board's: a featured entry with a wide image, then standard
+ * entries with a thumbnail beside a date, a headline and a standfirst. Every
+ * slot is empty and says so. Preserving the shape is the point — a reader can
+ * see what this page will look like in use — but no slot carries a date, a
+ * headline or an image, because inventing one is exactly what a newsroom must
+ * not do.
+ */
+export interface ArticleSlot {
+  readonly id: string;
+  readonly featured: boolean;
+  readonly category: string;
+}
+
+export const articleColumn = {
+  emptyBadge: "Awaiting first publication",
+  featuredBadge: "Featured",
+  datePlaceholder: "Date of issue",
+  headlinePlaceholder: "Headline",
+  standfirstPlaceholder:
+    "The opening paragraph of the announcement, as issued.",
+  slots: [
+    { id: "featured", featured: true, category: "Corporate announcement" },
+    { id: "second", featured: false, category: "Platform update" },
+    { id: "third", featured: false, category: "Milestone" },
+  ] as const satisfies readonly ArticleSlot[],
+};
+
 export const newsroomState = {
   title: "NOTHING PUBLISHED YET",
   paragraphs: [
-    "GemReserve.io is pre-launch. No announcement, press release or milestone report has been issued, so there is nothing in this newsroom — not an archive, not a placeholder, and not an article written to fill the space.",
-    "The first entry will appear here on the day it is issued, dated, and it will stay in the record afterwards. Until then, the pages below carry the current state of the project.",
+    "GemReserve.io is pre-launch. No announcement, press release or milestone report has been issued, so the entries above are empty: the shape this page will take, with nothing written into it.",
+    "The first entry appears here on the day it is issued, dated, and stays in the record afterwards.",
   ] as readonly string[],
   note: "Any GemReserve.io announcement you encounter elsewhere that does not appear on this page did not come from us.",
   noteLink: { label: "Read the Anti-Fraud Notice", href: "/anti-fraud-notice" },

@@ -7,9 +7,10 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { MotionReveal } from "@/components/ui/MotionReveal";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import {
+  allUpdatesLabel,
+  articleColumn,
   categoriesSectionTitle,
   followPanel,
   highlightsPanel,
@@ -87,19 +88,23 @@ export default function NewsPage() {
           className="news-categories container-wide"
           aria-labelledby="news-categories-title"
         >
+          {/* The board runs a filter rail of category pills directly beneath
+              the hero. None of them filters anything, because there is nothing
+              to filter, so each is a marker of what the rail will carry rather
+              than a control that would do nothing when pressed. */}
+          <h2 className="sr-only" id="news-categories-title">
+            {categoriesSectionTitle}
+          </h2>
           <MotionReveal>
-            <SectionHeading
-              title={categoriesSectionTitle}
-              id="news-categories-title"
-            />
-          </MotionReveal>
-          <MotionReveal delay={80}>
-            <ul className="news-category-grid">
+            <ul className="news-rail-filters">
+              <li className="news-rail-filters__all">
+                <LineIcon name="bars" size={18} />
+                {allUpdatesLabel}
+              </li>
               {newsCategories.map((category) => (
-                <li key={category.id}>
-                  <LineIcon name={categoryIcons[category.id]} size={30} />
-                  <h3>{category.title}</h3>
-                  <p>{category.description}</p>
+                <li key={category.id} title={category.description}>
+                  <LineIcon name={categoryIcons[category.id]} size={18} />
+                  {category.title}
                 </li>
               ))}
             </ul>
@@ -110,10 +115,57 @@ export default function NewsPage() {
           className="news-body container-wide"
           aria-labelledby="news-state-title"
         >
-          {/* The board carries five dated articles for announcements that were
-              never made. A newsroom is a record, so the record says what it
-              actually holds. */}
-          <MotionReveal className="news-state">
+          {/* The board's editorial column, kept as a composition with nothing
+              in it: a featured entry over two standard ones, each carrying the
+              shape of an article and no content. Inventing a date, a headline
+              or an image here is the one thing a newsroom must not do. */}
+          <MotionReveal className="news-articles">
+            <ol>
+              {articleColumn.slots.map((slot, index) => (
+                <li
+                  className={
+                    slot.featured
+                      ? "news-entry news-entry--featured"
+                      : "news-entry"
+                  }
+                  key={slot.id}
+                >
+                  <div className="news-entry__media" aria-hidden="true">
+                    {slot.featured ? (
+                      <span className="news-entry__flag">
+                        {articleColumn.featuredBadge}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="news-entry__body">
+                    <p className="news-entry__meta">
+                      <span className="news-entry__category">
+                        {slot.category}
+                      </span>
+                      <span className="news-entry__date" aria-hidden="true">
+                        {articleColumn.datePlaceholder}
+                      </span>
+                    </p>
+                    <p className="news-entry__headline" aria-hidden="true">
+                      {articleColumn.headlinePlaceholder}
+                    </p>
+                    <p className="news-entry__standfirst" aria-hidden="true">
+                      {articleColumn.standfirstPlaceholder}
+                    </p>
+                    <p className="news-entry__empty">
+                      <LineIcon name="lock-clock" size={15} />
+                      {articleColumn.emptyBadge}
+                    </p>
+                  </div>
+                  <span className="sr-only">
+                    {`Entry ${index + 1}: ${articleColumn.emptyBadge}`}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </MotionReveal>
+
+          <MotionReveal className="news-state" delay={70}>
             <h2 id="news-state-title">{newsroomState.title}</h2>
             {newsroomState.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

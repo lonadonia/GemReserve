@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
@@ -11,7 +12,6 @@ import { MotionReveal } from "@/components/ui/MotionReveal";
 import { ResponsiveHeroImage } from "@/components/ui/ResponsiveHeroImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
-  frameworkIntro,
   frameworkSectionTitle,
   independentRoles,
   meaningPanel,
@@ -108,42 +108,72 @@ export default function IndependentVerificationPage() {
               </p>
             </MotionReveal>
 
-            {/* The board photographs a laboratory report card and an on-chain
-                bar. Both are drawn rather than baked into the plate so the
-                values stay selectable text, and so the sample label cannot be
-                separated from the sample. */}
-            <MotionReveal className="verification-hero__sample" delay={120}>
-              <aside aria-label="Sample gemological report">
-                <p className="verification-sample__eyebrow">
-                  <LineIcon name="certificate" size={20} />
+            {/* The board stages three separate objects over the photograph: a
+                dark report card, a brass on-chain plate below and left of it,
+                and a gold seal at the right. They are drawn rather than baked
+                into the plate so every value stays selectable text and the
+                sample label cannot be separated from the sample. */}
+            <MotionReveal className="verification-hero__stage" delay={120}>
+              <aside
+                className="verification-card-report"
+                aria-label="Sample gemological report"
+              >
+                <p className="verification-card-report__head">
+                  <span className="verification-card-report__crest">
+                    <Image
+                      src="/brand/gemreserve-shield-512.png"
+                      alt=""
+                      width={512}
+                      height={512}
+                    />
+                  </span>
                   <span>
                     {verificationHero.sample.eyebrow}
                     <small>{verificationHero.sample.title}</small>
                   </span>
                 </p>
-                <ul className="verification-sample__checks">
+                <ul className="verification-card-report__checks">
                   {verificationHero.sample.checks.map((check) => (
                     <li key={check}>
-                      <LineIcon name="check" size={17} />
+                      <span
+                        className="verification-check-box"
+                        aria-hidden="true"
+                      >
+                        <LineIcon name="check" size={13} />
+                      </span>
                       {check}
                     </li>
                   ))}
                 </ul>
-                <dl className="verification-sample__record">
-                  {verificationHero.sample.record.map((row) => (
-                    <div key={row.label}>
-                      <dt>{row.label}</dt>
-                      <dd>{row.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p className="verification-sample__note">
+                <p className="verification-card-report__note">
                   {verificationHero.sample.note}
                 </p>
               </aside>
-              <p className="verification-hero__seal" aria-hidden="true">
+
+              <div className="verification-plate">
+                {/* Decorative only: a code-block motif standing in for the
+                    board's QR. It encodes nothing and is not scannable, because
+                    there is no record behind it to scan. */}
+                <span className="verification-plate__code" aria-hidden="true" />
+                <div className="verification-plate__body">
+                  <p className="verification-plate__title">
+                    {verificationHero.sample.bar.title}
+                  </p>
+                  <dl>
+                    {verificationHero.sample.bar.rows.map((row) => (
+                      <div key={row.label}>
+                        <dt>{row.label}</dt>
+                        <dd>{row.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+
+              <p className="verification-hero__seal">
                 <span>{verificationHero.sample.seal[0]}</span>
                 <span>{verificationHero.sample.seal[1]}</span>
+                <LineIcon name="diamond" size={16} />
               </p>
             </MotionReveal>
           </div>
@@ -158,7 +188,6 @@ export default function IndependentVerificationPage() {
               title={frameworkSectionTitle}
               id="verification-framework-title"
             />
-            <p className="verification-framework__intro">{frameworkIntro}</p>
           </MotionReveal>
 
           <MotionReveal delay={80}>
@@ -196,15 +225,20 @@ export default function IndependentVerificationPage() {
               {independentRoles.title}
             </h2>
             <p className="verification-card__intro">{independentRoles.intro}</p>
+            {/* The board lays this out as a table — a mark on the left, a
+                two-line description on the right, hairline between rows. The
+                marks were company logos; they are the role instead. */}
             <ul className="verification-roles">
               {independentRoles.roles.map((role) => (
                 <li key={role.id}>
-                  <LineIcon name={roleIcons[role.id]} size={26} />
-                  <div>
-                    <h3>{role.role}</h3>
-                    <p>{role.responsibility}</p>
-                    <p className="verification-roles__scope">{role.scope}</p>
-                  </div>
+                  <span className="verification-roles__mark">
+                    <LineIcon name={roleIcons[role.id]} size={22} />
+                    <span>{role.role}</span>
+                  </span>
+                  <span className="verification-roles__body">
+                    {role.responsibility}
+                    <small>{role.scope}</small>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -222,27 +256,101 @@ export default function IndependentVerificationPage() {
               {onChainPanel.intro}
             </p>
 
-            {/* The board draws a gemstone ringed by six data nodes. It is built
-                as a list on a radial grid rather than an image, so every label
-                stays text and the ring can collapse to a column on a phone. */}
-            <ul className="verification-orbit">
-              <li className="verification-orbit__core" aria-hidden="true">
-                <LineIcon name="diamond" size={44} />
-              </li>
-              {onChainPanel.nodes.map((node, index) => (
-                <li
-                  className="verification-orbit__node"
-                  key={node.id}
-                  style={{ "--orbit-index": index } as CSSProperties}
+            {/* The board rings a gemstone with two gold circles, six dots on
+                the outer one, and six icon badges joined to those dots by hair
+                lines. The rings and connectors are one SVG behind the badges;
+                the badges and their labels stay as text so they remain readable
+                and can drop into two plain columns on a phone. */}
+            <div className="verification-orbit">
+              <div className="verification-orbit__ring">
+                <svg
+                  className="verification-orbit__lines"
+                  viewBox="0 0 400 340"
+                  aria-hidden="true"
+                  focusable="false"
                 >
-                  <LineIcon name={nodeIcons[node.id]} size={22} />
-                  <span>{node.label}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="verification-orbit__footnote">
-              {onChainPanel.footnote}
-            </p>
+                  <circle
+                    className="verification-orbit__circle"
+                    cx="200"
+                    cy="170"
+                    r="132"
+                  />
+                  <circle
+                    className="verification-orbit__circle verification-orbit__circle--inner"
+                    cx="200"
+                    cy="170"
+                    r="112"
+                  />
+                  {[
+                    [80, 42],
+                    [56, 170],
+                    [80, 298],
+                    [320, 42],
+                    [344, 170],
+                    [320, 298],
+                  ].map(([x, y], index) => {
+                    const angle = [-60, 180, 60, -120, 0, 120][index];
+                    const rad = (angle * Math.PI) / 180;
+                    const dotX = 200 + 132 * Math.cos(rad);
+                    const dotY = 170 + 132 * Math.sin(rad);
+                    return (
+                      <g key={`${x}-${y}`}>
+                        <line
+                          className="verification-orbit__spoke"
+                          x1={x}
+                          y1={y}
+                          x2={dotX}
+                          y2={dotY}
+                        />
+                        <circle
+                          className="verification-orbit__dot"
+                          cx={dotX}
+                          cy={dotY}
+                          r="4.5"
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                <Image
+                  className="verification-orbit__gem"
+                  src="/images/gems/emerald.webp"
+                  alt={onChainPanel.gemImageAlt}
+                  width={480}
+                  height={480}
+                  sizes="(max-width: 980px) 40vw, 150px"
+                />
+
+                <ul className="verification-orbit__nodes">
+                  {onChainPanel.nodes.map((node, index) => (
+                    <li
+                      className="verification-orbit__node"
+                      key={node.id}
+                      style={{ "--orbit-index": index } as CSSProperties}
+                    >
+                      <span
+                        className="verification-orbit__badge"
+                        aria-hidden="true"
+                      >
+                        <LineIcon name={nodeIcons[node.id]} size={20} />
+                      </span>
+                      <span className="verification-orbit__label">
+                        {node.label}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="verification-orbit__scan">
+                <span className="verification-plate__code" aria-hidden="true" />
+                <span>{onChainPanel.scanLabel}</span>
+              </p>
+              <p className="verification-orbit__footnote">
+                {onChainPanel.footnote}
+              </p>
+            </div>
           </MotionReveal>
 
           <MotionReveal className="verification-card" delay={160}>

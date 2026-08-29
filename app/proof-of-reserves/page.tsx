@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -158,7 +159,7 @@ export default function ProofOfReservesPage() {
             <div className="reserves-passport">
               <ImageWithGlow
                 className="reserves-passport__image"
-                src="/images/sections/passport-device.webp"
+                src="/images/sections/asset-passport.webp"
                 alt={passportPanel.imageAlt}
                 sizes="(max-width: 980px) 100vw, 20vw"
               />
@@ -200,56 +201,63 @@ export default function ProofOfReservesPage() {
               <span>{rolesPanel.disclosure}</span>
             </p>
           </MotionReveal>
-        </section>
 
-        <section
-          className="reserves-dashboard container-wide"
-          aria-labelledby="reserves-dashboard-title"
-        >
-          <MotionReveal>
-            <SectionHeading
-              title={dashboardPanel.title}
-              id="reserves-dashboard-title"
-            />
-            <p className="reserves-dashboard__intro">{dashboardPanel.intro}</p>
-          </MotionReveal>
+          {/* The board's third panel in this band. It draws a live reserve
+              balance and a composition donut; nothing has been attested, so the
+              panel keeps its shape and its five catalogue segments and carries
+              no figure at all — see content/reserves.ts. */}
+          <MotionReveal className="reserves-card" delay={160}>
+            <h2 className="reserves-card__title">{dashboardPanel.title}</h2>
+            <p className="reserves-card__intro">{dashboardPanel.intro}</p>
 
-          {/* The board fills this dashboard with a reserve value, an asset
-              count and a composition chart. Nothing has been attested, so the
-              panels are drawn empty and the status says why. The figures appear
-              only when `features.proofOfReserves` is switched on against a real
-              attestation source — see docs/CONTINUATION_NOTES.md. */}
-          <MotionReveal className="reserves-board" delay={80}>
-            <p className="reserves-board__status" role="status">
-              <LineIcon name="alert-triangle" size={24} />
-              <span>
-                <strong>{dashboardPanel.statusLabel}</strong>
-                {dashboardPanel.statusDetail}
-              </span>
-            </p>
+            <div className="reserves-board">
+              <p className="reserves-board__status" role="status">
+                <LineIcon name="alert-triangle" size={20} />
+                <span>
+                  <strong>{dashboardPanel.statusLabel}</strong>
+                  {dashboardPanel.statusDetail}
+                </span>
+              </p>
 
-            <dl className="reserves-board__figures">
-              {dashboardPanel.fields.map((field) => (
-                <div key={field.id}>
-                  <dt>{field.label}</dt>
-                  <dd aria-label={dashboardPanel.pending}>
-                    <span aria-hidden="true">—</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
+              <div className="reserves-board__grid">
+                <dl className="reserves-board__figures">
+                  {dashboardPanel.fields.map((field) => (
+                    <div key={field.id}>
+                      <dt>{field.label}</dt>
+                      <dd aria-label={dashboardPanel.pending}>
+                        <span aria-hidden="true">—</span>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
 
-            <div className="reserves-board__lower">
-              <div className="reserves-board__composition">
-                <h3>{dashboardPanel.compositionLabel}</h3>
-                <div
-                  className="reserves-board__ring"
-                  role="img"
-                  aria-label={`${dashboardPanel.compositionLabel}: ${dashboardPanel.pending}`}
-                >
-                  <span>{dashboardPanel.pending}</span>
+                <div className="reserves-board__composition">
+                  <div
+                    className="reserves-board__ring"
+                    role="img"
+                    aria-label={`${dashboardPanel.compositionLabel}: ${dashboardPanel.pending}`}
+                  >
+                    <span />
+                  </div>
+                  <ul className="reserves-board__legend">
+                    {dashboardPanel.composition.map((slice) => (
+                      <li key={slice.id}>
+                        <span
+                          className="reserves-board__swatch"
+                          style={
+                            {
+                              "--swatch": slice.colour,
+                            } as CSSProperties
+                          }
+                          aria-hidden="true"
+                        />
+                        {slice.label}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
+
               <dl className="reserves-board__meta">
                 {dashboardPanel.metaFields.map((field) => (
                   <div key={field.id}>
@@ -258,14 +266,16 @@ export default function ProofOfReservesPage() {
                   </div>
                 ))}
               </dl>
-            </div>
 
-            {features.proofOfReserves ? null : (
-              <p className="reserves-board__footnote">
-                Reserve reporting is disabled on this deployment because no
-                attestation source is connected.
+              <p className="reserves-board__action">
+                <span aria-disabled="true">{dashboardPanel.buttonLabel}</span>
+                <small>
+                  {features.proofOfReserves
+                    ? dashboardPanel.buttonNote
+                    : dashboardPanel.buttonNote}
+                </small>
               </p>
-            )}
+            </div>
           </MotionReveal>
         </section>
 

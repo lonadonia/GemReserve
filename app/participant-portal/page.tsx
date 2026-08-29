@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { LineIcon, type IconName } from "@/components/icons/LineIcon";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -209,40 +211,116 @@ export default function ParticipantPortalPage() {
               <span>{previewPanel.note}</span>
             </p>
 
-            <div className="portal-preview" aria-hidden="true">
-              <ul className="portal-preview__nav">
-                {previewPanel.nav.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+            {/* The board draws an application shell: a brand bar with account
+                controls, a left nav with the Assets view active, and an asset
+                table. It is rebuilt here rather than placed as a screenshot so
+                every cell can be left blank — a rendered dashboard would have
+                had to carry numbers. */}
+            <div className="portal-preview">
+              <div className="portal-preview__bar" aria-hidden="true">
+                <span className="portal-preview__brand">
+                  <Image
+                    src="/brand/gemreserve-shield-512.png"
+                    alt=""
+                    width={512}
+                    height={512}
+                  />
+                  {previewPanel.brand}
+                </span>
+                <span className="portal-preview__controls">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              </div>
 
-              <div className="portal-preview__body">
-                <dl className="portal-preview__summary">
-                  {previewPanel.summary.map((panel) => (
-                    <div key={panel.id}>
-                      <dt>{panel.label}</dt>
-                      <dd>—</dd>
-                      <p>{panel.detail}</p>
-                    </div>
+              <div className="portal-preview__shell">
+                <ul className="portal-preview__nav" aria-hidden="true">
+                  {previewPanel.nav.map((item) => (
+                    <li
+                      className={
+                        item === previewPanel.activeNav
+                          ? "is-active"
+                          : undefined
+                      }
+                      key={item}
+                    >
+                      <span />
+                      {item}
+                    </li>
                   ))}
-                </dl>
+                </ul>
 
-                <div className="portal-preview__chart">
-                  <p>{previewPanel.chartLabel}</p>
-                  <div className="portal-preview__plot">
-                    <span>{previewPanel.chartNote}</span>
+                <div className="portal-preview__body">
+                  <p className="portal-preview__view">
+                    {previewPanel.tableTitle}
+                  </p>
+
+                  <div
+                    className="portal-preview__frame"
+                    tabIndex={0}
+                    role="region"
+                    aria-label={previewPanel.tableTitle}
+                  >
+                    <table className="portal-preview__table">
+                      <thead>
+                        <tr>
+                          {previewPanel.columns.map((column) => (
+                            <th scope="col" key={column.id}>
+                              {column.label}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {previewPanel.rows.map((row) => (
+                          <tr key={row.id}>
+                            <th scope="row">
+                              <span
+                                className="portal-preview__token"
+                                style={
+                                  { "--token": row.colour } as CSSProperties
+                                }
+                                aria-hidden="true"
+                              />
+                              <span>
+                                {row.ticker}
+                                <small>{row.name}</small>
+                              </span>
+                            </th>
+                            <td>{previewPanel.rowType}</td>
+                            <td
+                              className="portal-preview__blank"
+                              aria-label={previewPanel.blankLabel}
+                            >
+                              <span aria-hidden="true">
+                                {previewPanel.blank}
+                              </span>
+                            </td>
+                            <td
+                              className="portal-preview__blank"
+                              aria-label={previewPanel.blankLabel}
+                            >
+                              <span aria-hidden="true">
+                                {previewPanel.blank}
+                              </span>
+                            </td>
+                            <td
+                              className="portal-preview__blank"
+                              aria-label={previewPanel.blankLabel}
+                            >
+                              <span aria-hidden="true">
+                                {previewPanel.blank}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                </div>
 
-                <div className="portal-preview__table">
-                  <p>{previewPanel.tableTitle}</p>
-                  <ul className="portal-preview__columns">
-                    {previewPanel.columns.map((column) => (
-                      <li key={column.id}>{column.label}</li>
-                    ))}
-                  </ul>
-                  <p className="portal-preview__empty">
-                    {previewPanel.emptyRow}
+                  <p className="portal-preview__action" aria-hidden="true">
+                    {previewPanel.buttonLabel}
                   </p>
                 </div>
               </div>

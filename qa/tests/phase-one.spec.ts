@@ -842,12 +842,19 @@ test.describe("the closing pages keep the boards' claims off the site", () => {
     await page.goto("/participant-portal", { waitUntil: "networkidle" });
 
     // The board's dashboard reads $2,458,750.00 across four holdings. There is
-    // no account system, so every value in the preview must be blank.
+    // no account system, so the rebuilt shell keeps the board's table and
+    // leaves every numeric cell empty: three per row across four rows.
     const preview = page.locator(".portal-preview");
     await expect(preview).toBeVisible();
     await expect(preview).not.toContainText("$");
     expect(await preview.innerText()).not.toMatch(/\d{3,}/);
-    await expect(preview).toContainText("No holdings");
+    await expect(preview.locator(".portal-preview__blank")).toHaveCount(12);
+    await expect(preview.locator(".portal-preview__table tbody tr")).toHaveCount(
+      4,
+    );
+
+    // And the board's two industrial metals are not among the rows.
+    expect(await preview.innerText()).not.toMatch(/copper|nickel/i);
 
     // And nothing on the page may look like a way in.
     await expect(page.locator("form")).toHaveCount(0);

@@ -37,10 +37,13 @@ export interface VerificationHeroContent {
     readonly title: string;
     readonly note: string;
     readonly checks: readonly string[];
-    readonly record: readonly {
-      readonly label: string;
-      readonly value: string;
-    }[];
+    readonly bar: {
+      readonly title: string;
+      readonly rows: readonly {
+        readonly label: string;
+        readonly value: string;
+      }[];
+    };
     readonly seal: readonly [string, string];
   };
 }
@@ -54,7 +57,7 @@ export const verificationHero: VerificationHeroContent = {
   sample: {
     eyebrow: "Gemological report",
     title: "Independent verification",
-    note: "Sample record. Illustrates the fields a report carries; it is not a record of a stone held today.",
+    note: "Sample record — the fields a report carries, not a stone held today.",
     checks: [
       "Authenticity verified",
       "Natural gemstone",
@@ -62,20 +65,24 @@ export const verificationHero: VerificationHeroContent = {
       "Weight & measurements verified",
       "Origin confirmed",
     ],
-    record: [
-      { label: "Asset ID", value: "GR-SAP-0007842" },
-      { label: "Blockchain TX", value: "0x7a3b…c82f" },
-      { label: "Verified", value: "Sample record" },
-    ],
+    // The board lays the on-chain data on a separate brass plate below the
+    // report card, dark type on gold, with a QR block at its left. It is a
+    // second object in the photograph rather than a footer to the first, and it
+    // is built that way here.
+    bar: {
+      title: "On-chain verified",
+      rows: [
+        { label: "Asset ID", value: "GR-SAP-0007842" },
+        { label: "Blockchain TX", value: "0x7a3b…c82f" },
+        { label: "Verified", value: "Sample record" },
+      ],
+    },
     seal: ["Independently", "Verified"],
   },
 };
 
 export const frameworkSectionTitle =
   "MULTI-LAYER INDEPENDENT VERIFICATION FRAMEWORK";
-
-export const frameworkIntro =
-  "Six layers of verification, each carried out by a party independent of the one before it. No single layer is asked to confirm its own work.";
 
 export interface VerificationLayer {
   readonly id: string;
@@ -177,17 +184,17 @@ export interface IndependentRole {
 export const independentRoles = {
   title: "THE INDEPENDENT PARTIES",
   intro:
-    "Verification only means something when the party doing it has nothing to gain from the answer. Five roles sit outside GemReserve.io, each accountable for one layer of the framework.",
+    "Five roles sit outside GemReserve.io, each accountable for one layer.",
   roles: [
     {
       id: "laboratory",
-      role: "Gemological laboratory",
+      role: "Gemological lab",
       responsibility: "Identification, grading and treatment analysis",
       scope: "Issues the report a stone's record is built on",
     },
     {
       id: "custodian",
-      role: "Vaulting and custody provider",
+      role: "Custody provider",
       responsibility: "Storage, physical inspection and seal integrity",
       scope: "Holds the stone; does not value or tokenize it",
     },
@@ -205,13 +212,13 @@ export const independentRoles = {
     },
     {
       id: "security",
-      role: "Smart contract auditor",
+      role: "Contract auditor",
       responsibility: "Contract review and blockchain security assessment",
       scope: "Reviews the code before it holds anything",
     },
   ] as const satisfies readonly IndependentRole[],
   disclosure:
-    "GemReserve.io names no laboratory, auditor, insurer, custodian or law firm as a partner. Each provider is published here, with the scope of its engagement, once that engagement is in place.",
+    "No laboratory, auditor, insurer, custodian or law firm is named as a partner. Each is published here, with its engagement, once appointed.",
 };
 
 export interface TransparencyNode {
@@ -222,14 +229,18 @@ export interface TransparencyNode {
 export const onChainPanel = {
   title: "ON-CHAIN TRANSPARENCY",
   intro: "Every token is permanently linked to verified data.",
+  // Ordered as the board draws them: three down the left of the ring, three
+  // down the right. The renderer places them from this order.
   nodes: [
-    { id: "report", label: "Gemological report" },
-    { id: "reserves", label: "Proof of reserves" },
-    { id: "ownership", label: "Ownership details" },
-    { id: "certificates", label: "Audit certificates" },
-    { id: "history", label: "Transaction history" },
-    { id: "custody", label: "Custody location" },
+    { id: "report", label: "Gemological Report" },
+    { id: "custody", label: "Custody Location" },
+    { id: "history", label: "Transaction History" },
+    { id: "reserves", label: "Proof of Reserves" },
+    { id: "ownership", label: "Ownership Details" },
+    { id: "certificates", label: "Audit Certificates" },
   ] as const satisfies readonly TransparencyNode[],
+  gemImageAlt: "An emerald-cut green gemstone",
+  scanLabel: "Scan to verify on-chain",
   footnote: "Verification opens with the platform.",
 };
 

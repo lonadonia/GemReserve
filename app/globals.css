@@ -16110,6 +16110,14 @@ li:hover > .section-plate {
   color: var(--gold-light);
 }
 
+/* The parties panel is a table; its footnote must not out-weigh the rows. */
+.verification-card__note {
+  margin-top: 14px;
+  padding: 11px 13px;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
 /* Shared: the "Planned" / "In preparation" chip. */
 .resources-status,
 .document-card__status,
@@ -16175,48 +16183,118 @@ li:hover > .section-plate {
 .verification-hero__inner,
 .custody-hero__inner,
 .reserves-hero__inner {
-  grid-template-columns: minmax(300px, 0.58fr) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 0.62fr) minmax(0, 1fr);
+  gap: 20px;
+  padding-block: clamp(28px, 2.4vw, 44px);
 }
 
-.verification-hero__sample {
+/* The board's heroes on these three pages are shorter than the shared default —
+   the photograph is a backdrop for the staged objects rather than a plate in
+   its own right, and the framework row starts high on the page. */
+.verification-hero,
+.custody-hero,
+.reserves-hero {
+  min-height: min(clamp(430px, 33vw, 540px), 62vh);
+}
+
+/* The staged objects supply their own contrast, so the right of these plates
+   does not need the shared scrim's cover — and the boards show the microscope,
+   the vault and the stone plainly. The gradient clears earlier, and the plate
+   is lifted to the brightness the boards print. */
+/* Desktop only. Below 760px the shared mobile scrim takes over — it is a
+   top-down gradient cut for a contained plate, and a left-right one declared
+   later in this file would otherwise override it and leave the copy sitting on
+   the photograph. */
+@media (min-width: 761px) {
+  .verification-hero__scrim,
+  .custody-hero__scrim,
+  .reserves-hero__scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgb(1 5 8 / 94%) 0%,
+        rgb(1 5 8 / 82%) 26%,
+        rgb(1 5 8 / 24%) 46%,
+        rgb(1 5 8 / 6%) 62%,
+        transparent 78%
+      ),
+      linear-gradient(0deg, rgb(1 5 8 / 42%) 0%, transparent 26%);
+  }
+}
+
+.verification-hero .hero__image,
+.custody-hero .hero__image,
+.reserves-hero .hero__image {
+  filter: saturate(1.12) contrast(1.1) brightness(1.5);
+}
+
+.verification-hero .hero__description,
+.custody-hero .hero__description,
+.reserves-hero .hero__description {
+  margin-bottom: 0;
+}
+
+/* The board stages three objects over the hero photograph — a dark report card,
+   a brass on-chain plate tucked below and left of it, and a gold seal at the
+   right — rather than stacking them into one panel. The stage is a positioned
+   box the three sit inside, so their overlap survives every width down to the
+   point where it is unpacked into a column. */
+.verification-hero__stage {
   position: relative;
   grid-column: 2;
   justify-self: end;
-  width: min(100%, 400px);
+  align-self: center;
+  width: min(100%, 560px);
+  /* At least the plate's height, so the plate clears the card rather than
+     covering the last two rows of it. */
+  padding-bottom: 96px;
 }
 
-.verification-hero__sample aside {
-  padding: 20px 22px;
+.verification-card-report {
+  width: min(100%, 430px);
+  margin-left: auto;
+  padding: 16px 20px 17px;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: linear-gradient(155deg, rgb(8 20 27 / 95%), rgb(2 7 10 / 96%));
+  border-radius: 10px;
+  background: linear-gradient(155deg, rgb(10 24 32 / 96%), rgb(2 7 10 / 97%));
   box-shadow: var(--shadow);
   backdrop-filter: blur(6px);
 }
 
-.verification-sample__eyebrow {
+.verification-card-report__head {
   display: flex;
   align-items: center;
   gap: 11px;
-  margin: 0 0 14px;
-  padding-bottom: 12px;
+  margin: 0 0 13px;
+  padding-bottom: 11px;
   border-bottom: 1px solid var(--border-soft);
-  color: var(--gold-light);
-  font-size: 0.78rem;
+  color: var(--ivory);
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
-.verification-sample__eyebrow small {
-  display: block;
-  color: var(--muted);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+.verification-card-report__crest {
+  flex: 0 0 auto;
+  width: 30px;
 }
 
-.verification-sample__checks {
+.verification-card-report__crest img {
+  width: 100%;
+  height: auto;
+}
+
+.verification-card-report__head small {
+  display: block;
+  margin-top: 3px;
+  color: var(--gold-light);
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+
+.verification-card-report__checks {
   display: grid;
   gap: 9px;
   margin: 0;
@@ -16224,87 +16302,170 @@ li:hover > .section-plate {
   list-style: none;
 }
 
-.verification-sample__checks li {
+.verification-card-report__checks li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #ccd2d4;
-  font-size: 0.82rem;
-}
-
-.verification-sample__checks svg {
-  flex: 0 0 auto;
-  color: var(--gold);
-}
-
-.verification-sample__record {
-  display: grid;
-  gap: 7px;
-  margin: 16px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-soft);
-}
-
-.verification-sample__record div {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.verification-sample__record dt {
-  color: var(--muted);
-  font-size: 0.71rem;
-  letter-spacing: 0.06em;
+  gap: 11px;
+  color: #dfe3e4;
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
-.verification-sample__record dd {
+/* The board's checks are filled gold squares, not line ticks. */
+.verification-check-box {
+  display: grid;
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  place-content: center;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  background: linear-gradient(150deg, #f0c15d, #b9800f);
+  color: #14100a;
+}
+
+/* The brass plate. Dark type on gold is the whole point of it — it is the one
+   object on the page that inverts, which is why the board can lay it over the
+   photograph and still have it read. */
+.verification-plate {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 360px);
+  padding: 12px 16px;
+  border: 1px solid #f0c96f;
+  border-radius: 6px;
+  background: linear-gradient(150deg, #d5aa4d 0%, #b8892c 48%, #d8b054 100%);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 55%);
+}
+
+.verification-plate__code {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border: 2px solid #2a2213;
+  border-radius: 2px;
+  background-color: #f6ecd4;
+  background-image:
+    linear-gradient(90deg, #2a2213 33%, transparent 33% 66%, #2a2213 66%),
+    linear-gradient(
+      0deg,
+      #2a2213 22%,
+      transparent 22% 44%,
+      #2a2213 44% 56%,
+      transparent 56% 78%,
+      #2a2213 78%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 20%,
+      #2a2213 20% 30%,
+      transparent 30% 70%,
+      #2a2213 70% 80%,
+      transparent 80%
+    );
+  background-size:
+    12px 12px,
+    12px 12px,
+    100% 100%;
+  background-position:
+    0 0,
+    6px 6px,
+    0 0;
+}
+
+.verification-plate__title {
+  margin: 0 0 3px;
+  color: #17130a;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.verification-plate__body dl {
+  display: grid;
+  gap: 1px;
   margin: 0;
-  color: var(--ivory);
+}
+
+.verification-plate__body div {
+  display: flex;
+  gap: 6px;
+}
+
+.verification-plate__body dt {
+  color: #2b2312;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.verification-plate__body dt::after {
+  content: ":";
+}
+
+.verification-plate__body dd {
+  margin: 0;
+  color: #17130a;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.76rem;
+  font-size: 0.69rem;
   overflow-wrap: anywhere;
 }
 
-.verification-sample__note {
-  margin: 14px 0 0;
-  /* The seal sits over this corner of the card, so the note is inset far enough
-     to clear it. Below 760px the seal is taken out of the flow and the inset
-     goes with it. */
-  padding-right: 84px;
-  color: var(--muted);
-  font-size: 0.72rem;
-  line-height: 1.55;
-}
-
+/* The seal: a gold medallion with a milled edge, sitting to the right of and
+   below the card the way a wax seal sits on a document. */
 .verification-hero__seal {
   position: absolute;
-  right: -14px;
-  bottom: -30px;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
   display: grid;
-  box-sizing: content-box;
   width: 104px;
   height: 104px;
-  padding: 0 2px;
   place-content: center;
+  justify-items: center;
   gap: 1px;
-  border: 1px solid var(--gold);
   border-radius: 50%;
   margin: 0;
-  background: radial-gradient(circle, rgb(9 22 29 / 96%), rgb(2 7 10 / 96%));
+  padding: 0 8px;
+  background:
+    radial-gradient(circle at 50% 50%, #0a0d0c 0 64%, transparent 64%),
+    repeating-conic-gradient(#f2c667 0deg 6deg, #9a6f1c 6deg 12deg);
   box-shadow:
-    0 0 0 4px rgb(2 7 10 / 90%),
-    0 12px 30px rgb(0 0 0 / 45%);
+    inset 0 0 0 3px #0a0d0c,
+    0 0 0 1px rgb(240 201 111 / 60%),
+    0 14px 34px rgb(0 0 0 / 55%);
   color: var(--gold-light);
   font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1.25;
   text-align: center;
   text-transform: uppercase;
 }
 
-.verification-framework__intro,
+.verification-hero__seal svg {
+  margin-top: 3px;
+  color: var(--gold);
+}
+
+.verification-card-report__note {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
 .corporate-achievements__intro,
 .corporate-milestones__intro,
 .resources-library__intro,
@@ -16338,7 +16499,7 @@ li:hover > .section-plate {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 26px clamp(12px, 1.1vw, 18px) 24px;
+  padding: 20px clamp(10px, 0.95vw, 15px) 18px;
   text-align: center;
 }
 
@@ -16348,44 +16509,44 @@ li:hover > .section-plate {
 
 .verification-layer__step {
   display: grid;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   place-content: center;
   border: 1px solid var(--gold-dark);
   border-radius: 50%;
-  margin: 0 0 14px;
+  margin: 0 0 9px;
   color: var(--gold-light);
   font-family: var(--font-display), Georgia, serif;
-  font-size: 1.02rem;
+  font-size: 0.9rem;
 }
 
 .verification-layers svg {
-  margin-bottom: 12px;
+  margin-bottom: 9px;
   color: var(--gold-light);
   filter: drop-shadow(0 0 12px rgb(216 154 39 / 18%));
 }
 
 .verification-layers h3 {
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   color: var(--gold-light);
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(0.9rem, 1.05vw, 1.02rem);
+  font-size: clamp(0.83rem, 0.95vw, 0.93rem);
   letter-spacing: 0.02em;
 }
 
 .verification-layer__body {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #b6bdc0;
-  font-size: 0.79rem;
-  line-height: 1.58;
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .verification-layers ul {
   display: grid;
-  gap: 5px;
+  gap: 3px;
   width: 100%;
   margin: auto 0 0;
-  padding: 12px 0 0;
+  padding: 10px 0 0;
   border-top: 1px solid var(--border-soft);
   list-style: none;
   text-align: left;
@@ -16393,10 +16554,10 @@ li:hover > .section-plate {
 
 .verification-layers ul li {
   position: relative;
-  padding-left: 14px;
+  padding-left: 12px;
   color: #a9b1b4;
-  font-size: 0.76rem;
-  line-height: 1.5;
+  font-size: 0.72rem;
+  line-height: 1.45;
 }
 
 .verification-layers ul li::before {
@@ -16404,9 +16565,9 @@ li:hover > .section-plate {
   top: 0;
   left: 0;
   color: var(--gold);
-  content: "◆";
-  font-size: 0.5em;
-  line-height: 2.4;
+  content: "\2022";
+  font-size: 1em;
+  line-height: 1.5;
 }
 
 .verification-detail,
@@ -16438,6 +16599,10 @@ li:hover > .section-plate {
     0 18px 55px rgb(0 0 0 / 20%);
 }
 
+.verification-card {
+  padding: clamp(18px, 1.7vw, 24px);
+}
+
 .verification-card__title,
 .custody-card__title,
 .reserves-card__title,
@@ -16449,6 +16614,12 @@ li:hover > .section-plate {
   font-size: clamp(1.02rem, 1.5vw, 1.2rem);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.verification-card__title {
+  margin-bottom: 9px;
+  font-size: clamp(0.95rem, 1.25vw, 1.06rem);
+  text-align: center;
 }
 
 .verification-card__title--center,
@@ -16466,11 +16637,66 @@ li:hover > .section-plate {
   line-height: 1.7;
 }
 
+.verification-card__intro {
+  margin-bottom: 14px;
+  font-size: 0.79rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .verification-card__intro--center {
   text-align: center;
 }
 
-.verification-roles,
+/* The independent parties read as a table on the board: a mark on the left, a
+   description on the right, a hairline between rows. */
+.verification-roles {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.verification-roles > li {
+  display: grid;
+  grid-template-columns: minmax(104px, 0.42fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+}
+
+.verification-roles > li + li {
+  border-top: 1px solid var(--border-soft);
+}
+
+.verification-roles__mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold-light);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.82rem;
+  line-height: 1.15;
+}
+
+.verification-roles__mark svg {
+  flex: 0 0 auto;
+}
+
+.verification-roles__body {
+  color: #b0b7ba;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.verification-roles__body small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-style: italic;
+}
+
 .custody-criteria,
 .custody-security,
 .reserves-roles,
@@ -16484,7 +16710,10 @@ li:hover > .section-plate {
   list-style: none;
 }
 
-.verification-roles > li,
+.verification-meaning {
+  gap: 11px;
+}
+
 .custody-criteria > li,
 .custody-security > li,
 .reserves-roles > li,
@@ -16498,7 +16727,11 @@ li:hover > .section-plate {
   border-bottom: 1px solid var(--border-soft);
 }
 
-.verification-roles > li:last-child,
+.verification-meaning > li {
+  gap: 11px;
+  padding-bottom: 11px;
+}
+
 .custody-criteria > li:last-child,
 .custody-security > li:last-child,
 .reserves-roles > li:last-child,
@@ -16509,7 +16742,6 @@ li:hover > .section-plate {
   border-bottom: 0;
 }
 
-.verification-roles svg,
 .custody-criteria svg,
 .custody-security svg,
 .reserves-roles svg,
@@ -16520,7 +16752,6 @@ li:hover > .section-plate {
   color: var(--gold-light);
 }
 
-.verification-roles h3,
 .custody-criteria h3,
 .custody-security h3,
 .reserves-roles h3,
@@ -16534,7 +16765,13 @@ li:hover > .section-plate {
   letter-spacing: 0.02em;
 }
 
-.verification-roles p,
+.verification-meaning h3 {
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 .custody-criteria p,
 .custody-security p,
 .reserves-roles p,
@@ -16547,64 +16784,242 @@ li:hover > .section-plate {
   line-height: 1.6;
 }
 
-.verification-roles__scope {
-  margin-top: 4px !important;
-  color: var(--muted) !important;
-  font-size: 0.75rem !important;
-  font-style: italic;
+.verification-meaning p {
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
-/* The board rings a gemstone with six data nodes. Built on a grid rather than
-   with transforms so the labels stay upright and the ring can become a column
-   on a phone without the text rotating with it. */
-.verification-orbit {
-  position: relative;
+/* Custody's three panels are denser than the shared card rhythm: the board
+   fits a four-row table, a map and a six-row list into one band. */
+.custody-card {
+  padding: clamp(18px, 1.7vw, 24px);
+}
+
+.custody-card__title {
+  margin-bottom: 8px;
+  font-size: clamp(0.95rem, 1.25vw, 1.06rem);
+  text-align: center;
+}
+
+.custody-card__intro {
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.custody-criteria,
+.custody-security {
+  gap: 10px;
+}
+
+.custody-criteria > li,
+.custody-security > li {
+  gap: 11px;
+  padding-bottom: 10px;
+}
+
+.custody-criteria h3,
+.custody-security h3 {
+  margin-bottom: 3px;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+}
+
+.custody-criteria p,
+.custody-security p {
+  font-size: 0.74rem;
+  line-height: 1.48;
+}
+
+.custody-card__note {
+  margin-top: 12px;
+  padding: 10px 12px;
+  font-size: 0.72rem;
+  line-height: 1.48;
+}
+
+/* The board fronts the perils schedule with a large gold shield, and closes the
+   proof panel with a scan block rather than a plain button. */
+.custody-shield {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 78px;
+  width: 74px;
+  height: 74px;
+  place-content: center;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  background: radial-gradient(circle, rgb(216 154 39 / 14%), transparent 70%);
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 18px rgb(216 154 39 / 22%));
+}
+
+.custody-proof__scan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: rgb(216 154 39 / 6%);
+  color: var(--gold-light);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease;
+}
+
+.custody-proof__scan:hover {
+  border-color: var(--gold-light);
+  background: rgb(216 154 39 / 12%);
+}
+
+.custody-proof__scan .verification-plate__code {
+  width: 40px;
+  height: 40px;
+}
+
+/* The ring. The SVG carries the two circles, the six dots and the six hair
+   lines; the badges sit on top of it on a three-row grid so their labels stay
+   upright and selectable. */
+.verification-orbit {
+  display: grid;
+  gap: 12px;
+}
+
+.verification-orbit__ring {
+  position: relative;
+  aspect-ratio: 400 / 340;
+  width: 100%;
+}
+
+.verification-orbit__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.verification-orbit__circle {
+  fill: none;
+  stroke: var(--gold-dark);
+  stroke-width: 1;
+}
+
+.verification-orbit__circle--inner {
+  stroke: rgb(216 154 39 / 30%);
+  stroke-dasharray: 2 5;
+}
+
+.verification-orbit__spoke {
+  stroke: var(--gold-dark);
+  stroke-width: 1;
+}
+
+.verification-orbit__dot {
+  fill: var(--gold-light);
+}
+
+.verification-orbit__gem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 39%;
+  height: auto;
+  filter: drop-shadow(0 0 26px rgb(40 203 184 / 30%));
+  transform: translate(-50%, -50%);
+}
+
+.verification-orbit__nodes {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.verification-orbit__core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  width: 74px;
-  height: 74px;
-  place-content: center;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgb(12 30 38 / 96%), rgb(2 7 10 / 96%));
-  box-shadow: 0 0 34px rgb(216 154 39 / 16%);
-  color: var(--gold-light);
-  transform: translate(-50%, -50%);
-}
-
+/* Source order is left column top-to-bottom then right column, so the two
+   columns are addressed explicitly rather than by flow. */
 .verification-orbit__node {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 9px;
-  padding: 10px 12px;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
-  background: rgb(4 12 17 / 72%);
-  color: #c2c8cb;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
 }
 
-.verification-orbit__node svg {
-  flex: 0 0 auto;
+.verification-orbit__node:nth-child(1) {
+  grid-area: 1 / 1;
+}
+.verification-orbit__node:nth-child(2) {
+  grid-area: 2 / 1;
+}
+.verification-orbit__node:nth-child(3) {
+  grid-area: 3 / 1;
+}
+.verification-orbit__node:nth-child(4) {
+  grid-area: 1 / 2;
+}
+.verification-orbit__node:nth-child(5) {
+  grid-area: 2 / 2;
+}
+.verification-orbit__node:nth-child(6) {
+  grid-area: 3 / 2;
+}
+
+.verification-orbit__badge {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-content: center;
+  border: 1px solid var(--gold-dark);
+  border-radius: 50%;
+  background: rgb(3 10 14 / 92%);
   color: var(--gold-light);
+}
+
+.verification-orbit__label {
+  max-width: 12ch;
+  color: #c2c8cb;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.verification-orbit__scan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: rgb(216 154 39 / 6%);
+  color: var(--gold-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.verification-orbit__scan .verification-plate__code {
+  width: 34px;
+  height: 34px;
 }
 
 .verification-orbit__footnote {
-  margin: 16px 0 0;
+  margin: 0;
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   text-align: center;
 }
 
@@ -16759,6 +17174,32 @@ li:hover > .section-plate {
   border-left: 1px solid var(--border-soft);
 }
 
+/* The board threads a gold arrow along the divider between each pair of steps,
+   level with the icons, so the row reads as a sequence rather than six cards. */
+.custody-steps > li,
+.reserves-steps > li {
+  position: relative;
+}
+
+.custody-steps > li + li::before,
+.reserves-steps > li + li::before {
+  position: absolute;
+  top: 62px;
+  left: 0;
+  z-index: 2;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-content: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--gold);
+  content: "\2192";
+  font-size: 0.8rem;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
 .custody-step__number,
 .reserves-step__number,
 .participant-step__number,
@@ -16820,12 +17261,16 @@ li:hover > .section-plate {
 .custody-network {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 18px;
+  gap: 14px;
+}
+
+.custody-network__map {
+  order: -1;
 }
 
 .custody-network__block + .custody-network__block {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid var(--border-soft);
 }
 
@@ -16843,7 +17288,7 @@ li:hover > .section-plate {
   display: grid;
   gap: 2px;
   color: var(--ivory);
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-style: normal;
 }
 
@@ -16946,42 +17391,82 @@ li:hover > .section-plate {
 }
 
 .reserves-passport__image {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 660 / 1133;
 }
 
 /* --- 3. Proof of Gemstone Reserves ------------------------------------- */
 
-.reserves-dashboard,
 .reserves-guarantee,
 .reserves-process {
   margin-top: var(--section-gap);
 }
 
-/* Two cards, not three: the passport checklist and the audit roles. The shared
-   three-column rule above would leave a third of the row empty. */
+/* Three panels across, as the board composes this band: the passport
+   checklist, the audit roles, and the reserve dashboard. */
 .reserves-detail {
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1.05fr);
 }
 
+.reserves-card {
+  padding: clamp(18px, 1.7vw, 24px);
+}
+
+.reserves-card__title {
+  margin-bottom: 8px;
+  font-size: clamp(0.95rem, 1.25vw, 1.06rem);
+  text-align: center;
+}
+
+.reserves-card__intro {
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.reserves-roles {
+  gap: 11px;
+}
+
+.reserves-roles > li {
+  gap: 11px;
+  padding-bottom: 11px;
+}
+
+.reserves-roles h3 {
+  margin-bottom: 3px;
+  font-size: 0.88rem;
+}
+
+.reserves-roles p {
+  font-size: 0.75rem;
+  line-height: 1.48;
+}
+
+.reserves-card__note {
+  margin-top: 12px;
+  padding: 10px 12px;
+  font-size: 0.72rem;
+  line-height: 1.48;
+}
+
+/* The dashboard the board draws, with every figure withheld. */
 .reserves-board {
-  padding: clamp(20px, 2.2vw, 32px);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: linear-gradient(145deg, rgb(9 21 28 / 86%), rgb(2 8 12 / 86%));
-  box-shadow:
-    inset 0 1px rgb(255 255 255 / 2%),
-    0 18px 55px rgb(0 0 0 / 20%);
+  padding: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgb(4 12 17 / 68%);
 }
 
 .reserves-board__status {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 14px;
-  margin: 0 0 24px;
-  padding: 16px 18px;
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--gold);
-  border-radius: 6px;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 11px 12px;
+  border: 1px solid var(--border-soft);
+  border-left: 2px solid var(--gold);
+  border-radius: 5px;
   background: rgb(216 154 39 / 6%);
 }
 
@@ -16992,135 +17477,160 @@ li:hover > .section-plate {
 
 .reserves-board__status strong {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: var(--gold-light);
-  font-size: 0.86rem;
-  letter-spacing: 0.09em;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .reserves-board__status span {
   color: #b6bdc0;
-  font-size: 0.86rem;
-  line-height: 1.72;
+  font-size: 0.73rem;
+  line-height: 1.55;
+}
+
+.reserves-board__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
 }
 
 .reserves-board__figures {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 0 0 20px;
-}
-
-.reserves-board__figures div {
-  padding: 16px 18px;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
-  background: rgb(4 12 17 / 62%);
+  gap: 11px;
+  margin: 0;
 }
 
 .reserves-board__figures dt {
   color: var(--muted);
-  font-size: 0.74rem;
-  letter-spacing: 0.07em;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .reserves-board__figures dd {
-  margin: 8px 0 0;
+  margin: 3px 0 0;
   color: var(--gold-light);
   font-family: var(--font-display), Georgia, serif;
-  font-size: 1.7rem;
+  font-size: 1.32rem;
   line-height: 1;
 }
 
-.reserves-board__lower {
+.reserves-board__composition {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
-  gap: 18px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
 }
 
-.reserves-board__composition,
-.reserves-board__meta {
-  padding: 18px;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
-  background: rgb(4 12 17 / 62%);
-}
-
-.reserves-board__composition h3 {
-  margin-bottom: 14px;
-  color: var(--gold-light);
-  font-family: var(--font-sans), Arial, sans-serif;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
+/* Five equal arcs in the catalogue's own colours: the board's shares are
+   invented, so the ring shows its five segments without claiming any split. */
 .reserves-board__ring {
   display: grid;
-  width: 168px;
-  height: 168px;
+  width: 92px;
+  height: 92px;
   place-content: center;
   border-radius: 50%;
-  margin-inline: auto;
-  background:
-    radial-gradient(circle at center, var(--surface) 0 52%, transparent 52.5%),
-    conic-gradient(rgb(216 154 39 / 12%) 0 100%);
-  box-shadow: inset 0 0 0 1px var(--border-soft);
-  color: var(--muted);
-  font-size: 0.73rem;
-  letter-spacing: 0.05em;
-  text-align: center;
-  text-transform: uppercase;
+  background: conic-gradient(
+    #1f9c62 0deg 72deg,
+    #b32338 72deg 144deg,
+    #1f6fb8 144deg 216deg,
+    #9aa3a7 216deg 288deg,
+    #c9922c 288deg 360deg
+  );
+  opacity: 0.42;
 }
 
 .reserves-board__ring span {
-  max-width: 11ch;
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.reserves-board__legend {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reserves-board__legend li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #b6bdc0;
+  font-size: 0.72rem;
+}
+
+.reserves-board__swatch {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--swatch);
+  opacity: 0.55;
 }
 
 .reserves-board__meta {
   display: grid;
-  align-content: start;
-  gap: 12px;
-  margin: 0;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
 }
 
 .reserves-board__meta div {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 14px;
-  padding-bottom: 11px;
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.reserves-board__meta div:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
+  gap: 12px;
 }
 
 .reserves-board__meta dt {
   color: var(--muted);
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .reserves-board__meta dd {
   margin: 0;
-  color: #b0b7ba;
-  font-size: 0.8rem;
+  color: #9aa2a5;
+  font-size: 0.72rem;
   text-align: right;
 }
 
-.reserves-board__footnote {
-  margin: 20px 0 0;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-soft);
+/* The board's "VIEW ON BLOCKCHAIN" control. There is nothing to open, so it is
+   a disabled marker rather than a link that would 404. */
+.reserves-board__action {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  margin: 14px 0 0;
+}
+
+.reserves-board__action span {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.reserves-board__action small {
+  color: var(--muted);
+  font-size: 0.66rem;
 }
 
 .reserves-guarantee__grid {
@@ -17129,12 +17639,71 @@ li:hover > .section-plate {
 
 /* --- 4. Corporate Development ------------------------------------------ */
 
-.corporate-mission,
 .corporate-achievements,
 .corporate-status,
 .corporate-milestones,
 .corporate-verify {
   margin-top: var(--section-gap);
+}
+
+/* The board runs a short hero and tucks the mission band directly beneath it,
+   overlapping the plate's lower edge, so the two read as one block. */
+.corporate-hero {
+  min-height: min(clamp(360px, 27vw, 460px), 54vh);
+}
+
+.corporate-hero .hero__description {
+  margin-bottom: 0;
+}
+
+/* The shortened heroes above are desktop compositions. On a phone the plate is
+   contained as a band beneath the copy and needs its full height back. */
+@media (max-width: 760px) {
+  .verification-hero,
+  .custody-hero,
+  .reserves-hero,
+  .corporate-hero,
+  .resources-hero,
+  .documents-hero,
+  .whitepaper-hero,
+  .risk-hero,
+  .fraud-hero,
+  .participant-hero,
+  .program-hero,
+  .news-hero {
+    min-height: min(clamp(520px, 46vw, 760px), 72vh);
+  }
+}
+
+.corporate-mission {
+  margin-top: calc(var(--section-gap) * -0.34);
+  position: relative;
+  z-index: 3;
+}
+
+.corporate-mission__panel {
+  align-items: center;
+  padding: 16px clamp(18px, 1.8vw, 26px);
+}
+
+.corporate-mission__copy h2 {
+  margin-bottom: 6px;
+  font-size: clamp(0.95rem, 1.25vw, 1.08rem);
+}
+
+.corporate-mission__copy p {
+  font-size: 0.83rem;
+  line-height: 1.62;
+}
+
+.corporate-mission__marks li {
+  gap: 7px;
+  font-size: 0.66rem;
+}
+
+.corporate-mission__marks svg {
+  width: 24px;
+  height: 24px;
 }
 
 .corporate-mission__panel {
@@ -17291,6 +17860,37 @@ li:hover > .section-plate {
   align-self: flex-start;
 }
 
+/* Seven strands across, the way the board lays the row. */
+.corporate-achievement-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.corporate-achievement-grid > li {
+  padding: 18px 14px;
+  text-align: center;
+  align-items: center;
+}
+
+.corporate-achievement-grid svg {
+  margin-bottom: 10px;
+}
+
+.corporate-achievement-grid h3 {
+  margin-bottom: 7px;
+  font-size: clamp(0.76rem, 0.88vw, 0.85rem);
+}
+
+.corporate-achievement-grid p {
+  font-size: 0.73rem;
+  line-height: 1.48;
+}
+
+.corporate-achievements__intro {
+  margin-bottom: 20px;
+  font-size: 0.86rem;
+}
+
 .corporate-table__frame {
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -17307,10 +17907,21 @@ li:hover > .section-plate {
 
 .corporate-table th,
 .corporate-table td {
-  padding: 14px 18px;
+  padding: 9px 16px;
   border-bottom: 1px solid var(--border-soft);
   text-align: left;
-  vertical-align: top;
+  vertical-align: middle;
+}
+
+.corporate-table tbody th {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corporate-table tbody th svg {
+  flex: 0 0 auto;
+  color: var(--gold-light);
 }
 
 .corporate-table thead th {
@@ -17324,14 +17935,14 @@ li:hover > .section-plate {
 
 .corporate-table tbody th {
   color: var(--ivory);
-  font-size: 0.87rem;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .corporate-table td {
   color: #b0b7ba;
-  font-size: 0.83rem;
-  line-height: 1.55;
+  font-size: 0.79rem;
+  line-height: 1.5;
 }
 
 .corporate-table tbody tr:last-child th,
@@ -17366,41 +17977,60 @@ li:hover > .section-plate {
   color: var(--muted);
 }
 
+/* The board's connected rail: one line running behind six circles. The line is
+   drawn on the list rather than between the items so it cannot fall out of
+   step, and it is inset by half a column at each end so it starts and stops at
+   the first and last circle instead of at the panel edge. */
 .corporate-timeline {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   margin: 0;
-  padding: 0;
+  padding: 26px 16px 24px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
   list-style: none;
 }
 
+.corporate-timeline::before {
+  position: absolute;
+  top: 44px;
+  right: calc(16px + 100% / 12);
+  left: calc(16px + 100% / 12);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-dark) 6%,
+    var(--gold-dark) 94%,
+    transparent
+  );
+  content: "";
+}
+
 .corporate-timeline > li {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 26px 16px 24px;
+  padding: 0 10px;
   text-align: center;
 }
 
-.corporate-timeline > li + li {
-  border-left: 1px solid var(--border-soft);
-}
-
 .corporate-timeline__dot {
+  position: relative;
+  z-index: 2;
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   place-content: center;
   border: 1px solid var(--gold-dark);
   border-radius: 50%;
   margin-bottom: 14px;
-  background: rgb(216 154 39 / 8%);
+  background: radial-gradient(circle, rgb(16 34 42 / 98%), rgb(2 8 12 / 98%));
+  box-shadow: 0 0 0 5px var(--surface-2);
   color: var(--gold-light);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.02rem;
 }
 
 .corporate-timeline h3 {
@@ -17549,6 +18179,11 @@ li:hover > .section-plate {
   gap: 18px;
 }
 
+.news-state {
+  grid-column: 1;
+  margin-top: 18px;
+}
+
 .news-panel--highlights {
   grid-column: 1;
   margin-top: 18px;
@@ -17560,7 +18195,7 @@ li:hover > .section-plate {
 
 .news-rail {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
 }
 
 .news-state h2 {
@@ -17575,6 +18210,171 @@ li:hover > .section-plate {
   color: #b6bdc0;
   font-size: 0.92rem;
   line-height: 1.78;
+}
+
+/* The board's filter rail: pills across the page directly under the hero. None
+   of them filters anything, because there is nothing to filter, so they are
+   markers rather than controls. */
+.news-rail-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news-rail-filters li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  background: rgb(4 12 17 / 62%);
+  color: #b6bdc0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.news-rail-filters svg {
+  flex: 0 0 auto;
+  color: var(--gold-light);
+}
+
+.news-rail-filters__all {
+  border-color: var(--gold-light) !important;
+  background: linear-gradient(110deg, #9e6814, #f0c15d 48%, #c78618) !important;
+  color: #0a0b09 !important;
+  font-weight: 700 !important;
+}
+
+.news-rail-filters__all svg {
+  color: #0a0b09 !important;
+}
+
+/* The editorial column. Each entry keeps the board's proportions — a media
+   block beside a dated headline and standfirst — with every field empty. */
+.news-articles {
+  grid-column: 1;
+}
+
+.news-articles ol {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: linear-gradient(150deg, rgb(9 21 28 / 66%), rgb(2 8 12 / 66%));
+}
+
+.news-entry--featured {
+  grid-template-columns: minmax(0, 1fr);
+  border-color: var(--border);
+}
+
+.news-entry__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border: 1px dashed var(--border-soft);
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgb(255 255 255 / 2%) 0 6px,
+      transparent 6px 12px
+    ),
+    rgb(4 12 17 / 62%);
+}
+
+.news-entry--featured .news-entry__media {
+  aspect-ratio: 21 / 7;
+}
+
+.news-entry__flag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  background: linear-gradient(110deg, #9e6814, #f0c15d 48%, #c78618);
+  color: #0a0b09;
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.news-entry__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.news-entry__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.news-entry__category {
+  color: var(--gold-light);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.news-entry__date {
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+/* Placeholder type: shaped like a headline and a standfirst, greyed to the
+   point where it cannot be read as a real one. */
+.news-entry__headline {
+  margin: 0;
+  color: rgb(243 239 230 / 22%);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.02rem, 1.5vw, 1.24rem);
+  line-height: 1.2;
+}
+
+.news-entry__standfirst {
+  margin: 0;
+  color: rgb(176 183 186 / 20%);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.news-entry__empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.71rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.news-entry__empty svg {
+  color: var(--gold-dark);
 }
 
 .news-state__note a,
@@ -17640,6 +18440,114 @@ li:hover > .section-plate {
   margin-top: var(--section-gap);
 }
 
+/* The resource, document, whitepaper, risk, anti-fraud, portal and programme
+   boards all run a shorter hero than the platform pages: copy on the left, the
+   composition on the right, and the first section starting high. */
+.resources-hero,
+.documents-hero,
+.whitepaper-hero,
+.risk-hero,
+.fraud-hero,
+.participant-hero,
+.program-hero,
+.news-hero {
+  min-height: min(clamp(370px, 28vw, 470px), 56vh);
+}
+
+.resources-hero .hero__description,
+.documents-hero .hero__description,
+.whitepaper-hero .hero__description,
+.risk-hero .hero__description,
+.fraud-hero .hero__description,
+.participant-hero .hero__description,
+.program-hero .hero__description,
+.news-hero .hero__description {
+  margin-bottom: 16px;
+}
+
+/* The topic row is one bordered panel divided by hairlines on the board, not
+   seven separate cards. */
+.resources-topic-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.resources-topic-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 20px 14px;
+  text-align: center;
+  align-items: center;
+}
+
+.resources-topic-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.resources-topic-grid > li:hover {
+  transform: none;
+}
+
+.resources-topic-grid > li > a,
+.resources-topic-grid > li > div {
+  align-items: center;
+  text-align: center;
+  transition: transform 320ms var(--ease-premium);
+}
+
+.resources-topic-grid > li:hover > a {
+  transform: translateY(-3px);
+}
+
+.resources-topic-grid h3 {
+  font-size: clamp(0.74rem, 0.86vw, 0.83rem);
+}
+
+.resources-topic-grid p {
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.resources-topic--planned .resources-status {
+  align-self: center;
+}
+
+/* Six library cards across, as the board rows them: the card grammar below is
+   sized for that row rather than for a three-across block. */
+.resource-card__image {
+  aspect-ratio: 4 / 3;
+}
+
+.resource-card__kind {
+  margin: 13px 14px 6px;
+  font-size: 0.64rem;
+}
+
+.resource-card h3 {
+  margin: 0 14px 6px;
+  font-size: 0.87rem;
+  line-height: 1.24;
+}
+
+.resource-card__body {
+  margin: 0 14px 12px;
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
+.resource-card .resource-card__action,
+.resource-card .resources-status {
+  margin: auto 14px 14px;
+  font-size: 0.75rem;
+}
+
 .resources-hero__callout,
 .documents-hero__callout,
 .whitepaper-hero__callout,
@@ -17701,8 +18609,8 @@ li:hover > .section-plate {
 
 .resources-library__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -17916,6 +18824,43 @@ li:hover > .section-plate {
   margin-top: var(--section-gap);
 }
 
+/* Like Resources, the board draws this row as one bordered panel divided by
+   hairlines rather than six separate cards. */
+.documents-category-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.documents-category-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 20px 16px;
+}
+
+.documents-category-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.documents-category-grid > li:hover {
+  transform: none;
+}
+
+.documents-category-grid h3 {
+  font-size: clamp(0.76rem, 0.88vw, 0.85rem);
+}
+
+.documents-category-grid p {
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
 .documents-library__grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -18033,6 +18978,45 @@ li:hover > .section-plate {
 .whitepaper-readnow,
 .whitepaper-closing {
   margin-top: var(--section-gap);
+}
+
+/* The board draws the seven chapters as one bordered panel divided by
+   hairlines, centred, the same grammar as the topic and category rows. */
+.whitepaper-chapter-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.whitepaper-chapter-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 20px 13px;
+  align-items: center;
+  text-align: center;
+}
+
+.whitepaper-chapter-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.whitepaper-chapter-grid > li:hover {
+  transform: none;
+}
+
+.whitepaper-chapter-grid h3 {
+  font-size: clamp(0.74rem, 0.86vw, 0.83rem);
+}
+
+.whitepaper-chapter-grid p {
+  font-size: 0.72rem;
+  line-height: 1.45;
 }
 
 .whitepaper-card p {
@@ -18179,6 +19163,104 @@ li:hover > .section-plate {
   margin-top: var(--section-gap);
 }
 
+/* The board gives this page and the anti-fraud page a teal register: teal
+   section headings and teal iconography over the usual gold. It is the one
+   accent shift in the archive and it is doing a job — these are the two pages
+   that warn rather than sell. */
+.risk-page .section-heading h2,
+.fraud-page .section-heading h2 {
+  color: var(--teal);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .risk-page .motion-reveal.is-visible .section-heading h2,
+  .fraud-page .motion-reveal.is-visible .section-heading h2 {
+    background: linear-gradient(
+      100deg,
+      var(--teal) 0%,
+      var(--teal) 40%,
+      #d8fff7 50%,
+      var(--teal) 60%,
+      var(--teal) 100%
+    );
+    background-clip: text;
+    background-size: 300% 100%;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.risk-page .section-heading h2::before,
+.risk-page .section-heading h2::after,
+.fraud-page .section-heading h2::before,
+.fraud-page .section-heading h2::after {
+  color: var(--teal);
+}
+
+/* Twelve factors as one bordered panel, six across and two deep. */
+.risk-factor-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.risk-factor-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 20px 15px;
+  align-items: center;
+  text-align: center;
+}
+
+.risk-factor-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.risk-factor-grid > li:nth-child(7) {
+  border-left: 0;
+}
+
+.risk-factor-grid > li:nth-child(n + 7) {
+  border-top: 1px solid var(--border-soft);
+}
+
+.risk-factor-grid svg {
+  color: var(--teal);
+  filter: drop-shadow(0 0 12px rgb(40 203 184 / 20%));
+}
+
+.risk-factor-grid h3 {
+  font-size: clamp(0.74rem, 0.85vw, 0.82rem);
+}
+
+.risk-factor-grid p {
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.risk-read__panel h2,
+.risk-questions__panel h2 {
+  color: var(--teal);
+}
+
+.risk-read__panel > svg,
+.risk-questions__panel > svg {
+  color: var(--teal);
+}
+
+.risk-closing__grid svg {
+  color: var(--teal);
+}
+
+.risk-closing__grid h3 {
+  color: var(--teal);
+}
+
 .risk-factor-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -18296,6 +19378,63 @@ li:hover > .section-plate {
 .fraud-report,
 .fraud-closing {
   margin-top: var(--section-gap);
+}
+
+/* The board runs the whole anti-fraud page in the teal register — headings,
+   card titles and iconography — reserving gold for the channel list and the
+   report action. See the note on .risk-page above. */
+.fraud-page .trust-pillars h3,
+.fraud-scam-grid h3,
+.fraud-protect-grid h3,
+.fraud-channels__lead h2 {
+  color: var(--teal);
+}
+
+.fraud-page .trust-pillars svg,
+.fraud-scam-grid svg,
+.fraud-protect-grid svg {
+  color: var(--teal);
+  filter: drop-shadow(0 0 12px rgb(40 203 184 / 20%));
+}
+
+.fraud-page .trust-pillars li:hover svg {
+  filter: drop-shadow(0 0 18px rgb(40 203 184 / 45%));
+}
+
+/* Ten scams as one bordered panel, five across and two deep. */
+.fraud-scam-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.fraud-scam-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 18px 16px;
+}
+
+.fraud-scam-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.fraud-scam-grid > li:nth-child(6) {
+  border-left: 0;
+}
+
+.fraud-scam-grid > li:nth-child(n + 6) {
+  border-top: 1px solid var(--border-soft);
+}
+
+.fraud-scam-grid p {
+  font-size: 0.74rem;
+  line-height: 1.5;
 }
 
 .fraud-scam-grid {
@@ -18544,6 +19683,72 @@ a.fraud-channel__value {
   margin-top: var(--section-gap);
 }
 
+/* Seven capabilities as one bordered panel, the same grammar the rest of the
+   archive uses for a wide feature row. */
+.participant-capability-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgb(9 21 28 / 82%), rgb(2 8 12 / 82%));
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 2%),
+    0 18px 55px rgb(0 0 0 / 20%);
+}
+
+.participant-capability-grid > li {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 20px 13px;
+  align-items: center;
+  text-align: center;
+}
+
+.participant-capability-grid > li + li {
+  border-left: 1px solid var(--border-soft);
+}
+
+.participant-capability-grid > li:hover {
+  transform: none;
+}
+
+.participant-capability-grid h3 {
+  font-size: clamp(0.72rem, 0.84vw, 0.81rem);
+}
+
+.participant-capability-grid p {
+  font-size: 0.71rem;
+  line-height: 1.45;
+}
+
+/* The board bands the access list, the audience list and the preview across
+   one row, with the preview taking roughly half of it. */
+.participant-detail {
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 0.72fr) minmax(0, 1.5fr);
+}
+
+.participant-card {
+  padding: clamp(18px, 1.7vw, 24px);
+}
+
+.participant-card__title {
+  margin-bottom: 12px;
+  font-size: clamp(0.95rem, 1.25vw, 1.06rem);
+}
+
+.participant-access li,
+.participant-audience p {
+  font-size: 0.78rem;
+}
+
+.participant-audience h3 {
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 /* Two cards and a full-width preview, not three cards: the shared three-column
    rule left a third of the row empty above the preview. */
 .participant-detail {
@@ -18554,143 +19759,202 @@ a.fraud-channel__value {
   grid-column: 1 / -1;
 }
 
-/* The board's dashboard is redrawn rather than shown as a screenshot, so every
-   value can be left blank instead of invented. */
+/* The board's dashboard is rebuilt as markup rather than placed as a
+   screenshot, so every cell can be left blank instead of invented. The shell is
+   the board's: a brand bar with account controls, a left nav with one view
+   active, and the asset table. */
 .portal-preview {
-  display: grid;
-  grid-template-columns: 172px minmax(0, 1fr);
   overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: rgb(3 10 14 / 88%);
+  box-shadow: 0 22px 60px rgb(0 0 0 / 40%);
+}
+
+.portal-preview__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgb(6 16 22 / 82%);
+}
+
+.portal-preview__brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.92rem;
+}
+
+.portal-preview__brand img {
+  width: 22px;
+  height: auto;
+}
+
+.portal-preview__controls {
+  display: flex;
+  gap: 8px;
+}
+
+.portal-preview__controls i {
+  display: block;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--border-soft);
-  border-radius: 8px;
-  background: rgb(3 10 14 / 82%);
+  border-radius: 50%;
+}
+
+.portal-preview__shell {
+  display: grid;
+  grid-template-columns: 178px minmax(0, 1fr);
 }
 
 .portal-preview__nav {
   display: grid;
   align-content: start;
-  gap: 3px;
+  gap: 2px;
   margin: 0;
-  padding: 16px 12px;
+  padding: 14px 10px;
   border-right: 1px solid var(--border-soft);
-  background: rgb(6 16 22 / 72%);
+  background: rgb(6 16 22 / 62%);
   list-style: none;
 }
 
 .portal-preview__nav li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 8px 11px;
   border-radius: 4px;
   color: var(--muted);
   font-size: 0.76rem;
 }
 
-.portal-preview__nav li:first-child {
+.portal-preview__nav li span {
+  width: 14px;
+  height: 14px;
+  border: 1px solid currentcolor;
+  border-radius: 50%;
+  opacity: 0.55;
+}
+
+.portal-preview__nav li.is-active {
   background: rgb(216 154 39 / 10%);
   color: var(--gold-light);
 }
 
+.portal-preview__nav li.is-active span {
+  opacity: 1;
+}
+
 .portal-preview__body {
-  display: grid;
-  gap: 14px;
-  padding: 18px;
+  padding: 16px 18px 18px;
 }
 
-.portal-preview__summary {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
+.portal-preview__view {
+  margin: 0 0 12px;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.06rem;
 }
 
-.portal-preview__summary div {
-  padding: 14px 15px;
+/* The table is wider than a phone; it scrolls inside its own frame rather than
+   widening the page, and the frame is focusable so the scroll is reachable
+   from the keyboard. */
+.portal-preview__frame {
+  overflow-x: auto;
   border: 1px solid var(--border-soft);
   border-radius: 6px;
-  background: rgb(6 16 22 / 62%);
+  background: rgb(6 16 22 / 52%);
+  -webkit-overflow-scrolling: touch;
 }
 
-.portal-preview__summary dt {
-  color: var(--muted);
-  font-size: 0.71rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.portal-preview__table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
 }
 
-.portal-preview__summary dd {
-  margin: 7px 0 5px;
-  color: var(--gold-light);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.35rem;
-  line-height: 1;
+.portal-preview__table th,
+.portal-preview__table td {
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: middle;
 }
 
-.portal-preview__summary p {
-  margin: 0;
+.portal-preview__table thead th {
+  border-bottom: 1px solid var(--border-soft);
   color: var(--muted);
   font-size: 0.7rem;
-  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.portal-preview__chart p,
-.portal-preview__table > p {
-  margin: 0 0 9px;
+.portal-preview__table tbody tr + tr th,
+.portal-preview__table tbody tr + tr td {
+  border-top: 1px solid var(--border-soft);
+}
+
+.portal-preview__table tbody th {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ivory);
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.portal-preview__table tbody th small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.portal-preview__token {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 34% 30%,
+    rgb(255 255 255 / 45%),
+    var(--token) 62%
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--token) 45%, transparent);
+}
+
+.portal-preview__table td {
+  color: #b0b7ba;
+  font-size: 0.77rem;
+}
+
+.portal-preview__blank span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.portal-preview__action {
+  display: block;
+  width: fit-content;
+  margin: 14px auto 0;
+  padding: 8px 20px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
   color: var(--gold-light);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-}
-
-.portal-preview__plot {
-  display: grid;
-  height: 132px;
-  place-content: center;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
-  background:
-    repeating-linear-gradient(
-      to right,
-      rgb(255 255 255 / 3%) 0 1px,
-      transparent 1px 52px
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      rgb(255 255 255 / 3%) 0 1px,
-      transparent 1px 33px
-    ),
-    rgb(6 16 22 / 62%);
-  color: var(--muted);
-  font-size: 0.76rem;
-}
-
-.portal-preview__columns {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 11px 14px;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px 6px 0 0;
-  background: rgb(6 16 22 / 72%);
-  list-style: none;
-}
-
-.portal-preview__columns li {
-  color: var(--muted);
-  font-size: 0.71rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.portal-preview__empty {
-  margin: 0;
-  padding: 22px 14px;
-  border: 1px solid var(--border-soft);
-  border-top: 0;
-  border-radius: 0 0 6px 6px;
-  background: rgb(6 16 22 / 42%);
-  color: var(--muted);
-  font-size: 0.79rem;
-  text-align: center;
 }
 
 .participant-security {
@@ -18784,6 +20048,27 @@ a.fraud-channel__value {
 .program-notice__panel {
   border-color: var(--border);
   border-left: 3px solid var(--gold);
+}
+
+/* The board runs this hero tight: two short paragraphs and the discount badge,
+   with the "why participate" row starting high. The copy column is capped so
+   the paragraphs break where the board breaks them. */
+.program-hero .hero__inner {
+  padding-block: clamp(24px, 2.2vw, 40px);
+}
+
+.program-hero .hero__copy {
+  max-width: 520px;
+}
+
+.program-hero .hero__description {
+  margin-bottom: 12px;
+  font-size: clamp(0.92rem, 1vw, 0.97rem);
+  line-height: 1.68;
+}
+
+.program-hero__tagline {
+  margin-bottom: 12px;
 }
 
 .program-hero__badge {
@@ -19141,42 +20426,127 @@ a.fraud-channel__value {
     border-top: 1px solid var(--border-soft);
   }
 
-  .whitepaper-chapter-grid,
-  .participant-capability-grid,
-  .resources-topic-grid,
   .news-category-grid,
-  .documents-category-grid,
-  .risk-factor-grid,
   .documents-library__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .corporate-achievement-grid,
+  .participant-capability-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .participant-capability-grid > li:nth-child(5) {
+    border-left: 0;
+  }
+
+  .participant-capability-grid > li:nth-child(n + 5) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .participant-detail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .participant-card--preview {
+    grid-column: 1 / -1;
+  }
+
+  .risk-factor-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .risk-factor-grid > li:nth-child(7) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .risk-factor-grid > li:nth-child(4n + 1) {
+    border-left: 0;
+  }
+
+  .risk-factor-grid > li:nth-child(n + 5) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .whitepaper-chapter-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .whitepaper-chapter-grid > li:nth-child(5) {
+    border-left: 0;
+  }
+
+  .whitepaper-chapter-grid > li:nth-child(n + 5) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .documents-category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .documents-category-grid > li:nth-child(4) {
+    border-left: 0;
+  }
+
+  .documents-category-grid > li:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .resources-topic-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .resources-topic-grid > li:nth-child(5) {
+    border-left: 0;
+  }
+
+  .resources-topic-grid > li:nth-child(n + 5) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .resources-library__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .corporate-achievement-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .documents-additional__grid,
-  .reserves-board__figures,
-  .portal-preview__summary,
   .whitepaper-readnow__panel ul {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .corporate-timeline {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px 0;
   }
 
-  .corporate-timeline > li:nth-child(4) {
-    border-left: 0;
+  /* The rail only reads across one row; once the six wrap it is dropped. */
+  .corporate-timeline::before {
+    display: none;
   }
 
-  .corporate-timeline > li:nth-child(n + 4) {
-    border-top: 1px solid var(--border-soft);
-  }
-
-  .fraud-scam-grid,
   .fraud-protect-grid,
   .program-phases,
   .participant-step-flow,
   .program-steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .fraud-scam-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .fraud-scam-grid > li:nth-child(6) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .fraud-scam-grid > li:nth-child(3n + 1) {
+    border-left: 0;
+  }
+
+  .fraud-scam-grid > li:nth-child(n + 4) {
+    border-top: 1px solid var(--border-soft);
   }
 
   .fraud-protect-grid > li:nth-child(4),
@@ -19253,7 +20623,7 @@ a.fraud-channel__value {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .verification-hero__sample,
+  .verification-hero__stage,
   .custody-hero__cards,
   .reserves-hero__cards {
     grid-column: 1;
@@ -19262,53 +20632,70 @@ a.fraud-channel__value {
     max-width: 520px;
   }
 
+  /* Below the two-column hero the three objects stop overlapping and stack, so
+     none of them covers another's text on a narrow screen. */
+  .verification-hero__stage {
+    display: grid;
+    gap: 12px;
+    padding-bottom: 0;
+  }
+
+  .verification-card-report {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .verification-plate {
+    position: static;
+    width: 100%;
+  }
+
   .verification-hero__seal {
-    right: 8px;
-    bottom: -24px;
-    width: 86px;
-    height: 86px;
-    font-size: 0.54rem;
+    position: static;
+    justify-self: start;
+    width: 90px;
+    height: 90px;
+    font-size: 0.55rem;
   }
 
   .verification-layers,
   .custody-steps,
-  .reserves-steps,
+  .reserves-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .corporate-timeline {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px 0;
   }
 
   .verification-layers > li:nth-child(odd),
   .custody-steps > li:nth-child(odd),
-  .reserves-steps > li:nth-child(odd),
-  .corporate-timeline > li:nth-child(odd) {
+  .reserves-steps > li:nth-child(odd) {
     border-left: 0;
   }
 
   .verification-layers > li:nth-child(even),
   .custody-steps > li:nth-child(even),
-  .reserves-steps > li:nth-child(even),
-  .corporate-timeline > li:nth-child(even) {
+  .reserves-steps > li:nth-child(even) {
     border-left: 1px solid var(--border-soft);
   }
 
   .verification-layers > li:nth-child(n + 3),
   .custody-steps > li:nth-child(n + 3),
-  .reserves-steps > li:nth-child(n + 3),
-  .corporate-timeline > li:nth-child(n + 3) {
+  .reserves-steps > li:nth-child(n + 3) {
     border-top: 1px solid var(--border-soft);
   }
 
-  .verification-orbit {
-    gap: 10px;
+  .verification-orbit__ring {
+    aspect-ratio: 400 / 400;
   }
 
-  .verification-orbit__core {
-    position: static;
-    grid-column: 1 / -1;
-    justify-self: center;
-    transform: none;
+  .verification-orbit__gem {
+    width: 33%;
   }
 
+  .news-state,
   .news-panel--highlights,
   .news-rail {
     grid-column: 1;
@@ -19317,6 +20704,16 @@ a.fraud-channel__value {
 
   .news-panel--highlights .news-highlights {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .news-entry,
+  .news-entry--featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .news-entry__media,
+  .news-entry--featured .news-entry__media {
+    aspect-ratio: 16 / 7;
   }
 
   .verification-detail,
@@ -19330,8 +20727,7 @@ a.fraud-channel__value {
   .resources-lower,
   .news-body,
   .risk-addendum,
-  .fraud-channels__warnings,
-  .reserves-board__lower {
+  .fraud-channels__warnings {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -19342,19 +20738,107 @@ a.fraud-channel__value {
     grid-column: auto;
   }
 
-  .whitepaper-chapter-grid,
-  .participant-capability-grid,
-  .resources-topic-grid,
+  .resources-topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resources-topic-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .resources-topic-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .resources-topic-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .documents-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .documents-category-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .documents-category-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .documents-category-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .whitepaper-chapter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .whitepaper-chapter-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .whitepaper-chapter-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .whitepaper-chapter-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .risk-factor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .risk-factor-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .risk-factor-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .risk-factor-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .fraud-scam-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fraud-scam-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .fraud-scam-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .fraud-scam-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .participant-capability-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .participant-capability-grid > li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .participant-capability-grid > li:nth-child(even) {
+    border-left: 1px solid var(--border-soft);
+  }
+
+  .participant-capability-grid > li:nth-child(n + 3) {
+    border-top: 1px solid var(--border-soft);
+  }
+
   .news-category-grid,
-  .documents-category-grid,
-  .risk-factor-grid,
   .documents-library__grid,
   .corporate-achievement-grid,
   .documents-additional__grid,
-  .reserves-board__figures,
-  .portal-preview__summary,
   .whitepaper-readnow__panel ul,
-  .fraud-scam-grid,
   .documents-published__grid,
   .corporate-verify__grid,
   .risk-note-grid,
@@ -19468,7 +20952,7 @@ a.fraud-channel__value {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .portal-preview {
+  .portal-preview__shell {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -19485,7 +20969,6 @@ a.fraud-channel__value {
   .verification-layers,
   .custody-steps,
   .reserves-steps,
-  .corporate-timeline,
   .fraud-protect-grid,
   .program-phases,
   .participant-step-flow,
@@ -19496,7 +20979,6 @@ a.fraud-channel__value {
   .verification-layers > li,
   .custody-steps > li,
   .reserves-steps > li,
-  .corporate-timeline > li,
   .fraud-protect-grid > li,
   .program-phases > li,
   .participant-step-flow > li,
@@ -19507,7 +20989,6 @@ a.fraud-channel__value {
   .verification-layers > li + li,
   .custody-steps > li + li,
   .reserves-steps > li + li,
-  .corporate-timeline > li + li,
   .fraud-protect-grid > li + li,
   .program-phases > li + li,
   .participant-step-flow > li + li,
@@ -19529,9 +21010,69 @@ a.fraud-channel__value {
   .documents-library__grid,
   .corporate-achievement-grid,
   .documents-additional__grid,
-  .reserves-board__figures,
-  .portal-preview__summary,
   .whitepaper-readnow__panel ul,
+  .resources-topic-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .resources-topic-grid > li {
+    border-left: 0 !important;
+  }
+
+  .resources-topic-grid > li + li,
+  .documents-category-grid > li + li,
+  .whitepaper-chapter-grid > li + li {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .whitepaper-chapter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .whitepaper-chapter-grid > li,
+  .risk-factor-grid > li,
+  .participant-capability-grid > li {
+    border-left: 0 !important;
+  }
+
+  .corporate-timeline {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .participant-capability-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .participant-capability-grid > li + li {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .risk-factor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .risk-factor-grid > li + li,
+  .fraud-scam-grid > li + li {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .fraud-scam-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fraud-scam-grid > li {
+    border-left: 0 !important;
+  }
+
+  .documents-category-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .documents-category-grid > li {
+    border-left: 0 !important;
+  }
+
   .fraud-scam-grid,
   .documents-published__grid,
   .corporate-verify__grid,
@@ -19539,9 +21080,19 @@ a.fraud-channel__value {
   .resources-library__grid,
   .program-faq__list,
   .resources-benefits,
-  .portal-preview__columns,
   .news-panel--highlights .news-highlights {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Figures beside a donut do not fit a phone column; they stack. */
+  .reserves-board__grid,
+  .reserves-board__composition {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .reserves-board__legend {
+    justify-items: start;
   }
 
   .reserves-guarantee__grid,
@@ -19612,20 +21163,21 @@ a.fraud-channel__value {
     border-bottom: 0;
   }
 
-  .verification-hero__seal {
+  /* At phone width the ring cannot hold six labels around a gem, so it becomes
+     the two plain columns the labels were always readable as. */
+  .verification-orbit__ring {
+    aspect-ratio: auto;
+  }
+
+  .verification-orbit__lines,
+  .verification-orbit__gem {
+    display: none;
+  }
+
+  .verification-orbit__nodes {
     position: static;
-    width: 92px;
-    height: 92px;
-    margin: 16px auto 0;
-  }
-
-  .verification-sample__note {
-    padding-right: 0;
-  }
-
-  .reserves-board__ring {
-    width: 148px;
-    height: 148px;
+    grid-template-rows: none;
+    gap: 14px 10px;
   }
 
   .participant-security__image,

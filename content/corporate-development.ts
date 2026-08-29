@@ -78,7 +78,7 @@ export interface Achievement {
 export const achievementsSectionTitle = "WHERE THINGS STAND";
 
 export const achievementsIntro =
-  "Seven strands of work, described as they are rather than as a scoreboard. Where a strand depends on a counterparty that has not been appointed, it says so.";
+  "Seven strands of work, described as they are rather than as a scoreboard.";
 
 export const achievements: readonly Achievement[] = [
   {
@@ -132,6 +132,19 @@ export interface Initiative {
   readonly status: InitiativeStatus;
   readonly target: string;
 }
+
+/** Marks for the table's first column, as the board sets one against each row. */
+export const initiativeIconIds = [
+  "legal",
+  "supply",
+  "custody",
+  "platform",
+  "tokenization",
+  "marketplace",
+  "mobile",
+  "expansion",
+  "redemption",
+] as const;
 
 export const statusTable = {
   title: "DEVELOPMENT STATUS OVERVIEW",

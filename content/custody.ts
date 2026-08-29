@@ -266,6 +266,7 @@ export const proofPanel = {
       label: "Reserves that a holder can check without asking us",
     },
   ] as const satisfies readonly ProofCheck[],
+  scanLabel: "Scan to view a sample passport",
   link: {
     label: "See a sample Digital Asset Passport",
     href: "/digital-asset-passports",
