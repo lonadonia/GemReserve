@@ -122,16 +122,21 @@ function gemreserve_clear_login_failures(): void
 }
 add_action('wp_login', 'gemreserve_clear_login_failures');
 
-/** Security headers, matching what the Next.js deployment sends. */
-function gemreserve_security_headers(array $headers): array
-{
-    $headers['X-Content-Type-Options'] = 'nosniff';
-    $headers['X-Frame-Options'] = 'SAMEORIGIN';
-    $headers['Referrer-Policy'] = 'strict-origin-when-cross-origin';
-    $headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=(), payment=()';
-    return $headers;
-}
-add_filter('wp_headers', 'gemreserve_security_headers');
+/**
+ * Security headers are set at the edge, not here.
+ *
+ * deploy/nginx-wordpress.conf sends the full set — CSP, HSTS, nosniff,
+ * X-Frame-Options, Referrer-Policy, Permissions-Policy — with `always`, so it
+ * covers every response including the 403s for blocked paths and the 404s
+ * WordPress never sees. This filter used to add four of those a second time,
+ * which put two X-Frame-Options and two Referrer-Policy headers on every page
+ * and, worse, two DIFFERENT Permissions-Policy values: the vhost also denies
+ * usb=(), and a browser reading two policies for the same feature set is
+ * being asked to guess. One header, one place to change it.
+ *
+ * If this site is ever served by something other than that vhost, the header
+ * set has to move with it.
+ */
 
 /** Uploads: no SVG, which is a script-execution vector dressed as an image. */
 function gemreserve_restrict_uploads(array $mimes): array
