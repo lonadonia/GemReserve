@@ -1225,6 +1225,32 @@ h3 {
   font-size: inherit;
 }
 
+/* A status word in the figure slot.
+
+   The rules above set the figure at up to 2.17rem with white-space: nowrap,
+   which is right for "25+" and wrong for "Evidence-controlled" — in a
+   six-column strip a word at that size runs straight out of its cell. These
+   cards keep their icon, their position and the panel's spacing; only the type
+   scale changes, because a word is read, not counted. */
+.metric-item--textual dt {
+  font-size: clamp(0.92rem, 1.15vw, 1.12rem);
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* A flex child will not shrink below its content's minimum width unless it is
+   told it may. Without this the six-column strip pushes a long status word a
+   few pixels past its cell at 1024. */
+.metric-item--textual > div {
+  min-width: 0;
+}
+
+.metric-item--textual dd,
+.metric-item--textual dd small {
+  overflow-wrap: anywhere;
+}
+
 .image-with-glow {
   position: relative;
   min-height: 250px;

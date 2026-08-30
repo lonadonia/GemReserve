@@ -11,6 +11,11 @@ interface Metric {
   readonly detail?: string;
 }
 
+// A value with no digit in it is a status word, not a figure: "Listed",
+// "Pending". The figure type is 2.17rem and white-space: nowrap, which a word
+// overflows in a six-column strip, so those cards are marked for the smaller,
+// wrapping treatment in globals.css. Nothing else about the card changes —
+// same icon, same position, same panel.
 const metricIcons: readonly IconName[] = [
   "diamond",
   "certificate",
@@ -72,7 +77,14 @@ export function MetricStrip({
   return (
     <dl className={`metric-strip ${className}`.trim()}>
       {metrics.map((metric, index) => (
-        <div className="metric-item" key={metric.id}>
+        <div
+          className={
+            /\d/.test(metric.value)
+              ? "metric-item"
+              : "metric-item metric-item--textual"
+          }
+          key={metric.id}
+        >
           <LineIcon name={metricIcons[index % metricIcons.length]} size={34} />
           <div>
             <dt>

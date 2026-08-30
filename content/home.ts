@@ -289,6 +289,15 @@ export const homeCatalogPreviewItems = [
 
 export const homeCatalogPreviewActionLabel = "View All Gemstones";
 
+// Four figures were published here: "500+ Verified Gems", "20+ Gemstone
+// Types", "5 Secure Vaults" and "50+ Countries Served". None is supported, and
+// all four contradicted the numbers the same claims carried on /assets and
+// /gemstone-programs — 500+ against 1,850+, 20+ against 25+, 50 countries
+// against 18 — which is its own evidence that none was sourced.
+//
+// The ids stay: MetricStrip picks each card's icon by position, so the strip
+// keeps six cards, the same icons and the same layout. Only the claim changed,
+// and no figure replaced it.
 export const homeMetrics = [
   {
     id: "real-gemstones",
@@ -298,26 +307,26 @@ export const homeMetrics = [
   },
   {
     id: "verified-gems",
-    value: "500+",
-    label: "Verified Gems",
+    value: "Evidence-controlled",
+    label: "Gemstone Records",
     requiresClientVerification: true,
   },
   {
     id: "gemstone-types",
-    value: "20+",
+    value: "Published catalogue",
     label: "Gemstone Types",
     requiresClientVerification: true,
   },
   {
     id: "secure-vaults",
-    value: "5",
-    label: "Secure Vaults",
+    value: "Arrangements pending",
+    label: "Custody",
     requiresClientVerification: true,
   },
   {
     id: "countries-served",
-    value: "50+",
-    label: "Countries Served",
+    value: "Eligibility pending",
+    label: "Jurisdictions",
     requiresClientVerification: true,
   },
   {

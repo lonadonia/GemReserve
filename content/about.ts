@@ -165,6 +165,14 @@ export interface AboutStat {
  * estimated. They are stated on that board as present-tense operating numbers,
  * not projections, so they are the client's claims to stand behind.
  */
+// The same four figures /home published — 500+ verified gems, 20+ types, 5
+// vaults, 50+ countries — appeared here too, and the captions underneath made
+// them worse: "a global community of investors" and "institutional grade
+// security" read as descriptions of something operating today.
+//
+// Removed rather than reduced. Six cards, same ids, same icons, same captions
+// slot; the captions now describe what will be published rather than what is
+// claimed to exist. See content/home.ts.
 export const aboutStats: readonly AboutStat[] = [
   {
     id: "real-gemstones",
@@ -174,27 +182,27 @@ export const aboutStats: readonly AboutStat[] = [
   },
   {
     id: "verified-gems",
-    value: "500+",
-    label: "VERIFIED GEMS",
-    caption: "Independently verified and graded",
+    value: "Evidence-controlled",
+    label: "GEMSTONE RECORDS",
+    caption: "Each record carries its own evidence state",
   },
   {
     id: "gemstone-types",
-    value: "20+",
+    value: "Published catalogue",
     label: "GEMSTONE TYPES",
-    caption: "A diverse collection of precious stones",
+    caption: "Listed in the catalogue on this site",
   },
   {
     id: "secure-vaults",
-    value: "5",
-    label: "SECURE VAULTS",
-    caption: "Institutional grade security",
+    value: "Arrangements pending",
+    label: "CUSTODY",
+    caption: "Arrangements to be published before launch",
   },
   {
     id: "countries-served",
-    value: "50+",
-    label: "COUNTRIES SERVED",
-    caption: "A global community of investors",
+    value: "Eligibility pending",
+    label: "JURISDICTIONS",
+    caption: "Eligibility to be published before launch",
   },
   {
     id: "transparent",
