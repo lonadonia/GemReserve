@@ -95,8 +95,16 @@ function gemreserve_grant_submission_caps(): void
 }
 add_action('admin_init', 'gemreserve_grant_submission_caps');
 
-/** Field definitions per form. `required` is enforced server-side. */
-function gemreserve_form_fields(string $type): array
+/**
+ * Field definitions per form. `required` is enforced server-side.
+ *
+ * The waitlist has two surfaces. /early-participation asks for name, country
+ * and an explicit consent tick. The homepage signup is one email field and a
+ * button — that is the approved design, and validating it against fields it
+ * never renders rejected every submission from the site's primary call to
+ * action. The compact variant asks for what it shows.
+ */
+function gemreserve_form_fields(string $type, string $variant = ''): array
 {
     if ($type === 'gr_contact') {
         return [
@@ -108,11 +116,13 @@ function gemreserve_form_fields(string $type): array
             'message' => ['label' => 'Message', 'required' => true, 'max' => 5000, 'textarea' => true],
         ];
     }
+    $required = $variant !== 'compact';
+
     return [
-        'first_name' => ['label' => 'First name', 'required' => true, 'max' => 80],
-        'last_name' => ['label' => 'Last name', 'required' => true, 'max' => 80],
+        'first_name' => ['label' => 'First name', 'required' => $required, 'max' => 80],
+        'last_name' => ['label' => 'Last name', 'required' => $required, 'max' => 80],
         'email' => ['label' => 'Email', 'required' => true, 'email' => true, 'max' => 190],
-        'country' => ['label' => 'Country of residence', 'required' => true, 'max' => 80],
+        'country' => ['label' => 'Country of residence', 'required' => $required, 'max' => 80],
         'role' => ['label' => 'Joining as', 'required' => false, 'max' => 80],
     ];
 }
@@ -181,7 +191,8 @@ function gemreserve_handle_submission(): void
         return;
     }
 
-    $fields = gemreserve_form_fields($type);
+    $variant = sanitize_key(wp_unslash($_POST['gr_variant'] ?? ''));
+    $fields = gemreserve_form_fields($type, $variant);
     $values = [];
     $errors = [];
 
@@ -203,9 +214,15 @@ function gemreserve_handle_submission(): void
         $values[$key] = $value;
     }
 
-    // Consent is not optional and is recorded with the wording version in force,
-    // so what someone agreed to can be established later.
-    if (empty($_POST['consent'])) {
+    // Consent is recorded with the wording version in force, so what someone
+    // agreed to can be established later.
+    //
+    // The compact homepage signup renders no consent control, so there is no
+    // tick to demand. It is recorded as 'notice' rather than as an explicit
+    // agreement: writing '1' there would put a consent in the record that
+    // nobody ever gave, which is worse than recording the weaker truth.
+    $explicit_consent = !empty($_POST['consent']);
+    if (!$explicit_consent && $variant !== 'compact') {
         $errors[] = 'consent';
     }
 
@@ -248,7 +265,7 @@ function gemreserve_handle_submission(): void
     foreach ($values as $key => $value) {
         update_post_meta($post_id, "_gr_{$key}", $value);
     }
-    update_post_meta($post_id, '_gr_consent', '1');
+    update_post_meta($post_id, '_gr_consent', $explicit_consent ? '1' : 'notice');
     update_post_meta($post_id, '_gr_consent_version', gemreserve_setting('forms_consent_version'));
     update_post_meta($post_id, '_gr_submitted_at', gmdate('c'));
     update_post_meta($post_id, '_gr_source_page', esc_url_raw($source));
@@ -327,7 +344,11 @@ function gemreserve_render_submission(WP_Post $post): void
             . nl2br(esc_html((string) $v)) . '</td></tr>';
     }
     foreach ([
-        'Consent' => get_post_meta($post->ID, '_gr_consent', true) === '1' ? 'Given' : 'Not recorded',
+        'Consent' => match (get_post_meta($post->ID, '_gr_consent', true)) {
+            '1' => 'Given explicitly',
+            'notice' => 'Compact signup — no consent control shown',
+            default => 'Not recorded',
+        },
         'Consent version' => get_post_meta($post->ID, '_gr_consent_version', true),
         'Submitted (UTC)' => get_post_meta($post->ID, '_gr_submitted_at', true),
         'Source page' => get_post_meta($post->ID, '_gr_source_page', true),

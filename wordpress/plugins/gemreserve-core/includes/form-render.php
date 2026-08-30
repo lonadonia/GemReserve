@@ -34,13 +34,31 @@ function gemreserve_form_type_for(string $class): string
     return '';
 }
 
+/**
+ * Which variant of a form this markup is.
+ *
+ * The homepage waitlist is a compact, email-only signup: one field and a
+ * button, no name, no country, no consent checkbox. The full form on
+ * /early-participation asks for all of it. They post to the same handler, so
+ * the handler has to be told which one it is answering — otherwise the
+ * homepage form is validated against fields it does not have, and every
+ * submission from the site's primary call to action is rejected as invalid.
+ */
+function gemreserve_form_variant_for(string $class): string
+{
+    return str_contains($class, 'waitlist-form--compact') ? 'compact' : '';
+}
+
 /** The hidden block every form needs. */
-function gemreserve_form_tokens(string $type): string
+function gemreserve_form_tokens(string $type, string $variant = ''): string
 {
     ob_start();
     ?>
     <input type="hidden" name="action" value="gr_submit">
     <input type="hidden" name="gr_form" value="<?php echo esc_attr($type); ?>">
+    <?php if ($variant !== '') : ?>
+    <input type="hidden" name="gr_variant" value="<?php echo esc_attr($variant); ?>">
+    <?php endif; ?>
     <input type="hidden" name="gr_t" value="<?php echo esc_attr((string) time()); ?>">
     <?php wp_nonce_field('gr_form_' . $type, 'gr_nonce', false); ?>
     <?php
@@ -104,11 +122,12 @@ function gemreserve_activate_forms(string $html): string
             if ($type === '') {
                 return $m[0];
             }
+            $variant = gemreserve_form_variant_for($c[1] ?? '');
             // novalidate came from React; the browser's own validation is
             // wanted here as a first pass in front of the server's.
             $attrs = str_replace(['novalidate=""', 'novalidate'], '', $attrs);
             return '<form' . $attrs . ' action="' . $endpoint . '" method="post">'
-                . gemreserve_form_tokens($type)
+                . gemreserve_form_tokens($type, $variant)
                 . gemreserve_form_status();
         },
         $html
