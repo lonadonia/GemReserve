@@ -1,0 +1,17 @@
+/*
+Theme Name:  GemReserve
+Theme URI:   https://www.gemreserve.io
+Author:      GemReserve.io
+Description: The approved GemReserve.io design, ported from the Next.js implementation. Presentation only — the content model lives in the GemReserve Core plugin.
+Version:     1.0.0
+Requires PHP: 8.1
+License:     Proprietary
+Text Domain: gemreserve
+*/
+
+/*
+ * Intentionally empty. WordPress requires this file for the theme header; the
+ * actual stylesheet is assets/css/gemreserve.css, ported verbatim from the
+ * approved build and enqueued in functions.php. Keeping the port in one file
+ * means a future diff against the Next.js original stays readable.
+ */

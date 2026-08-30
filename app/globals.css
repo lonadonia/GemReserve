@@ -18193,6 +18193,12 @@ li:hover > .section-plate {
   gap: 18px;
 }
 
+/* One announcement has no rail to sit beside, so it takes the full measure.
+   The reading width is held by .news-single__body rather than the grid. */
+.news-body--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .news-state {
   grid-column: 1;
   margin-top: 18px;
@@ -18389,6 +18395,103 @@ li:hover > .section-plate {
 
 .news-entry__empty svg {
   color: var(--gold-dark);
+}
+
+/* A published announcement is not a placeholder.
+
+   The rules above deliberately grey the headline and standfirst to ~20% so an
+   empty slot cannot be misread as a real story. Once something is actually
+   published that dimming becomes a bug, so this restores full-strength type.
+   It has to sit below those rules to win: same specificity would not be
+   enough, and raising specificity by hand invites the next edit to lose. */
+.news-entry--published .news-entry__headline {
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.news-entry--published .news-entry__headline a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-entry--published .news-entry__headline a:hover,
+.news-entry--published .news-entry__headline a:focus-visible {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.news-entry--published .news-entry__standfirst {
+  color: var(--text);
+}
+
+/* A real cover image fills the media slot. An announcement published without
+   one keeps the dashed, hatched box: it is the archive's own way of saying
+   "nothing supplied here", and swapping it for a solid empty panel would read
+   as a broken image instead. */
+.news-entry__media--image {
+  overflow: hidden;
+  border-style: solid;
+  background: var(--ink-soft);
+}
+
+.news-entry__media--image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The single-announcement page: the news panel's own type, one column. */
+.news-single__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 74ch;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.news-single__standfirst {
+  margin: 0;
+  color: var(--ivory);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.06rem, 1.7vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.news-single__cover {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+}
+
+.news-single__cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.news-single__back {
+  margin-top: 6px;
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.news-single__back a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-single__back a:hover,
+.news-single__back a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .news-state__note a,

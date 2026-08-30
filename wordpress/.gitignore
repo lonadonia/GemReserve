@@ -1,0 +1,37 @@
+# Never commit a secret, a database, or anything a visitor uploaded.
+wp-config.php
+wp-salts.php
+.env
+.env.*
+!.env.example
+
+# Databases and dumps — these carry user data and password hashes.
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.sql.gz
+database/
+
+# Runtime state
+uploads/
+cache/
+backups/
+logs/
+*.log
+debug.log
+
+# Generated: copied in at deploy time from the Next.js tree. See
+# themes/gemreserve/assets/css/README.md.
+themes/gemreserve/assets/css/gemreserve.css
+themes/gemreserve/assets/images/
+themes/gemreserve/assets/brand/
+
+# WordPress core is installed reproducibly, never vendored.
+wp-admin/
+wp-includes/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.swp
