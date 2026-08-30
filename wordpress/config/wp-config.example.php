@@ -81,12 +81,21 @@
         error_log("GemReserve: {$source} is world-readable; expected 0640 root:www-data.");
     }
 
-    foreach (['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST'] as $key) {
+    // One resolver for every setting: a real environment variable wins over
+    // the file, so a systemd unit or a container can override any single value
+    // without editing anything on disk.
+    $resolve = static function (string $key) use ($env): ?string {
         $value = getenv($key);
         if ($value === false || $value === '') {
             $value = $env[$key] ?? null;
         }
-        if ($value === null || $value === '') {
+
+        return ($value === null || $value === '') ? null : $value;
+    };
+
+    foreach (['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST'] as $key) {
+        $value = $resolve($key);
+        if ($value === null) {
             // Fail closed. A half-configured database is how an install
             // silently reaches for the wrong one — or, worse, how a production
             // request ends up served from a staging database. The response
@@ -102,6 +111,45 @@
         }
         define($key, $value);
     }
+
+    // --- Site URLs --------------------------------------------------------
+    // These come from the same runtime file as the credentials. They used to
+    // read getenv() alone, which never sees a value parsed out of that file —
+    // so production resolved the staging fallback and WordPress generated
+    // every canonical, redirect and asset URL against 127.0.0.1:3200, no
+    // matter what the database said.
+    //
+    // A trailing slash is trimmed: WordPress expects these without one and
+    // emits doubled slashes if given one. A value that is not an absolute
+    // http(s) URL is treated as absent rather than trusted.
+    $url = static function (?string $value): ?string {
+        if ($value === null) {
+            return null;
+        }
+        $value = rtrim(trim($value), '/');
+
+        return preg_match('#^https?://[^/\s]+#i', $value) === 1 ? $value : null;
+    };
+
+    $home = $url($resolve('WP_HOME'));
+    $site = $url($resolve('WP_SITEURL'));
+
+    // The local fallback applies only when NEITHER is configured anywhere.
+    // Once either is set, a partial configuration completes itself from the
+    // other rather than dropping half the site onto localhost.
+    if ($home === null && $site === null) {
+        $home = 'http://127.0.0.1:3200';
+        $site = $home;
+    }
+    $home ??= $site;
+    $site ??= $home;
+
+    if (!defined('WP_HOME')) {
+        define('WP_HOME', $home);
+    }
+    if (!defined('WP_SITEURL')) {
+        define('WP_SITEURL', $site);
+    }
 })();
 
 define('DB_CHARSET', 'utf8mb4');
@@ -114,8 +162,8 @@ require_once __DIR__ . '/wp-salts.php';
 
 // --- Environment ----------------------------------------------------------
 define('WP_ENVIRONMENT_TYPE', getenv('GR_ENV') ?: 'production');
-define('WP_HOME', getenv('WP_HOME') ?: 'https://www.gemreserve.io');
-define('WP_SITEURL', WP_HOME);
+// WP_HOME and WP_SITEURL are resolved with the credentials above, from the
+// same runtime file. Nothing site-specific is hard-coded here.
 
 // --- Hardening ------------------------------------------------------------
 // No PHP editing from the dashboard, and no plugin or theme installs through

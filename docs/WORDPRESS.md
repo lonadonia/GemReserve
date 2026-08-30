@@ -360,6 +360,8 @@ and that is deliberate: this work is production *ready*, not production
    DB_USER=…
    DB_PASSWORD=…
    DB_HOST=127.0.0.1
+   WP_HOME=https://www.gemreserve.io
+   WP_SITEURL=https://www.gemreserve.io
    EOF
    chown root:www-data /etc/gemreserve/wordpress.env
    chmod 640 /etc/gemreserve/wordpress.env
@@ -368,6 +370,13 @@ and that is deliberate: this work is production *ready*, not production
    `root:www-data 0640` is the whole design: php-fpm reads it through the
    group, root owns it, and no other account on the host can open it. It is
    outside every web root and it is not in Git.
+
+   The two URLs live here for the same reason the credentials do: they are the
+   one thing that differs between this host and any other, and nothing about
+   them belongs in application source. `WP_SITEURL` resolves independently of
+   `WP_HOME` and falls back to it only when absent; the local
+   `http://127.0.0.1:3200` fallback applies only when neither is configured
+   anywhere. A real environment variable overrides the file for any single key.
 
    `wp-config.php` looks there first and never contains a password. It falls
    back to `~hamza/.gemreserve-wp-db.env` for staging only — production
@@ -415,15 +424,32 @@ and that is deliberate: this work is production *ready*, not production
    with two different `Referrer-Policy` values. The vhost defines the full set
    once instead.
 
-6. Confirm the deny rules are live. The single highest-value check: request
+6. **Relativise stored links** if this is a fresh import —
+   `wp eval-file wordpress/migrations/gr-relativise-urls.php --path=…`.
+
+   The importer wrote absolute URLs into the navigation and into some migrated
+   markup, built from `home_url()` at a time when that was the staging server.
+   205 rows carried `http://127.0.0.1:3200`, and because they are stored
+   strings rather than generated ones, setting `WP_HOME` does not touch them:
+   the canonical tag, `og:url` and every admin URL come out correct while every
+   link in the navigation still points at localhost. They become root-relative,
+   which works on any host and is what the rest of the markup already uses.
+
+   Check it with the page, not the constant:
+
+   ```bash
+   curl -s https://www.gemreserve.io/ | grep -c '127\.0\.0\.1'   # 0
+   ```
+
+7. Confirm the deny rules are live. The single highest-value check: request
    `/wp-content/database/.ht.sqlite` and confirm it is refused. It was
    downloadable on staging before `router.php` was hardened, and nginx has the
    same gap by default.
 
-7. Take a full backup — `deploy/gr-backup.sh` — and verify the dump restores.
+8. Take a full backup — `deploy/gr-backup.sh` — and verify the dump restores.
    An unverified backup is not a backup.
 
-8. Enrol at least one administrator in MFA, then set `GR_REQUIRE_MFA`.
+9. Enrol at least one administrator in MFA, then set `GR_REQUIRE_MFA`.
 
 ### The switch
 
