@@ -29,7 +29,7 @@ export const overviewHero: OverviewHeroContent = {
     "Built for the Future of Value.",
   ],
   description:
-    "GemReserve.io tokenizes the world's most valuable gemstones, backed by physical, investment-grade assets and secured by verifiable ownership, custody, and technology.",
+    "GemReserve.io tokenizes the world's most valuable gemstones on a physical asset framework, secured by verifiable ownership, custody, and technology.",
   crest: {
     wordmark: "GemReserve.io",
     lines: ["REAL ASSETS.", "REAL VALUE.", "REAL TRUST."],
@@ -48,7 +48,7 @@ export const overviewMarks: readonly OverviewMark[] = [
     id: "tangible-value",
     title: "TANGIBLE VALUE",
     description:
-      "Every token is backed by physical, investment-grade gemstones.",
+      "Each token is designed to link to a physical, investment-grade gemstone.",
   },
   {
     id: "secure-compliant",

@@ -49,9 +49,9 @@ export const reservesHero: ReservesHeroContent = {
   cards: [
     {
       id: "backed",
-      title: "100% REAL ASSETS",
+      title: "REAL ASSET LINKAGE",
       description:
-        "Every token is backed 1:1 by a physical gemstone in secure custody.",
+        "Each token is designed to link 1:1 to a physical gemstone in custody, subject to independent attestation.",
     },
     {
       id: "verified",
@@ -255,9 +255,9 @@ export const guaranteePanel = {
   guarantees: [
     {
       id: "backed",
-      title: "100% BACKED",
+      title: "ASSET-BACKED MODEL",
       description:
-        "Every token is backed 1:1 by a real, physical gemstone in secure custody.",
+        "Each token is designed to link 1:1 to a real, physical gemstone in custody, subject to independent attestation.",
     },
     {
       id: "transparency",

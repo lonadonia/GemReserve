@@ -30,7 +30,7 @@ export const buyersHero: AudienceHero = {
   titleLines: ["GEMSTONE BUYERS", "AND COLLECTORS"],
   tagline: "Authentic Gems. Verified Value. Global Access.",
   description:
-    "GemReserve.io gives buyers and collectors a secure, transparent, and intelligent way to acquire the world's finest gemstones, backed by physical assets, independent verification, and blockchain technology.",
+    "GemReserve.io gives buyers and collectors a secure, transparent, and intelligent way to acquire the world's finest gemstones, on a physical asset framework, with independent verification and blockchain technology.",
   heroBase: "/images/heroes/buyers-hero",
 };
 
@@ -51,7 +51,7 @@ export const buyersMarks: readonly AudienceMark[] = [
     id: "secure-ownership",
     title: "SECURE OWNERSHIP",
     description:
-      "Backed by physical assets in world-class vaults with full blockchain transparency.",
+      "A physical asset framework in world-class vaults, with full blockchain transparency.",
   },
   {
     id: "global-access",
@@ -130,7 +130,7 @@ export const buyersPassport = {
     { id: "quality", label: "Quality", value: "AAA" },
     { id: "token", label: "Token ID", value: "GR-SAPP-0001245" },
   ],
-  footnote: "Backed by Physical Asset",
+  footnote: "Physical asset linkage — verification-gated",
   verified: "Verified",
   action: "VIEW ASSET PASSPORT",
 };

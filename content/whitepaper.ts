@@ -227,9 +227,9 @@ export interface ClosingMark {
 export const closingMarks: readonly ClosingMark[] = [
   {
     id: "backed",
-    title: "BACKED BY REAL ASSETS",
+    title: "ASSET-BACKED ARCHITECTURE",
     description:
-      "Every token is backed by a real, independently verified gemstone.",
+      "Each token is designed to link to a real, independently verified gemstone.",
   },
   {
     id: "trust",

@@ -44,7 +44,7 @@ export const tokenizationHero: TokenizationHeroContent = {
     title: "Gemstone Token",
     reference: "GR-GEM-001245",
     meaning: "1 token = fractional ownership of a verified gemstone",
-    backing: "100% BACKED",
+    backing: "ASSET-BACKED",
     assurances: ["Verified", "Secured", "Transparent"],
   },
 };
@@ -129,7 +129,7 @@ export const tokenizationReasons: readonly TokenizationReason[] = [
   {
     id: "true-ownership",
     title: "TRUE OWNERSHIP",
-    description: "Own a real, verified gemstone backed 1:1 in secure vaults.",
+    description: "Own a verified gemstone linked 1:1 to its record, subject to verification.",
   },
   {
     id: "affordable-access",
@@ -140,7 +140,7 @@ export const tokenizationReasons: readonly TokenizationReason[] = [
     id: "transparency",
     title: "TRANSPARENCY",
     description:
-      "Every token is backed by on-chain data and independent verification.",
+      "Each token carries on-chain data and is gated on independent verification.",
   },
   {
     id: "global-market",
@@ -172,7 +172,7 @@ export const tokenizationStandards: readonly TokenizationStandard[] = [
   {
     id: "asset-backed",
     title: "ASSET BACKED",
-    description: "100% backed by physical gemstones in insured custody.",
+    description: "Asset-backed architecture — evidence and admission pending.",
   },
   {
     id: "audited",

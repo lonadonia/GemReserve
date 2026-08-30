@@ -215,7 +215,7 @@ export interface KycCta {
 
 export const kycCta: KycCta = {
   titleLead: "Secure. Compliant. Transparent.",
-  titleAccent: "Join a platform built on trust and backed by real assets.",
+  titleAccent: "Join a platform built on trust and a physical asset framework.",
   description:
     "Complete your KYC today and be ready for early access to exclusive opportunities at GemReserve.io.",
   buttonLabel: "Join the Waitlist",

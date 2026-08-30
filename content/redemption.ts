@@ -23,7 +23,7 @@ export const redemptionHero = {
   titleLines: ["Physical", "Redemption"] as const,
   tagline: "From Digital to Tangible.",
   description:
-    "At GemReserve.io, your ownership is real and redeemable. Every token is 100% backed by real, physical gemstones held in secure vaults. You have the ultimate right to redeem your assets and receive the physical gemstone you own.",
+    "At GemReserve.io, ownership is designed to be real and redeemable. Each token is designed to link to a physical gemstone held in secure vaults, subject to independent attestation. You have the ultimate right to redeem your assets and receive the physical gemstone you own.",
   callout: [
     {
       id: "your-choice",
@@ -32,7 +32,7 @@ export const redemptionHero = {
     },
     {
       id: "backed",
-      title: "100% BACKED. 100% REAL.",
+      title: "ASSET-BACKED. VERIFICATION-GATED.",
       description:
         "Every redemption is fulfilled from our actual, insured reserves.",
     },
@@ -132,7 +132,7 @@ export const redemptionGuarantee: readonly RedemptionGuaranteeItem[] = [
   },
   {
     id: "backed-reserves",
-    title: "100% Backed Reserves",
+    title: "Reserve Backing",
     description:
       "All redemptions are fulfilled only from real, allocated and audited gemstone reserves.",
   },
@@ -302,7 +302,7 @@ export const onChainStages: readonly OnChainStage[] = [
 export const readyToRedeem = {
   title: "READY TO REDEEM?",
   description:
-    "Turn your digital ownership into a tangible asset. Redeem with confidence, backed by real gemstones.",
+    "Turn your digital ownership into a tangible asset. Redemption is fulfilled from verified gemstone reserves.",
   actionLabel: "Start Redemption Request",
   supportingText: "Have questions?",
   supportLinkLabel: "Contact our support team",

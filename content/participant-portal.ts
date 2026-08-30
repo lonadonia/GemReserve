@@ -321,7 +321,7 @@ export const closingMarks: readonly ClosingMark[] = [
     id: "trusted",
     title: "TRUSTED",
     description:
-      "Backed by real assets, independent audits and proven processes.",
+      "A physical asset framework, subject to independent audit and attestation.",
   },
   {
     id: "accessible",

@@ -62,7 +62,7 @@ export const discountMarks: readonly DiscountMark[] = [
     id: "real-asset-backing",
     title: "REAL ASSET BACKING",
     description:
-      "Every token is 100% backed by physical gemstones stored in secure, insured vaults.",
+      "Each token is designed to link to a physical gemstone stored in secure, insured vaults.",
   },
   {
     id: "built-on-trust",
@@ -75,7 +75,7 @@ export const discountMarks: readonly DiscountMark[] = [
 export const discountCalculation = {
   title: "HOW THE 20% DISCOUNT IS CALCULATED",
   intro:
-    "Our discount is applied to the Token Price, not to the underlying asset value. This ensures the integrity of the asset backing remains 100% intact while providing early supporters with a meaningful advantage.",
+    "Our discount is applied to the Token Price, not to the underlying asset value. The discount therefore does not change the asset backing ratio, while providing early supporters with a meaningful advantage.",
   steps: [
     {
       id: "asset-valuation",
@@ -110,7 +110,7 @@ export const discountCalculation = {
       step: 5,
       title: "FULL ASSET BACKING",
       description:
-        "Each token purchased remains 100% backed by the underlying physical gemstone asset in our secure vaults.",
+        "Each token purchased is designed to remain linked to the underlying physical gemstone asset in our secure vaults.",
     },
     {
       id: "value-realization",
@@ -178,7 +178,7 @@ export const discountExample = {
     "token-price": "Discounted Token Price (20% Off)",
   } as Readonly<Record<string, string>>,
   footnote:
-    "You pay $8.00 per token instead of $10.00, saving 20% while still receiving tokens 100% backed by the same real asset.",
+    "You pay $8.00 per token instead of $10.00, saving 20% while still receiving tokens linked to the same underlying asset.",
 };
 
 export const discountPrinciplesTitle = "OUR PRICING PRINCIPLES";

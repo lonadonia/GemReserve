@@ -373,6 +373,6 @@ export const passportsCta = {
     "GemReserve Digital Asset Passports bring transparency, trust and technology together to create a new standard for ownership in the gemstone industry.",
   buttonLabel: "Join the Waitlist",
   supportingText:
-    "Be among the first to access tokenized gemstone assets backed by real reserves.",
+    "Be among the first to access tokenized gemstone assets on a reserve-backed model.",
   imageAlt: "An open vault holding six faceted gemstones",
 } as const;

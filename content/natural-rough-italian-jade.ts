@@ -287,7 +287,7 @@ export const naturalRoughItalianJade: GemstonePageContent = {
     {
       id: "trusted",
       title: "TRUSTED",
-      description: "Backed by real assets, audited and insured.",
+      description: "Physical asset framework — verification, audit and insurance pending.",
     },
     {
       id: "accessible",

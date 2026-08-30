@@ -111,8 +111,8 @@ export const homeHero = {
 export const homeTrustPillars = [
   {
     id: "physically-backed",
-    title: "100%",
-    description: "Physically Backed by Real Gemstones",
+    title: "Asset-Backed",
+    description: "Framework Subject to Verification",
     requiresClientVerification: true,
   },
   {
@@ -301,8 +301,8 @@ export const homeCatalogPreviewActionLabel = "View All Gemstones";
 export const homeMetrics = [
   {
     id: "real-gemstones",
-    value: "100%",
-    label: "Real Gemstones",
+    value: "Verification-gated",
+    label: "Physical Asset Framework",
     requiresClientVerification: true,
   },
   {

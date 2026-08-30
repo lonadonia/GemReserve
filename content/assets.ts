@@ -138,7 +138,7 @@ export const assetsHero = {
   },
   lead: "Real gemstones. Real value. Real ownership.",
   description:
-    "Every gemstone in the GemReserve ecosystem is 100% backed by real, physical assets securely held in insured vaults. Explore our curated collection of investment-grade gemstones, each tokenized, verified and ready for global ownership.",
+    "Every gemstone in the GemReserve ecosystem is designed to link to a real, physical asset held in insured vaults. Explore our curated collection of investment-grade gemstones, each tokenized, verified and ready for global ownership.",
   technologyCallout: {
     titleLines: ["BACKED BY NATURE.", "POWERED BY TECHNOLOGY."],
     description:
@@ -151,9 +151,9 @@ export const assetsHero = {
 export const assetValuePropositions = [
   {
     id: "backed",
-    title: "100% BACKED",
+    title: "ASSET-BACKED MODEL",
     description:
-      "Every token is backed by a physical gemstone in secure vaults.",
+      "Each token is designed to link to a physical gemstone in secure vaults.",
     requiresClientVerification: true,
   },
   {

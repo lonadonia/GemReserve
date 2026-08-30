@@ -45,7 +45,7 @@ export const aquamarine: GemstonePageContent = {
   assurances: [
     {
       id: "backed",
-      title: "100% BACKED",
+      title: "ASSET-BACKED MODEL",
       description: "By real, physical Aquamarine",
     },
     {
@@ -259,7 +259,7 @@ export const aquamarine: GemstonePageContent = {
   cta: {
     title: "OWN A PIECE OF NATURE'S MASTERPIECE",
     description:
-      "Tokenized Aquamarine from GemReserve.io combines the beauty of nature with the security of blockchain technology. Backed by real, physical gemstones. Built for a transparent and borderless future.",
+      "Tokenized Aquamarine from GemReserve.io combines the beauty of nature with the security of blockchain technology. A physical asset framework, subject to verification. Built for a transparent and borderless future.",
     buttonLabel: "Join the Waitlist",
     supportingText: "Be among the first to access tokenized gemstone assets.",
     imageSrc: "/images/sections/open-vault.webp",

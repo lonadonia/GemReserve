@@ -85,14 +85,14 @@ export const faqEntries: readonly FaqEntry[] = [
     category: "general",
     question: "What is a tokenized gemstone asset?",
     answer:
-      "It is a digital token that represents direct ownership of a specific, physically verified gemstone held in custody. Every token is 100% backed by a real stone, and the link between the two is recorded on-chain so ownership and reserves can be verified by anyone.",
+      "It is a digital token that represents direct ownership of a specific, physically verified gemstone held in custody. Each token is designed to link to a real stone, and the link between the two is recorded on-chain so ownership and reserves can be verified by anyone.",
   },
   {
     id: "different",
     category: "general",
     question: "How is GemReserve.io different from other platforms?",
     answer:
-      "Three things set the platform apart: every token is physically backed by a verified natural gemstone, every stone is graded by independent gemological laboratories rather than in-house, and reserves are provable on-chain rather than asserted. Holdings remain redeemable for the physical stone.",
+      "Three things set the platform apart: each token is designed to link to a verified natural gemstone, every stone is graded by independent gemological laboratories rather than in-house, and reserves are made provable on-chain rather than asserted. Holdings remain redeemable for the physical stone.",
   },
   {
     id: "based",
@@ -168,7 +168,7 @@ export const faqEntries: readonly FaqEntry[] = [
     category: "security",
     question: "How is my investment protected?",
     answer:
-      "Protection runs at several layers: every token is 100% backed by a physically verified gemstone, stones sit in insured institutional-grade custody, reserves are provable on-chain, and holdings remain redeemable for the physical asset.",
+      "Protection runs at several layers: each token is designed to link to a physically verified gemstone, stones sit in insured institutional-grade custody, reserves are made provable on-chain, and holdings remain redeemable for the physical asset.",
   },
   {
     id: "security-measures",
@@ -237,7 +237,7 @@ export const faqAssurances: readonly FaqAssurance[] = [
     id: "trusted",
     title: "TRUSTED",
     description:
-      "Backed by real assets, independent audits, and proven processes.",
+      "A physical asset framework, subject to independent audit and attestation.",
   },
   {
     id: "global",

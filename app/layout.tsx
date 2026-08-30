@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | GemReserve.io",
   },
   description:
-    "Explore the GemReserve.io preview: physically backed gemstone assets, independent verification, secure custody and transparent ownership infrastructure.",
+    "Explore the GemReserve.io preview: asset-backed gemstone records, independent verification, secure custody and transparent ownership infrastructure.",
   applicationName: "GemReserve.io",
   keywords: [
     "gemstones",

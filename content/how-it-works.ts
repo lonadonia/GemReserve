@@ -73,7 +73,7 @@ export const howItWorksHero = {
   breadcrumb: ["HOME", "HOW IT WORKS"],
   titleLines: ["How", "GemReserve.io", "Works"],
   description:
-    "GemReserve.io transforms the timeless value of precious gemstones into secure, liquid and transparent digital assets backed by real, verified reserves.",
+    "GemReserve.io transforms the timeless value of precious gemstones into secure, liquid and transparent digital assets on a reserve-backed model, subject to independent attestation.",
   requiresClientVerification: true,
 } as const satisfies HowItWorksHeroContent;
 
@@ -160,7 +160,7 @@ export const powerPillars = [
   {
     id: "real-assets",
     title: "REAL ASSETS",
-    description: "Every token is 100% backed by physically verified gemstones.",
+    description: "Each token is designed to link to a physically verified gemstone.",
     requiresClientVerification: true,
   },
   {

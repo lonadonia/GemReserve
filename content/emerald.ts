@@ -21,7 +21,7 @@ export const emerald: GemstonePageContent = {
   title: "EMERALD",
   tagline: ["The Timeless Green of Value,", "Captured in Real Assets."],
   description:
-    "Emeralds have been treasured for centuries for their rarity, beauty, and enduring value. At GemReserve.io, we bring this legacy into the future by tokenizing exceptional emeralds backed by real, authenticated gems held in secure custody.",
+    "Emeralds have been treasured for centuries for their rarity, beauty, and enduring value. At GemReserve.io, we bring this legacy into the future by tokenizing exceptional emeralds linked to authenticated gems held in secure custody.",
   heroBase: "/images/heroes/emerald-hero",
   heroImageAlt: "An emerald-cut vivid green emerald resting on dark rock",
 
@@ -125,7 +125,7 @@ export const emerald: GemstonePageContent = {
       {
         id: "tangible",
         title: "Tangible Asset",
-        description: "Backed by physical gemstones in secure vaults.",
+        description: "Physical gemstone linkage — proposed and verification-gated.",
       },
       {
         id: "fractional",
@@ -259,7 +259,7 @@ export const emerald: GemstonePageContent = {
     {
       id: "trusted",
       title: "TRUSTED",
-      description: "Backed by real assets, audited and insured.",
+      description: "Physical asset framework — verification, audit and insurance pending.",
     },
     {
       id: "accessible",

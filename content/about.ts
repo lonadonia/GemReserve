@@ -29,7 +29,7 @@ export const aboutHeroPillars: readonly AboutPillar[] = [
   {
     id: "real-assets",
     title: "REAL ASSETS",
-    description: "Physically backed by verified, natural gemstones.",
+    description: "A physical asset framework built on verified, natural gemstones.",
   },
   {
     id: "real-value",
@@ -176,9 +176,9 @@ export interface AboutStat {
 export const aboutStats: readonly AboutStat[] = [
   {
     id: "real-gemstones",
-    value: "100%",
-    label: "REAL GEMSTONES",
-    caption: "Physically backed by real assets",
+    value: "Verification-gated",
+    label: "PHYSICAL ASSET FRAMEWORK",
+    caption: "Linkage verified before a record is admitted",
   },
   {
     id: "verified-gems",

@@ -30,7 +30,7 @@ export interface PortalAssurance {
 export const portalAssurances: readonly PortalAssurance[] = [
   {
     id: "backed",
-    title: "100% BACKED",
+    title: "ASSET-BACKED MODEL",
     description: "By real, physical gemstones",
   },
   {
@@ -278,9 +278,9 @@ export interface TrustItem {
 export const trustItems: readonly TrustItem[] = [
   {
     id: "backed",
-    title: "100% BACKED",
+    title: "ASSET-BACKED MODEL",
     description:
-      "Every token is 100% backed by a specific physical gemstone in secure vaults.",
+      "Each token is designed to link to a specific physical gemstone in secure vaults.",
   },
   {
     id: "verified",

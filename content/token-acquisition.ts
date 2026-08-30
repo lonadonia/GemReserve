@@ -50,7 +50,7 @@ export const acquisitionMarks: readonly AcquisitionMark[] = [
   {
     id: "real-asset-backed",
     title: "REAL ASSET-BACKED",
-    description: "Every token is 100% backed by verified gemstone reserves.",
+    description: "Each token is designed to link to a verified gemstone reserve.",
   },
   {
     id: "secure-compliant",

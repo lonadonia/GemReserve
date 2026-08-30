@@ -41,7 +41,7 @@ export const technologyPillars: readonly TechnologyPillar[] = [
   {
     id: "real-world-backing",
     title: "REAL-WORLD BACKING",
-    description: "Every token is 100% backed by physically verified gemstones.",
+    description: "Each token is designed to link to a physically verified gemstone.",
   },
   {
     id: "global-infrastructure",

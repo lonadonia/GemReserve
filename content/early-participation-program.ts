@@ -56,7 +56,7 @@ export const programHero: ProgramHeroContent = {
   tagline: "Be Among the First. Own the Future.",
   paragraphs: [
     "The Early Participation Program will give participants access to GemReserve.io during the pre-sale phase, with a 20% discount on gemstone asset tokens.",
-    "It is a way of joining early on published terms — backed by physical assets, built on blockchain, and designed for long-term ownership rather than a quick trade.",
+    "It is a way of joining early on published terms — on a physical asset framework, built on blockchain, and designed for long-term ownership rather than a quick trade.",
   ],
   badge: {
     figure: "20%",
@@ -279,9 +279,9 @@ export const invitePanel = {
   supportingText:
     "A waitlist place reserves no allocation and commits you to nothing.",
   panel: {
-    title: "BACKED BY REAL ASSETS",
+    title: "ASSET-BACKED ARCHITECTURE",
     subtitle: "SECURED FOR GENERATIONS",
-    body: "Every token is backed 1:1 by a real gemstone held in secure custody and verified on-chain.",
+    body: "Each token is designed to link 1:1 to a gemstone held in custody and recorded on-chain — subject to independent attestation.",
   },
   imageAlt:
     "An open vault door with faceted gemstones on the polished floor before it",

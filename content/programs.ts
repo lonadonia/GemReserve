@@ -31,9 +31,9 @@ export const programsHero = {
   // The board sets only the middle word in gold, so the line is held as three
   // parts rather than as stacked lines the way the other heroes are.
   title: { before: "All", accent: "Gemstone", after: "Programs" },
-  tagline: "RARE BY NATURE. VERIFIED BY SCIENCE. BACKED BY REAL ASSETS.",
+  tagline: "RARE BY NATURE. VERIFIED BY SCIENCE. ASSET-BACKED BY DESIGN.",
   description:
-    "Discover our complete suite of tokenized gemstone programs. Every gemstone is 100% backed by real, physical assets securely vaulted and independently verified. Choose from the world's most desirable gemstones, each tokenized for true ownership, liquidity and global accessibility.",
+    "Discover our complete suite of tokenized gemstone programs. Each gemstone is designed to link to a real, physical asset, securely vaulted and independently verified. Choose from the world's most desirable gemstones, each tokenized for true ownership, liquidity and global accessibility.",
   imageAlt: "Six faceted gemstones on black pedestals before an open vault",
 } as const;
 
@@ -46,8 +46,8 @@ export interface ProgramBadge {
 export const programBadges: readonly ProgramBadge[] = [
   {
     id: "backed",
-    title: "100% BACKED",
-    description: "Every token is backed by real, physical gemstones.",
+    title: "ASSET-BACKED MODEL",
+    description: "Each token is designed to link to a real, physical gemstone.",
   },
   {
     id: "verified",

@@ -15,7 +15,7 @@ export const investorsHero: InvestorsHeroContent = {
   callout: {
     title: "REAL ASSETS. REAL VALUE. REAL TRUST.",
     lines: [
-      "Backed by physical gemstones. Secured by blockchain.",
+      "An asset-backed architecture. Secured by blockchain.",
       "Built for generations.",
     ],
   },
@@ -110,7 +110,7 @@ export const solutionPoints: readonly MarketPoint[] = [
     id: "asset-backing",
     title: "Asset Backing",
     description:
-      "Every token is backed by verified, insured gemstones in secure vaults.",
+      "Each token is designed to link to a verified, insured gemstone in secure vaults.",
   },
   {
     id: "digital-passports",
@@ -277,7 +277,7 @@ export interface AssuranceItem {
 export const assuranceItems: readonly AssuranceItem[] = [
   {
     id: "backed",
-    title: "BACKED BY REAL ASSETS",
+    title: "ASSET-BACKED ARCHITECTURE",
     description: "Physical gemstones in secure vaults.",
   },
   {

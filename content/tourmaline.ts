@@ -136,7 +136,7 @@ export const tourmaline: GemstonePageContent = {
       {
         id: "tangible",
         title: "Tangible Asset",
-        description: "Backed by physical gemstones in secure, insured vaults.",
+        description: "Physical gemstone linkage — proposed and verification-gated.",
       },
       {
         id: "fractional",
@@ -268,7 +268,7 @@ export const tourmaline: GemstonePageContent = {
     {
       id: "trusted",
       title: "TRUSTED",
-      description: "Backed by real assets, audited and insured.",
+      description: "Physical asset framework — verification, audit and insurance pending.",
     },
     {
       id: "accessible",

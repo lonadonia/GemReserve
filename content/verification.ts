@@ -125,7 +125,7 @@ export const verificationLayers: readonly VerificationLayer[] = [
     step: "3",
     title: "RESERVE VERIFICATION",
     description:
-      "Independent audit firms verify that all tokenized assets are fully backed 1:1 by physical gemstones.",
+      "Independent audit firms are engaged to attest that tokenized assets are linked 1:1 to physical gemstones.",
     checks: [
       "Proof of reserves",
       "Reconciliation",
@@ -256,7 +256,7 @@ export const meaningPanel = {
     {
       id: "confidence",
       title: "COMPLETE CONFIDENCE",
-      description: "Every gemstone is real, verified and fully backed.",
+      description: "Every gemstone is verification-gated before it is admitted.",
     },
     {
       id: "risk",
@@ -292,7 +292,7 @@ export const verificationCta = {
   description:
     "Independent verification is not optional — it is the foundation of our platform. From the mine to your wallet, every step is verified, recorded and immutable.",
   panel: {
-    title: "100% BACKED BY PHYSICAL GEMSTONES",
+    title: "PHYSICAL GEMSTONE LINKAGE",
     lines: ["Independently verified.", "On-chain secured."] as const,
   },
   buttonLabel: "See how the platform works",
