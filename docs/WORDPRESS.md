@@ -236,24 +236,112 @@ settings surface and a recurring upsell for nothing.
 
 ## Not done yet
 
-Honest list. None of it blocks review; all of it blocks a production switch.
+Honest list, current as of the production-readiness pass. Everything here is
+either an operator action or a follow-on task; nothing is unfinished work
+hiding behind a green test.
 
-1. **Section bodies are migrated markup, not structured fields.** Hero, SEO,
+1. **MySQL is not provisioned; the site runs on SQLite.** The migration script
+   (`migrations/sqlite-to-mysql.php`) is written and idempotent, and everything
+   above the storage layer is engine-agnostic — but the database itself cannot
+   be created without a root or CloudPanel account this session does not have.
+   This is the single largest item and the one thing a production switch is
+   genuinely blocked on. Do not run the site on SQLite in production.
+2. **No production vhost or TLS.** `deploy/nginx-wordpress.conf` is written and
+   carries seven `CONFIRM` markers — SSL certificate paths, the php-fpm socket,
+   and the redirect direction — that must be checked against the real host
+   before it is enabled. Needs an operator with root.
+3. **No staging hostname.** `wp-stage.gemreserve.io` needs DNS and a certificate.
+   Staging currently answers on `127.0.0.1:3200` through PHP's built-in server
+   and `deploy/router.php`, which is a development server and must never face
+   the internet.
+4. **No SMTP.** WordPress will use `mail()`, which most hosts drop silently.
+   Form notifications and password resets will not arrive until a real
+   transport is configured. No credentials were invented for this.
+5. **Section bodies are migrated markup, not structured fields.** Hero, SEO,
    gemstone, document, news, FAQ and corporate content are all proper fields.
-   The page bodies are the approved design's own HTML, stored in `_gr_body_html`
-   and rendered against the ported stylesheet. That reproduces the design
-   exactly and is editable by an administrator, but an editor cannot restructure
-   a section from the admin yet. The section renderer (`inc-sections.php`) is
-   built and ready for that work; it is a follow-on task, page family by page
-   family.
-2. **Forms are front-end only.** Validation and the honest "nothing was sent"
-   state work. The server-side handler — nonce, sanitisation, rate limiting,
-   consent recording — is not written. Forms must not be enabled until it is.
-3. **No production vhost.** No nginx config, no TLS, no staging hostname. Needs
-   an operator with root.
-4. **MySQL not provisioned.** See above.
-5. **Documents, News and FAQ are empty.** The post types, fields and workflow
-   exist; no records were seeded, deliberately — seeding fake news or a fake
-   document register is exactly what the factual-safety rules forbid.
-6. **MFA not installed.**
-7. **Client/admin QA not done.**
+   The page bodies are the approved design's own HTML, stored in
+   `_gr_body_html` and rendered against the ported stylesheet. That reproduces
+   the design exactly and an administrator can edit it, but an editor cannot
+   restructure a section from the admin yet. The section renderer
+   (`inc-sections.php`) is built for that work; it is a follow-on task, page
+   family by page family.
+6. **Documents, News and FAQ hold no records.** The post types, fields,
+   taxonomies, templates and workflow all exist and are verified end to end.
+   Nothing was seeded, deliberately: inventing a document register or a news
+   archive is exactly what the factual-safety rules forbid. The News page shows
+   its designed "awaiting first publication" state until something real is
+   published, and fills in from the top as announcements arrive.
+7. **MFA is enrolled by nobody yet.** `two-factor` is active and the admin is
+   flagged, but enforcement (`GR_REQUIRE_MFA`) should only be switched on after
+   at least one administrator has actually enrolled — otherwise the switch locks
+   out the only account that can undo it.
+
+### One thing to decide before launch, which is not a migration defect
+
+`/assets` states **"1,850+ Verified Assets In Vaults"** and **"$186M+ Total
+Asset Value"** in the present tense, and its catalogue lists individual stones
+with per-token prices and named certificates. `/investors` carries figures too,
+but those are explicitly labelled *projected*, *target* and *by 2027*, which is
+a different kind of claim.
+
+These are not something the migration introduced — the same text is in the
+approved Next.js build and on live production right now, and the WordPress
+implementation reproduces it faithfully because that is what a migration does.
+It is flagged here because it is the one place where the site makes an
+unhedged, present-tense claim about holdings, and the factual-safety rules that
+governed every other page rule that kind of claim out. Changing approved
+production copy is the owner's call, not the migration's.
+
+## Production release
+
+Nothing below has been executed. Production still serves Next.js, untouched,
+and that is deliberate: this work is production *ready*, not production
+*switched*.
+
+### Before the switch
+
+1. Provision MySQL and run `migrations/sqlite-to-mysql.php`. Verify the row
+   counts it prints against the SQLite source before pointing anything at it.
+2. Generate fresh salts on the production host with `deploy/make-salts.php`.
+   Never copy staging's.
+3. Write `wp-config.php` from `config/wp-config.example.php`, supplying every
+   credential through the environment. Mode 600, owned by the web user.
+4. Resolve the seven `CONFIRM` markers in `deploy/nginx-wordpress.conf` against
+   the real host, then install it.
+5. Confirm the deny rules are live. The single highest-value check: request
+   `/wp-content/database/.ht.sqlite` and confirm it is refused. It was
+   downloadable on staging before `router.php` was hardened, and nginx has the
+   same gap by default.
+6. Take a full backup — database dump and file tree — and verify the dump
+   restores into a scratch database. An unverified backup is not a backup.
+7. Enrol at least one administrator in MFA, then set `GR_REQUIRE_MFA`.
+
+### The switch
+
+8. Put the vhost in place and reload nginx. Keep the Next.js systemd service
+   running and its release directory intact — it is the rollback.
+
+### Smoke tests, in this order
+
+9. All 58 URLs return 200. The list is in `docs/wordpress-url-map.txt`; the
+   sitemap should contain exactly those 58 and nothing else.
+10. `/sitemap.xml` and `/robots.txt` return 200 with the right content types,
+    and `robots.txt` advertises the production sitemap, not staging's.
+11. A page that does not exist returns 404, not a soft 200.
+12. `?author=1` does not redirect to a username; `/wp-json/wp/v2/users` is
+    refused; `/wp-config.php`, `/wp-salts.php` and the database directory are
+    all 403.
+13. Log in to `/wp-admin`, edit a page, and confirm the change appears on the
+    front end.
+14. Submit the contact form. Confirm it stores, and confirm the submission is
+    **not** readable over REST.
+15. Check the four widths — 1440, 1024, 768, 390 — against the Next.js
+    reference on at least the home page, `/assets`, and one gemstone page.
+
+### Rollback
+
+16. Point the vhost back at the Next.js upstream and reload. The service and
+    its release directory were never stopped, so this is a config change and a
+    reload — seconds, not a restore. Restoring the database is only needed if
+    the WordPress site accepted writes worth keeping, which for a rollback
+    inside the smoke-test window it will not have.
