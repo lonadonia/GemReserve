@@ -349,46 +349,150 @@ and that is deliberate: this work is production *ready*, not production
    census matched byte for byte and SQLite has been retired. Production will
    need its own database and its own dump — take a fresh one at cutover rather
    than reusing the staging import, which will be stale by then.
-2. Generate fresh salts on the production host with `deploy/make-salts.php`.
-   Never copy staging's. Same for the database password: production gets its
-   own credentials in its own env file, not a copy of staging's.
-3. Write `wp-config.php` from `config/wp-config.example.php`, supplying every
-   credential through the environment. Mode 600, owned by the web user.
-4. Resolve the seven `CONFIRM` markers in `deploy/nginx-wordpress.conf` against
-   the real host, then install it.
-5. Confirm the deny rules are live. The single highest-value check: request
+
+2. **Create the production credentials file.** As root:
+
+   ```bash
+   install -d -o root -g root -m 755 /etc/gemreserve
+   umask 077
+   cat > /etc/gemreserve/wordpress.env <<'EOF'
+   DB_NAME=…
+   DB_USER=…
+   DB_PASSWORD=…
+   DB_HOST=127.0.0.1
+   EOF
+   chown root:www-data /etc/gemreserve/wordpress.env
+   chmod 640 /etc/gemreserve/wordpress.env
+   ```
+
+   `root:www-data 0640` is the whole design: php-fpm reads it through the
+   group, root owns it, and no other account on the host can open it. It is
+   outside every web root and it is not in Git.
+
+   `wp-config.php` looks there first and never contains a password. It falls
+   back to `~hamza/.gemreserve-wp-db.env` for staging only — production
+   php-fpm runs as www-data and cannot read that file, which is deliberate: a
+   missing production file fails the request rather than quietly serving the
+   site from a staging database. If nothing resolves, the request dies with a
+   flat **HTTP 500** and no detail.
+
+3. Generate fresh salts on the production host with `deploy/make-salts.php`.
+   Never copy staging's. Same for the database password.
+
+4. **Apply the ownership model** — `sudo deploy/gr-permissions.sh`, or by hand:
+
+   | Path | Owner | Mode |
+   |---|---|---|
+   | WordPress code | `hamza:www-data` | dirs 755, files 644 |
+   | `wp-config.php` | `root:www-data` | 640 |
+   | `wp-salts.php` | `root:www-data` | 640 |
+   | `wp-content/uploads` | `www-data:www-data` | dirs 755, files 644 |
+   | `/etc/gemreserve/wordpress.env` | `root:www-data` | 640 |
+
+   **Do not `chown -R www-data:www-data` the tree.** php-fpm runs as www-data;
+   if www-data owns the code, any bug that reaches a file write can rewrite
+   WordPress core, the theme or the plugin, and the change survives every
+   restart because it *is* the source now. The runtime user reads the code and
+   writes only `uploads/` — which is also the one directory the vhost refuses
+   to execute `.php` from. The two halves only work together.
+
+   The script verifies the property rather than assuming it: it fails if
+   www-data can write `index.php`, if it cannot read `wp-config.php`, or if it
+   cannot write `uploads/`.
+
+   One consequence to know before you hit it: `wp-config.php` at `root:www-data
+   640` is unreadable by the deploy user, so `wp` run as `hamza` will fail with
+   a database error. On production run wp-cli as the web user —
+   `sudo -u www-data wp --path=/var/www/GemReserve/wordpress …` — which also
+   keeps anything it creates owned correctly.
+
+5. Install `deploy/nginx-wordpress.conf` as
+   `/etc/nginx/sites-enabled/www.gemreserve.io.conf`. It carries no unresolved
+   markers. Note that it deliberately does **not**
+   `include /etc/nginx/global_settings;` — that file and the Next.js app both
+   set security headers today, which is why the live response carries
+   `X-Frame-Options`, `X-Content-Type-Options` and `Referrer-Policy` twice,
+   with two different `Referrer-Policy` values. The vhost defines the full set
+   once instead.
+
+6. Confirm the deny rules are live. The single highest-value check: request
    `/wp-content/database/.ht.sqlite` and confirm it is refused. It was
    downloadable on staging before `router.php` was hardened, and nginx has the
    same gap by default.
-6. Take a full backup — database dump and file tree — and verify the dump
-   restores into a scratch database. An unverified backup is not a backup.
-7. Enrol at least one administrator in MFA, then set `GR_REQUIRE_MFA`.
+
+7. Take a full backup — `deploy/gr-backup.sh` — and verify the dump restores.
+   An unverified backup is not a backup.
+
+8. Enrol at least one administrator in MFA, then set `GR_REQUIRE_MFA`.
 
 ### The switch
 
-8. Put the vhost in place and reload nginx. Keep the Next.js systemd service
-   running and its release directory intact — it is the rollback.
+9. `nginx -t`, then `systemctl reload nginx`. Keep the Next.js systemd service
+   running and its release directory intact — it is the rollback, and it costs
+   nothing to leave running on 127.0.0.1:3000.
 
 ### Smoke tests, in this order
 
-9. All 58 URLs return 200. The list is in `docs/wordpress-url-map.txt`; the
+Renumbered from 10; step 9 is the reload above.
+
+10. **ACME first, before anything else.** A blanket `location ~ /\.` would
+    have matched `/.well-known/` and quietly broken certificate renewal — the
+    kind of failure nobody notices for sixty days. The vhost carries an
+    explicit `location ^~ /.well-known/acme-challenge/` on both :80 and :443,
+    pointed at the existing CloudPanel document root where the ACME client
+    writes. Verify it is not refused:
+
+    ```bash
+    curl -sI https://www.gemreserve.io/.well-known/acme-challenge/probe | head -1
+    curl -sI http://www.gemreserve.io/.well-known/acme-challenge/probe  | head -1
+    ```
+
+    **404 is the pass** — the request reached the handler and the file simply
+    does not exist. A 403 means the dotfile rule swallowed it; a 301 on :80
+    means the redirect did. Then confirm every other dotfile is still refused:
+    `/.git/config`, `/.env` and `/.well-known/security.txt` must all be 403.
+
+11. `www1.gemreserve.io` redirects to the canonical host **over plain HTTP
+    only**. The origin certificate covers `www.gemreserve.io` and
+    `gemreserve.io` and not `www1` — read back from the origin on
+    127.0.0.1:443, not assumed — so there is deliberately no `:443` server
+    block for it. Adding one would present a certificate that does not name the
+    host, which is a browser warning on a host that has none today. If `www1`
+    is later added to the certificate, give it its own 443 block redirecting
+    the same way.
+
+12. All 58 URLs return 200. The list is in `docs/wordpress-url-map.txt`; the
    sitemap should contain exactly those 58 and nothing else.
-10. `/sitemap.xml` and `/robots.txt` return 200 with the right content types,
+13. `/sitemap.xml` and `/robots.txt` return 200 with the right content types,
     and `robots.txt` advertises the production sitemap, not staging's.
-11. A page that does not exist returns 404, not a soft 200.
-12. `?author=1` does not redirect to a username; `/wp-json/wp/v2/users` is
+14. A page that does not exist returns 404, not a soft 200.
+15. `?author=1` does not redirect to a username; `/wp-json/wp/v2/users` is
     refused; `/wp-config.php`, `/wp-salts.php` and the database directory are
     all 403.
-13. Log in to `/wp-admin`, edit a page, and confirm the change appears on the
+16. Log in to `/wp-admin`, edit a page, and confirm the change appears on the
     front end.
-14. Submit the contact form. Confirm it stores, and confirm the submission is
+17. Submit the contact form. Confirm it stores, and confirm the submission is
     **not** readable over REST.
-15. Check the four widths — 1440, 1024, 768, 390 — against the Next.js
+18. Check the four widths — 1440, 1024, 768, 390 — against the Next.js
     reference on at least the home page, `/assets`, and one gemstone page.
+
+19. Headers are present **once**, on HTML and on a static asset both:
+
+    ```bash
+    curl -sI https://www.gemreserve.io/ | grep -ci '^x-frame-options'   # 1
+    curl -sI https://www.gemreserve.io/wp-content/themes/gemreserve/assets/css/gemreserve.css \
+      | grep -ciE '^(content-security-policy|x-content-type-options)'   # 2
+    ```
+
+    The asset check is not redundant. `add_header` does not merge across
+    levels: a location that defines any `add_header` of its own drops every one
+    inherited from the server block. The caching locations therefore repeat the
+    security headers, and without that repeat every image and stylesheet would
+    be served with no `nosniff` and no CSP.
 
 ### Rollback
 
-16. Point the vhost back at the Next.js upstream and reload. The service and
+20. Point the vhost back at the Next.js upstream and reload. The service and
     its release directory were never stopped, so this is a config change and a
     reload — seconds, not a restore. Restoring the database is only needed if
     the WordPress site accepted writes worth keeping, which for a rollback

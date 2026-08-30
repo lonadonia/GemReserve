@@ -12,31 +12,73 @@
  */
 
 // --- Database -------------------------------------------------------------
-// Credentials come from the server, never from this file in version control.
-// On this host the database is CloudPanel-managed Percona; see deploy/README.
-// Credentials are read from an env file outside the web root, or from real
-// environment variables where the platform supplies them. Nothing secret
-// belongs in this file, so it stays safe to read, copy and diff.
+// Credentials are read at runtime from a file outside the web root. Nothing in
+// this file is secret, so it can be read, copied, diffed and committed as an
+// example without care.
 //
-// The file is a plain KEY=value list and is parsed, not sourced: a backtick or
-// a $( in a password cannot execute anything.
+// Search order, first readable wins:
+//
+//   1. $_SERVER / getenv       — a systemd unit or container can supply the
+//                                values with no file on disk at all.
+//   2. GR_DB_ENV               — an explicit override, for a one-off restore
+//                                or a second environment on the same host.
+//   3. /etc/gemreserve/wordpress.env
+//                              — PRODUCTION. Created by root as
+//                                root:www-data 0640, so php-fpm reads it
+//                                through the group and no other account on the
+//                                box can. It is not under any web root and it
+//                                is not in Git.
+//   4. ~hamza/.gemreserve-wp-db.env
+//                              — staging only, mode 600, owned by the deploy
+//                                user who also runs the staging PHP server.
+//                                Production php-fpm runs as www-data and
+//                                cannot read it, which is the point: if the
+//                                production file is missing, the site fails
+//                                rather than quietly falling through to a
+//                                staging database.
+//
+// The file is a plain KEY=value list and is PARSED, not sourced, so a backtick
+// or a $( inside a password cannot execute anything.
 (static function (): void {
-    $env_path = getenv('GR_DB_ENV') ?: '/home/hamza/.gemreserve-wp-db.env';
-    $env = [];
+    $candidates = array_filter([
+        getenv('GR_DB_ENV') ?: null,
+        '/etc/gemreserve/wordpress.env',
+        '/home/hamza/.gemreserve-wp-db.env',
+    ]);
 
-    if (is_readable($env_path)) {
-        foreach (file($env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+    $env = [];
+    $source = null;
+    foreach ($candidates as $path) {
+        if (!is_readable($path)) {
+            continue;
+        }
+        $lines = @file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines === false) {
+            continue;
+        }
+        foreach ($lines as $line) {
             $line = trim($line);
             if ($line === '' || $line[0] === '#' || !str_contains($line, '=')) {
                 continue;
             }
             [$k, $v] = explode('=', $line, 2);
             $v = trim($v);
+            // Strip one layer of matching quotes, if present.
             if (strlen($v) > 1 && ($v[0] === '"' || $v[0] === "'") && $v[-1] === $v[0]) {
                 $v = substr($v, 1, -1);
             }
             $env[trim($k)] = $v;
         }
+        $source = $path;
+        break;
+    }
+
+    // A world-readable credentials file is a real exposure — every account on
+    // the host can read the database password. It is reported rather than made
+    // fatal: taking the site down for a permission bit would trade a private
+    // problem for a public one. The path is named; the contents never are.
+    if ($source !== null && ($perms = @fileperms($source)) !== false && ($perms & 0o004)) {
+        error_log("GemReserve: {$source} is world-readable; expected 0640 root:www-data.");
     }
 
     foreach (['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST'] as $key) {
@@ -44,11 +86,19 @@
         if ($value === false || $value === '') {
             $value = $env[$key] ?? null;
         }
-        if ($value === null) {
-            // Fail loudly and without detail. A half-configured database is how
-            // an install silently reaches for the wrong one.
-            http_response_code(500);
-            exit('Database configuration is incomplete.');
+        if ($value === null || $value === '') {
+            // Fail closed. A half-configured database is how an install
+            // silently reaches for the wrong one — or, worse, how a production
+            // request ends up served from a staging database. The response
+            // names neither the key nor the file: a 500 tells an attacker
+            // nothing they did not already know.
+            if (!headers_sent()) {
+                http_response_code(500);
+                header('Content-Type: text/plain; charset=utf-8');
+                header('Cache-Control: no-store');
+            }
+            error_log("GemReserve: database configuration incomplete ({$key} unresolved).");
+            exit("Service unavailable.\n");
         }
         define($key, $value);
     }
