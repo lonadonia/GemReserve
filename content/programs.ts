@@ -438,24 +438,42 @@ export interface ProgramHighlight {
   requiresClientVerification?: boolean;
 }
 
-// "1,850+ Verified Assets in Vaults" was removed here for the same reason it
-// was removed from assetMetrics: it claims a holding the record does not
-// support. See content/assets.ts.
+// Four figures were published here: "10+ Gemstone Programs", "25+ Gemstone
+// Types Available", "18 Countries Served" and "100% Backed by Real Assets",
+// alongside "1,850+ Verified Assets in Vaults" which went earlier.
+//
+// None survives contact with the record. The programs are illustrative rather
+// than running; the type count depends on how a type is counted; no country of
+// operation is recorded anywhere; and "100% backed" is a solvency claim, which
+// is the last thing a site should assert without an attestation behind it.
+//
+// The ids are load-bearing — highlightIcons keys off them — so each card keeps
+// its id, its icon and its place. Only the claim changed. See content/assets.ts.
 export const programHighlights: readonly ProgramHighlight[] = [
-  { id: "programs", value: "10+", label: "Gemstone Programs" },
+  {
+    id: "programs",
+    value: "Illustrative",
+    label: "Gemstone programs, pending launch",
+    requiresClientVerification: true,
+  },
   {
     id: "types",
-    value: "25+",
-    label: "Gemstone Types Available",
+    value: "Listed",
+    label: "Gemstone types in the catalogue",
     requiresClientVerification: true,
   },
   {
     id: "countries",
-    value: "18",
-    label: "Countries Served",
+    value: "Pre-launch",
+    label: "Jurisdiction eligibility",
     requiresClientVerification: true,
   },
-  { id: "backed", value: "100%", label: "Backed by Real Assets" },
+  {
+    id: "backed",
+    value: "Pending",
+    label: "Independent reserve attestation",
+    requiresClientVerification: true,
+  },
 ];
 
 export const programsCta = {

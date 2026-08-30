@@ -32,7 +32,7 @@ export interface AssetValueProposition extends VerificationFlag {
 }
 
 export interface AssetMetric extends VerificationFlag {
-  readonly id: "types" | "verified-assets" | "asset-value" | "countries";
+  readonly id: "types" | "countries";
   readonly value: string;
   readonly label: string;
   readonly detail: string;
@@ -177,30 +177,31 @@ export const assetValuePropositions = [
   },
 ] as const satisfies readonly AssetValueProposition[];
 
-// Two entries were removed here: "1,850+ Verified Assets In Vaults" and
-// "$186M+ Total Asset Value". Both stated, in the present tense and without
-// qualification, that the company holds a specific quantity and value of
-// customer assets. Nothing on the site or in the record substantiates either
-// number, and an unbacked holdings claim is the one kind of statement the
-// factual-safety rules rule out absolutely.
+// The figures here were "25+ Gemstone Types Available" and "18 Countries
+// Served". Neither is substantiated: the catalogue's type count depends on how
+// a type is counted, and nothing records a country the platform operates in.
 //
-// They were not replaced with smaller or hedged figures, because inventing a
-// defensible-looking number is the same error with better manners. The two
-// metrics that remain are still marked requiresClientVerification: they are
-// the owner's to substantiate or withdraw.
+// They are not replaced with smaller numbers. The card keeps its subject and
+// its place in the strip; the figure slot carries the status instead, which is
+// the same register the rest of the site already uses for things that are true
+// but not yet evidenced — the evidence states on a gemstone, the "awaiting
+// first publication" slots on /news.
+//
+// Keep these values short. .metric-item dt is white-space: nowrap at up to
+// 2.17rem, so a long word does not wrap here, it overflows the panel.
 export const assetMetrics = [
   {
     id: "types",
-    value: "25+",
+    value: "Listed",
     label: "Gemstone Types",
-    detail: "Available",
+    detail: "In the published catalogue",
     requiresClientVerification: true,
   },
   {
     id: "countries",
-    value: "18",
-    label: "Countries",
-    detail: "Served",
+    value: "Pending",
+    label: "Jurisdictions",
+    detail: "Eligibility to be published",
     requiresClientVerification: true,
   },
 ] as const satisfies readonly AssetMetric[];

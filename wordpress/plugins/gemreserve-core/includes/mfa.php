@@ -116,3 +116,23 @@ function gemreserve_user_mfa_cell(string $output, string $column, int $user_id):
         : '<span style="color:#b32338;font-weight:600">REQUIRED — not set</span>';
 }
 add_filter('manage_users_custom_column', 'gemreserve_user_mfa_cell', 10, 3);
+
+/**
+ * Drop the Dummy provider.
+ *
+ * two-factor ships a "Dummy Method" that accepts any code. It exists for the
+ * plugin's own tests, and it renders on the profile screen next to the real
+ * options with nothing marking it as inert. An administrator who picks it sees
+ * a second-factor prompt at every login, answers it with anything at all, and
+ * believes the account is protected — which is worse than no MFA, because it
+ * is MFA that reports success.
+ *
+ * Email is deliberately left in place, but see docs/WORDPRESS.md: until SMTP
+ * is configured it cannot deliver, so it must not be anyone's only method.
+ */
+function gemreserve_mfa_providers(array $providers): array
+{
+    unset($providers['Two_Factor_Dummy']);
+    return $providers;
+}
+add_filter('two_factor_providers', 'gemreserve_mfa_providers');
