@@ -438,18 +438,15 @@ export interface ProgramHighlight {
   requiresClientVerification?: boolean;
 }
 
+// "1,850+ Verified Assets in Vaults" was removed here for the same reason it
+// was removed from assetMetrics: it claims a holding the record does not
+// support. See content/assets.ts.
 export const programHighlights: readonly ProgramHighlight[] = [
   { id: "programs", value: "10+", label: "Gemstone Programs" },
   {
     id: "types",
     value: "25+",
     label: "Gemstone Types Available",
-    requiresClientVerification: true,
-  },
-  {
-    id: "assets",
-    value: "1,850+",
-    label: "Verified Assets in Vaults",
     requiresClientVerification: true,
   },
   {

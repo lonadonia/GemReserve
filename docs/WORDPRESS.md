@@ -31,35 +31,67 @@ php -S 127.0.0.1:3200 -t /var/www/GemReserve/wordpress \
 
 ---
 
-## The database is SQLite, and why
+## The database is MySQL
 
-WordPress runs on SQLite through the WordPress Performance Team's official
-`sqlite-database-integration` drop-in.
+WordPress runs on Percona 8.4 (`gemreserve-wp`), on a dedicated account scoped
+to that one schema — `GRANT ALL ON \`gemreserve-wp\`.*`, and nothing wider. It
+is not the system root account and it is not shared with any other site.
 
-This was not a preference. MySQL on this host is Percona 8.4 managed by
-CloudPanel, and creating a database needs either the MySQL root credentials or
-`clpctl site:add`. The `hamza` account has neither: `sudo` requires a password,
-and the one NOPASSWD entry — `clpctlWrapper` — exposes only `db:export`,
-`db:import`, `system:permissions:reset` and `varnish-cache:purge`. Waiting for
-credentials would have blocked the entire migration; SQLite unblocked all of it.
+Credentials are never in the repository and never in `wp-config.php`. They live
+in one file outside the web root, mode 600, and `wp-config.php` parses it at
+runtime — parses, not sources, so a backtick or a `$(` inside a password cannot
+execute anything. A real environment variable wins over the file, so a systemd
+unit or a container can supply them with no file on disk at all. If a value is
+missing the request dies with a flat 500 and no detail, because a
+half-configured install is how a site silently reaches for the wrong database.
 
-**Everything above the database layer is storage agnostic.** The theme, the
-plugin, the post types, the fields and the content are ordinary WordPress. The
-production move is a configuration change and an import, not a rebuild:
+### It was built on SQLite, and that is worth knowing
 
-```bash
-# 1. Create the database and user through CloudPanel (needs an operator).
-# 2. Point wp-config.php at it and delete wp-content/db.php.
-# 3. Re-run the migration against the new database:
-cd /var/www/GemReserve/wordpress
-wp eval-file gr-import.php          <extracted.json> --path=.
-wp eval-file gr-import-classes.php  <classmap.tsv>   --path=.
-wp eval-file gr-import-sections.php <sections.json>  --path=.
-wp eval-file gr-import-nav.php      <nav.json>       --path=.
-```
+The whole migration was built against the WordPress Performance Team's
+`sqlite-database-integration` drop-in, because MySQL on this host is managed by
+CloudPanel and creating a database needed credentials this account did not have.
+Waiting would have blocked everything; SQLite unblocked all of it, and the rule
+that made that safe was that **nothing above the database layer was allowed to
+know**. The theme, the plugin, the post types, the fields and the content are
+ordinary WordPress.
 
-The migration is idempotent and keyed on slug, so re-running it against a fresh
-MySQL database reproduces the site exactly.
+That rule paid: the move to MySQL was a dump, an import and a config change.
+No template, no query and no field changed.
+
+### How the cutover was verified
+
+Row counts alone would not have caught a silently truncated `post_content` or a
+mangled multibyte character, so verification was a **census** — the same script
+run against both engines, comparing table counts, per-type/per-status post
+counts, users and their roles, every GemReserve field's population, taxonomy
+term counts, menu locations, the settings, the role list, and MD5 content
+checksums over posts, postmeta and options.
+
+The two outputs were byte-identical: 264 posts, 2,150 postmeta rows, 187
+options, 17 terms, 186 term relationships, and matching content digests.
+
+The checksums are computed in PHP rather than SQL on purpose. SQLite has
+neither `MD5()` nor an `ORDER BY` inside `GROUP_CONCAT`, so doing it in SQL
+returns an empty string on one engine and a real digest on the other — which
+looks exactly like a match failure and is really a dialect difference.
+
+One thing the import got wrong and had to be corrected: the dump hard-coded
+`utf8mb4_unicode_ci`, while WordPress on this server reports
+`utf8mb4_unicode_520_ci`. Uniform tables would not have shown a symptom, but
+the first plugin to create a table would have created it at 520_ci and then
+joined it against columns at unicode_ci. All twelve tables were converted. The
+`ALTER` needs a relaxed `sql_mode`: WordPress's schema carries `0000-00-00`
+date defaults that MySQL 8 accepts at `CREATE` and re-validates on `ALTER`.
+
+### SQLite is gone from the running site
+
+The drop-in, the plugin and the database file were all removed from the web
+tree after verification, and kept — mode 600, outside the web root — under
+`~/gemreserve-db/sqlite-retired/`, alongside the pre-cutover backups in
+`~/gemreserve-db/backups/`. Two older SQLite backups found under
+`/var/www/GemReserve/backups/` were moved out too: they held password hashes,
+and a backup directory one nginx misconfiguration away from the web root is not
+a place for them.
 
 ---
 
@@ -240,24 +272,18 @@ Honest list, current as of the production-readiness pass. Everything here is
 either an operator action or a follow-on task; nothing is unfinished work
 hiding behind a green test.
 
-1. **MySQL is not provisioned; the site runs on SQLite.** The migration script
-   (`migrations/sqlite-to-mysql.php`) is written and idempotent, and everything
-   above the storage layer is engine-agnostic — but the database itself cannot
-   be created without a root or CloudPanel account this session does not have.
-   This is the single largest item and the one thing a production switch is
-   genuinely blocked on. Do not run the site on SQLite in production.
-2. **No production vhost or TLS.** `deploy/nginx-wordpress.conf` is written and
+1. **No production vhost or TLS.** `deploy/nginx-wordpress.conf` is written and
    carries seven `CONFIRM` markers — SSL certificate paths, the php-fpm socket,
    and the redirect direction — that must be checked against the real host
    before it is enabled. Needs an operator with root.
-3. **No staging hostname.** `wp-stage.gemreserve.io` needs DNS and a certificate.
+2. **No staging hostname.** `wp-stage.gemreserve.io` needs DNS and a certificate.
    Staging currently answers on `127.0.0.1:3200` through PHP's built-in server
    and `deploy/router.php`, which is a development server and must never face
    the internet.
-4. **No SMTP.** WordPress will use `mail()`, which most hosts drop silently.
+3. **No SMTP.** WordPress will use `mail()`, which most hosts drop silently.
    Form notifications and password resets will not arrive until a real
    transport is configured. No credentials were invented for this.
-5. **Section bodies are migrated markup, not structured fields.** Hero, SEO,
+4. **Section bodies are migrated markup, not structured fields.** Hero, SEO,
    gemstone, document, news, FAQ and corporate content are all proper fields.
    The page bodies are the approved design's own HTML, stored in
    `_gr_body_html` and rendered against the ported stylesheet. That reproduces
@@ -265,32 +291,51 @@ hiding behind a green test.
    restructure a section from the admin yet. The section renderer
    (`inc-sections.php`) is built for that work; it is a follow-on task, page
    family by page family.
-6. **Documents, News and FAQ hold no records.** The post types, fields,
+5. **Documents, News and FAQ hold no records.** The post types, fields,
    taxonomies, templates and workflow all exist and are verified end to end.
    Nothing was seeded, deliberately: inventing a document register or a news
    archive is exactly what the factual-safety rules forbid. The News page shows
    its designed "awaiting first publication" state until something real is
    published, and fills in from the top as announcements arrive.
-7. **MFA is enrolled by nobody yet.** `two-factor` is active and the admin is
+6. **MFA is enrolled by nobody yet.** `two-factor` is active and the admin is
    flagged, but enforcement (`GR_REQUIRE_MFA`) should only be switched on after
    at least one administrator has actually enrolled — otherwise the switch locks
    out the only account that can undo it.
 
-### One thing to decide before launch, which is not a migration defect
+### The two claims that were removed
 
-`/assets` states **"1,850+ Verified Assets In Vaults"** and **"$186M+ Total
-Asset Value"** in the present tense, and its catalogue lists individual stones
-with per-token prices and named certificates. `/investors` carries figures too,
-but those are explicitly labelled *projected*, *target* and *by 2027*, which is
-a different kind of claim.
+`/assets` and `/gemstone-programs` stated **"1,850+ Verified Assets In Vaults"**
+and **"$186M+ Total Asset Value"** in the present tense and without
+qualification. Nothing on the site or in the record substantiates either
+number, and an unbacked claim about holdings is the one kind of statement the
+factual-safety rules rule out absolutely.
 
-These are not something the migration introduced — the same text is in the
-approved Next.js build and on live production right now, and the WordPress
-implementation reproduces it faithfully because that is what a migration does.
-It is flagged here because it is the one place where the site makes an
-unhedged, present-tense claim about holdings, and the factual-safety rules that
-governed every other page rule that kind of claim out. Changing approved
-production copy is the owner's call, not the migration's.
+Both were removed — from the WordPress content, and from the Next.js source
+they were migrated from, so a future release of either carries the fix. They
+were **not** replaced with smaller or hedged figures: inventing a
+defensible-looking number is the same error with better manners. On `/assets`
+the metric strip was resized from four columns to two so the remaining pair
+still reads as a deliberate panel rather than a half-empty one.
+
+`/discount-methodology` still contains "Total Asset Value $500,000". That one
+stays: it sits inside a block headed *"EXAMPLE: HOW THE 20% DISCOUNT WORKS"*
+and is a worked illustration, not a statement about holdings.
+
+**Still flagged, not changed.** Four more quantitative claims remain, and the
+Next.js source already marks every one of them `requiresClientVerification`:
+
+| Claim | Where |
+|---|---|
+| 25+ Gemstone Types Available | `/assets`, `/gemstone-programs` |
+| 18 Countries Served | `/assets`, `/gemstone-programs` |
+| 10+ Gemstone Programs | `/gemstone-programs` |
+| 100% Backed by Real Assets | `/gemstone-programs` |
+
+"18 Countries Served" is the one worth looking at hardest — it is an
+operational claim about customers, which is the same category as the two that
+were removed. They were left because the instruction named two claims, and
+deleting more of the approved design than was asked is not a decision a
+migration gets to make. They are the owner's to substantiate or withdraw.
 
 ## Production release
 
@@ -300,10 +345,13 @@ and that is deliberate: this work is production *ready*, not production
 
 ### Before the switch
 
-1. Provision MySQL and run `migrations/sqlite-to-mysql.php`. Verify the row
-   counts it prints against the SQLite source before pointing anything at it.
+1. ~~Provision MySQL and migrate.~~ **Done.** Staging runs on Percona; the
+   census matched byte for byte and SQLite has been retired. Production will
+   need its own database and its own dump — take a fresh one at cutover rather
+   than reusing the staging import, which will be stale by then.
 2. Generate fresh salts on the production host with `deploy/make-salts.php`.
-   Never copy staging's.
+   Never copy staging's. Same for the database password: production gets its
+   own credentials in its own env file, not a copy of staging's.
 3. Write `wp-config.php` from `config/wp-config.example.php`, supplying every
    credential through the environment. Mode 600, owned by the web user.
 4. Resolve the seven `CONFIRM` markers in `deploy/nginx-wordpress.conf` against

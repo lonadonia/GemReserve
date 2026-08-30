@@ -14,10 +14,46 @@
 // --- Database -------------------------------------------------------------
 // Credentials come from the server, never from this file in version control.
 // On this host the database is CloudPanel-managed Percona; see deploy/README.
-define('DB_NAME', getenv('GR_DB_NAME') ?: 'gemreserve_wp');
-define('DB_USER', getenv('GR_DB_USER') ?: 'CHANGE_ME');
-define('DB_PASSWORD', getenv('GR_DB_PASSWORD') ?: 'CHANGE_ME');
-define('DB_HOST', getenv('GR_DB_HOST') ?: 'localhost');
+// Credentials are read from an env file outside the web root, or from real
+// environment variables where the platform supplies them. Nothing secret
+// belongs in this file, so it stays safe to read, copy and diff.
+//
+// The file is a plain KEY=value list and is parsed, not sourced: a backtick or
+// a $( in a password cannot execute anything.
+(static function (): void {
+    $env_path = getenv('GR_DB_ENV') ?: '/home/hamza/.gemreserve-wp-db.env';
+    $env = [];
+
+    if (is_readable($env_path)) {
+        foreach (file($env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            $line = trim($line);
+            if ($line === '' || $line[0] === '#' || !str_contains($line, '=')) {
+                continue;
+            }
+            [$k, $v] = explode('=', $line, 2);
+            $v = trim($v);
+            if (strlen($v) > 1 && ($v[0] === '"' || $v[0] === "'") && $v[-1] === $v[0]) {
+                $v = substr($v, 1, -1);
+            }
+            $env[trim($k)] = $v;
+        }
+    }
+
+    foreach (['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST'] as $key) {
+        $value = getenv($key);
+        if ($value === false || $value === '') {
+            $value = $env[$key] ?? null;
+        }
+        if ($value === null) {
+            // Fail loudly and without detail. A half-configured database is how
+            // an install silently reaches for the wrong one.
+            http_response_code(500);
+            exit('Database configuration is incomplete.');
+        }
+        define($key, $value);
+    }
+})();
+
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
 

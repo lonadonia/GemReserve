@@ -1967,8 +1967,12 @@ h3 {
   gap: 12px;
 }
 
+/* Two metrics, not four: the asset-count and total-value claims were removed
+   as unsubstantiated. The strip is sized to what it actually holds so the
+   hairline dividers still fall between items rather than leaving half the
+   panel empty. */
 .assets-metrics__strip {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .assets-registry-control {

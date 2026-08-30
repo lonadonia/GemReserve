@@ -177,26 +177,23 @@ export const assetValuePropositions = [
   },
 ] as const satisfies readonly AssetValueProposition[];
 
+// Two entries were removed here: "1,850+ Verified Assets In Vaults" and
+// "$186M+ Total Asset Value". Both stated, in the present tense and without
+// qualification, that the company holds a specific quantity and value of
+// customer assets. Nothing on the site or in the record substantiates either
+// number, and an unbacked holdings claim is the one kind of statement the
+// factual-safety rules rule out absolutely.
+//
+// They were not replaced with smaller or hedged figures, because inventing a
+// defensible-looking number is the same error with better manners. The two
+// metrics that remain are still marked requiresClientVerification: they are
+// the owner's to substantiate or withdraw.
 export const assetMetrics = [
   {
     id: "types",
     value: "25+",
     label: "Gemstone Types",
     detail: "Available",
-    requiresClientVerification: true,
-  },
-  {
-    id: "verified-assets",
-    value: "1,850+",
-    label: "Verified Assets",
-    detail: "In Vaults",
-    requiresClientVerification: true,
-  },
-  {
-    id: "asset-value",
-    value: "$186M+",
-    label: "Total Asset Value",
-    detail: "Backed by Gems",
     requiresClientVerification: true,
   },
   {

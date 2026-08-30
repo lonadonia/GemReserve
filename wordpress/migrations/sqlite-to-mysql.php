@@ -52,8 +52,15 @@ function gr_mysql_quote($value): string
     return "'" . $escaped . "'";
 }
 
+// Only WordPress's own tables. The SQLite integration keeps its bookkeeping in
+// _wp_sqlite_* tables (a mirrored information_schema, global variables); those
+// describe the driver, not the site, and there is no MySQL schema for them —
+// dumping them would produce INSERTs into tables the import never creates.
 $tables = [];
 foreach ($wpdb->get_col('SHOW TABLES') ?: [] as $t) {
+    if (str_starts_with($t, '_wp_sqlite_') || !str_starts_with($t, $wpdb->prefix)) {
+        continue;
+    }
     $tables[] = $t;
 }
 // The SQLite driver does not always answer SHOW TABLES; fall back to the known
