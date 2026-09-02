@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "gemreserve/section",
+  "title": "Page section",
+  "category": "gemreserve",
+  "icon": "align-wide",
+  "description": "One section of the page. Move it, duplicate it, hide it, or delete it. Everything inside keeps the approved GemReserve design.",
+  "keywords": ["section", "band", "row", "block"],
+  "textdomain": "gemreserve-visual-cms",
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "customClassName": false,
+    "anchor": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "attributes": {
+    "open":    { "type": "string", "default": "" },
+    "close":   { "type": "string", "default": "" },
+    "label":   { "type": "string", "default": "" },
+    "variant": { "type": "string", "default": "" },
+    "anchor":  { "type": "string", "default": "" },
+    "hidden":  { "type": "boolean", "default": false }
+  },
+  "editorScript": "gemreserve-vcms-editor",
+  "editorStyle": "gemreserve-vcms-editor",
+  "style": "gemreserve"
+}

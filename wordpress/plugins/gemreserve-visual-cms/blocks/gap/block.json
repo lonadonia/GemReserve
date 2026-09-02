@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "gemreserve/gap",
+  "title": "Spacing",
+  "category": "gemreserve",
+  "icon": "minus",
+  "description": "Whitespace preserved from the original page so the markup reproduces exactly. Nothing to edit.",
+  "textdomain": "gemreserve-visual-cms",
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "inserter": false,
+    "customClassName": false,
+    "lock": false
+  },
+  "attributes": {
+    "text": { "type": "string", "default": "" }
+  },
+  "editorScript": "gemreserve-vcms-editor",
+  "editorStyle": "gemreserve-vcms-editor"
+}

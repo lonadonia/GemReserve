@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "gemreserve/preserved",
+  "title": "Preserved design markup",
+  "category": "gemreserve",
+  "icon": "shield",
+  "description": "Markup the migration could not safely turn into fields, kept exactly as it was. Only an administrator can change it.",
+  "textdomain": "gemreserve-visual-cms",
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "inserter": false,
+    "customClassName": false
+  },
+  "attributes": {
+    "html":   { "type": "string", "default": "" },
+    "hidden": { "type": "boolean", "default": false }
+  },
+  "editorScript": "gemreserve-vcms-editor",
+  "editorStyle": "gemreserve-vcms-editor",
+  "style": "gemreserve"
+}

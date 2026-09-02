@@ -262,3 +262,59 @@ function gemreserve_robots_txt(string $output, $public): string
         . 'Sitemap: ' . home_url('/sitemap.xml') . "\n";
 }
 add_filter('robots_txt', 'gemreserve_robots_txt', 10, 2);
+
+/**
+ * Render a block-based page body.
+ *
+ * Deliberately `do_blocks()` and not `the_content()`.
+ *
+ * `the_content` runs the whole content-filter stack, and two of those filters
+ * rewrite the approved markup. `wp_filter_content_tags` prepends `auto,` to the
+ * `sizes` attribute of every lazy-loaded image, and `wpautop` inserts
+ * paragraphs into markup that already has its own. Neither ran on the legacy
+ * body, because that was echoed raw — so putting the block body through
+ * `the_content` would have changed 30 of the 58 routes on the first deploy,
+ * which is exactly the silent design drift this migration exists to avoid. It
+ * was caught by comparing every route against its pre-migration bytes.
+ *
+ * `gemreserve_prepare_body_html()` is still applied, because it is not a
+ * WordPress filter but this theme's own: it activates the waitlist and contact
+ * forms and fills the news entries. The legacy path applied it, so the block
+ * path applies it, and the two produce the same page.
+ *
+ * The output is not escaped here and does not need to be: every block escapes
+ * its own slot values as it renders, and structural tags are re-validated
+ * against a closed allowlist before printing.
+ */
+function gemreserve_render_block_body(): void
+{
+    $content = get_the_content();
+    if (trim($content) === '') {
+        return;
+    }
+
+    echo gemreserve_prepare_body_html(do_blocks($content)); // phpcs:ignore WordPress.Security.EscapeOutput
+}
+
+/**
+ * Has this page's body been converted to blocks?
+ *
+ * The theme asks the plugin rather than sniffing post_content for a block
+ * comment. A page could legitimately contain a stray block while its sections
+ * still live in the legacy blob, and rendering both would print the page twice.
+ * The migration's own provenance flag is the only answer that cannot be
+ * ambiguous.
+ *
+ * Returns false when the plugin is not active, which is what makes deactivating
+ * gemreserve-visual-cms a complete rollback: the theme goes straight back to
+ * rendering the legacy body, and the blob is still there because the migration
+ * never deletes it.
+ */
+function gemreserve_body_is_blocks(?int $post_id = null): bool
+{
+    if (!class_exists('GemReserve\\VisualCms\\Migrator')) {
+        return false;
+    }
+
+    return GemReserve\VisualCms\Migrator::is_migrated($post_id ?: (int) get_the_ID());
+}

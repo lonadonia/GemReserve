@@ -10,14 +10,16 @@ while (have_posts()) :
     get_template_part('parts/hero');
     gemreserve_render_sections(gr_sections());
 
-    // Migrated body sections. Rendered raw against the ported stylesheet: this
-    // is the approved design's own markup, and running it through wp_kses would
-    // strip the SVG diagrams and the data attributes the layout depends on.
-    // It is not editor input — only the migration and an administrator can set
-    // it — so the trust boundary is the same as a theme template's.
-    $body = gr_field('body_html');
-    if ($body) {
-        echo gemreserve_prepare_body_html($body); // phpcs:ignore WordPress.Security.EscapeOutput
+    // The page body. See page.php for why both eras are handled: a migrated
+    // page renders from blocks, one that has not been migrated yet renders from
+    // the legacy meta blob exactly as before.
+    if (gemreserve_body_is_blocks()) {
+        gemreserve_render_block_body();
+    } else {
+        $body = gr_field('body_html');
+        if ($body) {
+            echo gemreserve_prepare_body_html($body); // phpcs:ignore WordPress.Security.EscapeOutput
+        }
     }
 endwhile;
 get_footer();

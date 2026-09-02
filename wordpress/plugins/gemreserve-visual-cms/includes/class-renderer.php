@@ -115,24 +115,23 @@ final class Renderer
     }
 
     /**
-     * Render a `gemreserve/gap`: whitespace or purely decorative markup.
+     * Render a `gemreserve/gap`: the whitespace between blocks.
      *
-     * It exists so the migration can reproduce the original formatting exactly.
-     * It is hidden from the editor's inserter and carries nothing editable.
+     * It exists so the migration reproduces the original formatting exactly —
+     * indentation and newlines are part of byte identity even though they are
+     * invisible.
+     *
+     * Whitespace only. A gap is written by the migration, never by a user, but
+     * it arrives through post_content like everything else, so anything that is
+     * not whitespace is discarded rather than trusted. That makes this the one
+     * renderer that cannot emit a tag at all, and therefore the one that cannot
+     * be turned into an injection route no matter what is stored in it.
      */
     public static function gap(array $attrs): string
     {
         $text = (string) ($attrs['text'] ?? '');
 
-        // A gap is written by the migration, never by a user, but it reaches
-        // the renderer through post_content like anything else. Restricting it
-        // to whitespace and a small set of decorative empty elements means a
-        // tampered gap cannot become a script-injection route.
-        if (trim($text) === '') {
-            return $text;
-        }
-
-        return wp_kses($text, self::decorative_tags());
+        return trim($text) === '' ? $text : '';
     }
 
     /**
@@ -323,10 +322,23 @@ final class Renderer
     /**
      * Attributes a structural wrapper may carry.
      *
-     * `class` and `style` are how the approved design is applied, so they stay.
-     * `style` is constrained by WordPress's own safecss filter, which drops
-     * `expression()`, `url()` and behaviour properties. No event handlers, and
-     * no `srcdoc`/`formaction`-style attributes anywhere.
+     * This list is not guesswork: it is every attribute that actually appears on
+     * a structural element across the 40 migrated bodies, which is a short list
+     * because the design is disciplined — class, style, a handful of ARIA
+     * attributes, `id`, `hidden`, `tabindex`, and two `data-` hooks.
+     *
+     * Narrowing it further would be false economy. When `data-phase` was missing
+     * from an earlier version of this list, five pages failed the byte-identity
+     * check and were refused by the migration — which is the mechanism working,
+     * but the attribute is inert and belongs here. `data-*` is allowed as a
+     * wildcard (WordPress supports this since 5.0) because a data attribute
+     * cannot execute anything and the design's JavaScript reads them.
+     *
+     * What is not here is the point: no `on*` handler, no `srcdoc`, no
+     * `formaction`, nothing that can navigate or execute. `style` is further
+     * constrained by WordPress's own safecss filter, which drops `expression()`
+     * and behaviour properties while passing the CSS custom properties this
+     * design's animations depend on.
      */
     private static function structural_allowed(): array
     {
@@ -335,11 +347,19 @@ final class Renderer
             'id' => true,
             'style' => true,
             'role' => true,
+            'hidden' => true,
+            'tabindex' => true,
             'aria-label' => true,
             'aria-labelledby' => true,
             'aria-describedby' => true,
             'aria-hidden' => true,
-            'data-reveal-delay' => true,
+            'aria-orientation' => true,
+            'aria-busy' => true,
+            'aria-live' => true,
+            'aria-expanded' => true,
+            'aria-controls' => true,
+            'aria-current' => true,
+            'data-*' => true,
         ];
 
         $out = [];
@@ -348,17 +368,6 @@ final class Renderer
         }
 
         return $out;
-    }
-
-    /** Empty decorative elements a gap may contain. */
-    private static function decorative_tags(): array
-    {
-        return [
-            'span' => ['class' => true, 'aria-hidden' => true],
-            'div' => ['class' => true, 'aria-hidden' => true],
-            'hr' => ['class' => true],
-            'br' => [],
-        ];
     }
 
     /**

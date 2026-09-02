@@ -314,8 +314,19 @@ final class Decomposer
         $engine = new SlotEngine();
         $extracted = $engine->extract($markup, 'c');
 
-        if ($extracted->slots === [] && trim(strip_tags($markup)) === '') {
-            // Pure structure with no content — a decorative rule, a spacer.
+        // A gap is *whitespace*, and nothing else.
+        //
+        // An earlier version routed anything without text into a gap, on the
+        // reasoning that markup with no words is decoration. That was wrong in a
+        // way the byte-identity check caught: `<p class="id-lookup__status"
+        // role="status" aria-live="polite"></p>` has no text because a script
+        // fills it at runtime, and `<i></i><i></i><i></i>` draws the three dots
+        // of a window chrome. Both are structure, both matter, and both were
+        // being erased by the gap renderer's narrow allowlist.
+        //
+        // Empty structure is a content leaf with zero slots, which renders its
+        // template verbatim. That is the correct answer and it is byte-safe.
+        if (!str_contains($markup, '<')) {
             return ['name' => 'gemreserve/gap', 'attrs' => ['text' => $markup], 'inner' => []];
         }
 

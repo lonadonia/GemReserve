@@ -119,7 +119,7 @@ final class Slot
 final class SlotTemplate
 {
     /**
-     * @param string $template Markup with `{{gr:key}}` placeholders.
+     * @param string $template Markup with `{{gr_key}}` placeholders.
      * @param Slot[] $slots
      */
     public function __construct(
@@ -151,10 +151,24 @@ final class SlotTemplate
 final class SlotEngine
 {
     /**
-     * Placeholder form. Deliberately not HTML-ish and not regex-special, so it
-     * survives both DOM serialisation and a naive str_replace on the way out.
+     * Placeholder form.
+     *
+     * `{{gr_key}}`, and the underscore is load-bearing. The original form was
+     * `{{gr:key}}`, which is more readable and is silently destroyed on save.
+     *
+     * The path is worth recording because nothing about it is obvious.
+     * WordPress's `wp_filter_post_kses` runs on `content_save_pre` for any user
+     * without `unfiltered_html` — which is every marketing role, by design. Its
+     * comment branch recursively re-filters the contents of an HTML comment,
+     * and a block's attributes live in one. Inside that recursion `gr:` is read
+     * as a URL scheme, is not on the safe-protocol list, and is stripped along
+     * with everything before it: `href="{{gr:c1}}"` became `href="c1}}"`, and
+     * the block rendered a dead link.
+     *
+     * Verified directly: with `{{gr:` the serialised block does not survive
+     * `wp_filter_post_kses`; with `{{gr_` it survives byte for byte.
      */
-    private const OPEN = '{{gr:';
+    private const OPEN = '{{gr_';
     private const CLOSE = '}}';
 
     /**
@@ -365,8 +379,8 @@ final class SlotEngine
         $html = str_replace($search, $replace, $template);
 
         // Any placeholder left over refers to a slot the block no longer
-        // declares. Blank it rather than printing `{{gr:s7}}` to a visitor.
-        return preg_replace('/\{\{gr:[A-Za-z0-9_]+\}\}/', '', $html) ?? $html;
+        // declares. Blank it rather than printing `{{gr_s7}}` to a visitor.
+        return preg_replace('/\{\{gr_[A-Za-z0-9_]+\}\}/', '', $html) ?? $html;
     }
 
     /**

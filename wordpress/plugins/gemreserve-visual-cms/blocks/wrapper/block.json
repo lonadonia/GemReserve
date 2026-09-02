@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "gemreserve/wrapper",
+  "title": "Layout group",
+  "category": "gemreserve",
+  "icon": "screenoptions",
+  "description": "A layout container from the approved design. It holds the editable content inside it; its own styling is fixed.",
+  "textdomain": "gemreserve-visual-cms",
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "inserter": false,
+    "customClassName": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "attributes": {
+    "open":    { "type": "string", "default": "" },
+    "close":   { "type": "string", "default": "" },
+    "variant": { "type": "string", "default": "" },
+    "hidden":  { "type": "boolean", "default": false }
+  },
+  "editorScript": "gemreserve-vcms-editor",
+  "editorStyle": "gemreserve-vcms-editor",
+  "style": "gemreserve"
+}

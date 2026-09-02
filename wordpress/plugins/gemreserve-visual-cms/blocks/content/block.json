@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "gemreserve/content",
+  "title": "Content",
+  "category": "gemreserve",
+  "icon": "editor-paragraph",
+  "description": "Text, links, images and icons from one part of the design. Edit the fields; the layout around them stays fixed.",
+  "keywords": ["text", "heading", "paragraph", "copy"],
+  "textdomain": "gemreserve-visual-cms",
+  "supports": {
+    "html": false,
+    "reusable": false,
+    "inserter": false,
+    "customClassName": false,
+    "color": false,
+    "spacing": false,
+    "typography": false
+  },
+  "attributes": {
+    "template": { "type": "string", "default": "" },
+    "slots":    { "type": "array",  "default": [] },
+    "hidden":   { "type": "boolean", "default": false }
+  },
+  "editorScript": "gemreserve-vcms-editor",
+  "editorStyle": "gemreserve-vcms-editor",
+  "style": "gemreserve"
+}

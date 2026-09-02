@@ -1,0 +1,198 @@
+/*
+ * Editor chrome for the GemReserve blocks.
+ *
+ * Deliberately small. The site's own stylesheet is loaded into the editor
+ * canvas as an editor style, so a section in the editor is drawn by the same
+ * CSS that draws it on the site. Everything here is the thin layer on top:
+ * the affordances that say "this is editable", and nothing that competes with
+ * the design underneath.
+ */
+
+.gr-section {
+	position: relative;
+}
+
+/* The section's name, shown on hover so the canvas stays clean while reading. */
+.gr-section__chip,
+.gr-preserved .gr-section__chip {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	z-index: 4;
+	padding: 2px 8px;
+	border-radius: 2px;
+	background: #1e1e1e;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	line-height: 1.8;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 120ms ease;
+}
+
+.gr-section:hover > .gr-section__chip,
+.gr-section:focus-within > .gr-section__chip,
+.gr-preserved:hover > .gr-section__chip {
+	opacity: 1;
+}
+
+.gr-section__flag {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	z-index: 4;
+	padding: 2px 8px;
+	border-radius: 2px;
+	background: #b32d2e;
+	color: #fff;
+	font-size: 11px;
+	line-height: 1.8;
+}
+
+/* A hidden section stays legible but visibly out of circulation. */
+.gr-section--hidden {
+	opacity: 0.45;
+	outline: 1px dashed #b32d2e;
+	outline-offset: 2px;
+}
+
+/*
+ * Editable text.
+ *
+ * The underline only appears on hover or focus. A permanent highlight on every
+ * editable string would turn a page with 120 slots into a page of boxes, and
+ * the point of this editor is that it looks like the site.
+ */
+.gr-slot {
+	border-radius: 2px;
+	cursor: text;
+	outline: none;
+	transition: background-color 100ms ease, box-shadow 100ms ease;
+}
+
+.gr-slot:hover {
+	background: rgba(217, 154, 39, 0.14);
+}
+
+.gr-slot:focus {
+	background: rgba(217, 154, 39, 0.2);
+	box-shadow: 0 0 0 2px rgba(217, 154, 39, 0.75);
+}
+
+/* An empty slot has nothing to click, so it needs a target of its own. */
+.gr-slot--empty::after {
+	content: attr(aria-label);
+	display: inline-block;
+	min-width: 6ch;
+	padding: 0 4px;
+	border: 1px dashed currentColor;
+	border-radius: 2px;
+	opacity: 0.5;
+	font-size: 0.85em;
+}
+
+.gr-repeat-item {
+	position: relative;
+	display: contents;
+}
+
+/* Cards keep their own layout; selection is shown on the item's first child. */
+.gr-repeatable__canvas .gr-repeat-item.is-active > * {
+	outline: 2px solid rgba(217, 154, 39, 0.9);
+	outline-offset: 3px;
+}
+
+.gr-card-list {
+	margin: 0 0 12px;
+	padding: 0;
+	list-style: none;
+}
+
+.gr-card-list__row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.gr-card-list__row.is-active {
+	background: #f0f0f0;
+}
+
+.gr-card-list__name {
+	flex: 1 1 auto;
+	justify-content: flex-start !important;
+	overflow: hidden;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.gr-card-list__ops {
+	display: flex;
+	flex: 0 0 auto;
+}
+
+.gr-field {
+	margin-bottom: 16px;
+}
+
+.gr-field__label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.gr-empty-note {
+	margin: 0 0 12px;
+	color: #757575;
+	font-size: 12px;
+}
+
+.gr-icon-picker__current {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.gr-icon-picker__preview svg,
+.gr-icon-picker__option svg {
+	width: 24px;
+	height: 24px;
+	color: #1e1e1e;
+}
+
+.gr-icon-picker__grid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 4px;
+	margin-top: 10px;
+	padding: 8px;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+	max-height: 240px;
+	overflow-y: auto;
+}
+
+.gr-icon-picker__option {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	height: 36px;
+}
+
+.gr-media-control__thumb {
+	display: block;
+	max-width: 100%;
+	max-height: 120px;
+	margin-bottom: 8px;
+	border: 1px solid #e0e0e0;
+}
+
+.gr-preserved__canvas {
+	pointer-events: none;
+}
