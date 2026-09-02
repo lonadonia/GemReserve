@@ -1,0 +1,27 @@
+# Legacy / prohibited company content scan
+
+Run: 2026-09-02T01:45:36Z
+Scope: 40 migrated page bodies, repo theme, repo plugins (gemreserve-core), gr_options.
+Note: gemreserve-leadership-profiles is NOT in the repository (see audit DRIFT-1),
+so it is outside this scan's file scope. It was inspected separately on the live host.
+
+## Prohibited patterns (case-insensitive unless noted)
+  Switzerland              files: 0
+  Swiss                    files: 0
+  Zurich                   files: 0
+  Zug                      files: 0
+  +41                      files: 0
+  Bahnhofstrasse           files: 0
+  Built in Switzerland     files: 0
+  CHE-                     files: 0  (case-sensitive Swiss UID prefix)
+  NOTE: a case-INSENSITIVE 'CHE-' search matches 1 file — the substring in the
+        image filename ruby-trapiche-rough.webp. Not a Swiss identifier.
+
+## Required identity
+  GemVault Capital               files: 5
+  307501935                      files: 5
+  Girulių g. 20                 files: 4
+  LT-12123                       files: 4
+  Ramon Ernesto Lora Arias       files: 0  <-- absent from the repo entirely; present
+                                            ONLY in the uncommitted live plugin. See IDENT-1.
+  (identity values also verified present in gr_options — see audit §8)

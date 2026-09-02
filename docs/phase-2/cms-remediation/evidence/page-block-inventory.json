@@ -1,0 +1,1505 @@
+[
+    {
+        "id": 40,
+        "slug": "about",
+        "body_bytes": 17483,
+        "identical": true,
+        "sections": 4,
+        "blocks": 38,
+        "slots": 76,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/wrapper": 9,
+            "gemreserve/content": 19,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 1
+        },
+        "section_list": [
+            {
+                "label": "OUR STORY",
+                "variant": "about-story container-wide"
+            },
+            {
+                "label": "BUILT ON TRUST. BACKED BY EXPERTS.",
+                "variant": "about-capabilities container-wide"
+            },
+            {
+                "label": "GemReserve.io by the numbers",
+                "variant": "about-metrics container-wide"
+            },
+            {
+                "label": "Be Part of the Next Gemstone Revolution",
+                "variant": "waitlist about-waitlist"
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "slug": "anti-fraud-notice",
+        "body_bytes": 20869,
+        "identical": true,
+        "sections": 6,
+        "blocks": 54,
+        "slots": 116,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 6,
+            "gemreserve/content": 22,
+            "gemreserve/wrapper": 15,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 7
+        },
+        "section_list": [
+            {
+                "label": "OUR COMMITMENT TO YOU",
+                "variant": "fraud-commitments container-wide"
+            },
+            {
+                "label": "COMMON FRAUD SCAMS TO WATCH FOR",
+                "variant": "fraud-scams container-wide"
+            },
+            {
+                "label": "HOW TO PROTECT YOURSELF",
+                "variant": "fraud-protect container-wide"
+            },
+            {
+                "label": "OFFICIAL CHANNELS ONLY",
+                "variant": "fraud-channels container-wide"
+            },
+            {
+                "label": "IF YOU SUSPECT FRAUD, ACT FAST.",
+                "variant": "fraud-report container-wide"
+            },
+            {
+                "label": "How we work together",
+                "variant": "fraud-closing container-wide"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "slug": "asset-registry",
+        "body_bytes": 28175,
+        "identical": true,
+        "sections": 5,
+        "blocks": 68,
+        "slots": 163,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 17,
+            "gemreserve/repeatable": 3,
+            "gemreserve/gap": 6,
+            "gemreserve/content": 37
+        },
+        "section_list": [
+            {
+                "label": "What the registry guarantees",
+                "variant": "registry-badges container-wide"
+            },
+            {
+                "label": "HOW THE ASSET REGISTRY WORKS",
+                "variant": "registry-process container-wide"
+            },
+            {
+                "label": "ASSET RECORD EXAMPLE",
+                "variant": "registry-record container-wide"
+            },
+            {
+                "label": "Registry access, value and lookup",
+                "variant": "registry-close container-wide"
+            },
+            {
+                "label": "Transparency is our foundation.The blockchain is our ledger. Trust is our promise.",
+                "variant": "trust-cta registry-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "slug": "assets",
+        "body_bytes": 30941,
+        "identical": true,
+        "sections": 3,
+        "blocks": 28,
+        "slots": 216,
+        "repeatables": 0,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 3,
+            "gemreserve/wrapper": 7,
+            "gemreserve/content": 14,
+            "gemreserve/gap": 4
+        },
+        "section_list": [
+            {
+                "label": "GemReserve asset metrics and registry",
+                "variant": "assets-metrics container-wide"
+            },
+            {
+                "label": "WHY INVEST IN GEMSTONE ASSETS?",
+                "variant": "investment-panel assets-investment container-wide"
+            },
+            {
+                "label": "Own Timeless Beauty.Backed by Trust.",
+                "variant": "waitlist assets-waitlist"
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "slug": "contact",
+        "body_bytes": 11069,
+        "identical": true,
+        "sections": 2,
+        "blocks": 29,
+        "slots": 95,
+        "repeatables": 2,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 2,
+            "gemreserve/wrapper": 9,
+            "gemreserve/content": 14,
+            "gemreserve/repeatable": 2,
+            "gemreserve/gap": 2
+        },
+        "section_list": [
+            {
+                "label": "GET IN TOUCH",
+                "variant": "contact-body container-wide"
+            },
+            {
+                "label": "BUILT IN LITHUANIA. SERVING THE WORLD.",
+                "variant": "trust-cta contact-jurisdiction container-wide"
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "slug": "corporate-development",
+        "body_bytes": 22888,
+        "identical": true,
+        "sections": 6,
+        "blocks": 49,
+        "slots": 144,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 6,
+            "gemreserve/wrapper": 12,
+            "gemreserve/content": 17,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 10
+        },
+        "section_list": [
+            {
+                "label": "OUR MISSION",
+                "variant": "corporate-mission container-wide"
+            },
+            {
+                "label": "WHERE THINGS STAND",
+                "variant": "corporate-achievements container-wide"
+            },
+            {
+                "label": "DEVELOPMENT STATUS OVERVIEW",
+                "variant": "corporate-status container-wide"
+            },
+            {
+                "label": "THE SEQUENCE AHEAD",
+                "variant": "corporate-milestones container-wide"
+            },
+            {
+                "label": "CHECK IT YOURSELF",
+                "variant": "corporate-verify container-wide"
+            },
+            {
+                "label": "BUILT IN THE OPEN",
+                "variant": "trust-cta corporate-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "slug": "custody-vault-structure",
+        "body_bytes": 21465,
+        "identical": true,
+        "sections": 4,
+        "blocks": 56,
+        "slots": 110,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 25,
+            "gemreserve/wrapper": 16,
+            "gemreserve/repeatable": 5,
+            "gemreserve/gap": 6
+        },
+        "section_list": [
+            {
+                "label": "MULTI-LAYER CUSTODY FRAMEWORK",
+                "variant": "custody-framework container-wide"
+            },
+            {
+                "label": "WHAT A CUSTODIAN HAS TO MEET",
+                "variant": "custody-detail container-wide"
+            },
+            {
+                "label": "WHAT THE COVER HAS TO ANSWER FOR",
+                "variant": "custody-assurance container-wide"
+            },
+            {
+                "label": "Secure Today.Transparent Always.",
+                "variant": "trust-cta custody-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "slug": "digital-asset-passports",
+        "body_bytes": 26102,
+        "identical": true,
+        "sections": 4,
+        "blocks": 71,
+        "slots": 121,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 42,
+            "gemreserve/wrapper": 17,
+            "gemreserve/gap": 7,
+            "gemreserve/repeatable": 1
+        },
+        "section_list": [
+            {
+                "label": "WHAT IS A DIGITAL ASSET PASSPORT?",
+                "variant": "passports-what container-wide"
+            },
+            {
+                "label": "Inside a passport, and how one is verified",
+                "variant": "passports-inside container-wide"
+            },
+            {
+                "label": "BENEFITS OF DIGITAL ASSET PASSPORTS",
+                "variant": "passports-benefits container-wide"
+            },
+            {
+                "label": "Every Gemstone. Every Detail.One Immutable Passport.",
+                "variant": "trust-cta passports-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "slug": "discount-methodology",
+        "body_bytes": 14428,
+        "identical": true,
+        "sections": 5,
+        "blocks": 43,
+        "slots": 89,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 11,
+            "gemreserve/repeatable": 3,
+            "gemreserve/gap": 7,
+            "gemreserve/content": 17
+        },
+        "section_list": [
+            {
+                "label": "Why the discount exists",
+                "variant": "discount-marks container-wide"
+            },
+            {
+                "label": "HOW THE 20% DISCOUNT IS CALCULATED",
+                "variant": "discount-calc container-wide"
+            },
+            {
+                "label": "EXAMPLE: HOW THE 20% DISCOUNT WORKS",
+                "variant": "discount-example container-wide"
+            },
+            {
+                "label": "OUR PRICING PRINCIPLES",
+                "variant": "discount-principles container-wide"
+            },
+            {
+                "label": "Be Early. Be Rewarded.",
+                "variant": "trust-cta discount-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "slug": "documents",
+        "body_bytes": 23597,
+        "identical": true,
+        "sections": 5,
+        "blocks": 44,
+        "slots": 134,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 17,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 3,
+            "gemreserve/gap": 9
+        },
+        "section_list": [
+            {
+                "label": "EXPLORE OUR DOCUMENTS",
+                "variant": "documents-categories container-wide"
+            },
+            {
+                "label": "THE DOCUMENT LIBRARY",
+                "variant": "documents-library container-wide"
+            },
+            {
+                "label": "PUBLISHED AND READABLE NOW",
+                "variant": "documents-published container-wide"
+            },
+            {
+                "label": "ADDITIONAL RESOURCES",
+                "variant": "documents-additional container-wide"
+            },
+            {
+                "label": "CAN'T FIND WHAT YOU'RE LOOKING FOR?",
+                "variant": "trust-cta documents-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "slug": "early-participation",
+        "body_bytes": 13070,
+        "identical": true,
+        "sections": 3,
+        "blocks": 27,
+        "slots": 88,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 3,
+            "gemreserve/wrapper": 8,
+            "gemreserve/repeatable": 4,
+            "gemreserve/content": 9,
+            "gemreserve/gap": 3
+        },
+        "section_list": [
+            {
+                "label": "EARLY ACCESS",
+                "variant": "waitlist-body container-wide"
+            },
+            {
+                "label": "WHAT HAPPENS NEXT?",
+                "variant": "waitlist-next container-wide"
+            },
+            {
+                "label": "Why the waitlist is worth joining",
+                "variant": "waitlist-assurance container-wide"
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "slug": "early-participation-program",
+        "body_bytes": 22150,
+        "identical": true,
+        "sections": 6,
+        "blocks": 61,
+        "slots": 144,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 6,
+            "gemreserve/wrapper": 15,
+            "gemreserve/content": 26,
+            "gemreserve/gap": 9,
+            "gemreserve/repeatable": 5
+        },
+        "section_list": [
+            {
+                "label": "Programme status",
+                "variant": "program-notice container-wide"
+            },
+            {
+                "label": "WHY PARTICIPATE EARLY?",
+                "variant": "program-reasons container-wide"
+            },
+            {
+                "label": "PROGRAM DETAILS",
+                "variant": "program-detail container-wide"
+            },
+            {
+                "label": "THE SEQUENCE",
+                "variant": "program-timeline container-wide"
+            },
+            {
+                "label": "PROGRAM BENEFITS",
+                "variant": "program-invite container-wide"
+            },
+            {
+                "label": "FREQUENTLY ASKED QUESTIONS",
+                "variant": "program-faq container-wide"
+            }
+        ]
+    },
+    {
+        "id": 48,
+        "slug": "eligibility-kyc",
+        "body_bytes": 20115,
+        "identical": true,
+        "sections": 4,
+        "blocks": 58,
+        "slots": 101,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/wrapper": 14,
+            "gemreserve/content": 30,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 6
+        },
+        "section_list": [
+            {
+                "label": "WHO CAN PARTICIPATE?",
+                "variant": "kyc-detail container-wide"
+            },
+            {
+                "label": "REQUIRED DOCUMENTS",
+                "variant": "kyc-documents container-wide"
+            },
+            {
+                "label": "ELIGIBILITY RESTRICTIONS",
+                "variant": "kyc-policy container-wide"
+            },
+            {
+                "label": "Secure. Compliant. Transparent.",
+                "variant": "trust-cta kyc-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "slug": "enterprise",
+        "body_bytes": 24702,
+        "identical": true,
+        "sections": 4,
+        "blocks": 38,
+        "slots": 137,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 21,
+            "gemreserve/wrapper": 6,
+            "gemreserve/gap": 4,
+            "gemreserve/repeatable": 3
+        },
+        "section_list": [
+            {
+                "label": "OUR ENTERPRISE SOLUTIONS",
+                "variant": "enterprise-solutions container-wide"
+            },
+            {
+                "label": "OUR ENTERPRISE PROCESS",
+                "variant": "enterprise-process container-wide"
+            },
+            {
+                "label": "THE BENEFITS OF PARTNERING WITH GEMRESERVE.IO",
+                "variant": "enterprise-close container-wide"
+            },
+            {
+                "label": "TRUSTED BY INNOVATORS. BUILT FOR LEADERS.",
+                "variant": "enterprise-trusted container-wide"
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "slug": "enterprise-tokenization",
+        "body_bytes": 22659,
+        "identical": true,
+        "sections": 5,
+        "blocks": 39,
+        "slots": 127,
+        "repeatables": 6,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 6,
+            "gemreserve/gap": 6,
+            "gemreserve/content": 12
+        },
+        "section_list": [
+            {
+                "label": "What enterprise tokenization provides",
+                "variant": "ets-marks container-wide"
+            },
+            {
+                "label": "OUR TOKENIZATION SERVICES",
+                "variant": "ets-detail container-wide"
+            },
+            {
+                "label": "OUR TOKENIZATION PROCESS",
+                "variant": "ets-process container-wide"
+            },
+            {
+                "label": "WE TOKENIZE A WIDE RANGE OF REAL ASSETS",
+                "variant": "ets-assets container-wide"
+            },
+            {
+                "label": "READY TO TOKENIZEYOUR ASSETS?",
+                "variant": "ets-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 49,
+        "slug": "faq",
+        "body_bytes": 19638,
+        "identical": true,
+        "sections": 2,
+        "blocks": 24,
+        "slots": 89,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 2,
+            "gemreserve/content": 13,
+            "gemreserve/wrapper": 6,
+            "gemreserve/gap": 2,
+            "gemreserve/repeatable": 1
+        },
+        "section_list": [
+            {
+                "label": "Questions and answers",
+                "variant": "faq-body container-wide"
+            },
+            {
+                "label": "What every answer rests on",
+                "variant": "faq-assurance container-wide"
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "slug": "future-infrastructure",
+        "body_bytes": 16655,
+        "identical": true,
+        "sections": 4,
+        "blocks": 36,
+        "slots": 114,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/wrapper": 7,
+            "gemreserve/content": 17,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 4
+        },
+        "section_list": [
+            {
+                "label": "A NEW ERA FOR REAL ASSET OWNERSHIP",
+                "variant": "future-era container-wide"
+            },
+            {
+                "label": "THE INFRASTRUCTURE VISION",
+                "variant": "future-detail container-wide"
+            },
+            {
+                "label": "OUR ROAD TO THE FUTURE",
+                "variant": "future-road container-wide"
+            },
+            {
+                "label": "What GemReserve.io stands for",
+                "variant": "future-banner container-wide"
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "slug": "gemstone-buyers",
+        "body_bytes": 21699,
+        "identical": true,
+        "sections": 5,
+        "blocks": 38,
+        "slots": 130,
+        "repeatables": 6,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 9,
+            "gemreserve/repeatable": 6,
+            "gemreserve/gap": 6,
+            "gemreserve/content": 12
+        },
+        "section_list": [
+            {
+                "label": "What buyers and collectors receive",
+                "variant": "audience-marks container-wide audience-marks--full"
+            },
+            {
+                "label": "WHY BUY GEMSTONES ON GEMRESERVE.IO?",
+                "variant": "audience-why container-wide"
+            },
+            {
+                "label": "HOW IT WORKS FOR BUYERS",
+                "variant": "audience-process container-wide"
+            },
+            {
+                "label": "WHO WE SERVE",
+                "variant": "audience-serve container-wide"
+            },
+            {
+                "label": "BE PART OF THE FUTUREOF GEMSTONE OWNERSHIP",
+                "variant": "audience-close container-wide"
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "slug": "gemstone-owners",
+        "body_bytes": 19665,
+        "identical": true,
+        "sections": 5,
+        "blocks": 49,
+        "slots": 100,
+        "repeatables": 6,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 12,
+            "gemreserve/repeatable": 6,
+            "gemreserve/content": 17,
+            "gemreserve/gap": 9
+        },
+        "section_list": [
+            {
+                "label": "What tokenizing your gemstones provides",
+                "variant": "audience-marks container-wide"
+            },
+            {
+                "label": "WHO WE SERVE",
+                "variant": "audience-serve container-wide"
+            },
+            {
+                "label": "YOUR GEMSTONES. OUR PLATFORM.",
+                "variant": "audience-platform container-wide"
+            },
+            {
+                "label": "HOW IT WORKS FOR YOU",
+                "variant": "audience-process container-wide"
+            },
+            {
+                "label": "PARTNER WITH GEMRESERVE.IO",
+                "variant": "audience-close container-wide"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "slug": "gemstone-programs",
+        "body_bytes": 53255,
+        "identical": true,
+        "sections": 5,
+        "blocks": 65,
+        "slots": 325,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 12,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 5,
+            "gemreserve/content": 39
+        },
+        "section_list": [
+            {
+                "label": "What every gemstone program guarantees",
+                "variant": "programs-badges container-wide"
+            },
+            {
+                "label": "OUR GEMSTONE PROGRAMS",
+                "variant": "programs-grid-section container-wide"
+            },
+            {
+                "label": "NATURAL ROUGH GEMSTONE PROGRAMS",
+                "variant": "rough-programs-section container-wide"
+            },
+            {
+                "label": "Every Gemstone. Every Detail. Every Time.",
+                "variant": "programs-detail container-wide"
+            },
+            {
+                "label": "Own the World's MostPrecious Gemstones",
+                "variant": "trust-cta programs-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "slug": "gemstone-tokenization",
+        "body_bytes": 31662,
+        "identical": true,
+        "sections": 5,
+        "blocks": 58,
+        "slots": 158,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 31,
+            "gemreserve/wrapper": 13,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 4
+        },
+        "section_list": [
+            {
+                "label": "THE GEMSTONE TOKENIZATION PROCESS",
+                "variant": "tokenization-process container-wide"
+            },
+            {
+                "label": "WHY GEMSTONE TOKENIZATION?",
+                "variant": "tokenization-detail container-wide"
+            },
+            {
+                "label": "EXAMPLE: HOW A GEMSTONE IS TOKENIZED",
+                "variant": "tokenization-example container-wide"
+            },
+            {
+                "label": "PROOF OF GEM RESERVES",
+                "variant": "tokenization-proof container-wide"
+            },
+            {
+                "label": "The future of gemstones is here.Own. Trade. Redeem.",
+                "variant": "trust-cta tokenization-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "slug": "governance",
+        "body_bytes": 23072,
+        "identical": true,
+        "sections": 4,
+        "blocks": 34,
+        "slots": 87,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 14,
+            "gemreserve/wrapper": 8,
+            "gemreserve/gap": 4,
+            "gemreserve/repeatable": 4
+        },
+        "section_list": [
+            {
+                "label": "OUR GOVERNANCE PRINCIPLES",
+                "variant": "governance-principles container-wide"
+            },
+            {
+                "label": "GOVERNANCE STRUCTURE",
+                "variant": "governance-detail container-wide"
+            },
+            {
+                "label": "TRANSPARENCY & ACCOUNTABILITY",
+                "variant": "governance-accountability container-wide"
+            },
+            {
+                "label": "OUR COMMITMENT",
+                "variant": "trust-cta governance-commitment container-wide"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "slug": "home",
+        "body_bytes": 32107,
+        "identical": true,
+        "sections": 5,
+        "blocks": 49,
+        "slots": 131,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 28,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 1,
+            "gemreserve/gap": 5
+        },
+        "section_list": [
+            {
+                "label": "GemReserve trust pillars",
+                "variant": "home-trust container-wide"
+            },
+            {
+                "label": "HOW GEMRESERVE WORKS",
+                "variant": "home-process container-wide"
+            },
+            {
+                "label": "EXQUISITE GEMSTONES. ENDURING VALUE.",
+                "variant": "catalog-preview container-wide"
+            },
+            {
+                "label": "GemReserve platform metrics",
+                "variant": "home-metrics container-wide"
+            },
+            {
+                "label": "Be Part of the NextGemstone Revolution",
+                "variant": "waitlist home-waitlist"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "slug": "how-it-works",
+        "body_bytes": 26990,
+        "identical": true,
+        "sections": 4,
+        "blocks": 56,
+        "slots": 108,
+        "repeatables": 2,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 27,
+            "gemreserve/wrapper": 14,
+            "gemreserve/gap": 9,
+            "gemreserve/repeatable": 2
+        },
+        "section_list": [
+            {
+                "label": "THE GEMRESERVE.IO PROCESS",
+                "variant": "how-process container-wide"
+            },
+            {
+                "label": "WHAT MAKES GEMRESERVE.IO POWERFUL",
+                "variant": "how-power container-wide"
+            },
+            {
+                "label": "Technology, security and asset lifecycle",
+                "variant": "how-core container-wide"
+            },
+            {
+                "label": "REAL ASSETS. REAL VALUE. REAL TRUST.",
+                "variant": "trust-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 50,
+        "slug": "independent-verification",
+        "body_bytes": 21060,
+        "identical": true,
+        "sections": 3,
+        "blocks": 50,
+        "slots": 119,
+        "repeatables": 2,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 3,
+            "gemreserve/content": 30,
+            "gemreserve/wrapper": 12,
+            "gemreserve/gap": 3,
+            "gemreserve/repeatable": 2
+        },
+        "section_list": [
+            {
+                "label": "MULTI-LAYER INDEPENDENT VERIFICATION FRAMEWORK",
+                "variant": "verification-framework container-wide"
+            },
+            {
+                "label": "THE INDEPENDENT PARTIES",
+                "variant": "verification-detail container-wide"
+            },
+            {
+                "label": "Verified. Backed. Transparent.That is the GemReserve Standard.",
+                "variant": "trust-cta verification-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "slug": "investors",
+        "body_bytes": 25512,
+        "identical": true,
+        "sections": 5,
+        "blocks": 52,
+        "slots": 140,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 24,
+            "gemreserve/wrapper": 13,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 5
+        },
+        "section_list": [
+            {
+                "label": "EXECUTIVE OVERVIEW",
+                "variant": "investors-executive container-wide"
+            },
+            {
+                "label": "THE MARKET OPPORTUNITY",
+                "variant": "investors-thesis container-wide"
+            },
+            {
+                "label": "FINANCIAL HIGHLIGHTS (PROJECTED)",
+                "variant": "investors-financials container-wide"
+            },
+            {
+                "label": "OUR ROADMAP",
+                "variant": "investors-roadmap-row container-wide"
+            },
+            {
+                "label": "Investor assurances",
+                "variant": "investors-assurance container-wide"
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "slug": "licensing-white-label",
+        "body_bytes": 17354,
+        "identical": true,
+        "sections": 4,
+        "blocks": 49,
+        "slots": 117,
+        "repeatables": 7,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/wrapper": 13,
+            "gemreserve/content": 20,
+            "gemreserve/repeatable": 7,
+            "gemreserve/gap": 5
+        },
+        "section_list": [
+            {
+                "label": "OUR TECHNOLOGY FOUNDATION",
+                "variant": "licensing-foundation container-wide"
+            },
+            {
+                "label": "LICENSING & COMPLIANCE",
+                "variant": "licensing-compliance container-wide"
+            },
+            {
+                "label": "Launch Your Brand.Powered by Our Technology.",
+                "variant": "licensing-white container-wide"
+            },
+            {
+                "label": "BUILT FOR THE FUTURES",
+                "variant": "licensing-future container-wide"
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "slug": "news",
+        "body_bytes": 12334,
+        "identical": true,
+        "sections": 2,
+        "blocks": 42,
+        "slots": 84,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 2,
+            "gemreserve/content": 27,
+            "gemreserve/wrapper": 10,
+            "gemreserve/gap": 2,
+            "gemreserve/repeatable": 1
+        },
+        "section_list": [
+            {
+                "label": "WHAT WILL BE PUBLISHED HERE",
+                "variant": "news-categories container-wide"
+            },
+            {
+                "label": "NOTHING PUBLISHED YET",
+                "variant": "news-body container-wide"
+            }
+        ]
+    },
+    {
+        "id": 60,
+        "slug": "participant-portal",
+        "body_bytes": 21887,
+        "identical": true,
+        "sections": 6,
+        "blocks": 70,
+        "slots": 161,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 6,
+            "gemreserve/wrapper": 18,
+            "gemreserve/content": 33,
+            "gemreserve/gap": 8,
+            "gemreserve/repeatable": 5
+        },
+        "section_list": [
+            {
+                "label": "THE PORTAL IS NOT OPEN",
+                "variant": "participant-notice container-wide"
+            },
+            {
+                "label": "EVERYTHING IN ONE PORTAL",
+                "variant": "participant-capabilities container-wide"
+            },
+            {
+                "label": "PORTAL ACCESS FEATURES",
+                "variant": "participant-detail container-wide"
+            },
+            {
+                "label": "HOW ACCESS WILL WORK",
+                "variant": "participant-steps container-wide"
+            },
+            {
+                "label": "BE TOLD WHEN THE PORTAL OPENS",
+                "variant": "participant-cta container-wide"
+            },
+            {
+                "label": "What the portal is built on",
+                "variant": "participant-closing container-wide"
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "slug": "physical-redemption",
+        "body_bytes": 28352,
+        "identical": true,
+        "sections": 5,
+        "blocks": 55,
+        "slots": 137,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 29,
+            "gemreserve/wrapper": 11,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 5
+        },
+        "section_list": [
+            {
+                "label": "THE PHYSICAL REDEMPTION PROCESS",
+                "variant": "redemption-process container-wide"
+            },
+            {
+                "label": "Redemption guarantee, contents and requirements",
+                "variant": "redemption-assurance container-wide"
+            },
+            {
+                "label": "SECURE LOGISTICS & DELIVERY",
+                "variant": "redemption-logistics container-wide"
+            },
+            {
+                "label": "Redemption fees, on-chain record and next step",
+                "variant": "redemption-close container-wide"
+            },
+            {
+                "label": "Real Ownership. Real Choice. Real Assets.",
+                "variant": "trust-cta redemption-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "slug": "platform-infrastructure",
+        "body_bytes": 26458,
+        "identical": true,
+        "sections": 5,
+        "blocks": 39,
+        "slots": 137,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 8,
+            "gemreserve/repeatable": 5,
+            "gemreserve/gap": 5,
+            "gemreserve/content": 16
+        },
+        "section_list": [
+            {
+                "label": "Infrastructure principles",
+                "variant": "infrastructure-badges container-wide"
+            },
+            {
+                "label": "PLATFORM ARCHITECTURE OVERVIEW",
+                "variant": "tech-architecture infrastructure-architecture container-wide"
+            },
+            {
+                "label": "Security, cloud and core components",
+                "variant": "tech-detail infrastructure-detail container-wide"
+            },
+            {
+                "label": "BUILT ON TRUST.BACKED BY TECHNOLOGY.",
+                "variant": "trust-cta infrastructure-cta container-wide"
+            },
+            {
+                "label": "Infrastructure next",
+                "variant": "infrastructure-next container-wide"
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "slug": "program-overview",
+        "body_bytes": 13103,
+        "identical": true,
+        "sections": 4,
+        "blocks": 30,
+        "slots": 73,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/wrapper": 6,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 4,
+            "gemreserve/content": 12
+        },
+        "section_list": [
+            {
+                "label": "What the program is built on",
+                "variant": "overview-marks container-wide"
+            },
+            {
+                "label": "OUR MISSION",
+                "variant": "overview-detail container-wide"
+            },
+            {
+                "label": "WHAT MAKES OUR PROGRAM UNIQUE",
+                "variant": "overview-unique container-wide"
+            },
+            {
+                "label": "THE FUTURE OF VALUESTARTS WITH REAL ASSETS",
+                "variant": "trust-cta overview-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "slug": "proof-of-reserves",
+        "body_bytes": 20910,
+        "identical": true,
+        "sections": 4,
+        "blocks": 53,
+        "slots": 132,
+        "repeatables": 4,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 26,
+            "gemreserve/wrapper": 14,
+            "gemreserve/repeatable": 4,
+            "gemreserve/gap": 5
+        },
+        "section_list": [
+            {
+                "label": "THE PROOF OF GEMSTONE RESERVES PROCESS",
+                "variant": "reserves-process container-wide"
+            },
+            {
+                "label": "DIGITAL ASSET PASSPORT",
+                "variant": "reserves-detail container-wide"
+            },
+            {
+                "label": "OUR PROOF OF RESERVES GUARANTEE",
+                "variant": "reserves-guarantee container-wide"
+            },
+            {
+                "label": "Real Gems. Real Value. Real Proof.Backed by the Highest Standards.",
+                "variant": "trust-cta reserves-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "slug": "redemption-portal",
+        "body_bytes": 17175,
+        "identical": true,
+        "sections": 6,
+        "blocks": 41,
+        "slots": 94,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 6,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 5,
+            "gemreserve/gap": 7,
+            "gemreserve/content": 13
+        },
+        "section_list": [
+            {
+                "label": "What the portal guarantees",
+                "variant": "portal-assurances container-wide"
+            },
+            {
+                "label": "THE REDEMPTION PROCESS",
+                "variant": "portal-process container-wide"
+            },
+            {
+                "label": "PORTAL FEATURES",
+                "variant": "portal-features container-wide"
+            },
+            {
+                "label": "SECURE. VERIFIED. TRUSTED.",
+                "variant": "portal-trust container-wide"
+            },
+            {
+                "label": "Our Redemption Guarantee",
+                "variant": "portal-guarantee container-wide"
+            },
+            {
+                "label": "Digital Today. Physical Forever.",
+                "variant": "trust-cta portal-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "slug": "resources",
+        "body_bytes": 19395,
+        "identical": true,
+        "sections": 4,
+        "blocks": 50,
+        "slots": 111,
+        "repeatables": 1,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 4,
+            "gemreserve/content": 28,
+            "gemreserve/wrapper": 11,
+            "gemreserve/gap": 6,
+            "gemreserve/repeatable": 1
+        },
+        "section_list": [
+            {
+                "label": "EXPLORE BY TOPIC",
+                "variant": "resources-topics container-wide"
+            },
+            {
+                "label": "RESOURCE LIBRARY",
+                "variant": "resources-library container-wide"
+            },
+            {
+                "label": "TOOLS & CALCULATORS",
+                "variant": "resources-lower container-wide"
+            },
+            {
+                "label": "NEED HELP FINDING SOMETHING?",
+                "variant": "resources-help container-wide"
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "slug": "restricted-jurisdictions",
+        "body_bytes": 13285,
+        "identical": true,
+        "sections": 3,
+        "blocks": 38,
+        "slots": 80,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 3,
+            "gemreserve/wrapper": 9,
+            "gemreserve/content": 18,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 3
+        },
+        "section_list": [
+            {
+                "label": "JURISDICTIONS WHERE OUR SERVICES ARE RESTRICTED",
+                "variant": "restricted-list container-wide"
+            },
+            {
+                "label": "WHY THESE RESTRICTIONS EXIST",
+                "variant": "restricted-detail container-wide"
+            },
+            {
+                "label": "OUR COMMITMENT TO A COMPLIANT FUTURE",
+                "variant": "restricted-commitment container-wide"
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "slug": "risk-disclosure",
+        "body_bytes": 15378,
+        "identical": true,
+        "sections": 5,
+        "blocks": 38,
+        "slots": 81,
+        "repeatables": 3,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 10,
+            "gemreserve/content": 15,
+            "gemreserve/gap": 5,
+            "gemreserve/repeatable": 3
+        },
+        "section_list": [
+            {
+                "label": "PLEASE READ CAREFULLY",
+                "variant": "risk-read container-wide"
+            },
+            {
+                "label": "KEY RISK FACTORS",
+                "variant": "risk-factors container-wide"
+            },
+            {
+                "label": "IMPORTANT NOTES",
+                "variant": "risk-notes container-wide"
+            },
+            {
+                "label": "QUESTIONS ABOUT RISK?",
+                "variant": "risk-questions container-wide"
+            },
+            {
+                "label": "How we work",
+                "variant": "risk-closing container-wide"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "slug": "technology",
+        "body_bytes": 28831,
+        "identical": true,
+        "sections": 5,
+        "blocks": 48,
+        "slots": 141,
+        "repeatables": 5,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 21,
+            "gemreserve/wrapper": 12,
+            "gemreserve/repeatable": 5,
+            "gemreserve/gap": 5
+        },
+        "section_list": [
+            {
+                "label": "OUR TECHNOLOGY PILLARS",
+                "variant": "tech-pillars container-wide"
+            },
+            {
+                "label": "PLATFORM ARCHITECTURE",
+                "variant": "tech-architecture container-wide"
+            },
+            {
+                "label": "ADVANCED TECHNOLOGY STACK",
+                "variant": "tech-detail container-wide"
+            },
+            {
+                "label": "TECHNOLOGY HIGHLIGHTS",
+                "variant": "tech-highlights container-wide"
+            },
+            {
+                "label": "TECHNOLOGY YOU CAN TRUST. ASSETS YOU CAN OWN.",
+                "variant": "trust-cta tech-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "slug": "token-acquisition",
+        "body_bytes": 24634,
+        "identical": true,
+        "sections": 5,
+        "blocks": 45,
+        "slots": 132,
+        "repeatables": 6,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 6,
+            "gemreserve/gap": 6,
+            "gemreserve/content": 18
+        },
+        "section_list": [
+            {
+                "label": "What the acquisition process guarantees",
+                "variant": "acquisition-marks container-wide"
+            },
+            {
+                "label": "THE ACQUISITION PROCESS",
+                "variant": "acquisition-process container-wide"
+            },
+            {
+                "label": "ACQUISITION OPTIONS",
+                "variant": "acquisition-options container-wide"
+            },
+            {
+                "label": "WHY OUR PROCESS MATTERS",
+                "variant": "acquisition-detail container-wide"
+            },
+            {
+                "label": "Own a piece of the world'smost precious gemstone assets.",
+                "variant": "trust-cta acquisition-cta container-wide"
+            }
+        ]
+    },
+    {
+        "id": 57,
+        "slug": "whitepaper",
+        "body_bytes": 17632,
+        "identical": true,
+        "sections": 5,
+        "blocks": 42,
+        "slots": 114,
+        "repeatables": 6,
+        "preserved": 0,
+        "block_mix": {
+            "gemreserve/section": 5,
+            "gemreserve/content": 15,
+            "gemreserve/wrapper": 10,
+            "gemreserve/repeatable": 6,
+            "gemreserve/gap": 6
+        },
+        "section_list": [
+            {
+                "label": "INSIDE THE WHITEPAPER",
+                "variant": "whitepaper-chapters container-wide"
+            },
+            {
+                "label": "EXECUTIVE SUMMARY",
+                "variant": "whitepaper-detail container-wide"
+            },
+            {
+                "label": "THE DOCUMENT ITSELF",
+                "variant": "whitepaper-download container-wide"
+            },
+            {
+                "label": "WHAT YOU CAN READ TODAY",
+                "variant": "whitepaper-readnow container-wide"
+            },
+            {
+                "label": "What the whitepaper stands for",
+                "variant": "whitepaper-closing container-wide"
+            }
+        ]
+    }
+]
