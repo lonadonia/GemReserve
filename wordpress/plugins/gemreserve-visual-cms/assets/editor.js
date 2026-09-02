@@ -396,8 +396,7 @@
 		});
 	}
 
-	wp.blocks.registerBlockType('gemreserve/section', {
-		edit: function (props) {
+	function EditSection(props) {
 			var attributes = props.attributes;
 			var setAttributes = props.setAttributes;
 			var parsed = parseOpenTag(attributes.open, 'section');
@@ -446,14 +445,14 @@
 					el(parsed.tag, Object.assign({ key: 'inner' }, innerProps))
 				])
 			]);
-		},
-		save: function () {
-			return el(blockEditor.InnerBlocks.Content);
 		}
+
+	wp.blocks.registerBlockType('gemreserve/section', {
+		edit: EditSection,
+		save: function () { return el(blockEditor.InnerBlocks.Content); }
 	});
 
-	wp.blocks.registerBlockType('gemreserve/wrapper', {
-		edit: function (props) {
+	function EditWrapper(props) {
 			var parsed = parseOpenTag(props.attributes.open, 'div');
 			var blockProps = useBlockProps({ className: 'gr-wrapper' });
 			var innerProps = useInnerBlocksProps(
@@ -462,14 +461,14 @@
 			);
 
 			return el('div', blockProps, el(parsed.tag, innerProps));
-		},
-		save: function () {
-			return el(blockEditor.InnerBlocks.Content);
 		}
+
+	wp.blocks.registerBlockType('gemreserve/wrapper', {
+		edit: EditWrapper,
+		save: function () { return el(blockEditor.InnerBlocks.Content); }
 	});
 
-	wp.blocks.registerBlockType('gemreserve/content', {
-		edit: function (props) {
+	function EditContent(props) {
 			var attributes = props.attributes;
 			var setAttributes = props.setAttributes;
 			var slots = attributes.slots || [];
@@ -501,12 +500,14 @@
 					el('div', { className: 'gr-content__canvas', ref: ref })
 				)
 			]);
-		},
+		}
+
+	wp.blocks.registerBlockType('gemreserve/content', {
+		edit: EditContent,
 		save: function () { return null; }
 	});
 
-	wp.blocks.registerBlockType('gemreserve/repeatable', {
-		edit: function (props) {
+	function EditRepeatable(props) {
 			var attributes = props.attributes;
 			var setAttributes = props.setAttributes;
 			var itemSlots = attributes.itemSlots || [];
@@ -677,7 +678,10 @@
 					})
 				])
 			]);
-		},
+		}
+
+	wp.blocks.registerBlockType('gemreserve/repeatable', {
+		edit: EditRepeatable,
 		save: function () { return null; }
 	});
 
@@ -686,8 +690,7 @@
 		save: function () { return null; }
 	});
 
-	wp.blocks.registerBlockType('gemreserve/preserved', {
-		edit: function (props) {
+	function EditPreserved(props) {
 			var blockProps = useBlockProps({ className: 'gr-preserved' });
 			var canEdit = !!SETTINGS.canUnfilteredHtml;
 
@@ -716,7 +719,10 @@
 					})
 				])
 			]);
-		},
+		}
+
+	wp.blocks.registerBlockType('gemreserve/preserved', {
+		edit: EditPreserved,
 		save: function () { return null; }
 	});
 })(window.wp);

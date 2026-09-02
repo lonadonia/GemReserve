@@ -256,18 +256,25 @@ final class Revalidation
         $timestamp = (string) $request->get_header('x-gemreserve-timestamp');
         $provided = (string) $request->get_header('x-gemreserve-signature');
 
+        // The reason is a deployment diagnostic, so it says which precondition
+        // failed. That is safe here and useful: this endpoint has no side
+        // effects and reveals nothing an operator configuring the webhook does
+        // not already know. Contrast Preview::deny(), which returns one opaque
+        // message for every failure because that endpoint guards draft content
+        // and a precise reason would help someone probing it.
         $valid = false;
-        $reason = 'no shared secret configured';
-
-        if ($secret !== '' && $timestamp !== '' && $provided !== '') {
-            $age = abs(time() - (int) $timestamp);
-            if ($age > 300) {
-                $reason = 'timestamp outside the 300s window';
-            } else {
-                $expected = 'sha256=' . hash_hmac('sha256', $timestamp . '.' . $body, $secret);
-                $valid = hash_equals($expected, $provided);
-                $reason = $valid ? 'ok' : 'signature mismatch';
-            }
+        if ($secret === '') {
+            $reason = 'no shared secret configured on the WordPress side';
+        } elseif ($provided === '') {
+            $reason = 'X-GemReserve-Signature header missing';
+        } elseif ($timestamp === '') {
+            $reason = 'X-GemReserve-Timestamp header missing';
+        } elseif (abs(time() - (int) $timestamp) > 300) {
+            $reason = 'timestamp outside the 300s window';
+        } else {
+            $expected = 'sha256=' . hash_hmac('sha256', $timestamp . '.' . $body, $secret);
+            $valid = hash_equals($expected, $provided);
+            $reason = $valid ? 'ok' : 'signature mismatch';
         }
 
         $response = new \WP_REST_Response(['valid' => $valid, 'reason' => $reason], $valid ? 200 : 401);

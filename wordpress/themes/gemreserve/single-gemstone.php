@@ -73,21 +73,34 @@ while (have_posts()) :
 
     gemreserve_render_sections(gr_sections());
 
-    // Migrated body sections. Rendered raw against the ported stylesheet: this
-    // is the approved design's own markup, and running it through wp_kses would
-    // strip the SVG diagrams and the data attributes the layout depends on.
-    // It is not editor input — only the migration and an administrator can set
-    // it — so the trust boundary is the same as a theme template's.
-    $body = gr_field('body_html');
-    if ($body) {
-        echo gemreserve_prepare_body_html($body); // phpcs:ignore WordPress.Security.EscapeOutput
-    }
+    // The body. Both eras are handled here for the same reason as page.php: a
+    // gemstone that has been through the visual CMS migration renders from
+    // blocks, one that has not renders from the legacy meta blob.
+    //
+    // The 18 gemstone records carry a migrated body exactly as the 40 pages do,
+    // so leaving them out of the migration would have left 18 of the 58 public
+    // routes un-editable — a third of the site — while the acceptance criteria
+    // read as met.
+    if (gemreserve_body_is_blocks()) {
+        gemreserve_render_block_body();
+    } else {
+        // Legacy migrated markup. Rendered raw against the ported stylesheet:
+        // this is the approved design's own markup, and running it through
+        // wp_kses would strip the SVG diagrams and the data attributes the
+        // layout depends on. It is not editor input — only the migration and an
+        // administrator can set it — so the trust boundary is the same as a
+        // theme template's.
+        $body = gr_field('body_html');
+        if ($body) {
+            echo gemreserve_prepare_body_html($body); // phpcs:ignore WordPress.Security.EscapeOutput
+        }
 
-    if (trim(get_the_content())) : ?>
-        <section class="container-wide" style="margin-top:var(--section-gap)">
-            <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
-        </section>
-    <?php endif;
+        if (trim(get_the_content())) : ?>
+            <section class="container-wide" style="margin-top:var(--section-gap)">
+                <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
+            </section>
+        <?php endif;
+    }
 endwhile;
 
 get_footer();

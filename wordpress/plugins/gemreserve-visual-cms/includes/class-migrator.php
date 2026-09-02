@@ -224,11 +224,22 @@ final class Migrator
         return (string) get_post_meta($post_id, self::META_MIGRATED, true) !== '';
     }
 
-    /** @return int[] Page IDs that carry a migrated body. */
+    /**
+     * Everything that carries a migrated body.
+     *
+     * Gemstones are here, not only pages. All 18 gemstone records store their
+     * body in `_gr_body_html` exactly as the 40 pages do, and an earlier version
+     * of this query listed only pages — which would have migrated 40 of the 58
+     * public routes and left the other 18 un-editable, while every report said
+     * "40/40 migrated". Counting the routes rather than the post type is what
+     * caught it.
+     *
+     * @return int[]
+     */
     public static function candidates(): array
     {
         return get_posts([
-            'post_type' => ['page'],
+            'post_type' => ['page', 'gemstone'],
             'post_status' => ['publish', 'draft', 'pending', 'private', 'future'],
             'numberposts' => -1,
             'fields' => 'ids',

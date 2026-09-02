@@ -42,6 +42,45 @@ final class Normaliser
     {
         $id = $post->ID;
 
+        // Establish the loop context for the duration of this call.
+        //
+        // The theme's form activation asks which page it is on — the
+        // early-participation page uses the contact-form class for what is
+        // actually the waitlist signup, so `gemreserve_form_type_for()` reads
+        // the slug via `get_the_ID()` to disambiguate. In a REST request there
+        // is no loop, `get_the_ID()` returns false, and the lookup silently
+        // fell through to the wrong branch: the API published that page's
+        // waitlist form labelled `gr_form=gr_contact`, so every submission
+        // through a headless render would have been validated against the wrong
+        // schema and rejected.
+        //
+        // Setting the global post is what the template context provides on a
+        // normal page load. It is restored afterwards so a request that
+        // normalises several pages does not leave the loop pointing at the last
+        // one.
+        $previous = $GLOBALS['post'] ?? null;
+        $GLOBALS['post'] = $post;
+        setup_postdata($post);
+
+        try {
+            return self::build($post, $include_draft_fields);
+        } finally {
+            wp_reset_postdata();
+            if ($previous instanceof \WP_Post) {
+                $GLOBALS['post'] = $previous;
+            } else {
+                unset($GLOBALS['post']);
+            }
+        }
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private static function build(\WP_Post $post, bool $include_draft_fields): array
+    {
+        $id = $post->ID;
+
         $out = [
             'schemaVersion' => SCHEMA_VERSION,
             'id' => $id,
@@ -100,19 +139,21 @@ final class Normaliser
                     'variant' => self::classes($attrs['variant'] ?? ''),
                     'anchor' => (string) ($attrs['anchor'] ?? ''),
                     'tag' => self::tag_name($attrs['open'] ?? '', 'section'),
+                    'attributes' => self::tag_attributes($attrs['open'] ?? ''),
                     'children' => self::blocks($block['innerBlocks'] ?? []),
                 ],
                 'gemreserve/wrapper' => [
                     'type' => 'group',
                     'variant' => self::classes($attrs['variant'] ?? ''),
                     'tag' => self::tag_name($attrs['open'] ?? '', 'div'),
+                    'attributes' => self::tag_attributes($attrs['open'] ?? ''),
                     'children' => self::blocks($block['innerBlocks'] ?? []),
                 ],
                 'gemreserve/repeatable' => self::repeatable($attrs),
                 'gemreserve/content' => self::content($attrs),
                 'gemreserve/preserved' => [
                     'type' => 'preserved',
-                    'html' => Renderer::preserved($attrs),
+                    'html' => self::prepare(Renderer::preserved($attrs)),
                 ],
                 // Whitespace carries no meaning to a consumer.
                 'gemreserve/gap' => null,
@@ -139,7 +180,7 @@ final class Normaliser
             'type' => 'content',
             // Resolved markup: a consumer can render this directly and get the
             // approved design with no further processing.
-            'html' => Renderer::content($attrs),
+            'html' => self::prepare(Renderer::content($attrs)),
             // The same values as typed fields, for a consumer that renders
             // natively rather than injecting markup.
             'fields' => self::fields($slots),
@@ -174,11 +215,11 @@ final class Normaliser
                 }
             }
             $normalised[] = [
-                'html' => SlotEngine::render(
+                'html' => self::prepare(SlotEngine::render(
                     (string) ($attrs['itemTemplate'] ?? ''),
                     $slot_objects,
                     $strings
-                ),
+                )),
                 'fields' => self::fields($slots, $strings),
             ];
         }
@@ -187,6 +228,7 @@ final class Normaliser
             'type' => 'collection',
             'variant' => self::classes($attrs['variant'] ?? ''),
             'tag' => self::tag_name($attrs['open'] ?? '', 'ul'),
+            'attributes' => self::tag_attributes($attrs['open'] ?? ''),
             'items' => $normalised,
         ];
     }
@@ -245,6 +287,33 @@ final class Normaliser
     }
 
     /**
+     * Apply the theme's own body preparation to resolved markup.
+     *
+     * `gemreserve_prepare_body_html()` is what turns the design's static form
+     * markup into working forms: it sets the action, injects the nonce and the
+     * hidden fields, normalises field names, and fills the news entries. The
+     * live page has always run it. The API did not, so `/contact/`,
+     * `/early-participation/` and the home page published forms with no action
+     * and no CSRF token — markup that looks right and silently does nothing.
+     *
+     * It is called per fragment rather than per page, which is safe because all
+     * three transforms are string substitutions over self-contained form and
+     * entry markup.
+     *
+     * Guarded on existence so this plugin does not hard-depend on a private
+     * function of gemreserve-core: if that function is ever renamed, the API
+     * publishes unprepared markup instead of fataling on every request.
+     */
+    private static function prepare(string $html): string
+    {
+        if ($html === '' || !function_exists('gemreserve_prepare_body_html')) {
+            return $html;
+        }
+
+        return gemreserve_prepare_body_html($html);
+    }
+
+    /**
      * The design variant, as a class list.
      *
      * Published because the Next.js renderer needs it to apply the same
@@ -265,6 +334,48 @@ final class Normaliser
         }
 
         return $fallback;
+    }
+
+    /**
+     * The attributes a container element actually carries.
+     *
+     * Published so a consumer reproduces the element WordPress renders instead
+     * of reconstructing one from a label. That distinction turned out to matter:
+     * an earlier renderer synthesised `aria-label` from the section's editor
+     * label and dropped the `aria-labelledby` the design uses, which changed the
+     * accessible name of the section and silently regressed accessibility on
+     * every page. Publishing the real attributes removes the guesswork.
+     *
+     * The list is closed and inert — presentation, ARIA and `data-*`. No URL
+     * attribute and nothing executable, so a consumer can spread these onto an
+     * element without further checking.
+     *
+     * @return array<string,string>
+     */
+    private static function tag_attributes(mixed $open): array
+    {
+        $open = (string) $open;
+        if ($open === '' || !preg_match('#^<[a-zA-Z][a-zA-Z0-9-]*([\s\S]*?)/?>$#', $open, $m)) {
+            return [];
+        }
+
+        $out = [];
+        if (!preg_match_all('#([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*"([^"]*)"#', $m[1], $pairs, PREG_SET_ORDER)) {
+            return $out;
+        }
+
+        foreach ($pairs as $pair) {
+            $name = strtolower($pair[1]);
+            $allowed = in_array($name, ['class', 'id', 'style', 'role', 'tabindex', 'hidden', 'lang', 'dir'], true)
+                || str_starts_with($name, 'aria-')
+                || str_starts_with($name, 'data-');
+
+            if ($allowed) {
+                $out[$name] = html_entity_decode($pair[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+        }
+
+        return $out;
     }
 
     /**
