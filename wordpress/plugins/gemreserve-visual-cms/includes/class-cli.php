@@ -42,6 +42,10 @@ final class Cli
      * [--format=<format>]
      * : table (default), json, csv.
      *
+     * [--allow-production]
+     * : Required before --apply will write to a site whose home_url is not
+     * : local. Without it the command refuses, which is the intended default.
+     *
      * ## EXAMPLES
      *
      *     wp gemreserve migrate
@@ -51,9 +55,47 @@ final class Cli
      * @param string[]              $args
      * @param array<string,string>  $assoc
      */
+
+    /**
+     * Refuse to write to production unless the operator said so explicitly.
+     *
+     * A staging tree can be pointed at the production database by nothing more
+     * than a forgotten environment variable — the wp-config credential chain
+     * falls through to the real host, so the mistake is silent and the command
+     * reports a perfectly successful migration of the live site. That happened
+     * during this project: a wrapper script missing GR_DB_ENV migrated all 58
+     * production pages, and it was caught by a later check rather than by the
+     * tool that did it.
+     *
+     * `--apply` is the destructive verb, so it is the one that asks. The test
+     * suite has carried this guard from the start; the migrator should never
+     * have been the weaker of the two.
+     */
+    private static function guard_target(array $assoc, string $verb): void
+    {
+        if (isset($assoc['allow-production'])) {
+            return;
+        }
+
+        $home = (string) home_url();
+        if (preg_match('#^https?://(127\.0\.0\.1|localhost|.*\.local|.*\.test)(:\d+)?#i', $home)) {
+            return;
+        }
+
+        \WP_CLI::error(
+            "Refusing to {$verb}: home_url() is {$home}, which is not a local instance.\n"
+            . "If this really is the production site and you mean to write to it, re-run with --allow-production.\n"
+            . 'If it is not, check GR_DB_ENV — a staging tree with no explicit database env resolves to production.'
+        );
+    }
+
     public function migrate(array $args, array $assoc): void
     {
         $apply = isset($assoc['apply']);
+        if ($apply) {
+            self::guard_target($assoc, 'migrate');
+        }
+
         $format = $assoc['format'] ?? 'table';
         $ids = self::target_ids($assoc);
 
@@ -121,6 +163,9 @@ final class Cli
      * [--post=<id>]
      * : Only this page.
      *
+     * [--allow-production]
+     * : Required before --apply will write to a non-local site.
+     *
      * ## EXAMPLES
      *
      *     wp gemreserve rollback --apply
@@ -131,6 +176,10 @@ final class Cli
     public function rollback(array $args, array $assoc): void
     {
         $apply = isset($assoc['apply']);
+        if ($apply) {
+            self::guard_target($assoc, 'roll back');
+        }
+
         $ids = self::target_ids($assoc);
 
         if (!$apply) {
