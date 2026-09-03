@@ -15,7 +15,7 @@ What is missing is not engineering:
 
 - **no marketing user has performed the eleven acceptance tests and signed off** (§30 requires recorded client acceptance);
 - **production deployment is prohibited** under §29 without separate authorisation;
-- three pre-existing conditions of the production environment must be resolved before *any* deployment (§25 below).
+- three conditions of the production environment must be resolved before *any* deployment (§25). One of them grew during this engagement: production now runs seventeen plugins, sixteen of them outside version control, six of which filter the same SEO and markup surface this work touches.
 
 ---
 
@@ -325,7 +325,7 @@ Because the output bytes are identical, Core Web Vitals inputs are identical by 
 |---|---|---|
 | 1 | **Client acceptance not recorded.** Automated tests pass; no marketing user has signed off. | A marketing user to work through `CMS_ACCEPTANCE_TESTS.md` on staging. |
 | 2 | **Production authorisation.** §29. | An explicit separate instruction. |
-| 3 | **Production has drifted from Git.** Two plugins active and in no commit; one is load-bearing for responsive layout and holds the mandated director identity. A Git rollback removes both. | A decision: version them, or add them to the deployment checklist explicitly. |
+| 3 | **Sixteen of seventeen active production plugins are outside version control**, most installed by another party during this engagement. Six of them filter the same SEO and markup surface this work touches, and staging has none of them — so the 58/58 result must be re-established on production with them present. | A decision on versioning them, and a production dry run with them active before migrating. |
 | 4 | **The vhost is unreadable to the deploy account.** CloudPanel-managed; the path named in the brief does not exist. | CloudPanel access to confirm how the vhost is switched — before it is needed. |
 | 5 | **Production content changed during this engagement.** Fifteen pages and two gemstones added by another party after the baseline snapshot. | Re-take the snapshot and re-run the dry run on the day. |
 
@@ -395,7 +395,7 @@ Production
 Blockers
   1. Marketing sign-off on the 11 acceptance tests not recorded
   2. Production deployment authorisation (§29)
-  3. Two plugins active on production and absent from version control
+  3. 16 of 17 active production plugins absent from version control
   4. CloudPanel vhost not readable by the deploy account
   5. 15 pages added to production by another party after the baseline snapshot
 
@@ -408,7 +408,7 @@ Do NOT mark Phase 2 Completed. Phases 3–6 unchanged.
 
 1. **Stand up staging for the client** from `CMS_MIGRATION_RUNBOOK.md` and give the marketing team access.
 2. **Have a marketing user work through the eleven acceptance tests** and record the result in their own words. This is the only outstanding item that is genuinely about whether the remediation worked.
-3. **Resolve blockers 3 and 4** — the uncommitted plugins and the vhost — before any deployment, this one or otherwise.
+3. **Resolve blockers 3 and 4** — the sixteen uncommitted plugins and the vhost — before any deployment, this one or otherwise. Blocker 3 has grown during this engagement and is now the largest single risk to a safe deploy.
 4. **Then, and only then**, request production authorisation and follow the nine-step deployment order.
 
 Steps 1 and 2 need no developer time. Step 3 needs a decision and server access.

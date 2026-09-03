@@ -47,7 +47,7 @@ The brief's §11 says to build the Next.js block renderer *"if Next.js remains t
 | WP-CLI | 2.12.0 |
 | Theme | `gemreserve` 1.0.0 (only theme installed) |
 
-Active plugins:
+Active plugins at the time of the audit (2026-09-02 01:31 UTC):
 
 | Plugin | Version | In Git? |
 |---|---|---|
@@ -55,6 +55,11 @@ Active plugins:
 | `two-factor` | 0.16.0 | No (third-party) |
 | `circumflex-booking` | 1.3.5 | **No — see §7** |
 | `gemreserve-leadership-profiles` | 1.1.5 | **No — see §7** |
+
+**By 2026-09-03 this had grown to seventeen active plugins, sixteen of them
+outside version control.** They were installed by another party while this work
+was in progress. See DRIFT-1 in §7 — it is the most consequential finding in
+this document for anyone planning a deployment.
 
 ---
 
@@ -158,15 +163,39 @@ Existing namespaces: `oembed/1.0`, `two-factor/1.0`, `circumflex-booking/v1`, `w
 
 ## 7. Production drift (findings)
 
-### DRIFT-1 — Two plugins installed outside version control (Medium)
+### DRIFT-1 — Sixteen of seventeen active production plugins are outside version control (High)
 
-`circumflex-booking` (1.3.5, 283 files, third-party) and `gemreserve-leadership-profiles` (1.1.5, in-house) are present and active on production, owned by `www-data`, dated 2026-09-01 — after the last commit on `main`. Neither is in the repository.
+At the start of this engagement, production ran four plugins, two of which were uncommitted. **By the end it runs seventeen, and only `gemreserve-core` is in the repository.** The rest were installed between 2026-09-01 and 2026-09-03 — during this engagement, by another party — and are owned by `www-data`.
 
-`circumflex-booking` has created **15 tables** in the production database (`gr_cfxb_*`). `gemreserve-leadership-profiles` enqueues a stylesheet described as repairing "the responsive public site shell" on *every* public route, which means an uncommitted hotfix is currently load-bearing for the site's responsive behaviour.
+| Active on production | In Git? |
+|---|---|
+| `gemreserve-core` | yes |
+| `circumflex-booking` | no |
+| `gemreserve-leadership-profiles` | no |
+| `gemreserve-combined-sitemap` | no |
+| `gemreserve-empty-alt-fix` | no |
+| `gemreserve-favicon-root` | no |
+| `gemreserve-flat-sitemap` | no |
+| `gemreserve-google-site-verification` | no |
+| `gemreserve-pending-fixes` | no |
+| `gemreserve-seo-fixes` | no |
+| `gemreserve-seo-polish` | no |
+| `gemreserve-seo-runtime` | no |
+| `gemreserve-shubh-audit-fixes` | no |
+| `indexnow` | no |
+| `insert-headers-and-footers` | no |
+| `redirection` | no |
+| `two-factor` | no |
 
-This matters for two reasons: a redeploy from Git does not reproduce production, and a rollback to a Git commit would silently remove a stylesheet the live layout depends on.
+Three consequences, in order of seriousness:
 
-Note that `wp-config.php` sets `DISALLOW_FILE_MODS = true`, which should prevent dashboard-driven installs. The `www-data` ownership and timestamps are consistent with installation through the filesystem by a process running as the web user. **How these arrived was not determined and is outside this task's scope, but it should be established before the next production deployment.**
+**The staging verification was performed against a different site.** The isolated staging copy was restored from the 01:31 UTC dump, before most of these existed, so the 58/58 byte-identity result was established in an environment missing sixteen production plugins. At least six of them — `gemreserve-seo-fixes`, `-seo-polish`, `-seo-runtime`, `-empty-alt-fix`, `-flat-sitemap`, `-combined-sitemap` — filter exactly the SEO and markup surface this remediation touches. **The production dry run must be re-verified with them present**, and that re-verification is a precondition of deployment, not a formality.
+
+**A Git-based deploy or rollback removes all sixteen.** `gemreserve-leadership-profiles` enqueues a stylesheet described as repairing "the responsive public site shell" on *every* public route, and is the only place the mandated director identity appears. `circumflex-booking` has created **15 tables** in the production database.
+
+**Nobody can say what production is running from a commit hash.** That is the underlying problem; the rest are symptoms of it.
+
+`wp-config.php` sets `DISALLOW_FILE_MODS = true`, which should prevent dashboard-driven installs. The `www-data` ownership is consistent with installation through the filesystem by a process running as the web user. **How these arrived was not determined, and is outside this task's scope — but it should be established before the next production deployment.**
 
 ### DRIFT-2 — Production database credentials readable by the deploy account (Medium)
 

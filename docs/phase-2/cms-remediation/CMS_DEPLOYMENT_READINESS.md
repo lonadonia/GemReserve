@@ -37,13 +37,19 @@ The eleven acceptance tests are automated and run against a real browser, but **
 
 *Needs:* an explicit, separate instruction after staging acceptance.
 
-### BLOCKER-3 — Production has drifted from version control
+### BLOCKER-3 — Sixteen of seventeen active production plugins are outside version control
 
-Two plugins are active on production and in no commit: `circumflex-booking` (283 files, 15 database tables) and `gemreserve-leadership-profiles`. The latter enqueues a stylesheet described as repairing "the responsive public site shell" on **every** public route, and is the only place the mandated director identity appears.
+This grew during the engagement. At the 2026-09-02 baseline, production ran four plugins with two uncommitted. By 2026-09-03 it runs **seventeen, of which only `gemreserve-core` is in the repository** — the rest installed by another party over three days.
 
-**A Git-based deploy or rollback will remove both.** How they arrived was not established; `DISALLOW_FILE_MODS` is set, which should have prevented a dashboard install.
+Three consequences:
 
-*Needs:* a decision — bring them into version control, or accept them as unmanaged and add them to the deployment checklist explicitly.
+**The staging verification was performed against a different site.** Staging was restored from the 01:31 UTC dump and has none of the later plugins. At least six of them — `gemreserve-seo-fixes`, `-seo-polish`, `-seo-runtime`, `-empty-alt-fix`, `-flat-sitemap`, `-combined-sitemap` — filter exactly the SEO and markup surface this remediation touches. **The 58/58 byte-identity result therefore holds for the environment it was measured in, and must be re-established on production with those plugins present.** That re-verification is a precondition of deployment, not a formality.
+
+**A Git deploy or rollback removes all sixteen.** `gemreserve-leadership-profiles` enqueues a stylesheet repairing "the responsive public site shell" on every route and holds the mandated director identity; `circumflex-booking` has created 15 database tables.
+
+**Nobody can say what production is running from a commit hash.** That is the underlying problem.
+
+*Needs:* a decision — bring them into version control, or record them explicitly as unmanaged and add each to the deployment checklist. Either way, **re-run the dry run on production with them active before migrating.**
 
 ### BLOCKER-4 — The vhost is unreadable to the deploy account
 
