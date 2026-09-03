@@ -85,8 +85,17 @@ final class Rest
     {
         $route = (string) $value;
 
-        // A full URL is accepted but reduced to its path, so a caller cannot
-        // use this parameter to point the lookup at another host.
+        // A route naming a host is refused outright rather than reduced to its
+        // path. Reducing it looked safe — the lookup is a slug query, so
+        // `https://evil.example/about/` could only ever have returned *our*
+        // /about/ page — but "safe" is not the same as "correct": a consumer
+        // that asked for another origin and got a 200 back has been told
+        // something false about what it fetched. Refusing makes the answer
+        // unambiguous.
+        if (preg_match('#^([a-z][a-z0-9+.-]*:)?//#i', trim($route)) === 1) {
+            return '';
+        }
+
         $path = parse_url($route, PHP_URL_PATH);
         if (is_string($path)) {
             $route = $path;
@@ -312,7 +321,12 @@ final class Rest
 
     private static function find_by_route(string $route): ?\WP_Post
     {
-        if ($route === '' || $route === '/') {
+        if ($route === '') {
+            // Rejected by sanitize_route(). Distinct from '/', which is the
+            // front page.
+            return null;
+        }
+        if ($route === '/') {
             $front = (int) get_option('page_on_front');
 
             return $front ? get_post($front) : null;

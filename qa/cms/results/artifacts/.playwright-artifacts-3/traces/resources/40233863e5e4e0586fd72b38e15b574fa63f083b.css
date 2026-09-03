@@ -1,0 +1,8 @@
+.imgareaselect-border1 { background: url("border-anim-v.gif") left top repeat-y; }
+.imgareaselect-border2 { background: url("border-anim-h.gif") left top repeat-x; }
+.imgareaselect-border3 { background: url("border-anim-v.gif") right top repeat-y; }
+.imgareaselect-border4 { background: url("border-anim-h.gif") left bottom repeat-x; }
+.imgareaselect-border1, .imgareaselect-border2, .imgareaselect-border3, .imgareaselect-border4 { opacity: 0.5; }
+.imgareaselect-handle { background-color: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); opacity: 0.5; }
+.imgareaselect-outer { background-color: rgb(0, 0, 0); opacity: 0.5; }
+.imgareaselect-selection { }

@@ -90,12 +90,28 @@ final class Decomposer
         $blocks = [];
         foreach ($this->child_nodes($root) as $node) {
             if (Html::is_text($node)) {
-                // Whitespace between sections. Carried on a marker block so the
-                // output can be reassembled exactly; it renders as itself.
                 if (trim($node->data) !== '') {
                     $blocks[] = $this->content_leaf($node->data);
                     continue;
                 }
+
+                // Whitespace between two sections.
+                //
+                // It is appended to the preceding section's closing tag rather
+                // than kept as a block of its own. As a block it appeared in the
+                // List View as a "Spacing" row between every pair of sections,
+                // and — worse — it made Move down swap a section with the
+                // whitespace next to it, so a marketing user pressing the button
+                // once saw nothing happen. Sections are now adjacent siblings.
+                //
+                // The whitespace is still reproduced exactly; it has only moved
+                // from one attribute to another.
+                $previous = count($blocks) - 1;
+                if ($previous >= 0 && $blocks[$previous]['name'] === 'gemreserve/section') {
+                    $blocks[$previous]['attrs']['close'] .= $node->data;
+                    continue;
+                }
+
                 $blocks[] = ['name' => 'gemreserve/gap', 'attrs' => ['text' => $node->data], 'inner' => []];
                 continue;
             }

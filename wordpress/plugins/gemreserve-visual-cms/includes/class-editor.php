@@ -29,6 +29,41 @@ final class Editor
         add_action('enqueue_block_editor_assets', [self::class, 'localise']);
         add_filter('allowed_block_types_all', [self::class, 'allowed_blocks'], 10, 2);
         add_action('admin_notices', [self::class, 'unmigrated_notice']);
+        add_action('add_meta_boxes', [self::class, 'hide_technical_fields'], 99);
+    }
+
+    /**
+     * Keep technical fields out of the marketing editing surface.
+     *
+     * §7 is explicit: "Do not expose JSON textareas, file paths, raw database
+     * values or technical identifiers to marketing users." `gemreserve-core`
+     * renders a "Sections" meta box containing `_gr_section_json` as a raw JSON
+     * textarea on every page.
+     *
+     * Two reasons to remove it rather than leave it:
+     *
+     * It is exactly the thing the brief forbids — an editable JSON blob in the
+     * middle of an editor built for people who do not read JSON, where a stray
+     * keystroke produces an unparseable value with no feedback.
+     *
+     * And it is dead. The audit established that the field holds migration
+     * provenance (`migrated_from`, `source_sections`), not renderable sections:
+     * the theme's `gemreserve_render_sections()` looks for a `type` key, finds
+     * none, and renders nothing. Editing it changes no pixel on the site.
+     *
+     * It is hidden from the editing surface rather than deleted, and stays
+     * visible to an administrator, because it is the record of where each page
+     * came from and is worth keeping for exactly that.
+     */
+    public static function hide_technical_fields(): void
+    {
+        if (current_user_can('manage_options')) {
+            return;
+        }
+
+        foreach (['page', 'gemstone'] as $post_type) {
+            remove_meta_box('gr_' . sanitize_key($post_type . '_Sections'), $post_type, 'normal');
+        }
     }
 
     public static function register_assets(): void

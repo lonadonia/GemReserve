@@ -303,14 +303,31 @@ final class Renderer
         return substr($clean, 0, $at + 1);
     }
 
+    /**
+     * A stored end tag, plus any whitespace that followed it.
+     *
+     * The trailing whitespace is deliberate. It used to be a separate top-level
+     * `gap` block sitting between every pair of sections, which had two costs
+     * a marketing user actually felt: the List View showed an alternating list
+     * of "Page section / Spacing / Page section", and pressing Move down once
+     * swapped a section with the whitespace beside it, so nothing appeared to
+     * happen. Carrying it here makes sections adjacent siblings, so one press
+     * moves one section, and the section list reads as a list of sections.
+     *
+     * Only whitespace is permitted after the tag — anything else is discarded,
+     * so this cannot become a route for smuggling markup past the renderer.
+     */
     private static function close_tag(string $stored, string $expected): string
     {
-        if (!preg_match('#^</([a-zA-Z][a-zA-Z0-9-]*)>$#', trim($stored), $m)) {
+        if (!preg_match('#^\s*</([a-zA-Z][a-zA-Z0-9-]*)>(\s*)$#', $stored, $m)) {
             return '';
         }
         $tag = strtolower($m[1]);
+        if (!in_array($tag, self::structural_tags(), true)) {
+            return '';
+        }
 
-        return in_array($tag, self::structural_tags(), true) ? '</' . $tag . '>' : '';
+        return '</' . $tag . '>' . $m[2];
     }
 
     /** Elements a stored wrapper tag is allowed to be. */

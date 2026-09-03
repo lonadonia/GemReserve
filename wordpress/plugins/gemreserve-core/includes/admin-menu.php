@@ -45,11 +45,23 @@ function gemreserve_admin_menu(): void
         add_submenu_page('gemreserve', $label, $label, 'gr_manage_submissions', $slug);
     }
 
+    // Site Settings holds the footer, the corporate identity, the contact
+    // addresses and the announcement — the global editorial content §13 asks
+    // WordPress to manage, and the things a marketing publisher is accountable
+    // for. It was gated on `manage_options`, which is administrator-only, so
+    // the Marketing Publisher role could not reach the footer at all. That was
+    // found by the acceptance test for "modify navigation and footer", which is
+    // exactly what that test is for.
+    //
+    // `gr_manage_globals` is the editorial capability for this surface and is
+    // held by Marketing Publisher and Administrator. A capability check is
+    // still a capability check: an editor without it gets the same refusal it
+    // always did.
     add_submenu_page(
         'gemreserve',
         'Site Settings',
         'Site Settings',
-        'manage_options',
+        gemreserve_settings_capability(),
         'gemreserve-settings',
         'gemreserve_render_settings_page'
     );

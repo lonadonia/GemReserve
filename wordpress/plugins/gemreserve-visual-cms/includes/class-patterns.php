@@ -101,7 +101,7 @@ final class Patterns
         $patterns = [];
 
         foreach (self::TEMPLATES as $slug => $spec) {
-            $source = get_page_by_path($spec['source']);
+            $source = self::page_by_slug($spec['source']);
             if (!$source instanceof \WP_Post) {
                 continue;
             }
@@ -130,6 +130,29 @@ final class Patterns
         set_transient(self::CACHE, $patterns, DAY_IN_SECONDS);
 
         return $patterns;
+    }
+
+    /**
+     * Find a page by its slug alone.
+     *
+     * `get_page_by_path()` resolves a *path*, so on a hierarchical post type it
+     * only matches top-level pages: `governance` is a child of `about` and has
+     * to be asked for as `about/governance`. Five of the seven template sources
+     * are children, so they silently resolved to null and their patterns were
+     * never built — the inserter offered two designs instead of seven, with no
+     * error anywhere. This site serves flat permalinks, so the slug is the
+     * identifier that matters.
+     */
+    private static function page_by_slug(string $slug): ?\WP_Post
+    {
+        $found = get_posts([
+            'post_type' => 'page',
+            'post_status' => 'publish',
+            'name' => $slug,
+            'numberposts' => 1,
+        ]);
+
+        return $found[0] ?? null;
     }
 
     /**

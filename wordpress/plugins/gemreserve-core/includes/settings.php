@@ -109,12 +109,30 @@ function gemreserve_legal_line(): string
     );
 }
 
+/**
+ * Who may change the site-wide editorial settings.
+ *
+ * `gr_manage_globals` when the visual CMS plugin has registered it — that is
+ * the capability Marketing Publisher holds — and `manage_options` otherwise,
+ * so this plugin keeps working unchanged when installed on its own.
+ */
+function gemreserve_settings_capability(): string
+{
+    return post_type_exists('page') && get_role('gr_marketing_publisher')
+        ? 'gr_manage_globals'
+        : 'manage_options';
+}
+
 function gemreserve_register_settings(): void
 {
     foreach (gemreserve_settings_schema() as $group_key => $group) {
         foreach ($group['fields'] as $key => $field) {
             register_setting('gemreserve_settings', "gr_{$key}", [
                 'type' => 'string',
+                // Without this, options.php rejects the POST for anyone who is
+                // not an administrator, so the form would render for a
+                // publisher and then refuse to save.
+                'capability' => gemreserve_settings_capability(),
                 'sanitize_callback' => ($field['type'] ?? 'text') === 'textarea'
                     ? 'sanitize_textarea_field'
                     : 'sanitize_text_field',
@@ -126,9 +144,25 @@ function gemreserve_register_settings(): void
 }
 add_action('admin_init', 'gemreserve_register_settings');
 
+/**
+ * Let the same role that may open the settings screen also save it.
+ *
+ * `options.php` does not read the capability from `register_setting`. It
+ * resolves its own, defaulting to `manage_options`, through this filter. Without
+ * it a Marketing Publisher could open the screen, edit a field, press Save, and
+ * be refused by options.php — the change would appear to have been made and
+ * would never reach the site.
+ */
+add_filter('option_page_capability_gemreserve_settings', 'gemreserve_settings_capability');
+
 function gemreserve_render_settings_page(): void
 {
-    if (!current_user_can('manage_options')) {
+    // The same capability the menu entry is registered with. Hardcoding
+    // `manage_options` here made the screen reachable for a Marketing Publisher
+    // and then empty — the menu appeared, the page loaded, and not one field
+    // rendered. A guard that disagrees with the thing it guards is worse than
+    // no guard: it looks like a broken page rather than a refusal.
+    if (!current_user_can(gemreserve_settings_capability())) {
         wp_die('You do not have permission to change site settings.');
     }
     ?>
