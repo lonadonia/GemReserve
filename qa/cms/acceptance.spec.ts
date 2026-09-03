@@ -33,6 +33,7 @@ import {
   openEditor,
   pageIdBySlug,
   publicHtml,
+  publish,
   save,
 } from "./helpers";
 
@@ -71,18 +72,14 @@ function sectionRows(page: Page) {
   return page.getByRole("row").filter({ hasText: "Page section" });
 }
 
-/** Select the nth section through the List View. */
-async function selectSection(page: Page, index: number): Promise<void> {
-  await openListView(page);
-  await sectionRows(page).nth(index).locator("a").first().click();
-}
-
 /**
  * Edit a text slot in the canvas.
  *
  * `fill` on a contenteditable dispatches the input event the block listens for,
  * and clicking the body afterwards moves focus out so the change is committed
  * to the block's attributes before a save.
+ *
+ * Returns the previous value, so a test can restore what it changed.
  */
 async function editSlot(page: Page, index: number, value: string): Promise<string> {
   const slot = canvas(page).locator(".gr-slot").nth(index);
@@ -588,7 +585,10 @@ test("AT-10 — a marketing user can create a new page from the approved design"
   await expect(patternsTab, "approved patterns must be offered").toBeVisible({ timeout: 30_000 });
   await patternsTab.click();
 
-  const category = page.getByRole("button", { name: /GemReserve page designs/i }).first();
+  // Located by its text rather than by role: the category filter is rendered as
+  // a list item in this Gutenberg, not a button, and pinning the role made the
+  // test fail on a category that was plainly on screen.
+  const category = page.getByText("GemReserve page designs", { exact: true }).first();
   await expect(
     category,
     "the GemReserve pattern category must exist",
@@ -600,7 +600,7 @@ test("AT-10 — a marketing user can create a new page from the approved design"
   await pattern.click();
 
   await expect(canvas(page).locator(".gr-section").first()).toBeVisible({ timeout: 30_000 });
-  await save(page);
+  await publish(page);
 
   const slug = title.toLowerCase();
   const html = await publicHtml(page, `/${slug}/`);

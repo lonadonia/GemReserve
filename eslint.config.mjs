@@ -11,5 +11,9 @@ export default defineConfig([
     "reference/**",
     "qa/**",
     "assets/masters/**",
+    // Deployment packages are copies of already-linted source. Linting them
+    // reports every finding twice and, worse, keeps reporting a stale copy of a
+    // file that has since been fixed.
+    "dist/**",
   ]),
 ]);

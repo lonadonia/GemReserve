@@ -222,6 +222,37 @@ export async function save(page: Page): Promise<void> {
   await metaBoxes;
 }
 
+/**
+ * Publish a new page.
+ *
+ * `save()` picks the first save-ish button it finds, which on a brand-new page
+ * is "Save draft" — so a page created by a test was saved, correctly, as a
+ * draft, and its public URL then 404'd. Publishing is a different action and
+ * gets its own function: press Publish, then confirm in the panel Gutenberg
+ * shows the first time.
+ */
+export async function publish(page: Page): Promise<void> {
+  const response = page.waitForResponse(
+    (r) =>
+      /\/wp-json\/wp\/v2\/(pages|posts)(\/\d+)?/.test(r.url()) &&
+      ["POST", "PUT", "PATCH"].includes(r.request().method()) &&
+      r.status() < 400,
+    { timeout: 60_000 },
+  );
+
+  await page.getByRole("button", { name: /^Publish$/ }).first().click();
+
+  const confirm = page
+    .locator(".editor-post-publish-panel")
+    .getByRole("button", { name: /^Publish$/ });
+  if (await confirm.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    await confirm.click();
+  }
+
+  await response;
+  await dismissSnackbars(page);
+}
+
 /** Fetch the public HTML of a route, bypassing any browser cache. */
 export async function publicHtml(page: Page, route: string): Promise<string> {
   const response = await page.request.get(route, {
