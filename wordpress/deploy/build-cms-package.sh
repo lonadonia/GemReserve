@@ -45,8 +45,10 @@ git archive "$COMMIT" wordpress/plugins/gemreserve-visual-cms \
 	| tar -x -C "$PKG/wordpress" --strip-components=2
 git archive "$COMMIT" wordpress/plugins/gemreserve-core \
 	| tar -x -C "$PKG/wordpress" --strip-components=2
+# strip-components=2 drops "wordpress/themes/", landing the theme at
+# wordpress/gemreserve/ beside the two plugins.
 git archive "$COMMIT" wordpress/themes/gemreserve \
-	| tar -x -C "$PKG/wordpress" --strip-components=1
+	| tar -x -C "$PKG/wordpress" --strip-components=2
 
 git archive "$COMMIT" lib/cms components/cms app/api app/cms | tar -x -C "$PKG/renderer"
 git archive "$COMMIT" qa/cms | tar -x -C "$PKG/renderer"
@@ -56,6 +58,7 @@ git archive "$COMMIT" docs/phase-2/cms-remediation | tar -x -C "$PKG/docs" --str
 # The theme's stylesheet is generated from the Next.js source and is not
 # committed (see themes/gemreserve/assets/css/README.md). Say so rather than
 # ship a package that looks complete and renders unstyled.
+mkdir -p "$PKG/wordpress/gemreserve/assets/css"
 cat > "$PKG/wordpress/gemreserve/assets/css/MISSING.txt" <<'NOTE'
 gemreserve.css is NOT in this package.
 
