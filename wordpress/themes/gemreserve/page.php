@@ -44,11 +44,17 @@ while (have_posts()) :
         }
 
         $content = trim(get_the_content());
+        // The markup below keeps its ORIGINAL indentation rather than matching
+        // this block. PHP emits everything outside its tags verbatim, so the
+        // template's own leading spaces are page output: indenting these lines
+        // to sit tidily inside the else added four spaces to every one of them
+        // and grew all 28 pages that use this branch by 16 bytes. The closing
+        // line is at four spaces for the same reason.
         if ($content) : ?>
-            <section class="container-wide" style="margin-top:var(--section-gap)">
-                <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
-            </section>
-        <?php endif;
+        <section class="container-wide" style="margin-top:var(--section-gap)">
+            <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
+        </section>
+    <?php endif;
     }
 endwhile;
 

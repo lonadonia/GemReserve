@@ -15,6 +15,13 @@
 #              user- and action-bound. A page whose nonce did not change
 #              between captures taken hours apart would be the bug.
 #   gr_t       The form's issue timestamp, used for the submission time window.
+#   ?ver=      The asset cache-buster, which the theme derives from filemtime().
+#              Deploying files necessarily rewrites their mtime, so this changes
+#              on every deploy whether or not the asset did. Normalising it is
+#              only honest if the asset *content* is checked separately — and it
+#              is: the deployment procedure compares the SHA-256 of every theme
+#              asset before and after, and a changed asset is a finding, not a
+#              normalisation.
 #
 # Nothing else is normalised. Whitespace, attribute order, srcset contents and
 # generated element ids are all compared exactly.
@@ -30,6 +37,7 @@ normalise() {
 		-e 's/(name="gr_nonce"[^>]*value=")[^"]*"/\1NORMALISED"/g' \
 		-e 's/(id="gr_nonce"[^>]*value=")[^"]*"/\1NORMALISED"/g' \
 		-e 's/(name="gr_t"[^>]*value=")[^"]*"/\1NORMALISED"/g' \
+		-e 's/\?ver=[0-9]+/?ver=NORMALISED/g' \
 		"$1"
 }
 

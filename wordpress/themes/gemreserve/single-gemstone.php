@@ -95,11 +95,12 @@ while (have_posts()) :
             echo gemreserve_prepare_body_html($body); // phpcs:ignore WordPress.Security.EscapeOutput
         }
 
+        // Original indentation kept deliberately — see page.php for why.
         if (trim(get_the_content())) : ?>
-            <section class="container-wide" style="margin-top:var(--section-gap)">
-                <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
-            </section>
-        <?php endif;
+        <section class="container-wide" style="margin-top:var(--section-gap)">
+            <div class="motion-reveal is-visible page-copy"><?php the_content(); ?></div>
+        </section>
+    <?php endif;
     }
 endwhile;
 
