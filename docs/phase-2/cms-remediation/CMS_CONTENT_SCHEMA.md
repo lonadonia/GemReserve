@@ -216,10 +216,10 @@ Across all 58 public routes, after migration:
 
 | Measure | Value |
 |---|---:|
-| Blocks | 1,854 |
-| Top-level sections | 176 |
-| Editable content slots | 4,956 |
-| Repeatable collections | 147 |
+| Blocks | 2,480 |
+| Top-level sections | 176 (pages) |
+| Editable content slots | 7,227 |
+| Repeatable collections | 235 |
 | `preserved` fallbacks | **0** |
 | Pages where stored blocks re-render byte-identically | **58 / 58** |
 

@@ -27,7 +27,7 @@ The `onerror` handler **reached the rendered page**.
 
 **Fix.** Every markup-bearing block attribute — `template`, `itemTemplate`, `open`, `close` — is filtered on save through a closed allowlist (`MarkupPolicy`) for any user without `unfiltered_html`. Icon slot values are sanitised on both save and render. `preserved` block HTML is not filtered but *restored* from what is already stored, so it cannot be introduced or altered at all.
 
-**Verified non-destructive.** A policy that silently rewrote the approved design would be worse than no policy, because the damage would be invisible. All **2,591 markup attributes** across the 58 routes pass through the filter byte-unchanged. Getting there found two real defects in the policy itself:
+**Verified non-destructive.** A policy that silently rewrote the approved design would be worse than no policy, because the damage would be invisible. All **2,591 markup attributes** across the 40 pages pass through the filter byte-unchanged. Getting there found two real defects in the policy itself:
 
 - `aria-*` is not a `wp_kses` wildcard (only `data-*` is), so an `aria-*` entry was silently ignored and **675 attributes** were being stripped — the site would have lost its accessible labelling with no error anywhere.
 - `wp_kses_bad_protocol` read the slot placeholder `{{gr:c1}}` in a `src` as a URL with a `gr:` scheme and truncated it, breaking **265 image templates**. Placeholders are now masked during filtering, and the syntax itself changed to `{{gr_key}}`.

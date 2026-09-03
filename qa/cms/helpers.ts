@@ -54,10 +54,20 @@ export async function openEditor(page: Page, postId: number): Promise<void> {
     waitUntil: "domcontentloaded",
   });
   await dismissBlockingDialogs(page);
-  await dismissSnackbars(page);
+
   // The canvas is iframed in current Gutenberg. Waiting for a GemReserve block
   // to exist proves both that the editor booted and that our blocks registered.
   await expect(canvas(page).locator(".gr-section").first()).toBeVisible({ timeout: 60_000 });
+
+  // Dismissed a second time, after the canvas is up.
+  //
+  // The welcome guide is rendered by the editor once it has booted, which can be
+  // several seconds after the document is ready — so a single pass before the
+  // canvas exists races it and loses. When it loses, the symptom is a click
+  // timing out on an element Playwright reports as "visible, enabled and
+  // stable", because a full-screen overlay is quietly eating the event.
+  await dismissBlockingDialogs(page);
+  await dismissSnackbars(page);
 }
 
 /**
@@ -70,17 +80,17 @@ export async function openEditor(page: Page, postId: number): Promise<void> {
  * test is run on its own. Both the reorder and the card tests failed this way.
  */
 export async function dismissSnackbars(page: Page): Promise<void> {
-  const snackbars = page.locator(".components-snackbar");
-  const count = await snackbars.count().catch(() => 0);
-
-  for (let i = 0; i < count; i += 1) {
-    // A snackbar is itself a button; clicking it dismisses it.
-    await snackbars.nth(0).click({ timeout: 2_000 }).catch(() => undefined);
-  }
-
-  await snackbars
+  // Waited out, not clicked.
+  //
+  // A snackbar is a button, so clicking it looks like the obvious way to
+  // dismiss one — but WordPress's save snackbar carries a "View Page" action,
+  // and clicking it navigates the browser to the public page. That turned a fix
+  // for two flaky tests into a cause of two different ones. They auto-dismiss
+  // in a few seconds; waiting is both simpler and correct.
+  await page
+    .locator(".components-snackbar")
     .first()
-    .waitFor({ state: "detached", timeout: 8_000 })
+    .waitFor({ state: "detached", timeout: 10_000 })
     .catch(() => undefined);
 }
 
