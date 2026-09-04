@@ -113,6 +113,30 @@ blocking them would break editing without protecting anything.
 
 ---
 
+## 3a. A capability check that broke the editor
+
+Worth recording beside the permission model, because it is the failure mode this
+kind of hardening produces.
+
+`gemreserve_restrict_rest_users()` closed `/wp/v2/users*` to anyone without
+`list_users`. That is the right instinct — anonymous user enumeration is a real
+leak — but the prefix match caught `/wp/v2/users/me`, which the block editor
+calls on every boot to learn who is editing. No marketing role holds
+`list_users`, so the editor got a 401 asking about its own user.
+
+Administrators hold `list_users`. The editor therefore worked for
+administrators and only for them, and every test performed with an admin
+account reported the system healthy.
+
+The fix keeps enumeration closed to anonymous callers and hands authenticated
+ones to core, which applies `list_users` where it is genuinely required. Detail
+in `CMS_EDITOR_ROOT_CAUSE.md` §1.
+
+**The general lesson:** a capability gate on a REST prefix will eventually catch
+an endpoint the admin UI needs. Gate the endpoint, not the prefix.
+
+---
+
 ## 4. Where each restriction is enforced
 
 Hiding a field is not a control, so the UI layer is the last of five and the

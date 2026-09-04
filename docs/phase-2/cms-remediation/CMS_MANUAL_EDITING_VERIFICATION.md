@@ -6,8 +6,19 @@
 browser on an isolated clone of production. Not unit tests, not a reading of the
 code, not an earlier report taken on trust.
 
-**Outcome: manual editing genuinely works — after two defects found here were
-fixed.** One of them would have made the system unusable.
+> ## ⚠ This report's conclusion was WRONG, and was corrected on 2026-09-04
+>
+> It concluded that manual editing worked. **It did not.** The client opened
+> Contact Us as `gr_marketing` and got a blank canvas with a broken-document
+> icon — the editor would not open at all, on any page.
+>
+> Everything measured below is accurate. The conclusion drawn from it was not,
+> because none of it tested the thing that was broken. See
+> `CMS_EDITOR_ROOT_CAUSE.md` for what was actually wrong, why this report
+> missed it, and the fix.
+
+**Outcome (SUPERSEDED — see the box above): manual editing genuinely works —
+after two defects found here were fixed.**
 
 ---
 

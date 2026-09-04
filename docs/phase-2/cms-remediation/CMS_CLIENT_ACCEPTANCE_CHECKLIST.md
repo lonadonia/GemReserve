@@ -10,6 +10,15 @@ it technically worked. Friction is a finding.
 
 ---
 
+> ### If you tried this before 2026-09-04 and the editor was blank
+>
+> That was a real fault, not something you did. Opening any page showed an empty
+> canvas with a broken-document icon, because the server's security policy was
+> refusing the frame the editor draws into. It is fixed, and there is now an
+> automated test that opens all 88 pages and fails if any of them is blank.
+>
+> If you see a blank editor again, stop and report it — do not work around it.
+
 ## Before you start
 
 ### 1. Where to do this

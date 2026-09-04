@@ -2,13 +2,67 @@
 
 **Date:** 2026-09-04
 **Branch:** `phase-2-headless-visual-cms-remediation`
-**Deployed commit:** `aa6e738` (supersedes `86fa52f`, `b86401e`)
-**Outcome:** **CMS TECHNICALLY COMPLETE — HUMAN MARKETING SIGN-OFF PENDING**
+**Deployed commit:** `b7d06f1` (supersedes `aa6e738`, `86fa52f`, `b86401e`)
+**Outcome:** **WORDPRESS VISUAL EDITOR VERIFIED WORKING — HUMAN SIGN-OFF PENDING**
 **Author:** Claude Opus 5 (Claude Code)
 
 ---
 
-## 0. Third deployment — manual editing verified by hand, two defects fixed
+## 0. Fourth deployment — the editor would not open, and my reports said it did
+
+The client opened Contact Us as `gr_marketing` and got a blank Gutenberg canvas
+with a broken-document icon. **They were right and §0 of the previous revision
+was wrong**: it concluded manual editing worked, on the strength of sixteen
+browser tests that all passed against an environment where the defect could not
+occur.
+
+Two causes, both fixed and both verified against production itself.
+
+**The Content-Security-Policy blocked the editor canvas.** WordPress 6.3+ builds
+the canvas document at runtime and loads it into an iframe from a `blob:` URL.
+The `/wp-admin` policy had no `frame-src`, so CSP fell back to
+`default-src 'self'`, which does not cover `blob:`. The browser refused the
+frame; the editor asked it for a document, got `null`, and died. The page's 27
+blocks were valid the whole time — the frame they render into never loaded.
+
+**REST hardening returned 401 for the editor's own identity.**
+`gemreserve_restrict_rest_users()` matched the whole `/wp/v2/users` prefix and
+required `list_users`, which no marketing role holds. Gutenberg asks
+`/wp/v2/users/me` on boot. Administrators hold `list_users`, so the editor
+worked for administrators and only for them — the shape that hides a defect from
+anyone testing as an admin.
+
+Full account, including why the tests missed it:
+`CMS_EDITOR_ROOT_CAUSE.md`.
+
+### Production, before and after — as `gr_marketing`
+
+| Page | Blocks | Sections before | Sections after | Page errors |
+|---|---:|---:|---:|---|
+| Contact Us | 27 | **0** | **2** | 9 → **0** |
+| Home | 44 | **0** | **5** | → **0** |
+| Governance | 30 | **0** | **4** | → **0** |
+| Aquamarine | 56 | **0** | **6** | → **0** |
+
+### Safety
+
+| | |
+|---|---|
+| Public routes after the change | **88/88 identical** at the origin |
+| Public CSP and all security headers | **unchanged**, verified |
+| Services | `nginx reload` only — required for a config change, zero downtime. Nothing restarted. |
+| Backup | `/var/www/GemReserve/backups/cms-uiverify-20260904T182938Z` |
+| Previous vhost | `/var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/nginx-vhost-pre-csp-20260904T230925Z.conf.bak` |
+| Previous `hardening.php` | `/var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/pre-harden-20260904T230925Z/hardening.php` |
+
+The relaxations are scoped to `/wp-admin` and `/wp-login.php`. `blob:` is
+same-origin by construction, so nothing externally reachable is admitted, and no
+external script origin was added — the Cloudflare beacon and the `s.w.org`
+welcome illustration are still refused, deliberately.
+
+---
+
+## 1. Third deployment — manual editing verified by hand, two defects fixed
 
 Auditing the real WordPress admin as a Marketing Publisher — rather than
 trusting the test suite or the previous reports — found a defect severe enough
@@ -78,7 +132,7 @@ byte-identical to production. Fastest lever is unchanged:
 
 ---
 
-## 1. Second deployment — the marketing permission gap is closed
+## 2. Second deployment — the marketing permission gap is closed
 
 This report covers two deployments on the same day. Sections 1–24 record the
 first (`b86401e`, 01:11–02:25 UTC) and remain accurate. This section records
