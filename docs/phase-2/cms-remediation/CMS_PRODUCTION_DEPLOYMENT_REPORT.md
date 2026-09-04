@@ -2,9 +2,119 @@
 
 **Date:** 2026-09-04
 **Branch:** `phase-2-headless-visual-cms-remediation`
-**Deployed commit:** `b86401e`
-**Outcome:** **CMS DEPLOYED SUCCESSFULLY — MARKETING ACCEPTANCE PENDING**
+**Deployed commit:** `86fa52f` (supersedes `b86401e`)
+**Outcome:** **CMS TECHNICALLY COMPLETE — HUMAN MARKETING SIGN-OFF PENDING**
 **Author:** Claude Opus 5 (Claude Code)
+
+---
+
+## 0. Second deployment — the marketing permission gap is closed
+
+This report covers two deployments on the same day. Sections 1–24 record the
+first (`b86401e`, 01:11–02:25 UTC) and remain accurate. This section records
+the second (`86fa52f`, 17:12 UTC), which closed the blocker the first one left
+open.
+
+### What changed
+
+BLOCKER-A was that the marketing roles could not edit the 18 gemstone pages,
+because `gemstone` shared its capability family with `gr_document`, the
+compliance-controlled register. That is fixed — with a **smaller** grant, not a
+bigger one:
+
+| Change | Effect |
+|---|---|
+| `gemstone` and `gr_document` each get their own capability set | The two can be granted independently |
+| Marketing roles gain the gemstone capabilities | All 88 routes are now editable by marketing |
+| A 16-field marketing allowlist, 25 protected fields | Presentation and SEO editable; asset identity, specification, evidence, custody and lab report are not |
+| `gr_manage_gemstone_record` | New capability, held by Administrator and Compliance only |
+| Hero and SEO groups declared for `gemstone` | A gemstone's title tag was previously changeable only in the database |
+
+**A second hole closed in passing.** While the two types shared capabilities, a
+Marketing Publisher holding `publish_posts` could create and publish a
+controlled document — it just could not edit an existing one, which is
+presumably why nobody noticed. Separating the type ends that. Compliance and
+administrators keep exactly what they had.
+
+Full detail: `CMS_MARKETING_PERMISSION_MATRIX.md`.
+
+### Enforcement
+
+Five layers, server-side, because hiding a field is not a control:
+the metadata API filters (the choke point every writer passes through), the
+registered `auth_callback` for REST, a `save_post` guard that strips protected
+keys out of `$_POST`, `is_protected_meta`, and only then the meta-box removal.
+Everything in the `_gr_` namespace is protected unless allowlisted, so a field
+added later is denied by default.
+
+### Evidence
+
+| Gate | Result |
+|---|---|
+| Unit assertions | **169 passed, 0 failed** (132 → 140 → 169) |
+| — of which new permission assertions | **28**, exercising every write path as a restricted user |
+| Browser tests | **15 passed, 0 failed** |
+| — AT-G1 | now runs as **Marketing Publisher**, not administrator — the point of the work |
+| — AT-P1/P2/P3 | asset record absent from the UI; SEO editable and reaching the head; raw-HTML pages editable visually |
+| 88 routes, before vs after | **88 identical / 0 differ** |
+| SEO surface, robots, sitemap | **identical** |
+| Route matrix | **88/88 editable by both marketing roles, 88/88 publishable** |
+| Swap window | **0.0085 s**, no downtime |
+| Services restarted | **none** |
+
+### Production changes
+
+Five files, all inside the two GemReserve plugins. The theme was not touched.
+
+    wp-content/plugins/gemreserve-visual-cms/includes/class-gemstone-policy.php   (new)
+    wp-content/plugins/gemreserve-visual-cms/includes/class-roles.php
+    wp-content/plugins/gemreserve-visual-cms/gemreserve-visual-cms.php
+    wp-content/plugins/gemreserve-visual-cms/tests/run-tests.php
+    wp-content/plugins/gemreserve-core/includes/fields.php
+
+Plus one option: `gemreserve_vcms_caps_version = 2`.
+
+### Backup and rollback
+
+    backup   /var/www/GemReserve/backups/cms-caps-20260904T150707Z
+    previous /var/www/GemReserve/backups/cms-caps-20260904T150707Z/pre-deploy-originals-20260904T171244Z/
+
+Rollback, fastest first — unchanged in shape from §13, and all outside the
+document root:
+
+```bash
+# 1. Deactivate. Reverts the capability model completely: the post types go
+#    back to capability_type 'post' and the field policy stops loading.
+wp plugin deactivate gemreserve-visual-cms
+
+# 2. Restore the previous plugin and fields.php.
+BK=/var/www/GemReserve/backups/cms-caps-20260904T150707Z
+rsync -a --delete $BK/pre-deploy-originals-20260904T171244Z/plugins/gemreserve-visual-cms/   /var/www/GemReserve/wordpress/wp-content/plugins/gemreserve-visual-cms/
+install -m 644 -o hamza -g www-data   $BK/pre-deploy-originals-20260904T171244Z/plugins/gemreserve-core/includes/fields.php   /var/www/GemReserve/wordpress/wp-content/plugins/gemreserve-core/includes/fields.php
+
+# 3. Full restore, if ever needed (proven in 6 s into an isolated instance).
+mysql "$DB" < $BK/prod-db-*.sql
+```
+
+### The security incident is closed
+
+`CMS_SECURITY_INCIDENT_CLOSURE.md`. No secret was in the six exposed files —
+checked, not assumed. No third party fetched them: nine requests exist across
+all eight access logs and all nine are this engagement's own probes. The
+document root now holds **zero** backup artefacts, the deployment writes
+backups outside it by construction, and both a standalone script and a unit
+assertion fail if that regresses.
+
+### What is still open
+
+**Human marketing sign-off.** The role is built, proven and deployed; no real
+marketing user has performed the eleven acceptance actions.
+`CMS_CLIENT_ACCEPTANCE_CHECKLIST.md` is written for them, and the isolated
+acceptance environment is left running.
+
+**No marketing account exists on production.** Assigning a least-privilege role
+to whichever administrator happens to exist is the client's decision, not this
+work's. The checklist carries the one command that creates one.
 
 ---
 

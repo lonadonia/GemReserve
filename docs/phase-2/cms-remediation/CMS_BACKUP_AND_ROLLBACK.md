@@ -9,6 +9,57 @@ for the artefacts, checksums and measured recovery time.
 
 ---
 
+## 0. Backups never go inside the document root
+
+Added 2026-09-04 after an incident. A deployment kept each replaced file beside
+its target as `<file>.gr-orig-<stamp>`. The vhost denies theme and plugin PHP
+with a rule that matches paths *ending* in `.php`, and those names do not — so
+six source files were served as plain text for 74 minutes. Full account:
+`CMS_SECURITY_INCIDENT_CLOSURE.md`.
+
+**The rule now is absolute: a backup, a staging copy or a rollback artefact is
+never written under `/var/www/GemReserve/wordpress`.** Not even dot-prefixed,
+not even briefly.
+
+Three things enforce it:
+
+```bash
+# Before and after any deployment — exits non-zero if anything is found.
+wordpress/deploy/assert-no-webroot-backups.sh /var/www/GemReserve/wordpress
+```
+
+The same assertion runs with the unit suite, group *Deployment hygiene —
+nothing backup-shaped in the document root*. And the deployment step itself
+copies previous versions out first, then removes its in-root staging directory
+in the same breath.
+
+Do not answer this by adding suffixes to the nginx rule. `~`, `.save`, `.tmp`
+and `.php.<anything>` were all uncovered, and the next one will be something
+nobody listed.
+
+### Current backup and rollback location
+
+    backup    /var/www/GemReserve/backups/cms-caps-20260904T150707Z
+    previous  /var/www/GemReserve/backups/cms-caps-20260904T150707Z/pre-deploy-originals-20260904T171244Z/
+
+```bash
+# Fastest lever: reverts the whole capability model and block rendering,
+# with no database change.
+wp plugin deactivate gemreserve-visual-cms
+
+# Restore the previous plugin and the gemreserve-core field schema.
+BK=/var/www/GemReserve/backups/cms-caps-20260904T150707Z
+rsync -a --delete "$BK/pre-deploy-originals-20260904T171244Z/plugins/gemreserve-visual-cms/" \
+  /var/www/GemReserve/wordpress/wp-content/plugins/gemreserve-visual-cms/
+install -m 644 -o hamza -g www-data \
+  "$BK/pre-deploy-originals-20260904T171244Z/plugins/gemreserve-core/includes/fields.php" \
+  /var/www/GemReserve/wordpress/wp-content/plugins/gemreserve-core/includes/fields.php
+```
+
+Content rollback and full database restore are unchanged — §3 and §4 below.
+
+---
+
 ## 1. What "verified" means here
 
 A backup nobody has restored is a hypothesis. §21 is explicit that file existence is not evidence, so every backup taken for this work was checked four ways:
