@@ -167,23 +167,38 @@ blocks everybody proves nothing.
 
 ---
 
-## 6. Account assignment — open
+## 6. Account assignment — done
 
-The role exists and is proven. **It is not assigned to any production account**,
-because no account could be confirmed as the client's marketing user:
+**`gr_marketing`, role `gr_marketing_publisher`**, created on production
+2026-09-04. Verified to hold every capability the role needs and none it must
+not: `manage_options`, `install_plugins`, `activate_plugins`, `edit_plugins`,
+`edit_themes`, `unfiltered_html`, `edit_users`, `gr_manage_gemstone_record`,
+`edit_gr_documents`, `publish_gr_documents`, `delete_gemstones`, `export`,
+`import` and `update_core` are all blocked.
 
-| Account | Role | Email | Registered |
-|---|---|---|---|
-| `gr_admin` | administrator | `info@gemreserve.io` | 2026-08-29 |
-| `chatgpt` | administrator | *(a personal address)* | 2026-09-01 |
+The credentials are not recorded here. Whoever takes the account should claim it
+through a password reset.
 
-`gr_admin` is the site's original administrator account, not a marketing
-account; assigning a marketing role to it would change nothing, since an
-administrator already holds every capability the role grants. `chatgpt` was an
-Editor at 02:30 UTC on 2026-09-04 and is an administrator now — escalated
-outside this engagement, by another party.
+### Why `gr_admin` was not reassigned
 
-Assigning a least-privilege role to whichever administrator happens to exist is
-not a decision this work should make for the client. See
-`CMS_CLIENT_ACCEPTANCE_CHECKLIST.md` for the one command that creates a proper
-marketing account.
+| Account | Role | Evidence |
+|---|---|---|
+| `gr_admin` | administrator | 139 posts, 30 menu items, 94 sessions — the site's primary administrator |
+| `chatgpt` | administrator | registered 2026-09-01, personal address, escalated from Editor outside this engagement, 53 live sessions |
+| `gr_marketing` | `gr_marketing_publisher` | created this session |
+
+`gr_admin` is one of only **two** administrator accounts. Demoting it would have
+left `chatgpt` as the site's *sole* administrator — an account escalated
+undocumented, against a personal address. That is a worse outcome than the
+problem it solves, so a dedicated account was created instead.
+
+### `chatgpt` — reported, not changed
+
+If it is a marketing user it should be `gr_marketing_publisher`; if it is an
+integration it should hold the narrowest role that integration needs. Demoting
+an account with 53 live sessions is the client's decision:
+
+```bash
+cd /var/www/GemReserve/wordpress
+sudo -u www-data wp user set-role chatgpt gr_marketing_publisher
+```

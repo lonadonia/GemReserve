@@ -2,13 +2,83 @@
 
 **Date:** 2026-09-04
 **Branch:** `phase-2-headless-visual-cms-remediation`
-**Deployed commit:** `86fa52f` (supersedes `b86401e`)
+**Deployed commit:** `aa6e738` (supersedes `86fa52f`, `b86401e`)
 **Outcome:** **CMS TECHNICALLY COMPLETE — HUMAN MARKETING SIGN-OFF PENDING**
 **Author:** Claude Opus 5 (Claude Code)
 
 ---
 
-## 0. Second deployment — the marketing permission gap is closed
+## 0. Third deployment — manual editing verified by hand, two defects fixed
+
+Auditing the real WordPress admin as a Marketing Publisher — rather than
+trusting the test suite or the previous reports — found a defect severe enough
+to have made the system unusable, and one missing capability.
+
+**An ordinary marketing edit was deleting the page it edited.** WordPress's own
+`wp_filter_post_kses` sanitises block attribute values against a generic
+allowlist that does not contain `<svg>`, so a Marketing Publisher changing one
+heading on the home page silently destroyed all fourteen icons and 24,309 bytes
+of approved design. Every acceptance test asserted its own change arrived; none
+asserted the rest of the page survived.
+
+**Duplicate a page was absent** — the one item on the client's list the admin
+genuinely could not do.
+
+Both are fixed, deployed and verified. Full account, with the measurements:
+`CMS_MANUAL_EDITING_VERIFICATION.md`.
+
+| | |
+|---|---|
+| Unit assertions | **202 passed, 0 failed** (169 → 202) |
+| Browser tests, as the restricted role | **16 passed, 0 failed** |
+| 58 migrated bodies re-saved as marketing | **58/58 byte-identical, 0 bytes lost** |
+| Injection vectors still refused | **8/8** |
+| 88 routes after deployment | **88/88 identical**, verified twice |
+| Swap window | **0.0076 s**, no service restarted |
+
+**Marketing account:** `gr_marketing` (`gr_marketing_publisher`) created on
+production. `gr_admin` was deliberately **not** reassigned — it is the site's
+primary administrator and one of only two, so demoting it would have left the
+undocumented `chatgpt` account as sole administrator. See §0.2.
+
+### 0.1 Third-party changes during the session
+
+Two changes landed on production from another party and are **not** this
+deployment's:
+
+- **Cloudflare Email Obfuscation** enabled at the CDN edge, rewriting every
+  `mailto:`. Proven edge-only — the origin still serves plain `mailto:` links
+  and is byte-identical to the pre-change capture. All route comparisons in this
+  section are therefore taken **at the origin**.
+- **`gemreserve-chatbot` upgraded 2.0.2 → 2.1.0** at 21:19 UTC. With its own
+  markup excluded, GemReserve's output is 88/88 identical. The 713 HTTP 503s in
+  the log are that plugin's endpoint — 1,455 requests before this deployment,
+  **0 after**.
+
+### 0.2 The account decision, evidenced
+
+| Account | Role | Evidence |
+|---|---|---|
+| `gr_admin` | administrator | 139 posts, 30 menu items, 94 sessions — the site's primary admin, not a marketing account |
+| `chatgpt` | administrator | registered 2026-09-01, personal address, escalated from Editor outside this engagement, 53 live sessions |
+| **`gr_marketing`** | **`gr_marketing_publisher`** | **created this session** — the dedicated least-privilege account |
+
+`chatgpt` is reported, not changed: demoting an account with 53 live sessions is
+the client's call. The recommended command is in
+`CMS_MANUAL_EDITING_VERIFICATION.md` §4.
+
+### 0.3 Backup and rollback
+
+    backup    /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z
+    previous  /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/pre-deploy-20260904T214614Z/
+
+Restore proven into an isolated instance: 6 s database, 1 s files, tree
+byte-identical to production. Fastest lever is unchanged:
+`wp plugin deactivate gemreserve-visual-cms`.
+
+---
+
+## 1. Second deployment — the marketing permission gap is closed
 
 This report covers two deployments on the same day. Sections 1–24 record the
 first (`b86401e`, 01:11–02:25 UTC) and remain accurate. This section records

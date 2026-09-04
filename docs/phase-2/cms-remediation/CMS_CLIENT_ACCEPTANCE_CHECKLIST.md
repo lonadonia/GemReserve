@@ -33,15 +33,18 @@ ssh -L 8901:127.0.0.1:8901 <you>@<this-host>
 Sign-in details for the acceptance environment are held with the operations
 contact — they are staging-only credentials and are not written down here.
 
-### 2. You need a marketing account
+### 2. Your marketing account
 
-**One does not exist yet on production.** The roles are installed and proven,
-but assigning one to a real person is your decision, not ours. When you are
-ready, an administrator runs **one** command:
+**`gr_marketing`** has been created for you, with the Marketing Publisher role.
+No password is recorded anywhere — claim the account through the "Lost your
+password?" link on the login screen, using `marketing@gemreserve.io`.
+
+If you would rather have separate accounts per person, an administrator can add
+them:
 
 ```bash
 cd /var/www/GemReserve/wordpress
-sudo -u www-data wp user create marketing.name name@gemreserve.io \
+sudo -u www-data wp user create your.name you@gemreserve.io \
      --role=gr_marketing_publisher
 ```
 
@@ -68,6 +71,12 @@ step working, not a fault — but it surprises people, so it is said here first.
 ## The eleven actions
 
 ### ☐ 1. Edit text, links, buttons, icons, images, galleries, videos and cards
+
+*Worth knowing:* until 2026-09-04, saving a page as a marketing user silently
+deleted every icon on it — a WordPress-level defect found by hand-testing this
+exact screen, now fixed and covered by an automated test. If you ever see icons
+or images disappear after a save, stop and report it; that must not happen
+again.
 
 Open **Pages → Governance → Edit**. Click a heading on the page and type over
 it. Click a paragraph and change a sentence. Select a card and change its link
@@ -97,6 +106,18 @@ page designs** and insert one. Replace the placeholder text. **Publish**.
 
 *Expect:* seven approved designs offered; the new page carries the GemReserve
 design, not a blank canvas.
+
+### ☐ 4b. Duplicate an existing page
+
+On **Pages**, hover a row and click **Duplicate**. You land in the editor on a
+copy.
+
+*Expect:* a new **draft** — never published — titled "… (copy)", with its own
+address and all the sections of the original. Publish it only when you mean to.
+
+If you duplicate a **gemstone**, the copy deliberately arrives *without* the
+asset record (species, origin, evidence state, custody state). Those describe a
+real stone and belong to Compliance; a copy is a new page, not a new stone.
 
 ### ☐ 5. Edit everything without touching raw HTML, JSON or source code
 
@@ -207,6 +228,7 @@ it.
 | 2. Create / remove / duplicate / hide / reorder sections | | |
 | 3. Create / remove / duplicate / reorder cards | | |
 | 4. Build a page from an approved pattern | | |
+| 4b. Duplicate an existing page | | |
 | 5. No raw HTML, JSON or source code | | |
 | 6. Media Library | | |
 | 7. Navigation, footer, legal links | | |

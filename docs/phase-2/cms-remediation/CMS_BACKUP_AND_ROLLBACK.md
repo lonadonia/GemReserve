@@ -39,6 +39,27 @@ nobody listed.
 
 ### Current backup and rollback location
 
+    backup    /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z
+    previous  /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/pre-deploy-20260904T214614Z/
+
+Restore proven into an isolated instance on 2026-09-04: **6 s** for the
+database, **1 s** for the files, restored tree byte-identical to production.
+
+```bash
+# 1 — instant, no database change.
+cd /var/www/GemReserve/wordpress
+sudo -u www-data wp plugin deactivate gemreserve-visual-cms
+
+# 2 — restore the previous plugin.
+rsync -a --delete /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/pre-deploy-20260904T214614Z/gemreserve-visual-cms/ \
+  /var/www/GemReserve/wordpress/wp-content/plugins/gemreserve-visual-cms/
+
+# 3 — full database restore.
+mysql --defaults-file=/var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/.my.cnf gemreserve-wp < /var/www/GemReserve/backups/cms-uiverify-20260904T182938Z/prod-db-*.sql
+```
+
+### Earlier backup and rollback location
+
     backup    /var/www/GemReserve/backups/cms-caps-20260904T150707Z
     previous  /var/www/GemReserve/backups/cms-caps-20260904T150707Z/pre-deploy-originals-20260904T171244Z/
 
