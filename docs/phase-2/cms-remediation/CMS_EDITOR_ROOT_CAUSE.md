@@ -164,6 +164,66 @@ canvas renders.
 
 ---
 
+## 4a. All 88 routes, verified in the real editor
+
+`qa/cms/editor-all-routes.spec.ts` logs in through the real WordPress login form
+as `gr_marketing` and opens every published route's editor on production.
+
+```
+ALLROUTES  checked=88  failures=0
+```
+
+**88 OK, 0 failures.** A route passes only if the canvas loaded, every stored
+block is valid, no block crashed, no "This content is blocked" appeared, no
+uncaught page error was raised, and — where the page has stored blocks — the
+canvas shows content. Per-route figures: `evidence/all-88-editor-results.md`.
+
+The two gemstones with no stored body (`/sapphire/`, `/diamond/`) are the only
+rows with `blocks=0`; they render from structured fields and their hero and SEO
+fields are editable. Everything else shows its blocks.
+
+Device previews: Desktop, Tablet and Mobile all offered in the editor menu and
+all render — `evidence/editor-screenshots/07`–`09`.
+
+## 4b. The fix, visible in the access log
+
+The transition is in the production log to the second:
+
+```
+23:07  401  GET /wp-json/wp/v2/users/me
+23:08  401  GET /wp-json/wp/v2/users/me
+23:09  200  GET /wp-json/wp/v2/users/me     <- fix applied
+23:09  200  GET /wp-json/wp/v2/users
+```
+
+Anonymous requests to `/wp/v2/users`, `/wp/v2/users/1` and `/wp/v2/users/me` are
+still refused — verified after the change.
+
+## 4c. Second verification pass
+
+| Check | Pass 1 (23:26) | Pass 2 (23:49) |
+|---|---|---|
+| 88 editor routes | 88 OK / 0 fail | — |
+| 88 public routes at the origin | identical | **identical** |
+| SEO metadata, all 88 | identical | **identical** |
+| `robots.txt`, `sitemap.xml` | identical | **identical** |
+| routes / migrated / legacy | 88 / 58 / 58 | 88 / 58 / 58 |
+| `gemreserve verify` | 58/58 | 58/58 |
+| `post_modified` drift | 0 | **0** |
+| Document-root hygiene | OK | OK |
+| Services | all active | all active |
+
+Logs after the change: **zero** 5xx on the public site, zero nginx errors
+excluding deny-rule and login rate-limit hits, no `php8.4-fpm` journal entries,
+`debug.log` 0 bytes. `nginx` has been active since 2026-07-21 — a reload does
+not restart the service.
+
+The 116 `403 /wp-json/wp/v2/settings` responses are core requiring
+`manage_options` for a setting a marketing user does not administer. The editor
+handles the 403 and carries on; it is the permission model working.
+
+---
+
 ## 5. Production safety
 
 | | |
