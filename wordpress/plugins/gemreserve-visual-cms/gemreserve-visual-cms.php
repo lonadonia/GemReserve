@@ -59,8 +59,11 @@ require_once GEMRESERVE_VCMS_PATH . 'includes/class-patterns.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-migrator.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-audit.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-gemstone-policy.php';
+require_once GEMRESERVE_VCMS_PATH . 'includes/class-duplicator.php';
+require_once GEMRESERVE_VCMS_PATH . 'includes/class-kses.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-cli.php';
 
+Kses::boot();
 Blocks::boot();
 Editor::boot();
 Roles::boot();
@@ -71,6 +74,7 @@ Media::boot();
 Patterns::boot();
 Audit::boot();
 GemstonePolicy::boot();
+Duplicator::boot();
 Migrator::boot();
 
 /**

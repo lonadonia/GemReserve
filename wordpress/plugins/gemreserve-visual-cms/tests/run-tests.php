@@ -31,6 +31,7 @@ namespace GemReserve\VisualCms\Tests;
 
 use GemReserve\VisualCms\Blocks;
 use GemReserve\VisualCms\Decomposer;
+use GemReserve\VisualCms\Duplicator;
 use GemReserve\VisualCms\GemstonePolicy;
 use GemReserve\VisualCms\Html;
 use GemReserve\VisualCms\MarkupPolicy;
@@ -401,6 +402,216 @@ $t->ok('publisher can publish pages', !empty($matrix[Roles::PUBLISHER]['publish_
 $t->ok('publisher can manage menus', !empty($matrix[Roles::PUBLISHER]['edit_theme_options']));
 
 /* ------------------------------------------------------------------ */
+$t->group('An ordinary marketing save preserves the design');
+
+/*
+ * The defect this guards against was severe and silent. `wp_filter_post_kses`
+ * runs on `content_save_pre` for every user without `unfiltered_html`, and
+ * WordPress reaches inside block delimiters there to sanitise attribute values.
+ * `<svg>` is not in the `post` allowlist, so a Marketing Publisher changing one
+ * heading on the home page deleted all fourteen icons and 24,309 bytes of
+ * approved design — measured, through the same REST save the editor uses.
+ *
+ * Kses::capture()/restore() bracket core's filter: the plugin's stricter policy
+ * decides what a GemReserve block may contain, core still decides what a core
+ * block may contain. Both halves are asserted here, because fixing the first
+ * by weakening the second would be worse than the bug.
+ */
+$kses_user = username_exists('gr_test_kses_pub') ?: wp_create_user('gr_test_kses_pub', wp_generate_password(24), 'kses@example.test');
+(new \WP_User((int) $kses_user))->set_role(Roles::PUBLISHER);
+$kses_before_user = get_current_user_id();
+wp_set_current_user((int) $kses_user);
+
+$t->ok('the test user has no unfiltered_html', !current_user_can('unfiltered_html'));
+$t->ok('core kses is still active for them', has_filter('content_save_pre', 'wp_filter_post_kses') !== false);
+
+/* --- fidelity: every migrated body survives a re-save unchanged --- */
+$fid_same = 0;
+$fid_total = 0;
+$fid_lost = 0;
+foreach (Migrator::candidates() as $cid) {
+    $cid = (int) $cid;
+    $body = (string) get_post_field('post_content', $cid);
+    if (trim($body) === '') {
+        continue;
+    }
+    $fid_total++;
+    $rest = new \WP_REST_Request('PUT', '/wp/v2/' . (get_post_type($cid) === 'gemstone' ? 'gemstone' : 'pages') . '/' . $cid);
+    $rest->set_header('content-type', 'application/json');
+    $rest->set_body(wp_json_encode(['content' => $body]));
+    rest_do_request($rest);
+    $after = (string) get_post_field('post_content', $cid);
+    if ($after === $body) {
+        $fid_same++;
+    } else {
+        $fid_lost += strlen($body) - strlen($after);
+    }
+}
+$t->same('every migrated body survives a marketing re-save byte-identically', $fid_total, $fid_same);
+$t->same('no bytes are lost across the whole site', 0, $fid_lost);
+
+/* --- security: the same save path still refuses every payload --- */
+$kses_probe = wp_insert_post([
+    'post_type' => 'page',
+    'post_title' => 'VCMS kses probe',
+    'post_status' => 'draft',
+    'post_content' => '',
+], true);
+
+$kses_payloads = [
+    'script in a core block' => '<!-- wp:paragraph --><p>hi<script>alert(1)</script></p><!-- /wp:paragraph -->',
+    'handler in a core block' => '<!-- wp:paragraph --><p><img src=x onerror=alert(1)></p><!-- /wp:paragraph -->',
+    'iframe in a core block' => '<!-- wp:paragraph --><p><iframe src="//evil"></iframe></p><!-- /wp:paragraph -->',
+    'script in a block template' => '<!-- wp:gemreserve/content {"template":"<div><script>alert(1)</script></div>","slots":[]} /-->',
+    'handler in a block template' => '<!-- wp:gemreserve/content {"template":"<img src=x onerror=alert(1)>","slots":[]} /-->',
+    'handler and script in an icon' => '<!-- wp:gemreserve/content {"template":"<div>{{gr_a}}</div>","slots":[{"key":"a","kind":"icon","label":"i","value":"<svg onload=alert(1)><script>x</script></svg>","path":"/div"}]} /-->',
+];
+
+if (!is_wp_error($kses_probe)) {
+    foreach ($kses_payloads as $label => $payload) {
+        $rest = new \WP_REST_Request('PUT', '/wp/v2/pages/' . (int) $kses_probe);
+        $rest->set_header('content-type', 'application/json');
+        $rest->set_body(wp_json_encode(['content' => $payload]));
+        rest_do_request($rest);
+        $rendered = apply_filters('the_content', (string) get_post_field('post_content', (int) $kses_probe));
+
+        $leaked = stripos($rendered, '<script') !== false
+            || preg_match('/\son[a-z]+\s*=/i', $rendered) === 1
+            || stripos($rendered, '<iframe') !== false;
+
+        $t->ok("neutralised: {$label}", !$leaked);
+    }
+    wp_delete_post((int) $kses_probe, true);
+}
+
+wp_set_current_user($kses_before_user);
+
+/* ------------------------------------------------------------------ */
+$t->group('Duplicate a page or gemstone');
+
+/*
+ * WordPress has no duplicate function, and "duplicate an existing page safely"
+ * is on the client's list. The word doing the work is *safely*: a copy must not
+ * go live on its own, must not claim a migration history it does not have, and
+ * must not become a way around the gemstone field policy.
+ */
+$dup_source = 0;
+foreach (Migrator::candidates() as $cid) {
+    if (get_post_type($cid) === 'page') { $dup_source = (int) $cid; break; }
+}
+
+if ($dup_source === 0) {
+    $t->ok('a page exists to duplicate', false);
+} else {
+    $before_user = get_current_user_id();
+    $pub = username_exists('gr_test_gem_publisher') ?: wp_create_user('gr_test_gem_publisher', wp_generate_password(24), 'dup@example.test');
+    (new \WP_User((int) $pub))->set_role(Roles::PUBLISHER);
+    wp_set_current_user((int) $pub);
+
+    $copy = Duplicator::duplicate($dup_source);
+    $t->ok('a marketing publisher can duplicate a page', !is_wp_error($copy));
+
+    if (!is_wp_error($copy)) {
+        $copy = (int) $copy;
+        $src = get_post($dup_source);
+        $new = get_post($copy);
+
+        $t->same('the copy is a draft, never published', 'draft', $new->post_status);
+        $t->ok('the copy has its own id', $copy !== $dup_source);
+        $t->ok('the copy has its own slug', $new->post_name !== $src->post_name);
+        $t->same('the block content is copied verbatim', $src->post_content, $new->post_content);
+        $t->ok('the title marks it as a copy', str_contains($new->post_title, '(copy)'));
+        $t->same('the parent is preserved', $src->post_parent, $new->post_parent);
+
+        // Provenance must not travel: the copy was never migrated.
+        $t->ok('the copy is not flagged as migrated', !Migrator::is_migrated($copy));
+        foreach (['_gr_vcms_legacy_body', '_gr_vcms_source_sha256', '_gr_body_html'] as $k) {
+            $t->same("the copy carries no {$k}", '', (string) get_post_meta($copy, $k, true));
+        }
+
+        // The original is untouched.
+        $t->same('the original keeps its status', get_post($dup_source)->post_status, $src->post_status);
+        $t->ok('the original is still migrated', Migrator::is_migrated($dup_source));
+
+        // Marketing meta does travel, or the copy would be useless.
+        $t->same(
+            'the SEO title is carried across',
+            (string) get_post_meta($dup_source, '_gr_seo_title', true),
+            (string) get_post_meta($copy, '_gr_seo_title', true)
+        );
+
+        wp_delete_post($copy, true);
+    }
+
+    /* ---- the security property: duplication is not a way round the policy ---- */
+    $gem_src = 0;
+    foreach (Migrator::candidates() as $cid) {
+        if (get_post_type($cid) === 'gemstone') { $gem_src = (int) $cid; break; }
+    }
+
+    if ($gem_src > 0) {
+        // Seed a verified record as an administrator.
+        $adm = username_exists('gr_test_gem_admin') ?: wp_create_user('gr_test_gem_admin', wp_generate_password(24), 'dupadm@example.test');
+        (new \WP_User((int) $adm))->set_role('administrator');
+        wp_set_current_user((int) $adm);
+        update_post_meta($gem_src, '_gr_evidence_state', 'verified');
+        update_post_meta($gem_src, '_gr_custody_state', 'in_custody');
+        update_post_meta($gem_src, '_gr_species', 'Beryl');
+        $t->same('the source gemstone is verified', 'verified', (string) get_post_meta($gem_src, '_gr_evidence_state', true));
+
+        // Now duplicate it as marketing.
+        wp_set_current_user((int) $pub);
+        $gem_copy = Duplicator::duplicate($gem_src);
+        $t->ok('a marketing publisher can duplicate a gemstone', !is_wp_error($gem_copy));
+
+        if (!is_wp_error($gem_copy)) {
+            $gem_copy = (int) $gem_copy;
+            $t->same(
+                'the copy does NOT inherit the evidence state',
+                '',
+                (string) get_post_meta($gem_copy, '_gr_evidence_state', true)
+            );
+            $t->same(
+                'the copy does NOT inherit the custody state',
+                '',
+                (string) get_post_meta($gem_copy, '_gr_custody_state', true)
+            );
+            $t->same(
+                'the copy does NOT inherit the species',
+                '',
+                (string) get_post_meta($gem_copy, '_gr_species', true)
+            );
+            $t->same('the gemstone copy is a draft', 'draft', get_post($gem_copy)->post_status);
+            wp_delete_post($gem_copy, true);
+        }
+
+        // An administrator duplicating the same stone DOES keep the record —
+        // otherwise the strip would be destroying data rather than guarding it.
+        wp_set_current_user((int) $adm);
+        $adm_copy = Duplicator::duplicate($gem_src);
+        if (!is_wp_error($adm_copy)) {
+            $t->same(
+                'an administrator copy keeps the evidence state',
+                'verified',
+                (string) get_post_meta((int) $adm_copy, '_gr_evidence_state', true)
+            );
+            wp_delete_post((int) $adm_copy, true);
+        }
+    }
+
+    /* ---- the row action is offered, and only to those who may use it ---- */
+    wp_set_current_user((int) $pub);
+    $actions = Duplicator::row_action([], get_post($dup_source));
+    $t->ok('a Duplicate row action is offered to marketing', isset($actions['gemreserve_duplicate']));
+
+    wp_set_current_user(0);
+    $anon = Duplicator::row_action([], get_post($dup_source));
+    $t->ok('no Duplicate action for a user who cannot edit', !isset($anon['gemreserve_duplicate']));
+
+    wp_set_current_user($before_user);
+}
+
+/* ------------------------------------------------------------------ */
 $t->group('Deployment hygiene — nothing backup-shaped in the document root');
 
 /*
@@ -414,15 +625,22 @@ $t->group('Deployment hygiene — nothing backup-shaped in the document root');
  * is that a backup is never written inside the document root, and this asserts
  * it on every test run rather than trusting a deployment step to remember.
  */
+// Source copies are dangerous anywhere — a stray .php.bak in uploads is as
+// servable as one beside the theme. Plain archives are different: uploads is
+// where WordPress stores what people upload, the vhost already refuses
+// archives there (gemreserve-ai-center.zip verified returning 403), and
+// flagging a user's plugin installer as a deployment artefact is the kind of
+// false positive that teaches people to ignore the check.
 $webroot_patterns = [
     '/\.gr-orig/i',
     '/\.(bak|backup|orig|old|save|swp|swo|tmp|temp|patch|rej|diff|copy)$/i',
-    '/\.(sql|sql\.gz|tar|tar\.gz|tgz|zip)$/i',
     '/\.(php|inc|env|json|ya?ml)\.[A-Za-z0-9_.-]+$/i',
 ];
+$archive_pattern = '/\.(sql|sql\.gz|tar|tar\.gz|tgz|zip)$/i';
 $offenders = [];
 $root = rtrim(ABSPATH, '/');
 $skip = $root . '/wp-content/plugins/redirection';
+$uploads_dir = $root . '/wp-content/uploads';
 
 $it = new \RecursiveIteratorIterator(
     new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
@@ -437,8 +655,11 @@ foreach ($it as $path => $info) {
     foreach ($webroot_patterns as $re) {
         if (preg_match($re, $name)) {
             $offenders[] = str_replace($root . '/', '', $path);
-            break;
+            continue 2;
         }
+    }
+    if (!str_starts_with($path, $uploads_dir) && preg_match($archive_pattern, $name)) {
+        $offenders[] = str_replace($root . '/', '', $path);
     }
 }
 

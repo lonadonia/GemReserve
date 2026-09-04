@@ -195,14 +195,14 @@ final class Renderer
     }
 
     /** Elements an icon may contain. */
-    private const SVG_ELEMENTS = [
+    public const SVG_ELEMENTS = [
         'svg', 'g', 'path', 'circle', 'ellipse', 'line', 'polyline', 'polygon',
         'rect', 'defs', 'lineargradient', 'radialgradient', 'stop', 'title',
         'desc', 'clippath', 'mask', 'symbol', 'marker',
     ];
 
     /** Attributes an icon element may carry. */
-    private const SVG_ATTRS = [
+    public const SVG_ATTRS = [
         'xmlns', 'viewbox', 'width', 'height', 'fill', 'stroke', 'stroke-width',
         'stroke-linecap', 'stroke-linejoin', 'stroke-dasharray', 'stroke-dashoffset',
         'stroke-opacity', 'fill-opacity', 'fill-rule', 'clip-rule', 'opacity',

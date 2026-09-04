@@ -295,7 +295,7 @@
 			MediaUploadCheck,
 			{},
 			el(MediaUpload, {
-				allowedTypes: ['image', 'video'],
+				allowedTypes: ['image', 'video', 'application/pdf'],
 				value: undefined,
 				onSelect: function (media) {
 					if (media && media.url) {
@@ -360,7 +360,11 @@
 				]);
 			}
 
-			if (slot.kind === 'url' && /(^|\/)[^/]*\.(png|jpe?g|webp|avif|gif|svg|mp4|webm)$/i.test(String(value || ''))) {
+			// Images, video and downloadable documents all get the Media Library
+			// picker. Without the document extensions a marketing user editing a
+			// link to a PDF gets a bare text box and has to paste a URL by hand,
+			// which is the raw-value editing this project exists to remove.
+			if (slot.kind === 'url' && /(^|\/)[^/]*\.(png|jpe?g|webp|avif|gif|svg|mp4|webm|pdf)$/i.test(String(value || ''))) {
 				return el('div', { key: slot.key, className: 'gr-field' }, [
 					el('span', { key: 'label', className: 'gr-field__label' }, __('Image', 'gemreserve-visual-cms')),
 					el(ImageControl, { key: 'media', value: value, onChange: onChange })

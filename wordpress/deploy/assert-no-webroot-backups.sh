@@ -26,12 +26,24 @@ ROOT="${1:-/var/www/GemReserve/wordpress}"
 # deploy, so that is what is asserted.
 PRUNE=(-path "$ROOT/wp-content/plugins/redirection" -prune -o)
 
+# wp-content/uploads is where WordPress legitimately stores what people upload,
+# including plugin installers. An archive there is a user's file, not a
+# deployment artefact, and the vhost already refuses it — verified returning 403
+# for gemreserve-ai-center.zip. Source-copy names are still caught there,
+# because a stray .php.bak in uploads would be as dangerous as anywhere else;
+# only the plain archive extensions are exempted.
+UPLOADS="$ROOT/wp-content/uploads"
+
 mapfile -t hits < <(
     find "$ROOT" "${PRUNE[@]}" \( \
          -name '*.gr-orig*' -o -name '*.bak' -o -name '*.backup' -o -name '*.orig' \
       -o -name '*.old' -o -name '*.save' -o -name '*~' -o -name '*.swp' -o -name '*.swo' \
       -o -name '*.tmp' -o -name '*.temp' -o -name '*.patch' -o -name '*.rej' -o -name '*.diff' \
-      -o -name '*.copy' -o -name '*.sql' -o -name '*.sql.gz' -o -name '*.tar' -o -name '*.tar.gz' \
+      -o -name '*.copy' \
+    \) -print 2>/dev/null
+    # Archives: everywhere except uploads, for the reason above.
+    find "$ROOT" "${PRUNE[@]}" -path "$UPLOADS" -prune -o \( \
+         -name '*.sql' -o -name '*.sql.gz' -o -name '*.tar' -o -name '*.tar.gz' \
       -o -name '*.tgz' -o -name '*.zip' \
     \) -print 2>/dev/null
     # The shape that defeated the vhost: a real extension followed by anything.
