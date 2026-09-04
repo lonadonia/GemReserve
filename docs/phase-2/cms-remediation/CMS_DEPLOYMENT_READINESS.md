@@ -1,8 +1,21 @@
 # CMS Deployment Readiness
 
-**Production deployment has not been performed, and is prohibited under §29 of the brief until separately authorised after staging acceptance.**
+**Superseded on 2026-09-04: the deployment described here has been performed
+and verified.** `gemreserve-visual-cms` is installed and active on production,
+the theme and `gemreserve-core` changes are deployed, and 58 page and gemstone
+bodies are migrated to blocks. All 88 public routes are byte-identical to the
+pre-deployment baseline.
 
-Nothing in this engagement touched production. No service was restarted, no vhost changed, no production database written, no plugin activated on production, no environment variable altered.
+No service was restarted or reloaded, no vhost was changed, and no environment
+variable was altered. BLOCKER-3 and BLOCKER-4 below were resolved during that
+deployment — the vhost was read directly and staging was rebuilt with all
+seventeen production plugins present, which found two defects that are recorded
+in `CMS_PRODUCTION_DEPLOYMENT_REPORT.md` §8.
+
+BLOCKER-1 (recorded client acceptance) remains open, and a new blocker was found
+and is **not** closed: the marketing roles cannot edit the 18 gemstone pages,
+because the capabilities that would let them also unlock the
+compliance-controlled documents. See that report's §14.
 
 ---
 

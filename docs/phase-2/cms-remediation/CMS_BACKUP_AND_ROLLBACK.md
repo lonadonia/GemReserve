@@ -1,6 +1,11 @@
 # CMS Backup and Rollback
 
-**Nothing in this document has been executed against production.** Every result recorded here comes from an isolated staging instance. Production deployment is prohibited under §29 until separately authorised.
+**Superseded on 2026-09-04: this procedure has now been executed against
+production.** The backup in §2 was taken as root, verified by all four checks in
+§1, and its restore was proven into an isolated instance before deployment. The
+rollback levers in §3 were exercised on a staging clone of production, and
+levels 1–3 remain armed. See `CMS_PRODUCTION_DEPLOYMENT_REPORT.md` §6 and §13
+for the artefacts, checksums and measured recovery time.
 
 ---
 

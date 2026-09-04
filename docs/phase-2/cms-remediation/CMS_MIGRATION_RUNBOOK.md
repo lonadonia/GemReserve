@@ -2,7 +2,15 @@
 
 How to convert the migrated page bodies into editable blocks, verify the result, and undo it.
 
-**This runbook has not been executed against production.** Every figure in it comes from an isolated staging instance restored from a verified production dump. Production deployment is prohibited under §29 until separately authorised.
+**Superseded on 2026-09-04: this runbook has been executed against
+production.** The dry run reported 58 ready, 0 refused, 0 skipped, 0 error, and
+`migrate --apply --allow-production` migrated all 58. Figures below that predate
+that run come from an isolated staging instance and are kept as the staging
+record; the production results are in `CMS_PRODUCTION_DEPLOYMENT_REPORT.md`.
+
+Note that `--apply` now refuses on a non-local `home_url()` unless
+`--allow-production` is given, and that both migration and rollback preserve
+`post_modified` — see that report's §8.
 
 ---
 

@@ -173,6 +173,39 @@ Each test cleans up after itself and the state is reset from the verified backup
 
 ---
 
+## AT-G1 — A migrated gemstone is editable in the block editor
+
+**Added 2026-09-04.** Not one of the client's eleven; it is the regression test
+for a defect the eleven could not have caught, because they all drive `page`
+routes and the migration also converts the 18 gemstone records.
+
+**Precondition** Signed in as an administrator; `/aquamarine/` is published and
+migrated.
+
+**Steps** Open the gemstone in the editor. Confirm the page appears as
+GemReserve sections on a block canvas, not as raw markup in a single text box.
+Click the first section heading, type new words, press **Save**. Open
+`/aquamarine/` in a new tab.
+
+**Expected** The editor is Gutenberg, not the classic editor, and the new words
+are on the public page.
+
+**Automated** Waits for a `.gr-section` inside the editor canvas iframe — with
+the classic editor there is no canvas, so the test fails outright rather than
+passing on a page that merely looks empty — asserts the classic editor container
+is absent, edits the first section heading, saves, and asserts the new text on
+the public gemstone page.
+
+**Performed as an administrator, not a marketing role, and that is the finding.**
+`gemstone` is registered with `capability_type => 'post'`, so editing one needs
+`edit_others_posts` and `edit_published_posts` — capabilities shared with
+`gr_document`, the compliance-controlled type. Granting them to a marketing role
+would also hand it the controlled documents, so it was not done. **Marketing
+cannot yet edit the 18 gemstone pages.** See
+`CMS_PRODUCTION_DEPLOYMENT_REPORT.md` §14, BLOCKER-A.
+
+---
+
 ## Results
 
 Run against the isolated staging instance, reset from the verified backup, with all 58 routes migrated.
@@ -190,6 +223,7 @@ Run against the isolated staging instance, reset from the verified backup, with 
 | AT-09 | Save a draft and publish it | yes | |
 | AT-10 | Create a page from the design | yes | |
 | AT-11 | Restore a previous version | yes | |
+| AT-G1 | A migrated gemstone is editable | yes | |
 
 The machine-readable result is written to `qa/cms/results/acceptance.json` by each run; the summarised result for this engagement is in `evidence/acceptance-results.md`.
 
