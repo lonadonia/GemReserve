@@ -249,7 +249,7 @@ final class Preview
     public static function preview_link(string $link, \WP_Post $post): string
     {
         $base = self::renderer_base();
-        if ($base === '' || $post->post_type !== 'page') {
+        if ($base === '' || !in_array($post->post_type, MIGRATED_POST_TYPES, true)) {
             return $link;
         }
 
@@ -295,7 +295,7 @@ final class Preview
             return;
         }
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if (!$screen || $screen->base !== 'post' || $screen->post_type !== 'page') {
+        if (!$screen || $screen->base !== 'post' || !in_array($screen->post_type, MIGRATED_POST_TYPES, true)) {
             return;
         }
 

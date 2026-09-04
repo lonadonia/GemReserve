@@ -300,6 +300,31 @@ if ($sample > 0) {
 }
 
 /* ------------------------------------------------------------------ */
+$t->group('Migration — every migrated post type is editable');
+
+// The filter that re-enables Gutenberg and the migration's candidate query must
+// name the same post types. When they disagreed, the 18 gemstone records came
+// out of the migration holding block markup and were still handed to the
+// classic editor, whose save path runs content through wp_kses_post() and
+// wpautop() — which would have rewritten a 57 KB body down to 31 KB.
+foreach (\GemReserve\VisualCms\MIGRATED_POST_TYPES as $type) {
+    $t->ok(
+        "the block editor is enabled for {$type}",
+        use_block_editor_for_post_type($type)
+    );
+}
+$migrated_types = [];
+foreach (Migrator::candidates() as $cid) {
+    $migrated_types[get_post_type($cid)] = true;
+}
+foreach (array_keys($migrated_types) as $type) {
+    $t->ok(
+        "the migration only converts post types it makes editable ({$type})",
+        in_array($type, \GemReserve\VisualCms\MIGRATED_POST_TYPES, true)
+    );
+}
+
+/* ------------------------------------------------------------------ */
 $t->group('Migration — post_modified is not disturbed');
 
 // A migration changes no byte of a page's public output, so it must not claim

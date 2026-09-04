@@ -86,9 +86,29 @@ Migrator::boot();
  * were ever deactivated. Overriding means deactivating this plugin restores
  * exactly the previous behaviour.
  */
+/**
+ * The post types the migration converts to blocks.
+ *
+ * This list and the migration's own candidate query must agree. They did not:
+ * the filter named `page` alone while the migration also converts the 18
+ * gemstone records, so those pages came out of the migration holding block
+ * markup and were still handed to the classic editor.
+ *
+ * That is not merely unhelpful. TinyMCE posts the content back through
+ * `wp_kses_post()` and `wpautop()`, which strip the SVG diagrams and reflow the
+ * markup — one save on one gemstone rewrote 57,415 bytes down to 31,277 in a
+ * staging measurement. Before the migration those bodies lived in post meta and
+ * `post_content` was empty, so the classic editor had nothing to damage; the
+ * migration is what put them within its reach.
+ *
+ * Keeping the two in step through one constant is the point: adding a post type
+ * to the migration without making it editable is the failure this closes.
+ */
+const MIGRATED_POST_TYPES = ['page', 'gemstone'];
+
 function enable_block_editor_for_pages(bool $use_block, string $post_type): bool
 {
-    return in_array($post_type, ['page'], true) ? true : $use_block;
+    return in_array($post_type, MIGRATED_POST_TYPES, true) ? true : $use_block;
 }
 add_filter('use_block_editor_for_post_type', __NAMESPACE__ . '\\enable_block_editor_for_pages', 20, 2);
 

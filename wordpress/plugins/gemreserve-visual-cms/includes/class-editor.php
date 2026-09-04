@@ -212,7 +212,7 @@ final class Editor
     public static function allowed_blocks(bool|array $allowed, mixed $context): bool|array
     {
         $post = $context->post ?? null;
-        if (!$post instanceof \WP_Post || $post->post_type !== 'page') {
+        if (!$post instanceof \WP_Post || !in_array($post->post_type, MIGRATED_POST_TYPES, true)) {
             return $allowed;
         }
 
@@ -247,7 +247,7 @@ final class Editor
     public static function unmigrated_notice(): void
     {
         $screen = get_current_screen();
-        if (!$screen || $screen->base !== 'post' || $screen->post_type !== 'page') {
+        if (!$screen || $screen->base !== 'post' || !in_array($screen->post_type, MIGRATED_POST_TYPES, true)) {
             return;
         }
 

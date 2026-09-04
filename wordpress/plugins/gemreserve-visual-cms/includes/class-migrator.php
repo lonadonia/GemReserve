@@ -290,7 +290,7 @@ final class Migrator
     public static function candidates(): array
     {
         return get_posts([
-            'post_type' => ['page', 'gemstone'],
+            'post_type' => MIGRATED_POST_TYPES,
             'post_status' => ['publish', 'draft', 'pending', 'private', 'future'],
             'numberposts' => -1,
             'fields' => 'ids',
@@ -337,7 +337,7 @@ final class Migrator
      */
     public static function guard_preserved(array $data, array $postarr): array
     {
-        if (!in_array($data['post_type'] ?? '', ['page', 'gemstone'], true)) {
+        if (!in_array($data['post_type'] ?? '', MIGRATED_POST_TYPES, true)) {
             return $data;
         }
         if (current_user_can('unfiltered_html')) {
