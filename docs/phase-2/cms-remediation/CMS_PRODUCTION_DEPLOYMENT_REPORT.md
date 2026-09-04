@@ -1037,23 +1037,26 @@ sitemap URLs, the 88-row database detail, content counts, `gemreserve verify`,
 the editor gating, the health endpoint, login and admin reachability, service
 state, the Next.js rollback service, and the 512 theme asset checksums.
 
-| | Pass 1 | Pass 2 | Pass 3 |
-|---|---|---|---|
-| Time (UTC) | 02:15:45 | 02:20:02 | 02:31:29 |
-| 88 routes vs baseline | identical | identical | identical |
-| SEO surface | identical | identical | identical |
-| `sitemap.xml` | identical | identical | identical |
-| `robots.txt` | identical | identical | identical |
-| 88 database rows | identical | identical | identical |
-| migrated / legacy / newer | 58 / 58 / 30 | 58 / 58 / 30 | 58 / 58 / 30 |
-| users / comments | 2 / 0 | 2 / 0 | 2 / 0 |
-| `gemreserve verify` | 58/58 | 58/58 | 58/58 |
-| Block editor, page / gemstone | block / block | block / block | block / block |
-| Health endpoint | 58/58, schema 1.0.0 | 58/58, schema 1.0.0 | 58/58, schema 1.0.0 |
-| `wp-login.php` / `wp-admin` | 200 / 200 | 200 / 200 | 200 / 200 |
-| nginx, php8.4-fpm, mysql, gemreserve-next | all active | all active | all active |
-| Next.js on `127.0.0.1:3000` | 200 | 200 | 200 |
-| 512 theme assets | unchanged | unchanged | unchanged |
+| | Pass 1 | Pass 2 | Pass 3 | Pass 4 |
+|---|---|---|---|---|
+| Time (UTC) | 02:15:45 | 02:20:02 | 02:31:29 | 03:07:25 |
+| 88 routes vs baseline | identical | identical | identical | identical |
+| SEO surface | identical | identical | identical | identical |
+| `sitemap.xml` | identical | identical | identical | identical |
+| `robots.txt` | identical | identical | identical | identical |
+| 88 database rows | identical | identical | identical | identical |
+| migrated / legacy / newer | 58 / 58 / 30 | 58 / 58 / 30 | 58 / 58 / 30 | 58 / 58 / 30 |
+| users / comments | 2 / 0 | 2 / 0 | 2 / 0 | 2 / 0 |
+| `gemreserve verify` | 58/58 | 58/58 | 58/58 | 58/58 |
+| Block editor, page / gemstone | block / block | block / block | block / block | block / block |
+| Health endpoint | 58/58, schema 1.0.0 | 58/58, schema 1.0.0 | 58/58, schema 1.0.0 | 58/58, schema 1.0.0 |
+| `wp-login.php` / `wp-admin` | 200 / 200 | 200 / 200 | 200 / 200 | 200 / 200 |
+| nginx, php8.4-fpm, mysql, gemreserve-next | all active | all active | all active | all active |
+| Next.js on `127.0.0.1:3000` | 200 | 200 | 200 | 200 |
+| 512 theme assets | unchanged | unchanged | unchanged | unchanged |
+
+Pass 4 ran 36 minutes after the last change to production and 52 minutes after
+the migration, and is identical to the first three in every row.
 
 No route returned anything but 200 in any pass. No new PHP, nginx or WordPress
 error appeared. The only entries in the nginx error log during the window are
