@@ -51,7 +51,10 @@ not have happened, and the check that caught it should have been inside the
 deploy step rather than in the sweep afterwards.
 
 Phase 2 remains **In Progress**. Technical deployment is complete; client
-acceptance is not.
+acceptance is not. One housekeeping item is outstanding and matters: **the
+deployed branch could not be pushed** — the push was refused by this session's
+permission policy — so commit `b86401e`, which production is running, currently
+exists only on this host. See §14, BLOCKER-C.
 
 ---
 
@@ -712,6 +715,16 @@ Phase 2 needs and is not something this work can supply for itself.
 account — none exists on production yet; only `gr_admin` (administrator) and
 `chatgpt` (editor). Creating marketing accounts is the client's call.
 
+### BLOCKER-C — the deployed branch is not pushed
+
+Production runs `b86401e`, and that commit exists on this host and nowhere else:
+the push was refused by this session's permission policy (§17). Until someone
+pushes it, the only copy of the deployed code is the one on the server, and a
+host failure would lose the two fixes in §8 along with it.
+
+*Needs:* `git push -u origin phase-2-headless-visual-cms-remediation`, run by an
+account with push rights. Nothing else about the deployment depends on it.
+
 ### DRIFT-2 — production credentials readable by the deploy account (pre-existing)
 
 `/home/hamza/.gemreserve-wp-db.env` holds production database credentials and
@@ -863,6 +876,22 @@ The working tree carries only the two pre-existing untracked directories
 branch, contract, service, wallet, RPC, token or financial component was
 touched. No branch was force-pushed, rebased or deleted. No merge into `main`
 was performed — that was not authorised.
+
+**The branch has NOT been pushed.** The push to
+`git@github.com:lonadonia/GemReserve.git` was refused by this session's
+permission policy, so all five commits exist locally only. `origin/main` is
+still at `f3a46ad` and the remediation branch has no upstream. The commits are
+complete and the working tree is clean apart from the two pre-existing untracked
+Phase 3–6 directories, so the push is a single command for whoever has the
+authority:
+
+```bash
+git push -u origin phase-2-headless-visual-cms-remediation
+```
+
+Note that production is already running `b86401e`, so until that push happens
+the deployed code exists in exactly one place — this host. Pushing it is the
+first thing that should be done after reading this report.
 
 ### Provenance — what is on production, checked against the commit
 
