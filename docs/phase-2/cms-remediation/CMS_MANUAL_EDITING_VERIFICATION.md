@@ -210,16 +210,23 @@ One plugin directory, swapped atomically in **0.0076 s**. No theme change, no
 `gemreserve-core` change, no nginx/DNS/SSL/PHP/Node change, **no service
 restarted**.
 
-| Check | Pass 1 (21:47) | Pass 2 (22:27) |
-|---|---|---|
-| 88 routes vs pre-deployment baseline | identical | identical |
-| HTTP 200 | 88/88 | 88/88 |
-| SEO metadata, all 88 | identical | identical |
-| `robots.txt`, `sitemap.xml` | identical | identical |
-| routes / migrated / legacy | 88 / 58 / 58 | 88 / 58 / 58 |
-| `gemreserve verify` | 58/58 | 58/58 |
-| Document-root hygiene | OK | OK |
-| Services | all active | all active |
+| Check | Pass 1 21:47 | Pass 2 22:27 | Pass 3 22:32 | Pass 4 22:34 |
+|---|---|---|---|---|
+| 88 routes vs pre-deployment baseline | identical | identical | identical | identical |
+| HTTP 200 | 88/88 | 88/88 | 88/88 | 88/88 |
+| SEO metadata, all 88 | identical | identical | identical | identical |
+| `robots.txt` | identical | identical | identical | identical |
+| `sitemap.xml` | identical | identical | **differed — see §7a** | identical |
+| routes / migrated / legacy | 88/58/58 | 88/58/58 | 88/58/58 | 88/58/58 |
+| `gemreserve verify` | 58/58 | 58/58 | 58/58 | 58/58 |
+| `post_modified` drift | 0 | 0 | 3 | **0** |
+| Document-root hygiene | OK | OK | OK | OK |
+| Services | all active | all active | all active | all active |
+
+No new PHP, nginx or WordPress error in any pass: `php8.4-fpm` has no journal
+entries since the deployment, `wp-content/debug.log` is 0 bytes, and the nginx
+error log carries nothing but deny-rule hits and login rate-limiting, both of
+which are the vhost working.
 
 ### A note on the byte comparison
 
@@ -239,6 +246,35 @@ With the chatbot's own markup excluded, GemReserve's output is **88/88
 identical**. The 713 HTTP 503s in the access log are that plugin's
 `gr_ai_conversation_action` endpoint, all between 20:52 and 21:22 — **1,455
 requests before this deployment, 0 after**.
+
+---
+
+## 7a. A mistake I made, and corrected
+
+The production proof in §1 re-saved three pages (home, governance, aquamarine)
+with their own unchanged content, as a throw-away restricted user, to show the
+save is lossless. It is — content stayed byte-identical and `verify` reported
+58/58.
+
+But the save moved `post_modified`, and `gemreserve-flat-sitemap` builds every
+`<lastmod>` from that column. Three sitemap entries therefore claimed those
+pages changed on 2026-09-04 when not one byte of their output did. Verification
+pass 3 caught it; passes 1 and 2 had run before the probe.
+
+The timestamps were restored from this morning's verified backup by direct
+column update — `wp_update_post()` would have set `post_modified` again, which
+is the thing being undone — and nothing else was touched. `sitemap.xml` is now
+byte-identical to the pre-deployment baseline and `post_modified` drift across
+all 88 rows is zero.
+
+Worth recording for two reasons. It is the same class of defect the migration's
+own `post_modified` guard exists to prevent, and I reintroduced it from outside
+that code path. And the first restore attempt gave posts 41 and 11 each other's
+timestamps; that was caught by re-reading the backup and corrected before the
+final pass.
+
+**A verification probe that writes is a change.** It needs the same care, and
+the same undo, as the deployment it is verifying.
 
 ---
 
