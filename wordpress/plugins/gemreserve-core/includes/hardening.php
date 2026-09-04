@@ -62,16 +62,62 @@ function gemreserve_disable_author_archives(WP_Query $query): void
 }
 add_action('pre_get_posts', 'gemreserve_disable_author_archives');
 
-/** The REST user endpoint leaks the same thing; close it to the public. */
+/**
+ * The REST user endpoint leaks the same thing; close it to the public.
+ *
+ * The enumeration this defends against is anonymous: `/wp/v2/users` lists every
+ * account and its slug, which is a username list for anyone who asks. That must
+ * stay closed.
+ *
+ * Two things it must NOT close, and the reason is a real outage.
+ *
+ * **`/wp/v2/users/me`.** The block editor calls it on every boot to learn who
+ * is editing. The previous version matched the whole `/wp/v2/users` prefix and
+ * required `list_users`, which no marketing role holds — so Gutenberg received
+ * a 401 for its own identity and rendered a broken document icon with an empty
+ * canvas. The page's blocks were present and valid the whole time; the editor
+ * simply could not start. An administrator holds `list_users`, so the editor
+ * worked for administrators and only for them, which is exactly the shape that
+ * hides a defect from anybody testing with an admin account.
+ *
+ * `/users/me` reveals nothing the caller does not already know: it is their own
+ * account, and reaching it requires their own authenticated session.
+ *
+ * **A logged-in editor's collection request.** Gutenberg asks for
+ * `/wp/v2/users?context=view&_fields=id,name` to render author dropdowns and
+ * revision bylines. That is not enumeration by a stranger — it is a request
+ * from somebody who already has an editing session, and core narrows what it
+ * returns by capability. The gate here is therefore "are you authenticated",
+ * not "may you administer users"; core's own `list_users` checks still apply to
+ * `context=edit`, roles and capabilities filters.
+ *
+ * So: anonymous callers get nothing, authenticated ones are handed back to
+ * core's own permission model.
+ */
 function gemreserve_restrict_rest_users($result)
 {
     if (!empty($result)) {
         return $result;
     }
-    $route = $GLOBALS['wp']->query_vars['rest_route'] ?? '';
-    if (str_starts_with((string) $route, '/wp/v2/users') && !current_user_can('list_users')) {
+
+    $route = (string) ($GLOBALS['wp']->query_vars['rest_route'] ?? '');
+    if (!str_starts_with($route, '/wp/v2/users')) {
+        return $result;
+    }
+
+    // Your own account, over your own session.
+    if (rtrim($route, '/') === '/wp/v2/users/me') {
+        return is_user_logged_in()
+            ? $result
+            : new WP_Error('rest_forbidden', 'Not available.', ['status' => 401]);
+    }
+
+    // Anonymous enumeration stays closed. A signed-in user is handed to core,
+    // which applies list_users where list_users is genuinely required.
+    if (!is_user_logged_in()) {
         return new WP_Error('rest_forbidden', 'Not available.', ['status' => 401]);
     }
+
     return $result;
 }
 add_filter('rest_authentication_errors', 'gemreserve_restrict_rest_users');
