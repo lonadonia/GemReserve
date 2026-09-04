@@ -155,10 +155,10 @@ final class Migrator
         // every template lands in the database as the literal text `u003cp...`.
         // The page then renders as visible gibberish. The verification above
         // would not catch it, because it checks the string before this call.
-        $result = wp_update_post([
+        $result = self::update_post_preserving_modified($post_id, [
             'ID' => $post_id,
             'post_content' => wp_slash($content),
-        ], true);
+        ]);
 
         if (is_wp_error($result)) {
             $row['status'] = 'error';
@@ -177,6 +177,57 @@ final class Migrator
         ]);
 
         return $row;
+    }
+
+    /**
+     * Run a post update without disturbing post_modified.
+     *
+     * Neither migration nor rollback changes one byte of a page's public
+     * output, so neither should claim the page was modified. WordPress gives
+     * no way to say so: wp_insert_post() overwrites post_modified and
+     * post_modified_gmt unconditionally on every update, and wp_update_post()
+     * passes straight through it.
+     *
+     * That is not cosmetic here. `gemreserve-flat-sitemap` derives every
+     * <lastmod> in /sitemap.xml from post_modified_gmt, so migrating 58 pages
+     * moved 53 of the 87 sitemap entries to the deployment timestamp — telling
+     * every crawler that most of the site had changed on a day when the bytes
+     * it serves did not. It went unseen until this deployment because the
+     * sitemap plugins are production-only and were absent from the earlier
+     * staging copy.
+     *
+     * The filter is scoped to this one post id. Revisions are inserted through
+     * the same code path during the update, and they carry ID 0 with the page
+     * in post_parent, so they keep their own real timestamps.
+     *
+     * @param array<string,mixed> $postarr Passed to wp_update_post().
+     * @return int|\WP_Error
+     */
+    private static function update_post_preserving_modified(int $post_id, array $postarr)
+    {
+        $post = get_post($post_id);
+        if (!$post instanceof \WP_Post) {
+            return new \WP_Error('gemreserve_vcms_missing_post', 'Post not found.');
+        }
+
+        $modified = $post->post_modified;
+        $modified_gmt = $post->post_modified_gmt;
+
+        $preserve = static function (array $data, array $incoming) use ($post_id, $modified, $modified_gmt): array {
+            if ((int) ($incoming['ID'] ?? 0) === $post_id) {
+                $data['post_modified'] = $modified;
+                $data['post_modified_gmt'] = $modified_gmt;
+            }
+
+            return $data;
+        };
+
+        add_filter('wp_insert_post_data', $preserve, 99, 2);
+        try {
+            return wp_update_post($postarr, true);
+        } finally {
+            remove_filter('wp_insert_post_data', $preserve, 99);
+        }
     }
 
     /**
@@ -203,7 +254,7 @@ final class Migrator
         }
 
         update_post_meta($post_id, '_gr_body_html', $snapshot);
-        wp_update_post(['ID' => $post_id, 'post_content' => ''], true);
+        self::update_post_preserving_modified($post_id, ['ID' => $post_id, 'post_content' => '']);
         delete_post_meta($post_id, self::META_MIGRATED);
         delete_post_meta($post_id, self::META_CHECKSUM);
 

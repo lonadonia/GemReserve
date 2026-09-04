@@ -300,6 +300,62 @@ if ($sample > 0) {
 }
 
 /* ------------------------------------------------------------------ */
+$t->group('Migration — post_modified is not disturbed');
+
+// A migration changes no byte of a page's public output, so it must not claim
+// the page was modified. `gemreserve-flat-sitemap` builds every <lastmod> in
+// /sitemap.xml out of post_modified_gmt, so a migration that bumps it moves
+// most of the sitemap to the deployment timestamp and tells every crawler the
+// site changed when it did not.
+$stamp_sample = (int) ($candidates[1] ?? $candidates[0] ?? 0);
+if ($stamp_sample > 0) {
+    Migrator::rollback_post($stamp_sample, true);
+
+    // Age the row so a bump would be unmistakable rather than a same-second tie.
+    $aged = gmdate('Y-m-d H:i:s', time() - 86400 * 30);
+    $GLOBALS['wpdb']->update(
+        $GLOBALS['wpdb']->posts,
+        ['post_modified' => $aged, 'post_modified_gmt' => $aged],
+        ['ID' => $stamp_sample]
+    );
+    clean_post_cache($stamp_sample);
+
+    $before_gmt = (string) get_post_field('post_modified_gmt', $stamp_sample);
+    Migrator::migrate_post($stamp_sample, true);
+    clean_post_cache($stamp_sample);
+    $t->same(
+        'migration leaves post_modified_gmt untouched',
+        $before_gmt,
+        (string) get_post_field('post_modified_gmt', $stamp_sample)
+    );
+    $t->same(
+        'migration leaves post_modified untouched',
+        $aged,
+        (string) get_post_field('post_modified', $stamp_sample)
+    );
+
+    Migrator::rollback_post($stamp_sample, true);
+    clean_post_cache($stamp_sample);
+    $t->same(
+        'rollback leaves post_modified_gmt untouched',
+        $before_gmt,
+        (string) get_post_field('post_modified_gmt', $stamp_sample)
+    );
+
+    // The revision the migration created keeps its own real timestamp — the
+    // filter is scoped to the page id, and a revision carries ID 0 with the
+    // page in post_parent.
+    $revs = wp_get_post_revisions($stamp_sample, ['numberposts' => 1]);
+    $rev = $revs ? array_shift($revs) : null;
+    $t->ok(
+        'a revision created by the migration keeps its own timestamp',
+        $rev === null || $rev->post_modified_gmt !== $aged
+    );
+
+    Migrator::migrate_post($stamp_sample, true);
+}
+
+/* ------------------------------------------------------------------ */
 $t->group('Roles and capabilities');
 
 Roles::register();
