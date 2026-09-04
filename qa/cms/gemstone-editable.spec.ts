@@ -48,7 +48,7 @@ test.beforeAll(() => {
 
 test("AT-G1 — a migrated gemstone opens in the block editor and edits reach the public page", async ({ page }) => {
   const id = 11; // /aquamarine/
-  await login(page, "admin");
+  await login(page, "publisher");
 
   // openEditor waits for a .gr-section inside the canvas iframe. With the
   // classic editor there is no canvas at all, so this fails outright rather

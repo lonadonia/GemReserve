@@ -34,11 +34,28 @@ final class Roles
         add_filter('map_meta_cap', [self::class, 'guard_preserved_blocks'], 10, 4);
     }
 
+    /**
+     * Bumped whenever the capability model changes.
+     *
+     * `ensure()` used to re-register only when a role was missing, which is
+     * true exactly once — on first activation. A later change to the grants
+     * would then never reach a site that already had the roles. The stamp makes
+     * the model versioned rather than first-write-wins.
+     */
+    public const CAPS_VERSION = 2;
+
+    public const CAPS_OPTION = 'gemreserve_vcms_caps_version';
+
     public static function ensure(): void
     {
-        if (!get_role(self::EDITOR) || !get_role(self::PUBLISHER)) {
-            self::register();
+        $installed = (int) get_option(self::CAPS_OPTION, 0);
+
+        if ($installed === self::CAPS_VERSION && get_role(self::EDITOR) && get_role(self::PUBLISHER)) {
+            return;
         }
+
+        self::register();
+        update_option(self::CAPS_OPTION, self::CAPS_VERSION, false);
     }
 
     public static function register(): void
@@ -63,7 +80,7 @@ final class Roles
             'delete_posts' => true,
             'read_private_pages' => true,
             'gr_preview_drafts' => true,
-        ]);
+        ] + self::gemstone_caps(false));
 
         /*
          * Marketing Publisher — everything above, plus the decision to publish.
@@ -97,13 +114,96 @@ final class Roles
             'edit_theme_options' => true,
             'gr_preview_drafts' => true,
             'gr_manage_globals' => true,
-        ]);
+        ] + self::gemstone_caps(true));
 
-        foreach (['administrator'] as $role_name) {
-            $role = get_role($role_name);
-            if ($role) {
-                $role->add_cap('gr_preview_drafts');
-                $role->add_cap('gr_manage_globals');
+        self::grant_separated_capabilities();
+    }
+
+    /**
+     * The gemstone content capabilities a marketing role needs.
+     *
+     * `gemstone` is given its own capability_type by GemstonePolicy, precisely
+     * so this grant can be made without also handing over `gr_document`. Deleting
+     * is withheld from both marketing roles: removing a gemstone removes an asset
+     * page, and nothing on the client's list asks for it.
+     *
+     * @return array<string,bool>
+     */
+    private static function gemstone_caps(bool $may_publish): array
+    {
+        $caps = [
+            'edit_gemstones' => true,
+            'edit_others_gemstones' => true,
+            'edit_published_gemstones' => true,
+            'read_private_gemstones' => true,
+        ];
+
+        if ($may_publish) {
+            $caps['publish_gemstones'] = true;
+        }
+
+        return $caps;
+    }
+
+    /**
+     * Hand the separated capabilities to the roles that used to reach these
+     * post types through the shared `post` family.
+     *
+     * Administrator and Compliance Reviewer keep exactly what they had.
+     * Marketing gains gemstones and — deliberately — does not gain documents:
+     * while the two types shared capabilities, a Marketing Publisher holding
+     * `publish_posts` could create and publish a controlled document. That is
+     * closed here rather than preserved.
+     *
+     * The stock `editor` role is given gemstones for the same reason marketing
+     * is, and is not given documents for the same reason marketing is not.
+     */
+    private static function grant_separated_capabilities(): void
+    {
+        $gemstone = GemstonePolicy::caps_for('gemstone', 'gemstones');
+        $document = GemstonePolicy::caps_for('gr_document', 'gr_documents');
+
+        $admin = get_role('administrator');
+        if ($admin) {
+            $admin->add_cap('gr_preview_drafts');
+            $admin->add_cap('gr_manage_globals');
+            $admin->add_cap(GemstonePolicy::CAP_RECORD);
+            foreach (array_merge($gemstone, $document) as $cap) {
+                $admin->add_cap($cap);
+            }
+        }
+
+        // Compliance owns the asset record and the document register, and had
+        // both before the split. Nothing is taken away.
+        $compliance = get_role('gr_compliance');
+        if ($compliance) {
+            $compliance->add_cap(GemstonePolicy::CAP_RECORD);
+            foreach (array_merge($gemstone, $document) as $cap) {
+                $compliance->add_cap($cap);
+            }
+        }
+
+        $editor = get_role('editor');
+        if ($editor) {
+            foreach ($gemstone as $cap) {
+                $editor->add_cap($cap);
+            }
+            foreach ($document as $cap) {
+                $editor->remove_cap($cap);
+            }
+            $editor->remove_cap(GemstonePolicy::CAP_RECORD);
+        }
+
+        // Belt and braces: neither marketing role may ever hold the record
+        // capability or a document capability, whatever else is granted later.
+        foreach ([self::EDITOR, self::PUBLISHER] as $name) {
+            $role = get_role($name);
+            if (!$role) {
+                continue;
+            }
+            $role->remove_cap(GemstonePolicy::CAP_RECORD);
+            foreach ($document as $cap) {
+                $role->remove_cap($cap);
             }
         }
     }
@@ -156,6 +256,10 @@ final class Roles
             'install_plugins', 'activate_plugins', 'edit_plugins',
             'edit_themes', 'unfiltered_html', 'edit_users',
             'gr_preview_drafts', 'gr_manage_globals', 'gr_review_documents',
+            'edit_gemstones', 'edit_others_gemstones', 'edit_published_gemstones',
+            'publish_gemstones', 'delete_gemstones',
+            'edit_gr_documents', 'edit_others_gr_documents', 'publish_gr_documents',
+            GemstonePolicy::CAP_RECORD,
         ];
 
         $out = [];

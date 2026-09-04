@@ -58,6 +58,7 @@ require_once GEMRESERVE_VCMS_PATH . 'includes/class-media.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-patterns.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-migrator.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-audit.php';
+require_once GEMRESERVE_VCMS_PATH . 'includes/class-gemstone-policy.php';
 require_once GEMRESERVE_VCMS_PATH . 'includes/class-cli.php';
 
 Blocks::boot();
@@ -69,6 +70,7 @@ Revalidation::boot();
 Media::boot();
 Patterns::boot();
 Audit::boot();
+GemstonePolicy::boot();
 Migrator::boot();
 
 /**

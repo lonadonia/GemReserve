@@ -105,6 +105,30 @@ function gemreserve_field_schema(): array
                 'cta_label' => ['label' => 'CTA label', 'type' => 'text'],
                 'cta_href' => ['label' => 'CTA destination', 'type' => 'text'],
             ],
+            /*
+             * Hero and SEO were defined for `page` only, but every gemstone
+             * carries this meta — the migration wrote it and
+             * `single-gemstone.php` reads it through the shared hero part and
+             * `gemreserve_head_meta()`. The data was live and the fields were
+             * unreachable, so the only way to change a gemstone's title tag or
+             * hero copy was to edit the database. Declaring the groups here is
+             * what makes them editable; it adds no field that was not already
+             * being rendered.
+             */
+            'Hero' => [
+                'hero_eyebrow' => ['label' => 'Breadcrumb parent label', 'type' => 'text'],
+                'hero_title_lines' => ['label' => 'Hero title lines', 'type' => 'textarea', 'help' => 'One line per row. The last line takes the gold gradient.'],
+                'hero_tagline' => ['label' => 'Hero tagline', 'type' => 'text'],
+                'hero_description' => ['label' => 'Hero description', 'type' => 'textarea'],
+                'hero_image_desktop' => ['label' => 'Hero image (desktop)', 'type' => 'text', 'help' => 'Path without extension, e.g. /images/heroes/aquamarine-hero'],
+                'hero_image_mobile' => ['label' => 'Hero image (mobile)', 'type' => 'text'],
+            ],
+            'SEO' => [
+                'seo_title' => ['label' => 'SEO title', 'type' => 'text', 'help' => 'Overrides the page title in <title> and Open Graph.'],
+                'seo_description' => ['label' => 'Meta description', 'type' => 'textarea'],
+                'canonical_url' => ['label' => 'Canonical URL', 'type' => 'text'],
+                'noindex' => ['label' => 'Exclude from search engines', 'type' => 'checkbox'],
+            ],
         ],
         'gr_document' => [
             'Register' => [

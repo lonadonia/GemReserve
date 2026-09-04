@@ -31,6 +31,7 @@ namespace GemReserve\VisualCms\Tests;
 
 use GemReserve\VisualCms\Blocks;
 use GemReserve\VisualCms\Decomposer;
+use GemReserve\VisualCms\GemstonePolicy;
 use GemReserve\VisualCms\Html;
 use GemReserve\VisualCms\MarkupPolicy;
 use GemReserve\VisualCms\Media;
@@ -398,6 +399,225 @@ foreach ([Roles::EDITOR, Roles::PUBLISHER] as $role_name) {
 $t->ok('editor cannot publish pages', empty($matrix[Roles::EDITOR]['publish_pages']));
 $t->ok('publisher can publish pages', !empty($matrix[Roles::PUBLISHER]['publish_pages']));
 $t->ok('publisher can manage menus', !empty($matrix[Roles::PUBLISHER]['edit_theme_options']));
+
+/* ------------------------------------------------------------------ */
+$t->group('Deployment hygiene — nothing backup-shaped in the document root');
+
+/*
+ * A deployment kept each replaced file beside its target as
+ * `<file>.gr-orig-<stamp>`. The vhost denies `wp-content/**` + `.php`, but that
+ * matches paths *ending* in `.php`, and these did not — so six theme and plugin
+ * source files were served as plain text for 74 minutes.
+ *
+ * Extending the vhost's suffix list would not have prevented it: `~`, `.save`,
+ * `.tmp` and `.php.<anything>` were all uncovered too. The invariant that holds
+ * is that a backup is never written inside the document root, and this asserts
+ * it on every test run rather than trusting a deployment step to remember.
+ */
+$webroot_patterns = [
+    '/\.gr-orig/i',
+    '/\.(bak|backup|orig|old|save|swp|swo|tmp|temp|patch|rej|diff|copy)$/i',
+    '/\.(sql|sql\.gz|tar|tar\.gz|tgz|zip)$/i',
+    '/\.(php|inc|env|json|ya?ml)\.[A-Za-z0-9_.-]+$/i',
+];
+$offenders = [];
+$root = rtrim(ABSPATH, '/');
+$skip = $root . '/wp-content/plugins/redirection';
+
+$it = new \RecursiveIteratorIterator(
+    new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
+    \RecursiveIteratorIterator::SELF_FIRST
+);
+foreach ($it as $path => $info) {
+    $path = (string) $path;
+    if (str_starts_with($path, $skip)) {
+        continue;
+    }
+    $name = basename($path);
+    foreach ($webroot_patterns as $re) {
+        if (preg_match($re, $name)) {
+            $offenders[] = str_replace($root . '/', '', $path);
+            break;
+        }
+    }
+}
+
+$t->same(
+    'no backup or source-copy artefact exists under the document root',
+    [],
+    $offenders
+);
+
+/* ------------------------------------------------------------------ */
+$t->group('Gemstone — marketing may edit the page, not the asset record');
+
+/*
+ * The point of these tests is that hiding a field is not a control. Each write
+ * path a determined caller could use is exercised separately as a restricted
+ * marketing user: the metadata API, the REST meta authorisation callback, the
+ * classic meta-box POST, and a crafted REST payload. Then the same writes are
+ * repeated as an administrator, because a policy that blocks everybody proves
+ * nothing.
+ */
+$gem_id = 0;
+foreach (Migrator::candidates() as $cid) {
+    if (get_post_type($cid) === 'gemstone') {
+        $gem_id = (int) $cid;
+        break;
+    }
+}
+
+if ($gem_id === 0) {
+    $t->ok('a gemstone exists to test against', false, 'no gemstone found');
+} else {
+    $mk_user = static function (string $login, string $role): int {
+        $id = username_exists($login) ?: wp_create_user($login, wp_generate_password(24), $login . '@example.test');
+        (new \WP_User((int) $id))->set_role($role);
+
+        return (int) $id;
+    };
+    $gem_pub = $mk_user('gr_test_gem_publisher', Roles::PUBLISHER);
+    $gem_ed  = $mk_user('gr_test_gem_editor', Roles::EDITOR);
+    $gem_adm = $mk_user('gr_test_gem_admin', 'administrator');
+
+    $before = get_current_user_id();
+
+    /* ---------------- positive: the page surface is editable ---------------- */
+    wp_set_current_user($gem_pub);
+
+    $t->ok('publisher can open the gemstone for editing', current_user_can('edit_post', $gem_id));
+    $t->ok('publisher can publish gemstones', current_user_can('publish_gemstones'));
+    $t->ok('publisher sees the block editor for gemstones', use_block_editor_for_post_type('gemstone'));
+
+    $editable_ok = 0;
+    foreach (GemstonePolicy::MARKETING_META as $key) {
+        $want = 'marketing-' . substr(md5($key), 0, 8);
+        update_post_meta($gem_id, $key, $want);
+        if ((string) get_post_meta($gem_id, $key, true) === $want) {
+            $editable_ok++;
+        }
+    }
+    $t->same('publisher can write every marketing field', count(GemstonePolicy::MARKETING_META), $editable_ok);
+
+    /* ---------------- negative: the asset record is not ---------------- */
+    $protected = GemstonePolicy::matrix()['protected'];
+    $t->ok('the protected list is not empty', $protected !== []);
+
+    // Seed known values as an administrator so a refusal is visible as "unchanged".
+    wp_set_current_user($gem_adm);
+    $seed = [];
+    foreach ($protected as $key) {
+        $seed[$key] = 'record-' . substr(md5($key), 0, 8);
+        update_post_meta($gem_id, $key, $seed[$key]);
+    }
+    $seeded = 0;
+    foreach ($protected as $key) {
+        if ((string) get_post_meta($gem_id, $key, true) === $seed[$key]) {
+            $seeded++;
+        }
+    }
+    $t->same('an administrator can write the asset record', count($protected), $seeded);
+
+    wp_set_current_user($gem_pub);
+    $t->ok('publisher does not hold the record capability', !current_user_can(GemstonePolicy::CAP_RECORD));
+
+    // Path 1 — the metadata API (covers REST meta writes and any plugin).
+    $held = 0;
+    foreach ($protected as $key) {
+        update_post_meta($gem_id, $key, 'TAMPERED');
+        if ((string) get_post_meta($gem_id, $key, true) === $seed[$key]) {
+            $held++;
+        }
+    }
+    $t->same('update_post_meta is refused for every protected field', count($protected), $held);
+
+    $held = 0;
+    foreach ($protected as $key) {
+        delete_post_meta($gem_id, $key);
+        if ((string) get_post_meta($gem_id, $key, true) === $seed[$key]) {
+            $held++;
+        }
+    }
+    $t->same('delete_post_meta is refused for every protected field', count($protected), $held);
+
+    $t->ok(
+        'add_post_meta is refused for a protected field',
+        add_post_meta($gem_id, '_gr_evidence_state', 'verified') === false
+    );
+
+    // Path 2 — the REST meta authorisation callback.
+    $registered = get_registered_meta_keys('post', 'gemstone');
+    $auth_denied = 0;
+    $auth_total = 0;
+    foreach ($protected as $key) {
+        if (!isset($registered[$key]['auth_callback'])) {
+            continue;
+        }
+        $auth_total++;
+        if (!call_user_func($registered[$key]['auth_callback'], false, $key, $gem_id, $gem_pub, 'edit_post', [])) {
+            $auth_denied++;
+        }
+    }
+    $t->ok('every registered protected field has a denying auth_callback', $auth_total > 0 && $auth_denied === $auth_total);
+
+    // Path 3 — the classic meta-box POST, which reads $_POST directly.
+    $_POST = ['_gr_evidence_state' => 'verified', '_gr_species' => 'Tampered', '_gr_seo_title' => 'Allowed SEO'];
+    GemstonePolicy::strip_protected_post_data($gem_id);
+    $t->ok('the meta-box POST loses the protected keys', !isset($_POST['_gr_evidence_state']) && !isset($_POST['_gr_species']));
+    $t->ok('the meta-box POST keeps the marketing keys', ($_POST['_gr_seo_title'] ?? '') === 'Allowed SEO');
+    $_POST = [];
+
+    // Path 4 — a crafted REST payload.
+    $req = new \WP_REST_Request('POST', '/wp/v2/gemstone/' . $gem_id);
+    $req->set_param('meta', ['_gr_seo_title' => 'ok', '_gr_custody_state' => 'in_custody']);
+    $res = GemstonePolicy::reject_protected_rest(new \stdClass(), $req);
+    $t->ok('a REST payload carrying a protected field is refused', is_wp_error($res));
+    $t->same(
+        'the refusal is a 403',
+        403,
+        is_wp_error($res) ? ($res->get_error_data()['status'] ?? 0) : 0
+    );
+
+    $req_ok = new \WP_REST_Request('POST', '/wp/v2/gemstone/' . $gem_id);
+    $req_ok->set_param('meta', ['_gr_seo_title' => 'ok']);
+    $t->ok(
+        'a REST payload carrying only marketing fields is accepted',
+        !is_wp_error(GemstonePolicy::reject_protected_rest(new \stdClass(), $req_ok))
+    );
+
+    // Default deny — a field nobody has classified yet.
+    $t->ok(
+        'an unknown _gr_ field defaults to protected',
+        GemstonePolicy::is_record_meta('_gr_some_field_added_next_year')
+    );
+    update_post_meta($gem_id, '_gr_some_field_added_next_year', 'x');
+    $t->same('and cannot be written by marketing', '', (string) get_post_meta($gem_id, '_gr_some_field_added_next_year', true));
+    $t->ok(
+        'a core editorial key is not swept up by default deny',
+        !GemstonePolicy::is_record_meta('_thumbnail_id') && !GemstonePolicy::is_record_meta('_edit_lock')
+    );
+
+    // The compliance register stays out of reach.
+    $t->ok('publisher cannot edit controlled documents', !current_user_can('edit_gr_documents'));
+    $t->ok('publisher cannot publish controlled documents', !current_user_can('publish_gr_documents'));
+    $t->ok('publisher cannot delete gemstones', !current_user_can('delete_gemstones'));
+
+    wp_set_current_user($gem_ed);
+    $t->ok('marketing editor can edit the gemstone', current_user_can('edit_post', $gem_id));
+    $t->ok('marketing editor cannot publish it', !current_user_can('publish_gemstones'));
+    $t->ok('marketing editor cannot touch the record', !current_user_can(GemstonePolicy::CAP_RECORD));
+
+    // Compliance keeps what it had.
+    if (get_role('gr_compliance')) {
+        $comp = $mk_user('gr_test_gem_compliance', 'gr_compliance');
+        wp_set_current_user($comp);
+        $t->ok('compliance holds the record capability', current_user_can(GemstonePolicy::CAP_RECORD));
+        $t->ok('compliance can still edit gemstones', current_user_can('edit_post', $gem_id));
+        $t->ok('compliance can still reach controlled documents', current_user_can('edit_gr_documents'));
+    }
+
+    wp_set_current_user($before);
+}
 
 /* ------------------------------------------------------------------ */
 $t->group('Stored XSS through block attributes');
