@@ -161,10 +161,7 @@ not have happened, and the check that caught it should have been inside the
 deploy step rather than in the sweep afterwards.
 
 Phase 2 remains **In Progress**. Technical deployment is complete; client
-acceptance is not. One housekeeping item is outstanding and matters: **the
-deployed branch could not be pushed** — the push was refused by this session's
-permission policy — so commit `b86401e`, which production is running, currently
-exists only on this host. See §14, BLOCKER-C.
+acceptance is not.
 
 ---
 
@@ -825,15 +822,11 @@ Phase 2 needs and is not something this work can supply for itself.
 account — none exists on production yet; only `gr_admin` (administrator) and
 `chatgpt` (editor). Creating marketing accounts is the client's call.
 
-### BLOCKER-C — the deployed branch is not pushed
+### BLOCKER-C — the deployed branch is not pushed — **CLOSED**
 
-Production runs `b86401e`, and that commit exists on this host and nowhere else:
-the push was refused by this session's permission policy (§17). Until someone
-pushes it, the only copy of the deployed code is the one on the server, and a
-host failure would lose the two fixes in §8 along with it.
-
-*Needs:* `git push -u origin phase-2-headless-visual-cms-remediation`, run by an
-account with push rights. Nothing else about the deployment depends on it.
+Closed on 2026-09-04. The branch is pushed to `origin` at `24ad10c`, in sync
+with local, as the repository owner. `origin/main` is untouched at `f3a46ad`
+and no merge was performed. See §17.
 
 ### DRIFT-2 — production credentials readable by the deploy account (pre-existing)
 
@@ -987,21 +980,22 @@ branch, contract, service, wallet, RPC, token or financial component was
 touched. No branch was force-pushed, rebased or deleted. No merge into `main`
 was performed — that was not authorised.
 
-**The branch has NOT been pushed.** The push to
-`git@github.com:lonadonia/GemReserve.git` was refused by this session's
-permission policy, so all five commits exist locally only. `origin/main` is
-still at `f3a46ad` and the remediation branch has no upstream. The commits are
-complete and the working tree is clean apart from the two pre-existing untracked
-Phase 3–6 directories, so the push is a single command for whoever has the
-authority:
+**The branch is pushed.** On 2026-09-04 it was pushed to
+`git@github.com:lonadonia/GemReserve.git` as the repository owner (`hamza`,
+using that account's existing credentials — nothing was copied to root):
 
-```bash
-git push -u origin phase-2-headless-visual-cms-remediation
-```
+    origin/phase-2-headless-visual-cms-remediation  24ad10c
+    local  HEAD                                     24ad10c   (in sync)
+    origin/main                                     f3a46ad   (untouched)
 
-Note that production is already running `b86401e`, so until that push happens
-the deployed code exists in exactly one place — this host. Pushing it is the
-first thing that should be done after reading this report.
+20 commits ahead of `main`. **No merge into `main` was performed** — that was
+not authorised. GitHub offers a pull request at
+`https://github.com/lonadonia/GemReserve/pull/new/phase-2-headless-visual-cms-remediation`
+when the client wants one.
+
+An earlier attempt in the same session was refused by the tooling's permission
+policy and the report said so; the refusal was later lifted and the push
+completed. The record is corrected here rather than left contradicting itself.
 
 ### Provenance — what is on production, checked against the commit
 
