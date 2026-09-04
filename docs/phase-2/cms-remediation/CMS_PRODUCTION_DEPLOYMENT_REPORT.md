@@ -62,6 +62,50 @@ added later is denied by default.
 | Swap window | **0.0085 s**, no downtime |
 | Services restarted | **none** |
 
+### Post-deployment verification
+
+Four full passes over 38 minutes, each repeating the whole check set rather
+than sampling.
+
+| | Pass 1 | Pass 2 | Pass 3 | Pass 4 |
+|---|---|---|---|---|
+| Time (UTC) | 17:13 | 17:18 | 17:22 | 17:51 |
+| Minutes after deployment | 1 | 6 | 9 | 38 |
+| 88 routes vs baseline | identical | identical | identical | identical |
+| SEO surface (88 routes) | identical | identical | identical | identical |
+| `sitemap.xml` | identical | identical | identical | identical |
+| `robots.txt` | identical | identical | identical | identical |
+| routes / migrated / legacy | 88 / 58 / 58 | 88 / 58 / 58 | 88 / 58 / 58 | 88 / 58 / 58 |
+| users / comments | 2 / 0 | 2 / 0 | 2 / 0 | 2 / 0 |
+| `gemreserve verify` | 58/58 | 58/58 | 58/58 | 58/58 |
+| Capability sets live | — | `edit_gemstones`, `edit_gr_documents` | same | same |
+| Document-root hygiene | OK | OK | OK | OK |
+| Services | all active | all active | all active | all active |
+
+**New PHP, nginx or WordPress errors across the whole window: none.**
+`journalctl -u php8.4-fpm.service` has no entries since the deployment, the
+nginx error log has no lines, and `wp-content/debug.log` is 0 bytes. No service
+was restarted or reloaded — `gemreserve-next.service` has been running
+continuously since 2026-09-03 20:21:26 UTC, which predates both deployments.
+
+The baseline these are compared against was captured **today, before this
+deployment**, and it already included the `gemreserve-chatbot` plugin another
+party installed at 06:04 UTC — see §0.1.
+
+### 0.1 Production drift found on arrival
+
+Between the first deployment and this one, another party installed and
+activated **`gemreserve-chatbot` 2.0.2** (19 plugins now, up from 18). It adds
+about 6.4 KB of markup to every page and five database tables.
+
+It is legitimate newer production content and was left exactly alone. It is
+recorded because it means a byte comparison against the *previous* session's
+baseline would show all 88 routes differing, and someone reading both reports
+should know why. Checked against that older baseline, the metadata that matters
+was unaffected: **titles, descriptions, canonicals, `og:*`, robots directives
+and tag counts are identical on all 88 routes**, as are `robots.txt` and the
+sitemap.
+
 ### Production changes
 
 Five files, all inside the two GemReserve plugins. The theme was not touched.
